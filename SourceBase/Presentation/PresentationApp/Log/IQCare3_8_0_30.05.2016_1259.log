@@ -1,0 +1,10 @@
+2016-05-30 12:59:56,117 [21] ERROR - System.ArgumentException: Column 'Generic' does not belong to table Table8.
+   at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.get_Item(String columnName)
+   at frmDrugSelector.BindList() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Pharmacy\frmDrugSelector.aspx.cs:line 116
+   at frmDrugSelector.Init_Form() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Pharmacy\frmDrugSelector.aspx.cs:line 56
+   at frmDrugSelector.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Pharmacy\frmDrugSelector.aspx.cs:line 580
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

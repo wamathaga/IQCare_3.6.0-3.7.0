@@ -1,0 +1,4 @@
+C:\Projects\IQCare 3.8.1\References\Entities.Administration.dll
+C:\Projects\IQCare 3.8.1\References\Entities.Administration.pdb
+C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\Entities.Administration\obj\Debug\Entities.Administration.dll
+C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\Entities.Administration\obj\Debug\Entities.Administration.pdb

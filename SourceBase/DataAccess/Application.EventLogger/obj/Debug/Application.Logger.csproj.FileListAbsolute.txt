@@ -1,0 +1,5 @@
+C:\Projects\IQCare 3.8.1\References\Application.Logger.dll
+C:\Projects\IQCare 3.8.1\References\Application.Logger.pdb
+C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\Application.EventLogger\obj\Debug\Application.Logger.dll
+C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\Application.EventLogger\obj\Debug\Application.Logger.pdb
+C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\Application.EventLogger\obj\Debug\Application.Logger.csprojResolveAssemblyReference.cache

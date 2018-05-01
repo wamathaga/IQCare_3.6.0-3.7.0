@@ -1,0 +1,4 @@
+C:\Projects\IQCare 3.8.0\SourceBase\Presentation\IQCareReport\bin\Release\IQCare.CustomConfig.dll
+C:\Projects\IQCare 3.8.0\SourceBase\Presentation\IQCareReport\bin\Release\IQCare.CustomConfig.pdb
+C:\Projects\IQCare 3.8.0\SourceBase\Presentation\IQCareReport\obj\Release\IQCare.CustomConfig.dll
+C:\Projects\IQCare 3.8.0\SourceBase\Presentation\IQCareReport\obj\Release\IQCare.CustomConfig.pdb

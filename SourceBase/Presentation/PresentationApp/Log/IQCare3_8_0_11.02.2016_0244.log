@@ -1,0 +1,8 @@
+2016-02-11 14:44:46,983 [37] ERROR - System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse)
+   at IQCare.Web.Billing.frmBilling_ClientBill.gridPendingBills_RowCommand(Object sender, GridViewCommandEventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\Billing\frmBilling_ClientBill.aspx.cs:line 1596

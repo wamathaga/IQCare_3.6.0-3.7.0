@@ -1,0 +1,7 @@
+2016-03-15 11:46:55,388 [6] ERROR - System.NullReferenceException: Object reference not set to an instance of an object.
+   at PresentationApp.Laboratory.frm_LabTestResults.Page_Init(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Laboratory\frm_LabTestResults.aspx.cs:line 46
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnInit(EventArgs e)
+   at System.Web.UI.Page.OnInit(EventArgs e)
+   at System.Web.UI.Control.InitRecursive(Control namingContainer)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

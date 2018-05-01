@@ -1,0 +1,6 @@
+2015-09-28 14:06:13,753 [18] INFO - Form: frmLogin, Method: Page_Load() begin!
+2015-09-28 14:06:13,798 [18] INFO - Form: frmLogin, Method: Page_Load() end!
+2015-09-28 14:06:13,810 [18] INFO - Form: frmLogin, Method: ValidateLogin() begin!
+2015-09-28 14:06:13,840 [18] INFO - Form: frmLogin, Method: ValidateLogin() end!
+2015-09-28 14:06:13,845 [18] INFO - Form: frmLogin, Method: btnLogin_Click() begin!
+2015-09-28 14:06:14,011 [18] INFO - Form: frmLogin, Method: btnLogin_Click() end!

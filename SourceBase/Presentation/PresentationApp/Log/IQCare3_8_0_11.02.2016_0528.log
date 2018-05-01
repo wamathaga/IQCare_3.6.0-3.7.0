@@ -1,0 +1,10 @@
+2016-02-11 17:28:52,156 [7] ERROR - System.IndexOutOfRangeException: Cannot find table 3.
+   at System.Data.DataTableCollection.get_Item(Int32 index)
+   at IQCare.Web.frmFacilityHome2.createserviceButtons() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmFacilityHome.aspx.cs:line 311
+   at IQCare.Web.frmFacilityHome2.Init_page() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmFacilityHome.aspx.cs:line 70
+   at IQCare.Web.frmFacilityHome2.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmFacilityHome.aspx.cs:line 34
+2016-02-11 17:28:58,083 [5] ERROR - System.IndexOutOfRangeException: Cannot find table 3.
+   at System.Data.DataTableCollection.get_Item(Int32 index)
+   at IQCare.Web.frmFacilityHome2.createserviceButtons() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmFacilityHome.aspx.cs:line 311
+   at IQCare.Web.frmFacilityHome2.Init_page() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmFacilityHome.aspx.cs:line 70
+   at IQCare.Web.frmFacilityHome2.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmFacilityHome.aspx.cs:line 34

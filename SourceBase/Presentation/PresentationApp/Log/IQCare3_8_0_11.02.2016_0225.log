@@ -1,0 +1,19 @@
+2016-02-11 14:25:51,347 [29] ERROR - System.Data.SqlClient.SqlException (0x80131904): The conversion of the varchar value '100006' overflowed an INT2 column. Use a larger integer column.
+
+Server stack trace: 
+   at DataAccess.Entity.ClsObject.ReturnObject(Hashtable Params, String CommandText, ObjectEnum Obj) in C:\Projects\IQCare 3.8.0\SourceBase\DataAccess\DataAccess.Entity\ClsObject.cs:line 170
+   at BusinessProcess.Clinical.BCustomForm.Validate(String FormName, String Date, String PatientId) in C:\Projects\IQCare 3.8.0\SourceBase\DataAccess\BusinessProcess.Clinical\BCustomForm.cs:line 82
+   at System.Runtime.Remoting.Messaging.StackBuilderSink._PrivateProcessMessage(IntPtr md, Object[] args, Object server, Object[]& outArgs)
+   at System.Runtime.Remoting.Messaging.StackBuilderSink.SyncProcessMessage(IMessage msg)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Interface.Clinical.ICustomForm.Validate(String FormName, String Date, String PatientId)
+   at frmClinical_CustomForm.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\ClinicalForms\frmClinical_CustomForm.aspx.cs:line 131
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+ClientConnectionId:f732fac5-45ef-4451-8dae-4e2f09591df2
+Error Number:244,State:2,Class:16

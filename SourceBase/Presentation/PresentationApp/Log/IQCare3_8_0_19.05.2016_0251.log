@@ -1,0 +1,14 @@
+2016-05-19 14:51:34,631 [14] ERROR - System.Data.EvaluateException: Cannot find column [FeatureId].
+   at System.Data.NameNode.Bind(DataTable table, List`1 list)
+   at System.Data.BinaryNode.Bind(DataTable table, List`1 list)
+   at System.Data.DataExpression.Bind(DataTable table)
+   at System.Data.DataExpression..ctor(DataTable table, String expression, Type type)
+   at System.Data.DataView.set_RowFilter(String value)
+   at AuthenticationManager.HasFeatureRight(Int32 FeatureId, DataTable theDT) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Old_App_Code\AuthenticationManager.cs:line 31
+   at frmPatient_History.TreeViewExisForm_SelectedNodeChanged(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\ClinicalForms\frmPatient_History.aspx.cs:line 431
+   at System.Web.UI.WebControls.TreeView.OnSelectedNodeChanged(EventArgs e)
+   at System.Web.UI.WebControls.TreeView.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.WebControls.TreeView.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

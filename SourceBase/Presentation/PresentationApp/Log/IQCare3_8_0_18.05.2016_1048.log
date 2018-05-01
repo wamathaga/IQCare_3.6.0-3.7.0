@@ -1,0 +1,9 @@
+2016-05-18 10:48:56,374 [12] ERROR - System.IndexOutOfRangeException: There is no row at position 0.
+   at System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   at System.Data.DataRowCollection.get_Item(Int32 index)
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.PopulatePharmacyVitalDetails() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 372
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 60
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

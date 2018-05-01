@@ -1,0 +1,15 @@
+2016-04-28 11:21:20,852 [6] ERROR - System.Runtime.Remoting.RemotingException: Requested Service not found
+
+Server stack trace: 
+   at System.Runtime.Remoting.Channels.BinaryServerFormatterSink.ProcessMessage(IServerChannelSinkStack sinkStack, IMessage requestMsg, ITransportHeaders requestHeaders, Stream requestStream, IMessage& responseMsg, ITransportHeaders& responseHeaders, Stream& responseStream)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Interface.SCM.IDrug.GetPriorPrescription(Int32 thePatientId)
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.LoadPendingPharmacyOrderDetails(Int32 visitID) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 1291
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 67
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

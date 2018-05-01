@@ -1,0 +1,12 @@
+2016-05-30 13:44:30,150 [24] ERROR - System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.String.System.IConvertible.ToInt32(IFormatProvider provider)
+   at System.Convert.ToInt32(Object value)
+   at frmDrugSelector.BindList() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Pharmacy\frmDrugSelector.aspx.cs:line 118
+   at frmDrugSelector.Init_Form() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Pharmacy\frmDrugSelector.aspx.cs:line 56
+   at frmDrugSelector.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\Pharmacy\frmDrugSelector.aspx.cs:line 583
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

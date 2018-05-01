@@ -1,0 +1,12 @@
+2016-06-06 16:36:48,610 [17] ERROR - System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Convert.ToInt32(String value)
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.FieldValidation() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 1110
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.btnSave_Click(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 1167
+   at System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   at System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

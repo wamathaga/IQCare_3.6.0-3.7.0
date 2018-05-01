@@ -1,0 +1,13 @@
+2016-06-06 16:52:23,532 [22] ERROR - System.IndexOutOfRangeException: There is no row at position 0.
+   at System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   at System.Data.DataRowCollection.get_Item(Int32 index)
+   at PresentationApp.ClinicalForms.UserControl.UserControlKNH_Extruder.loadPatientDetails() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\ClinicalForms\UserControl\UserControlKNH_Extruder.ascx.cs:line 105
+   at PresentationApp.ClinicalForms.UserControl.UserControlKNH_Extruder.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\ClinicalForms\UserControl\UserControlKNH_Extruder.ascx.cs:line 31
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

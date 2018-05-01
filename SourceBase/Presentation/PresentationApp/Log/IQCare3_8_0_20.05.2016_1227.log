@@ -1,0 +1,2 @@
+2016-05-20 12:27:51,592 [6] ERROR - Form: frmLogin, Method: BindCombo()
+2016-05-20 12:27:53,614 [6] ERROR - Form: frmLogin, Method: GetApplicationParameters() 

@@ -1,0 +1,22 @@
+2016-05-04 10:41:15,858 [55] ERROR - System.Data.SqlClient.SqlException (0x80131904): Error converting data type varchar to numeric.
+
+Server stack trace: 
+   at DataAccess.Entity.ClsObject.ReturnObject(Hashtable Params, String CommandText, ObjectEnum Obj) in C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\DataAccess.Entity\ClsObject.cs:line 170
+   at BusinessProcess.Clinical.BInitialFollowupVisit.SaveUpdateInitialFollowupVisitData(Hashtable hashTable, DataSet dataSet, Boolean isUpdate, DataTable theCustomDataDT) in C:\Projects\IQCare 3.8.1\SourceBase\DataAccess\BusinessProcess.Clinical\BInitialFollowupVisit.cs.cs:line 377
+   at System.Runtime.Remoting.Messaging.StackBuilderSink._PrivateProcessMessage(IntPtr md, Object[] args, Object server, Object[]& outArgs)
+   at System.Runtime.Remoting.Messaging.StackBuilderSink.SyncProcessMessage(IMessage msg)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Interface.Clinical.IinitialFollowupVisit.SaveUpdateInitialFollowupVisitData(Hashtable hashTable, DataSet dataSet, Boolean isUpdate, DataTable theCustomDataDT)
+   at ClinicalForms_frmClinical_InitialFollowupVisit.save(Boolean isDataQuailtyChecked, String button) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\ClinicalForms\frmClinical_InitialFollowupVisit.aspx.cs:line 2574
+   at ClinicalForms_frmClinical_InitialFollowupVisit.btnpharmacy_Click(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\ClinicalForms\frmClinical_InitialFollowupVisit.aspx.cs:line 2611
+   at System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   at System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+ClientConnectionId:a2828a07-2b2a-4659-9ca4-f088d7e52d64
+Error Number:8114,State:5,Class:16

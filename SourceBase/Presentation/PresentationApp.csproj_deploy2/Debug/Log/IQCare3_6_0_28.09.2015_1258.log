@@ -1,0 +1,14 @@
+2015-09-28 12:58:04,366 [20] INFO - Form: frmLogin, Method: Page_Load() begin!
+2015-09-28 12:58:04,392 [20] INFO - Form: frmLogin, Method: Init_Form() begin!
+2015-09-28 12:58:04,397 [20] INFO - Form: frmLogin, Method: BindCombo() begin!
+2015-09-28 12:58:04,460 [20] INFO - Form: frmLogin, Method: BindCombo() end!
+2015-09-28 12:58:04,465 [20] INFO - Form: frmLogin, Method: GetApplicationParameters() begin!
+2015-09-28 12:58:04,481 [20] INFO - Form: frmLogin, Method: GetApplicationParameters() end!
+2015-09-28 12:58:04,486 [20] INFO - Form: frmLogin, Method: Init_Form() end!
+2015-09-28 12:58:04,492 [20] INFO - Form: frmLogin, Method: Page_Load() end!
+2015-09-28 12:58:07,954 [20] INFO - Form: frmLogin, Method: Page_Load() begin!
+2015-09-28 12:58:07,958 [20] INFO - Form: frmLogin, Method: Page_Load() end!
+2015-09-28 12:58:07,969 [20] INFO - Form: frmLogin, Method: ValidateLogin() begin!
+2015-09-28 12:58:07,972 [20] INFO - Form: frmLogin, Method: ValidateLogin() end!
+2015-09-28 12:58:07,976 [20] INFO - Form: frmLogin, Method: btnLogin_Click() begin!
+2015-09-28 12:58:08,087 [20] INFO - Form: frmLogin, Method: btnLogin_Click() end!

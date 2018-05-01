@@ -1,0 +1,23 @@
+2015-10-12 15:15:45,877 [58] ERROR - System.Data.SqlClient.SqlException (0x80131904): Incorrect syntax near 'ttwbvXWpqb5WOLfLrBgisw'.
+
+Server stack trace: 
+   at DataAccess.Entity.ClsObject.ReturnObject(Hashtable Params, String CommandText, ObjectEnum Obj) in C:\Projects\IQCare 3.8.0\SourceBase\DataAccess\DataAccess.Entity\ClsObject.cs:line 170
+   at BusinessProcess.Clinical.BKNHStaticForms.GetExtruderData(Int32 ptn_pk) in C:\Projects\IQCare 3.8.0\SourceBase\DataAccess\BusinessProcess.Clinical\BKNHStaticForms.cs:line 254
+   at System.Runtime.Remoting.Messaging.StackBuilderSink._PrivateProcessMessage(IntPtr md, Object[] args, Object server, Object[]& outArgs)
+   at System.Runtime.Remoting.Messaging.StackBuilderSink.SyncProcessMessage(IMessage msg)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Interface.Clinical.IKNHStaticForms.GetExtruderData(Int32 ptn_pk)
+   at PresentationApp.ClinicalForms.UserControl.UserControlKNH_Extruder.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\ClinicalForms\UserControl\UserControlKNH_Extruder.ascx.cs:line 27
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+ClientConnectionId:8667a97e-c42b-4189-aa93-797a9ed54ab1
+Error Number:102,State:1,Class:15

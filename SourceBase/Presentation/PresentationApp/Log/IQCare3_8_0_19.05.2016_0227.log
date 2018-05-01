@@ -1,0 +1,140 @@
+2016-05-19 14:27:36,696 [54] ERROR - System.Web.HttpException (0x80004005): The state information is invalid for this page and might be corrupted. ---> System.Web.UI.ViewStateException: Invalid viewstate. 
+	Client IP: ::1
+	Port: 
+	Referer: http://localhost:65081/PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	Path: /PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+	ViewState: FtcdJ4bfzWLwSMOGvMqTmLOP0yboCnxgln20GKbefL9t883omBB7dMVfeFDWaZYRTlOvJJnD9b/BD+MnwGN+KUUQM6FysB24m4IUS2iaFcViIlTveVgfO9FvVyYGScJpBc8CXnaziLUwszsOBxHPX6Pa3DtKRjqO8MyJHyTnepol7u34CHM3icLpKM8TqS5fv5kVbLHuB1X2rT+pqqeSrghuAyqmSRwfy7c2LLqMbICEVGWXuBB1+0MDwpCD3IpqvHdUkLfG6bTiFrSnPuWYmcgrObgCmzK+IA5iV+4y80XAK1Did9AH+RXqd0gnFnv65ypV6IMuSjZDIdTl54oGZbWamvuEMem4XrG9GjVRzb6u1YsvOEGsBrWE01Dc0ix/lV2SAUCOWizh9sSZA9Q2UXCPdCAYOfefBax7oIoG4W1q2mcnlS2HQGnzhpJQPAPMrV8Nf4IxdKuep6+pZZH7shHU646wCYTd8RUhJUNV06GxrnSX4fJhaFId+ox+lm8W1Ka8NvZ46AOM7AmBT0L/m4ih3e77v/2biysO0qEfC+HcNSqZE13MYDWdGm5J3DWTDFH+AzhsYN/7LmoVeoURGzOOulPlS0J7aKklnTOFR6O3YcfhcBGPgMke/cUlxYUg1Ls6PWdp9lJ3FokiEBOCYYMdLgszfMa/wxGLngTQ/nsfEwW/biA+aflOMytabkQ... ---> System.FormatException: Invalid length for a Base-64 char array or string.
+   at System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at System.Web.UI.ObjectStateFormatter.Deserialize(String inputString, Purpose purpose)
+   at System.Web.UI.ObjectStateFormatter.System.Web.UI.IStateFormatter2.Deserialize(String serializedState, Purpose purpose)
+   at System.Web.UI.Util.DeserializeWithAssert(IStateFormatter2 formatter, String serializedState, Purpose purpose)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   --- End of inner exception stack trace ---
+   at System.Web.UI.ViewStateException.ThrowError(Exception inner, String persistedState, String errorPageMessage, Boolean macValidationError)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   at System.Web.UI.Page.LoadPageStateFromPersistenceMedium()
+   at System.Web.UI.Page.LoadAllState()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+2016-05-19 14:27:36,752 [54] ERROR - System.ArgumentNullException: Value cannot be null.
+Parameter name: exception
+   at System.Web.UI.AsyncPostBackErrorEventArgs..ctor(Exception exception)
+   at System.Web.UI.PageRequestManager.OnPageError(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at System.Web.UI.TemplateControl.OnError(EventArgs e)
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.pharmacydispense_frmpharmacydispense_patientorder_aspx.ProcessRequest(HttpContext context) in c:\Users\gaurav\AppData\Local\Temp\Temporary ASP.NET Files\root\fd0f1cbd\ce8f20d\App_Web_evcvcw0k.5.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2016-05-19 14:27:38,562 [19] ERROR - System.Web.HttpException (0x80004005): The state information is invalid for this page and might be corrupted. ---> System.Web.UI.ViewStateException: Invalid viewstate. 
+	Client IP: ::1
+	Port: 
+	Referer: http://localhost:65081/PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	Path: /PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+	ViewState: FtcdJ4bfzWLwSMOGvMqTmLOP0yboCnxgln20GKbefL9t883omBB7dMVfeFDWaZYRTlOvJJnD9b/BD+MnwGN+KUUQM6FysB24m4IUS2iaFcViIlTveVgfO9FvVyYGScJpBc8CXnaziLUwszsOBxHPX6Pa3DtKRjqO8MyJHyTnepol7u34CHM3icLpKM8TqS5fv5kVbLHuB1X2rT+pqqeSrghuAyqmSRwfy7c2LLqMbICEVGWXuBB1+0MDwpCD3IpqvHdUkLfG6bTiFrSnPuWYmcgrObgCmzK+IA5iV+4y80XAK1Did9AH+RXqd0gnFnv65ypV6IMuSjZDIdTl54oGZbWamvuEMem4XrG9GjVRzb6u1YsvOEGsBrWE01Dc0ix/lV2SAUCOWizh9sSZA9Q2UXCPdCAYOfefBax7oIoG4W1q2mcnlS2HQGnzhpJQPAPMrV8Nf4IxdKuep6+pZZH7shHU646wCYTd8RUhJUNV06GxrnSX4fJhaFId+ox+lm8W1Ka8NvZ46AOM7AmBT0L/m4ih3e77v/2biysO0qEfC+HcNSqZE13MYDWdGm5J3DWTDFH+AzhsYN/7LmoVeoURGzOOulPlS0J7aKklnTOFR6O3YcfhcBGPgMke/cUlxYUg1Ls6PWdp9lJ3FokiEBOCYYMdLgszfMa/wxGLngTQ/nsfEwW/biA+aflOMytabkQ... ---> System.FormatException: Invalid length for a Base-64 char array or string.
+   at System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at System.Web.UI.ObjectStateFormatter.Deserialize(String inputString, Purpose purpose)
+   at System.Web.UI.ObjectStateFormatter.System.Web.UI.IStateFormatter2.Deserialize(String serializedState, Purpose purpose)
+   at System.Web.UI.Util.DeserializeWithAssert(IStateFormatter2 formatter, String serializedState, Purpose purpose)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   --- End of inner exception stack trace ---
+   at System.Web.UI.ViewStateException.ThrowError(Exception inner, String persistedState, String errorPageMessage, Boolean macValidationError)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   at System.Web.UI.Page.LoadPageStateFromPersistenceMedium()
+   at System.Web.UI.Page.LoadAllState()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+2016-05-19 14:27:38,585 [19] ERROR - System.ArgumentNullException: Value cannot be null.
+Parameter name: exception
+   at System.Web.UI.AsyncPostBackErrorEventArgs..ctor(Exception exception)
+   at System.Web.UI.PageRequestManager.OnPageError(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at System.Web.UI.TemplateControl.OnError(EventArgs e)
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.pharmacydispense_frmpharmacydispense_patientorder_aspx.ProcessRequest(HttpContext context) in c:\Users\gaurav\AppData\Local\Temp\Temporary ASP.NET Files\root\fd0f1cbd\ce8f20d\App_Web_evcvcw0k.5.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2016-05-19 14:27:39,069 [19] ERROR - System.Web.HttpException (0x80004005): The state information is invalid for this page and might be corrupted. ---> System.Web.UI.ViewStateException: Invalid viewstate. 
+	Client IP: ::1
+	Port: 
+	Referer: http://localhost:65081/PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	Path: /PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+	ViewState: FtcdJ4bfzWLwSMOGvMqTmLOP0yboCnxgln20GKbefL9t883omBB7dMVfeFDWaZYRTlOvJJnD9b/BD+MnwGN+KUUQM6FysB24m4IUS2iaFcViIlTveVgfO9FvVyYGScJpBc8CXnaziLUwszsOBxHPX6Pa3DtKRjqO8MyJHyTnepol7u34CHM3icLpKM8TqS5fv5kVbLHuB1X2rT+pqqeSrghuAyqmSRwfy7c2LLqMbICEVGWXuBB1+0MDwpCD3IpqvHdUkLfG6bTiFrSnPuWYmcgrObgCmzK+IA5iV+4y80XAK1Did9AH+RXqd0gnFnv65ypV6IMuSjZDIdTl54oGZbWamvuEMem4XrG9GjVRzb6u1YsvOEGsBrWE01Dc0ix/lV2SAUCOWizh9sSZA9Q2UXCPdCAYOfefBax7oIoG4W1q2mcnlS2HQGnzhpJQPAPMrV8Nf4IxdKuep6+pZZH7shHU646wCYTd8RUhJUNV06GxrnSX4fJhaFId+ox+lm8W1Ka8NvZ46AOM7AmBT0L/m4ih3e77v/2biysO0qEfC+HcNSqZE13MYDWdGm5J3DWTDFH+AzhsYN/7LmoVeoURGzOOulPlS0J7aKklnTOFR6O3YcfhcBGPgMke/cUlxYUg1Ls6PWdp9lJ3FokiEBOCYYMdLgszfMa/wxGLngTQ/nsfEwW/biA+aflOMytabkQ... ---> System.FormatException: Invalid length for a Base-64 char array or string.
+   at System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at System.Web.UI.ObjectStateFormatter.Deserialize(String inputString, Purpose purpose)
+   at System.Web.UI.ObjectStateFormatter.System.Web.UI.IStateFormatter2.Deserialize(String serializedState, Purpose purpose)
+   at System.Web.UI.Util.DeserializeWithAssert(IStateFormatter2 formatter, String serializedState, Purpose purpose)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   --- End of inner exception stack trace ---
+   at System.Web.UI.ViewStateException.ThrowError(Exception inner, String persistedState, String errorPageMessage, Boolean macValidationError)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   at System.Web.UI.Page.LoadPageStateFromPersistenceMedium()
+   at System.Web.UI.Page.LoadAllState()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+2016-05-19 14:27:39,091 [19] ERROR - System.ArgumentNullException: Value cannot be null.
+Parameter name: exception
+   at System.Web.UI.AsyncPostBackErrorEventArgs..ctor(Exception exception)
+   at System.Web.UI.PageRequestManager.OnPageError(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at System.Web.UI.TemplateControl.OnError(EventArgs e)
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.pharmacydispense_frmpharmacydispense_patientorder_aspx.ProcessRequest(HttpContext context) in c:\Users\gaurav\AppData\Local\Temp\Temporary ASP.NET Files\root\fd0f1cbd\ce8f20d\App_Web_evcvcw0k.5.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2016-05-19 14:27:40,044 [54] ERROR - System.Web.HttpException (0x80004005): The state information is invalid for this page and might be corrupted. ---> System.Web.UI.ViewStateException: Invalid viewstate. 
+	Client IP: ::1
+	Port: 
+	Referer: http://localhost:65081/PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	Path: /PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+	ViewState: FtcdJ4bfzWLwSMOGvMqTmLOP0yboCnxgln20GKbefL9t883omBB7dMVfeFDWaZYRTlOvJJnD9b/BD+MnwGN+KUUQM6FysB24m4IUS2iaFcViIlTveVgfO9FvVyYGScJpBc8CXnaziLUwszsOBxHPX6Pa3DtKRjqO8MyJHyTnepol7u34CHM3icLpKM8TqS5fv5kVbLHuB1X2rT+pqqeSrghuAyqmSRwfy7c2LLqMbICEVGWXuBB1+0MDwpCD3IpqvHdUkLfG6bTiFrSnPuWYmcgrObgCmzK+IA5iV+4y80XAK1Did9AH+RXqd0gnFnv65ypV6IMuSjZDIdTl54oGZbWamvuEMem4XrG9GjVRzb6u1YsvOEGsBrWE01Dc0ix/lV2SAUCOWizh9sSZA9Q2UXCPdCAYOfefBax7oIoG4W1q2mcnlS2HQGnzhpJQPAPMrV8Nf4IxdKuep6+pZZH7shHU646wCYTd8RUhJUNV06GxrnSX4fJhaFId+ox+lm8W1Ka8NvZ46AOM7AmBT0L/m4ih3e77v/2biysO0qEfC+HcNSqZE13MYDWdGm5J3DWTDFH+AzhsYN/7LmoVeoURGzOOulPlS0J7aKklnTOFR6O3YcfhcBGPgMke/cUlxYUg1Ls6PWdp9lJ3FokiEBOCYYMdLgszfMa/wxGLngTQ/nsfEwW/biA+aflOMytabkQ... ---> System.FormatException: Invalid length for a Base-64 char array or string.
+   at System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   at System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   at System.Convert.FromBase64String(String s)
+   at System.Web.UI.ObjectStateFormatter.Deserialize(String inputString, Purpose purpose)
+   at System.Web.UI.ObjectStateFormatter.System.Web.UI.IStateFormatter2.Deserialize(String serializedState, Purpose purpose)
+   at System.Web.UI.Util.DeserializeWithAssert(IStateFormatter2 formatter, String serializedState, Purpose purpose)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   --- End of inner exception stack trace ---
+   at System.Web.UI.ViewStateException.ThrowError(Exception inner, String persistedState, String errorPageMessage, Boolean macValidationError)
+   at System.Web.UI.HiddenFieldPageStatePersister.Load()
+   at System.Web.UI.Page.LoadPageStateFromPersistenceMedium()
+   at System.Web.UI.Page.LoadAllState()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+2016-05-19 14:27:40,062 [54] ERROR - System.ArgumentNullException: Value cannot be null.
+Parameter name: exception
+   at System.Web.UI.AsyncPostBackErrorEventArgs..ctor(Exception exception)
+   at System.Web.UI.PageRequestManager.OnPageError(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at System.Web.UI.TemplateControl.OnError(EventArgs e)
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.pharmacydispense_frmpharmacydispense_patientorder_aspx.ProcessRequest(HttpContext context) in c:\Users\gaurav\AppData\Local\Temp\Temporary ASP.NET Files\root\fd0f1cbd\ce8f20d\App_Web_evcvcw0k.5.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)

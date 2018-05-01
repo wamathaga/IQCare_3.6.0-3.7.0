@@ -1,0 +1,7 @@
+2016-02-03 11:04:45,442 [11] ERROR - System.NullReferenceException: Object reference not set to an instance of an object.
+   at PresentationApp.ClinicalForms.frmClinical_KNH_MEI.Page_PreRender(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\ClinicalForms\frmClinical_KNH_MEI.aspx.cs:line 58
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnPreRender(EventArgs e)
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

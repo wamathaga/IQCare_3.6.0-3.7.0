@@ -1,0 +1,4 @@
+C:\Projects\IQCare 3.8.0\References\Entities.Billing.dll
+C:\Projects\IQCare 3.8.0\References\Entities.Billing.pdb
+C:\Projects\IQCare 3.8.0\SourceBase\DataAccess\Entities.Billing\obj\Release\Entities.Billing.dll
+C:\Projects\IQCare 3.8.0\SourceBase\DataAccess\Entities.Billing\obj\Release\Entities.Billing.pdb

@@ -1,0 +1,28 @@
+2016-06-06 16:31:07,445 [30] ERROR - System.Runtime.Remoting.RemotingException: Object '/90fe80f7_8184_435a_ab17_11b07765a8a2/vhrvxpruuj4jidwtlhpk8v6g_414.rem' has been disconnected or does not exist at the server.
+
+Server stack trace: 
+   at System.Runtime.Remoting.Channels.ChannelServices.CheckDisconnectedOrCreateWellKnownObject(IMessage msg)
+   at System.Runtime.Remoting.Channels.ChannelServices.DispatchMessage(IServerChannelSinkStack sinkStack, IMessage msg, IMessage& replyMsg)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Interface.SCM.IDrug.GetPriorPrescription(Int32 thePatientId)
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.LoadPendingPharmacyOrderDetails(Int32 visitID) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 1488
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.Page_Load(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 68
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+2016-06-06 16:31:51,530 [5] ERROR - System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Convert.ToInt32(String value)
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.FieldValidation() in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 1111
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.btnSave_Click(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 1168
+   at System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   at System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

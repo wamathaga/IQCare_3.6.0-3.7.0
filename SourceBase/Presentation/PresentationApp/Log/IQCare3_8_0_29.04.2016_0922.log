@@ -1,0 +1,4 @@
+2016-04-29 09:22:38,319 [46] ERROR - Form: frmLogin, Method: BindCombo()
+2016-04-29 09:22:38,345 [53] ERROR - Form: frmLogin, Method: BindCombo()
+2016-04-29 09:22:40,341 [46] ERROR - Form: frmLogin, Method: GetApplicationParameters() 
+2016-04-29 09:22:40,366 [53] ERROR - Form: frmLogin, Method: GetApplicationParameters() 

@@ -1,0 +1,10 @@
+2016-02-02 11:21:07,633 [20] ERROR - System.ArgumentOutOfRangeException: 'ddlVisitNumber' has a SelectedValue which is invalid because it does not exist in the list of items.
+Parameter name: value
+   at System.Web.UI.WebControls.ListControl.set_SelectedValue(String value)
+   at PresentationApp.ClinicalForms.frmClinical_KNH_MEI.GetDataforAutopopulate() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\ClinicalForms\frmClinical_KNH_MEI.aspx.cs:line 1400
+   at PresentationApp.ClinicalForms.frmClinical_KNH_MEI.Page_PreRender(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\ClinicalForms\frmClinical_KNH_MEI.aspx.cs:line 69
+   at System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at System.Web.UI.Control.OnPreRender(EventArgs e)
+   at System.Web.UI.Control.PreRenderRecursiveInternal()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

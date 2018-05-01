@@ -1,0 +1,9 @@
+2016-05-19 10:44:38,276 [35] ERROR - System.InvalidOperationException: The source contains no DataRows.
+   at System.Data.DataTableExtensions.LoadTableFromEnumerable[T](IEnumerable`1 source, DataTable table, Nullable`1 options, FillErrorEventHandler errorHandler)
+   at System.Data.DataTableExtensions.CopyToDataTable[T](IEnumerable`1 source)
+   at PresentationApp.PharmacyDispense.frmPharmacyDispense_PatientOrder.ddlRegimenCode_SelectedIndexChanged(Object sender, EventArgs e) in C:\Projects\IQCare 3.8.1\SourceBase\Presentation\PresentationApp\PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs:line 800
+   at System.Web.UI.WebControls.ListControl.OnSelectedIndexChanged(EventArgs e)
+   at System.Web.UI.WebControls.DropDownList.RaisePostDataChangedEvent()
+   at System.Web.UI.WebControls.DropDownList.System.Web.UI.IPostBackDataHandler.RaisePostDataChangedEvent()
+   at System.Web.UI.Page.RaiseChangedEvents()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

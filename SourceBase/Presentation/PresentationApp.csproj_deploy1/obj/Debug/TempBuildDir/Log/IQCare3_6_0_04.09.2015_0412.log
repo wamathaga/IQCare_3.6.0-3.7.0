@@ -1,0 +1,46 @@
+2015-09-04 16:12:54,638 [24] INFO - Form: frmLogin, Method: Page_Load() begin!
+2015-09-04 16:12:54,642 [24] INFO - Form: frmLogin, Method: Init_Form() begin!
+2015-09-04 16:12:54,646 [24] INFO - Form: frmLogin, Method: BindCombo() begin!
+2015-09-04 16:12:56,655 [24] ERROR - Form: frmLogin, Method: BindCombo()
+System.Net.Sockets.SocketException (0x80004005): No connection could be made because the target machine actively refused it 127.0.0.1:8001
+
+Server stack trace: 
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at System.Runtime.Remoting.Channels.RemoteConnection.CreateNewSocket(EndPoint ipEndPoint)
+   at System.Runtime.Remoting.Channels.RemoteConnection.CreateNewSocket()
+   at System.Runtime.Remoting.Channels.RemoteConnection.GetSocket()
+   at System.Runtime.Remoting.Channels.SocketCache.GetSocket(String machinePortAndSid, Boolean openNew)
+   at System.Runtime.Remoting.Channels.Tcp.TcpClientTransportSink.SendRequestWithRetry(IMessage msg, ITransportHeaders requestHeaders, Stream requestStream)
+   at System.Runtime.Remoting.Channels.Tcp.TcpClientTransportSink.ProcessMessage(IMessage msg, ITransportHeaders requestHeaders, Stream requestStream, ITransportHeaders& responseHeaders, Stream& responseStream)
+   at System.Runtime.Remoting.Channels.BinaryClientFormatterSink.SyncProcessMessage(IMessage msg)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Application.Interface.IBusinessServerFactory.CreateInstance(String type)
+   at Application.Presentation.ObjectFactory.CreateInstance(String type) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\Application.Presentation\ObjectFactory.cs:line 15
+   at frmLogin.BindCombo() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmLogin.aspx.cs:line 96
+2015-09-04 16:12:56,713 [24] INFO - Form: frmLogin, Method: GetApplicationParameters() begin!
+2015-09-04 16:12:58,729 [24] ERROR - Form: frmLogin, Method: GetApplicationParameters() 
+System.Net.Sockets.SocketException (0x80004005): No connection could be made because the target machine actively refused it 127.0.0.1:8001
+
+Server stack trace: 
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at System.Runtime.Remoting.Channels.RemoteConnection.CreateNewSocket(EndPoint ipEndPoint)
+   at System.Runtime.Remoting.Channels.RemoteConnection.CreateNewSocket()
+   at System.Runtime.Remoting.Channels.RemoteConnection.GetSocket()
+   at System.Runtime.Remoting.Channels.SocketCache.GetSocket(String machinePortAndSid, Boolean openNew)
+   at System.Runtime.Remoting.Channels.Tcp.TcpClientTransportSink.SendRequestWithRetry(IMessage msg, ITransportHeaders requestHeaders, Stream requestStream)
+   at System.Runtime.Remoting.Channels.Tcp.TcpClientTransportSink.ProcessMessage(IMessage msg, ITransportHeaders requestHeaders, Stream requestStream, ITransportHeaders& responseHeaders, Stream& responseStream)
+   at System.Runtime.Remoting.Channels.BinaryClientFormatterSink.SyncProcessMessage(IMessage msg)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at Application.Interface.IBusinessServerFactory.CreateInstance(String type)
+   at Application.Presentation.ObjectFactory.CreateInstance(String type) in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\Application.Presentation\ObjectFactory.cs:line 15
+   at frmLogin.GetApplicationParameters() in C:\Projects\IQCare 3.8.0\SourceBase\Presentation\PresentationApp\frmLogin.aspx.cs:line 142
+2015-09-04 16:12:58,737 [24] INFO - Form: frmLogin, Method: Init_Form() end!
+2015-09-04 16:12:58,747 [24] INFO - Form: frmLogin, Method: Page_Load() end!
