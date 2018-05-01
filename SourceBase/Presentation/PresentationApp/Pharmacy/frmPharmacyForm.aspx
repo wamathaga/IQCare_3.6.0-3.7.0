@@ -4,6 +4,38 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
     <script language="javascript" type="text/javascript">
+        function CalculateDrugsPrescribed(txtMorning, txtMidday, txtEvening, txtNight, txtDuration, txtQtyPrescribed, valSyrup, valQtyUnitDisp) {
+            var morning = document.getElementById(txtMorning).value;
+            var midday = document.getElementById(txtMidday).value;
+            var evening = document.getElementById(txtEvening).value;
+            var night = document.getElementById(txtNight).value;
+            var duration = document.getElementById(txtDuration).value;
+
+            if (morning == "") morning = 0;
+            if (midday == "") midday = 0;
+            if (evening == "") evening = 0;
+            if (night == "") night = 0;
+
+            document.getElementById(txtMorning).value = morning;
+            document.getElementById(txtMidday).value = midday;
+            document.getElementById(txtEvening).value = evening;
+            document.getElementById(txtNight).value = night;
+
+            if ((morning + midday + evening + night) > 0 && duration != "") {
+                if (valSyrup == "1") {
+                    var qty = ((1 * morning + 1 * midday + 1 * evening + 1 * night) * duration) / valQtyUnitDisp;
+                    document.getElementById(txtQtyPrescribed).value = Math.ceil(qty);
+                }
+                else {
+                    var qty = duration * (1 * morning + 1 * midday + 1 * evening + 1 * night);
+                    document.getElementById(txtQtyPrescribed).value = qty;
+                }
+            }
+            else {
+                document.getElementById(txtQtyPrescribed).value = "";
+            }
+        }
+
         function WindowPrint() {
             window.print();
         }
@@ -498,6 +530,8 @@
                                     <asp:Button ID="btnPrint" Text="Print Pharmacy Form" runat="server" OnClientClick="WindowPrint()" />
                                     <asp:Button ID="btnPresPrint" Text="Print Prescription" runat="server" 
                                         onclick="btnPresPrint_Click" />
+                                    <asp:Button ID="btnPrintLabel" Text="Print Label" runat="server"  Visible="false"
+                                        onclick="btnPrintLabel_Click"/>
                                    
                                 </td>
                             </tr>
@@ -511,6 +545,7 @@
                 <asp:PostBackTrigger ControlID="btncancel"></asp:PostBackTrigger>
                 <asp:PostBackTrigger ControlID="btnPrint"></asp:PostBackTrigger>
                 <asp:PostBackTrigger ControlID="btnPresPrint"></asp:PostBackTrigger>
+                <asp:PostBackTrigger ControlID="btnPrintLabel"></asp:PostBackTrigger>
             </Triggers>
         </asp:UpdatePanel>
         <br/>

@@ -10,7 +10,7 @@
   <ItemName TableName="Frequency" CategoryId="0" FormName="./frmAdmin_CustomList.aspx" ListName="Frequency" FeatureID="166" Update="1" SystemId="0" ModuleId="0" CountryID="99" />
   <ItemName TableName="Education" CategoryId="0" FormName="./frmAdmin_CustomList.aspx" ListName="Education Level" FeatureID="23" Update="1" SystemId="1" ModuleId="2" CountryID="99" />
   <ItemName TableName="Decode" CategoryId="8" FormName="./frmAdmin_CustomList.aspx" ListName="Emergency Contact Relationship" FeatureID="24" Update="1" SystemId="1" ModuleId="2" CountryID="99" />
-  <ItemName TableName="Designation" CategoryId="0" FormName="./frmAdmin_CustomList.aspx" ListName="Employee Designation" FeatureID="25" Update="1" SystemId="1" ModuleId="2" CountryID="99" />
+  <ItemName TableName="Designation" CategoryId="0" FormName="./frmAdmin_CustomList.aspx" ListName="Employee Designation" FeatureID="25" Update="1" SystemId="1" ModuleId="0" CountryID="99" />
   <ItemName TableName="Employee" CategoryId="0" FormName="./frmAdmin_EmployeeMasterList.aspx" ListName="Employee Name" FeatureID="26" Update="1" SystemId="0" ModuleId="0" CountryID="99"/>
   <ItemName TableName="Decode" CategoryId="9" FormName="./frmAdmin_CustomList.aspx" ListName="Employment Status" FeatureID="27" Update="1" SystemId="1" ModuleId="2" CountryID="99"/>
   <ItemName TableName="" CategoryId="0" FormName="./frmAdmin_LabTestList.aspx" ListName="Additional Labs" FeatureID="44" Update="1" SystemId="0" ModuleId="0" CountryID="99"/>
@@ -195,4 +195,7 @@
 
   <!--Added Lab groups-->
   <ItemName TableName="" CategoryId="0" FormName="./frmAdmin_LaboratoryGroups.aspx" ListName="Lab Test Groups" FeatureID="233" Update="1" SystemId="0" ModuleId="0" CountryID="99"/>
+  <ItemName TableName="" CategoryId="0" FormName="./frmAdmin_itemMasterList.aspx" ListName="Items Master" FeatureID="245" Update="1" SystemId="0" ModuleId="0" CountryID="99" />
+  <ItemName TableName="" CategoryId="0" FormName="./frmAdmin_AdmissionWards.aspx" ListName="Admission Wards" FeatureID="253" Update="1" SystemId="0" ModuleId="0" CountryID="99" />
+  <ItemName TableName="Decode" CategoryId="214" FormName="./frmAdmin_CustomList.aspx" ListName="Waiting List" FeatureID="258" Update="1" SystemId="0" ModuleId="0" CountryID="99"/>
 </CUSTOMIZELIST>

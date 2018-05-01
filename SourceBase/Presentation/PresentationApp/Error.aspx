@@ -78,7 +78,7 @@
                 <td align="left" style="width: 50%">
                     <p>
                         <a href="http://futuresgroup.com/ " onclick="window.open('http://futuresgroup.com/ '); return false">
-                            <img src="./Images/FGI.jpg" width="99" alt="" /></a>
+                            <img src="./Images/FGI.jpg" width="70" vspace="5" border="0" alt="" /></a>
                     </p>
                 </td>
             </tr>

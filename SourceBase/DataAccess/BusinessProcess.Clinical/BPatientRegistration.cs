@@ -620,6 +620,7 @@ namespace BusinessProcess.Clinical
             string lastname,
             string middlename,
             string firstname,
+            string enrollmentType,
             string enrollment,
             string gender,
             string status,
@@ -640,15 +641,17 @@ namespace BusinessProcess.Clinical
                     ClsUtility.AddParameters("@middlename", SqlDbType.VarChar, middlename.ToString());
                 if (!string.IsNullOrEmpty(firstname.Trim()))
                     ClsUtility.AddParameters("@firstname", SqlDbType.VarChar, firstname.ToString());
+                if (!string.IsNullOrEmpty(enrollmentType.Trim()))
+                ClsUtility.AddParameters("@enrollmentType", SqlDbType.Int, enrollmentType.ToString());
                 if (!string.IsNullOrEmpty(enrollment.Trim()))
                     ClsUtility.AddParameters("@enrollmentid", SqlDbType.VarChar, enrollment.ToString());
                 if (!string.IsNullOrEmpty(gender.Trim()))
                     ClsUtility.AddParameters("@Sex", SqlDbType.Int, gender.ToString());
-                if (!string.IsNullOrEmpty(gender.Trim()))
-                    if (dob.HasValue)
-                        ClsUtility.AddParameters("@dob", SqlDbType.DateTime, dob.Value.ToString("yyyy-MM-dd"));
+                //if (!string.IsNullOrEmpty(gender.Trim()))
+                if (dob.HasValue)
+                    ClsUtility.AddParameters("@dob", SqlDbType.DateTime, dob.Value.ToString("dd-MMM-yyyy"));
                 if (registrationDate.HasValue)
-                    ClsUtility.AddParameters("@RegistrationDate", SqlDbType.DateTime, registrationDate.Value.ToString("yyyy-MM-dd"));
+                    ClsUtility.AddParameters("@RegistrationDate", SqlDbType.DateTime, registrationDate.Value.ToString("dd-MMM-yyyy"));
                 if (!string.IsNullOrEmpty(status.Trim()))
                     ClsUtility.AddParameters("@status", SqlDbType.Int, status.ToString());
                 if (ModuleId > 0)
@@ -661,7 +664,7 @@ namespace BusinessProcess.Clinical
             }
 
         }
-        public DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollment, string gender, DateTime dob, string status,int ModuleId)
+        public DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollmentType, string enrollment, string gender, string dob, string status, int ModuleId)
         {
             lock (this)
             {
@@ -670,12 +673,13 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@lastname", SqlDbType.VarChar, lastname.ToString());
                 ClsUtility.AddParameters("@middlename", SqlDbType.VarChar, middlename.ToString());
                 ClsUtility.AddParameters("@firstname", SqlDbType.VarChar, firstname.ToString());
+                ClsUtility.AddParameters("@enrollmentType", SqlDbType.VarChar, enrollmentType.ToString());
                 ClsUtility.AddParameters("@enrollmentid", SqlDbType.VarChar, enrollment.ToString());
                 //ClsUtility.AddParameters("@hospitalno", SqlDbType.VarChar, hospitalno.ToString());
                 ClsUtility.AddParameters("@gender", SqlDbType.VarChar, gender.ToString());
                 //ClsUtility.AddParameters("@dobexact", SqlDbType.Int, dobexact.ToString());
                 //ClsUtility.AddParameters("@dobestimate", SqlDbType.Int, dobestimate.ToString());
-                ClsUtility.AddParameters("@dob", SqlDbType.DateTime, dob.ToString());
+                ClsUtility.AddParameters("@dob", SqlDbType.VarChar, dob.ToString());
                 ClsUtility.AddParameters("@status", SqlDbType.VarChar, status.ToString());
                 ClsUtility.AddParameters("@ModuleId", SqlDbType.VarChar, ModuleId.ToString());
                 ClsUtility.AddParameters("@password", SqlDbType.VarChar, ApplicationAccess.DBSecurity);
@@ -1889,7 +1893,7 @@ namespace BusinessProcess.Clinical
             }
         }
         #endregion
-       
+
         #region "Technical Areas - Added Naveen -28-Oct-2010"
         public DataSet GetFieldNames(int ModuleID, int patientId)
         {
@@ -1997,6 +2001,44 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@LocationID", SqlDbType.Int, LocationID.ToString());
                 ClsObject FieldMgr = new ClsObject();
                 return (DataTable)FieldMgr.ReturnObject(ClsUtility.theParams, "Pr_Clinical_GetPatient_EnrolledServiceLines", ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
+        public DataTable GetPatientsOnWaitingList(int ListID, int ModuleID)
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@ListID", SqlDbType.Int, ListID.ToString());
+                ClsUtility.AddParameters("@ModuleID", SqlDbType.Int, ModuleID.ToString());
+                ClsUtility.AddParameters("@Password", SqlDbType.VarChar, ApplicationAccess.DBSecurity);
+                ClsObject FieldMgr = new ClsObject();
+                return (DataTable)FieldMgr.ReturnObject(ClsUtility.theParams, "pr_WaitingList_GetPatientsOnWaitingList", ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
+
+        public void ChangeWaitingListStatus(int WaitingListID, int RowStatus, int UserID)
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@WaitingListID", SqlDbType.Int, WaitingListID.ToString());
+                ClsUtility.AddParameters("@RowStatus", SqlDbType.Int, RowStatus.ToString());
+                ClsUtility.AddParameters("@UserID", SqlDbType.Int, UserID.ToString());
+                ClsObject WaitingListManager = new ClsObject();
+                WaitingListManager.ReturnObject(ClsUtility.theParams, "pr_WaitingListChangePatientStatus", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+
+
+            }
+        }
+
+        public DataTable GetIdentifierListByServiceName(string ServiceArea)
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@ServiceArea", SqlDbType.VarChar, ServiceArea);
+                ClsObject PatientMgr = new ClsObject();
+                return (DataTable)PatientMgr.ReturnObject(ClsUtility.theParams, "pr_GetIdentifierByServiceArea", ClsDBUtility.ObjectEnum.DataTable);
             }
         }
     }

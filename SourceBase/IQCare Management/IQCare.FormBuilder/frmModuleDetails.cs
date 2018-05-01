@@ -34,6 +34,7 @@ using System.Web;
 
         private void frmModuleDetails_Load(object sender, EventArgs e)
         {
+
             clsCssStyle theStyle = new clsCssStyle();
             theStyle.setStyle(this);
             cmbFieldType.Enabled = true;
@@ -64,13 +65,18 @@ using System.Web;
                 txtModuleName.ReadOnly = false;
                 txtFieldName.ReadOnly = false;
                 btnSumit.Enabled = true;
-                btnSave.Enabled = true;
+                //btnSave.Enabled = true;
             }
             if ((GblIQCare.UpdateFlag != 0) && (GblIQCare.ModuleName == "SMART ART FORM"))
             {
                 txtModuleName.ReadOnly = true;
                 txtFieldName.ReadOnly = false;
                 btnSumit.Enabled = true;
+                //btnSave.Enabled = true;
+            }
+            //Jayant 472	IQCare 3.7.0 
+            if (GblIQCare.IdentifierFlag == 1)
+            {
                 btnSave.Enabled = true;
             }
             BindGrid();
@@ -96,19 +102,19 @@ using System.Web;
                 DataGridViewTextBoxColumn col1 = new DataGridViewTextBoxColumn();
                 col1.HeaderText = "Identifier Name";
                 col1.DataPropertyName = "IdentifierName";
-                col1.Width = 450;
+                col1.Width = 400;
                 col1.ReadOnly = true;
 
                 DataGridViewTextBoxColumn col2 = new DataGridViewTextBoxColumn();
                 col2.HeaderText = "Identifier Label";
                 col2.DataPropertyName = "Label";
-                col2.Width = 300;
+                col2.Width = 250;
                 col2.ReadOnly = true;
 
                 DataGridViewCheckBoxColumn col3 = new DataGridViewCheckBoxColumn();
                 col3.HeaderText = "Select";
                 col3.DataPropertyName = "Selected";
-                col3.Width = 150;
+                col3.Width = 120;
                 if (GblIQCare.UpdateFlag == 1)
                 {
                     col3.ReadOnly = true;
@@ -123,6 +129,13 @@ using System.Web;
                 {
                     col3.ReadOnly = false;
                 }
+                DataGridViewCheckBoxColumn col7 = new DataGridViewCheckBoxColumn();
+                col7.HeaderText = "Required";
+                col7.DataPropertyName = "Required";
+                col7.Width = 120;
+                col7.ReadOnly = false;
+
+                
 
 
                 DataGridViewTextBoxColumn col4 = new DataGridViewTextBoxColumn();
@@ -159,7 +172,7 @@ using System.Web;
                 dgwFieldDetails.Columns.Add(col4);
                 dgwFieldDetails.Columns.Add(col5);
                 dgwFieldDetails.Columns.Add(col6);
-
+                dgwFieldDetails.Columns.Add(col7);
                 dgwFieldDetails.DataSource = dt;
             }
             catch (Exception err)

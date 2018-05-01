@@ -22,7 +22,8 @@
                         <td valign="bottom">
                             <asp:Menu ID="mainMenu" runat="server" Orientation="Horizontal" CssClass="levelOneMenu"
                                 Width="570px" RenderingMode="Table" StaticEnableDefaultPopOutImage="False" StaticSubMenuIndent=""
-                                StaticSelectedStyle-ItemSpacing="0px" StaticMenuItemStyle-ItemSpacing="0px">
+                                StaticSelectedStyle-ItemSpacing="0px" 
+                                StaticMenuItemStyle-ItemSpacing="0px" onmenuitemclick="mainMenu_MenuItemClick">
                                 <StaticMenuItemStyle CssClass="levelOneButton" Height="24px" />
                                 <DynamicMenuItemStyle CssClass="levelOneDropDown" Height="24px" HorizontalPadding="25px" />
                                 <DynamicHoverStyle CssClass="levelOneDropDownHover" />
@@ -50,6 +51,16 @@
                                     </asp:MenuItem>
                                     <asp:MenuItem Text="Scheduler" Value="Scheduler" NavigateUrl="~/Scheduler/frmScheduler_AppointmentMain.aspx">
                                     </asp:MenuItem>
+                                   <%-- <asp:MenuItem Text="Billing" Value="Billing" Selectable="false">
+                                        <asp:MenuItem Text="Patient Bills" Value="Patient Bills" NavigateUrl="~/Billing/frmBillingFindAddBill.aspx">
+                                        </asp:MenuItem>
+                                        <asp:MenuItem Text="Billing Reports" Value="Billing Reports" NavigateUrl="~/Billing/frmBillingReportPage.aspx">
+                                        </asp:MenuItem>
+                                        <asp:MenuItem Text="Reverse Billing" Value="Reverse Billing" NavigateUrl="~/Billing/frmBilling_ReversalApproval.aspx">
+                                        </asp:MenuItem>
+                                        <asp:MenuItem NavigateUrl="~/Billing/frmFindPatient.aspx?FormName=Consumables&mnuClicked=Consumables"
+                                            Text="Consumables" Value="Consumables"></asp:MenuItem>
+                                    </asp:MenuItem>--%>
                                     <asp:MenuItem Text="Administration" Value="Administration" Selectable="False" NavigateUrl="~/frmFacilityHome.aspx">
                                         <asp:MenuItem Text="Facility Setup" Value="Facility Setup" NavigateUrl="~/AdminForms/frmAdmin_FacilityList.aspx">
                                         </asp:MenuItem>
@@ -63,13 +74,15 @@
                                         </asp:MenuItem>
                                         <asp:MenuItem Text="Configure Custom Fields" Value="Configure Custom Fields" NavigateUrl="~/AdminForms/frmConfig_Customfields.aspx">
                                         </asp:MenuItem>
-                                        <%--<asp:MenuItem Text="Export" Value="Export" NavigateUrl="~/AdminForms/frmAdmin_Export.aspx">
-                                        </asp:MenuItem>--%>
+                                        
+                                       
+
                                         <asp:MenuItem Text="Audit Trail" Value="AuditTrail" NavigateUrl="~/AdminForms/frmAdmin_AuditTrail.aspx">
                                         </asp:MenuItem>
                                         <asp:MenuItem Text="Refresh System Cache" Value="Refresh System Cache" NavigateUrl="~/frmSystemCache.aspx?Code=1">
                                         </asp:MenuItem>
                                     </asp:MenuItem>
+                                     <asp:MenuItem Text="Plug-ins" Value="plugin" Selectable="False"></asp:MenuItem>
                                     <asp:MenuItem Text="Back Up" Value="Back Up" Selectable="False" NavigateUrl="~/frmDBBackup.aspx">
                                         <asp:MenuItem Text="Backup/Restore Database" Value="Backup/Restore Database" NavigateUrl="~/frmDBBackup.aspx">
                                         </asp:MenuItem>

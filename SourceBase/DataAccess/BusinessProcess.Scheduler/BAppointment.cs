@@ -93,7 +93,7 @@ namespace BusinessProcess.Scheduler
             }
         }
 
-        public DataSet GetAppointmentGrid(int AppStatus, DateTime FromDate, DateTime ToDate, int LocationID)
+        public DataSet GetAppointmentGrid(int AppStatus, string FromDate, string ToDate, int LocationID)
         {
             lock (this)
             {
@@ -101,8 +101,8 @@ namespace BusinessProcess.Scheduler
                 ClsObject AppointmentManager = new ClsObject();
 
                 ClsUtility.AddParameters("@AppStatus", SqlDbType.Int, AppStatus.ToString());
-                ClsUtility.AddParameters("@FromDate", SqlDbType.DateTime, FromDate.ToString());
-                ClsUtility.AddParameters("@ToDate", SqlDbType.DateTime, ToDate.ToString());
+                ClsUtility.AddParameters("@FromDate", SqlDbType.VarChar, FromDate.ToString());
+                ClsUtility.AddParameters("@ToDate", SqlDbType.VarChar, ToDate.ToString());
                 ClsUtility.AddParameters("@LocationID", SqlDbType.Int, LocationID.ToString());
                 ClsUtility.AddParameters("@password", SqlDbType.VarChar, ApplicationAccess.DBSecurity);
 

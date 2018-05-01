@@ -10,15 +10,3 @@ C:\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Ser
 C:\IQCare 3.6.0\SourceBase\IQCare Management\bin\debug\IQCare.Service.dll.config
 C:\IQCare 3.6.0\SourceBase\IQCare Management\bin\debug\IQCare.Service.dll
 C:\IQCare 3.6.0\SourceBase\IQCare Management\bin\debug\IQCare.Service.pdb
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\bin\debug\IQCare.Service.dll.config
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\bin\debug\IQCare.Service.dll
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\bin\debug\IQCare.Service.pdb
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.csprojResolveAssemblyReference.cache
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.frmDatabaseBackup.resources
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.frmConnection.resources
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.frmDataUpsizing.resources
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.frmMigration.resources
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.frmService.resources
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.csproj.GenerateResource.Cache
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.dll
-C:\Projects\IQCare 3.6.0\SourceBase\IQCare Management\IQCare.Service\obj\Debug\IQCare.Service.pdb

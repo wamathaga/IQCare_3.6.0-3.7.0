@@ -268,7 +268,7 @@ namespace IQCare.SCM
 
             IPatientRegistration PatientManager = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
             DataSet dsPatient = PatientManager.GetPatientSearchResults(Convert.ToInt32(cmbFacility.SelectedValue), txtLastName.Text, "", txtFirstName.Text, txtPatientIdentification.Text,
-                theSex, Convert.ToDateTime(theDOB), "0", Convert.ToInt32(cmbService.SelectedValue));
+                theSex, Convert.ToDateTime(theDOB).ToString("dd-MMM-yyyy"), "0", Convert.ToInt32(cmbService.SelectedValue));
             BindSearchGrid(dsPatient.Tables[0]);
         }
 
@@ -1575,43 +1575,52 @@ namespace IQCare.SCM
                         IQCareWindowMsgBox.ShowWindow("NoDrugReturnDate", this);
                         return;
                     }
-                    DataTable theDT = (DataTable)grdReturnDetail.DataSource;
-                    int theRowsforSave = 0;
-                    foreach (DataRow theDR in theDT.Rows)
+                    if (grdReturnDetail.RowCount > 0)
                     {
-                        if (Convert.ToInt32(theDR["ReturnQty"]) > 0)
+                        DataTable theDT = (DataTable)grdReturnDetail.DataSource;
+                        int theRowsforSave = 0;
+                        foreach (DataRow theDR in theDT.Rows)
                         {
-                            theRowsforSave = theRowsforSave + 1;
-                            theDR["SellingPrice"] = Convert.ToDecimal("-" + theDR["UnitSellingPrice"].ToString()) * Convert.ToInt32(theDR["ReturnQty"]);
-                            if (Convert.ToInt32(theDR["BillAmount"]) > 0)
+                            if (Convert.ToInt32(theDR["ReturnQty"]) > 0)
                             {
-                                theDR["BillAmount"] = theDR["SellingPrice"];
-                            }
-                            else
-                            {
-                                theDR["BillAmount"] = 0;
+                                theRowsforSave = theRowsforSave + 1;
+                                theDR["SellingPrice"] = Convert.ToDecimal("-" + theDR["UnitSellingPrice"].ToString()) * Convert.ToInt32(theDR["ReturnQty"]);
+                                if (Convert.ToInt32(theDR["BillAmount"]) > 0)
+                                {
+                                    theDR["BillAmount"] = theDR["SellingPrice"];
+                                }
+                                else
+                                {
+                                    theDR["BillAmount"] = 0;
+                                }
                             }
                         }
-                    }
 
-                    if (theRowsforSave == 0)
+                        if (theRowsforSave == 0)
+                        {
+                            IQCareWindowMsgBox.ShowWindow("NoDrugReturn", this);
+                            return;
+                        }
+                        thePharmacyManager.SavePharmacyReturn(thePatientId, GblIQCare.AppLocationId, GblIQCare.intStoreId, Convert.ToDateTime(dtpReturnDate.Text), GblIQCare.AppUserId, theReturnOrderId, theDT);
+                        IQCareWindowMsgBox.ShowWindow("PharmacyReturnSave", this);
+                        theDT = thePharmacyManager.GetPharmacyExistingRecord(thePatientId, GblIQCare.intStoreId);
+                        BindDrugReturnGrid(theDT);
+                        grdReturnDetail.DataSource = false;
+                        grdReturnDetail.Columns.Clear();
+                        btnART.Enabled = false;
+                    }
+                    else
                     {
                         IQCareWindowMsgBox.ShowWindow("NoDrugReturn", this);
                         return;
                     }
-                    thePharmacyManager.SavePharmacyReturn(thePatientId, GblIQCare.AppLocationId, GblIQCare.intStoreId, Convert.ToDateTime(dtpReturnDate.Text), GblIQCare.AppUserId, theReturnOrderId, theDT);
-                    IQCareWindowMsgBox.ShowWindow("PharmacyReturnSave", this);
-                    theDT = thePharmacyManager.GetPharmacyExistingRecord(thePatientId, GblIQCare.intStoreId);
-                    BindDrugReturnGrid(theDT);
-                    grdReturnDetail.DataSource = false;
-                    grdReturnDetail.Columns.Clear();
-                    btnART.Enabled = false;
-                }
-                thePharmacyMaster = thePharmacyManager.GetPharmacyDispenseMasters(thePatientId, GblIQCare.intStoreId);
+                    thePharmacyMaster = thePharmacyManager.GetPharmacyDispenseMasters(thePatientId, GblIQCare.intStoreId);
 
-                //btnART.Enabled = false;
-                grpBoxLastDispense.Visible = false;
-                chkPharmacyRefill.Checked = false;
+                    //btnART.Enabled = false;
+                    grpBoxLastDispense.Visible = false;
+                    chkPharmacyRefill.Checked = false;
+                }
+                
             }
             catch (Exception err)
             {

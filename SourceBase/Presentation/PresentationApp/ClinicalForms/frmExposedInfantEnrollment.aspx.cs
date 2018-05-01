@@ -89,7 +89,19 @@ public partial class ClinicalForms_frmExposedInfantEnrollment : System.Web.UI.Pa
             TxtDateOfBirth.Focus();
             return false;
         }
-       
+
+         int Age = GetAge(theDOBDate);
+         if (TxtDateOfBirth.Value != "")
+         {
+             Decimal AgeinYear = Math.Round(Convert.ToDecimal(Session["PatientAge"]), 0);
+             if (Convert.ToDecimal(Age) >= AgeinYear)
+             {
+                 ScriptManager.RegisterStartupScript(this, GetType(), "PatientAge", "alert('Infant Age cannot be more than Parent Age');", true);
+                 TxtDateOfBirth.Focus();
+                 return false;
+             }
+         }
+
         if (TxtDeathDate.Text != "")
         {
             spDeath.Visible = true;
@@ -140,6 +152,14 @@ public partial class ClinicalForms_frmExposedInfantEnrollment : System.Web.UI.Pa
         return true;
     }
 
+    public Int32 GetAge(DateTime dateOfBirth)
+    {
+        var today = DateTime.Today;
+        var a = (today.Year * 100 + today.Month) * 100 + today.Day;
+        var b = (dateOfBirth.Year * 100 + dateOfBirth.Month) * 100 + dateOfBirth.Day;
+        return (a - b) / 10000;
+    }
+
     protected void AddAttributes()
     {
         TxtDateOfBirth.Attributes.Add("OnBlur", "DateFormat(this,this.value,event,true,'3');");
@@ -180,7 +200,7 @@ public partial class ClinicalForms_frmExposedInfantEnrollment : System.Web.UI.Pa
 
             AddAttributes();
             IInfantEnrollment ptnMgrPMTCT = (IInfantEnrollment)ObjectFactory.CreateInstance(ObjFactoryParameter);
-            theDS = ptnMgrPMTCT.GetExposedInfantByParentId(Convert.ToInt16(Session["PatientId"].ToString()));
+            theDS = ptnMgrPMTCT.GetExposedInfantByParentId(Convert.ToInt32(Session["PatientId"].ToString()));
             dtTemp = theDS.Tables[0];
             //dtInfo = theDS.Tables[1];
             string strPatientName = Session["PatientName"].ToString();
@@ -623,7 +643,7 @@ public partial class ClinicalForms_frmExposedInfantEnrollment : System.Web.UI.Pa
             IInfantEnrollment ptnMgrPMTCT = (IInfantEnrollment)ObjectFactory.CreateInstance(ObjFactoryParameter);
             //DataTable theCustomDataDT = new DataTable();
             /*DataTable*/
-            DateTime? ddeath = null;
+            DateTime ddeath = Convert.ToDateTime("01-01-1900");
             if (!theHT["deathdate"].Equals(string.Empty))
             {
                 ddeath = Convert.ToDateTime(theHT["deathdate"]);
@@ -635,9 +655,9 @@ public partial class ClinicalForms_frmExposedInfantEnrollment : System.Web.UI.Pa
             }
             int theDS = ptnMgrPMTCT.SaveExposedInfant(Convert.ToInt32(theHT["id"]), Convert.ToInt32(theHT["ptn_pk"]),
                 Convert.ToInt32(theHT["ExposedInfantId"]),
-                theHT["fname"].ToString(), theHT["lname"].ToString(), Convert.ToDateTime(theHT["dob"]),
+                theHT["fname"].ToString(), theHT["lname"].ToString(), Convert.ToDateTime(theHT["dob"]).ToString("dd-MMM-yyyy"),
                 theHT["fp"].ToString(), ctx2Id.ToString(), theHT["type"].ToString(),
-                theHT["result"].ToString(), theHT["final"].ToString(), ddeath, Convert.ToInt32(Session["AppUserId"].ToString()));
+                theHT["result"].ToString(), theHT["final"].ToString(), ddeath.ToString("dd-MMM-yyyy"), Convert.ToInt32(Session["AppUserId"].ToString()));
 
             if (dtTemp.Rows[i][0].ToString() == "0")
             {
@@ -723,7 +743,7 @@ public partial class ClinicalForms_frmExposedInfantEnrollment : System.Web.UI.Pa
         if (dtTemp.Rows[p][0].ToString() != "0")
         {
             IInfantEnrollment ptnMgrPMTCT = (IInfantEnrollment)ObjectFactory.CreateInstance(ObjFactoryParameter);
-            ptnMgrPMTCT.DeleteExposedInfantById(Convert.ToInt16(dtTemp.Rows[p][0]));
+            ptnMgrPMTCT.DeleteExposedInfantById(Convert.ToInt32(dtTemp.Rows[p][0]));
         }
         dtTemp.Rows[p].Delete();
         dtTemp.AcceptChanges();

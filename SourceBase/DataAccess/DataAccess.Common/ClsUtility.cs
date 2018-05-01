@@ -12,8 +12,8 @@ namespace DataAccess.Common
 
         public enum ObjectEnum
         {
-            DataSet,DataTable,DataRow,ExecuteNonQuery
-        }  
+            DataSet, DataTable, DataRow, ExecuteNonQuery
+        }
 
         public void Init_Hashtable()
         {
@@ -28,6 +28,14 @@ namespace DataAccess.Common
             Pkey = Pkey + 1;
             theParams.Add(Pkey, FieldType);
             Pkey = Pkey + 1;
+
+            if (FieldType == SqlDbType.DateTime)//conversion of string to date time...using ISO standard for datetime defination always
+            {
+                DateTime dateValue;
+                if (DateTime.TryParse(FieldValue, out dateValue))
+                    FieldValue = dateValue.ToString("yyyyMMdd hh:mm:ss tt");
+
+            }
             theParams.Add(Pkey, FieldValue);
         }
         /// <summary>
@@ -58,7 +66,7 @@ namespace DataAccess.Common
             Pkey = Pkey + 1;
             theParams.Add(Pkey, FieldValue);
         }
-        
-        
+
+
     }
 }

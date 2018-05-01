@@ -1,12 +1,12 @@
-<%@ Page Language="C#" MasterPageFile="~/MasterPage/IQCare.master" AutoEventWireup="true" Inherits="frmScheduler_AppointmentNew"
-    Title="Untitled Page" Codebehind="frmScheduler_AppointmentNew.aspx.cs" %>
+<%@ Page Language="C#" MasterPageFile="~/MasterPage/IQCare.master" AutoEventWireup="true"
+    Inherits="frmScheduler_AppointmentNew" Title="Untitled Page" CodeBehind="frmScheduler_AppointmentNew.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
     <%--<link type="text/css" href="../Style/_assets/css/grid.css" rel="stylesheet" />
 <link type="text/css" href="../Style/_assets/css/round.css" rel="stylesheet" />--%>
     <%--  <form id="appointmentnew" method="post" runat="server" enableviewstate="true" title="patientAppointmentNew">
     --%>
-    <div style="padding-top: 20px;padding-left:10px;padding-right:10px;">
+    <div style="padding-top: 20px; padding-left: 10px; padding-right: 10px;">
         <!--Modified 20June 2007 (6)-->
         <script language="javascript" type="text/javascript">
             function CheckDate(vDateName) {
@@ -32,6 +32,15 @@
             }
             function noOfDays(days, newDate) {
                 var daysValue = document.getElementById(days).value;
+                //Bug ID 3279...added a new condition, if day value is less then 0.........
+                if (daysValue < 0) {
+                    alert("You can't book previous days appointment..");
+                    document.getElementById(days).value = '';
+                    document.getElementById(newDate).value = '';
+                    document.getElementById(days).focus();
+                    return;
+                }
+               // End Bug D 3279..........
                 var someDate = new Date();
                 var numberOfDaysToAdd = 0;
                 if (daysValue == "") {
@@ -42,11 +51,11 @@
                 }
 
                 someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-                
+
                 var dd = someDate.getDate();
                 var mm = someDate.getMonth() + 1;
                 var y = someDate.getFullYear();
-                
+
                 //weekends
                 var dayOfWeek = someDate.getDay();
                 var isWeekend = (dayOfWeek == 6) || (dayOfWeek == 0);    // 6 = Saturday, 0 = Sunday
@@ -69,8 +78,8 @@
                     dd = noofdaysinmonth - dd;
                     mm = mm + 1;
                 }
-                var someFormattedDate = new Date(mm + '/' + Math.abs(dd) + '/' + y);               
-                
+                var someFormattedDate = new Date(mm + '/' + Math.abs(dd) + '/' + y);
+
                 var curr_date = someFormattedDate.getDate();
                 var curr_month = someFormattedDate.getMonth() + 1;
                 var curr_year = someFormattedDate.getFullYear();
@@ -78,7 +87,7 @@
 
                 document.getElementById(newDate).value = getFormattedDate(someFormattedDate1.toString());
             }
-            function daysInMonth(month, year) {            
+            function daysInMonth(month, year) {
                 return new Date(year, month, 0).getDate();
             }
         </script>
@@ -105,7 +114,7 @@
                     <td class="border pad5 whitebg" valign="top" width="50%" style="height: 39px">
                         <label class="required">
                             *Appointment Date:</label>
-                            <asp:TextBox ID="txtNoOfDays" runat="server" Width="34px"></asp:TextBox>
+                        <asp:TextBox ID="txtNoOfDays" runat="server" Width="34px"></asp:TextBox>
                         <asp:Label ID="Label3" runat="server" Font-Bold="False" Text="Days"></asp:Label>
                         <asp:TextBox ID="txtAppDate" MaxLength="11" runat="server"></asp:TextBox>
                         <img src="../images/cal_icon.gif" height="22" alt="Date Helper" onclick="w_displayDatePicker('<%= txtAppDate.ClientID %>');" />

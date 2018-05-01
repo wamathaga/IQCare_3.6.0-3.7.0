@@ -1589,37 +1589,36 @@ namespace IQCare.FormBuilder
                 DataRow dr;
                 foreach (var section in exceptAB)
                 {
-                    var TabIdsQuery = NewData.Tables["LnkSectionTab"].AsEnumerable()
+                    
+                        var TabIdsQuery = NewData.Tables["LnkSectionTab"].AsEnumerable()
                                                 .Where(c => c["SectionId"].ToString() == section.SectionId)
                                                 .Select(c => new
                                                 {
                                                     TabId = c["TabId"]
 
                                                 }).FirstOrDefault();
-                    if (TabIdsQuery == null)
-                    {
-                        TabIdsQuery = dsUpdateMode.Tables[4].AsEnumerable()
-                                         .Where(c => c["SectionId"].ToString() == section.SectionId)
-                                         .Select(c => new
-                                         {
-                                             TabId = c["TabId"]
+                        if (TabIdsQuery == null)
+                        {
+                             TabIdsQuery = dsUpdateMode.Tables[4].AsEnumerable()
+                                              .Where(c => c["SectionId"].ToString() == section.SectionId)
+                                              .Select(c => new
+                                              {
+                                                  TabId = c["TabId"]
 
-                                         }).FirstOrDefault();
+                                              }).FirstOrDefault();
                         dr = dtSectionchanges.NewRow();
                         dr["SectionId"] = section.SectionId;
                         dr["FunctionId"] = 3;
                         dr["TabId"] = TabIdsQuery.TabId;
                         dtSectionchanges.Rows.Add(dr);
-                    }
-                    else
-                    {
+                        }
+                        else {
                         dr = dtSectionchanges.NewRow();
                         dr["SectionId"] = section.SectionId;
                         dr["FunctionId"] = 3;
                         dr["TabId"] = TabIdsQuery.TabId;
                         dtSectionchanges.Rows.Add(dr);
-                    }                   
-                    
+                        }
                 }
                 
                 foreach (var section in exceptBA)

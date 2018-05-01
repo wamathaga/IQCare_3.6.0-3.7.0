@@ -44,7 +44,7 @@ namespace IQCare.Web
         [System.ComponentModel.Bindable(true)]
         public bool IncludeEnrollement
         {
-          private  get
+            private get
             {
                 if (this.HIncludeEnrollment.Value == "")
                     this.HIncludeEnrollment.Value = "FALSE";
@@ -69,7 +69,7 @@ namespace IQCare.Web
         [System.ComponentModel.Bindable(true)]
         public bool AutoLoadRecords
         {
-           private get
+            private get
             {
                 if (this.HAutoLoad.Value == "")
                     this.HAutoLoad.Value = "FALSE";
@@ -95,7 +95,7 @@ namespace IQCare.Web
         public bool FilterByServiceLines
         {
 
-           private get
+            private get
             {
                 if (this.HFilterByServiceLine.Value == "")
                     this.HFilterByServiceLine.Value = "FALSE";
@@ -145,7 +145,7 @@ namespace IQCare.Web
         public bool FilterByStatus
         {
 
-           private get
+            private get
             {
                 if (this.HFilterByStatus.Value == "")
                     this.HFilterByStatus.Value = "FALSE";
@@ -171,7 +171,7 @@ namespace IQCare.Web
         public int NumberOfRecords
         {
 
-          private  get
+            private get
             {
                 if (this.HMaxRecord.Value == "")
                     this.HMaxRecord.Value = "100";
@@ -203,7 +203,7 @@ namespace IQCare.Web
         [System.ComponentModel.Bindable(true)]
         public bool CanAddPatient
         {
-           private get
+            private get
             {
                 if (this.HCanAdd.Value == "")
                     this.HCanAdd.Value = "FALSE";
@@ -250,9 +250,9 @@ namespace IQCare.Web
             }
 
         }
-        
+
         #endregion
-       
+
         #region Subscriber events
         /// <summary>
         /// Occurs when [selected patient changed].
@@ -283,7 +283,7 @@ namespace IQCare.Web
         [System.ComponentModel.Category("Events")]
         [System.ComponentModel.Description("Raised when cancel button is clicked")]
         [System.ComponentModel.Bindable(true)]
-        public event EventHandler CancelFind; 
+        public event EventHandler CancelFind;
         #endregion
 
         #region "local properties
@@ -353,7 +353,7 @@ namespace IQCare.Web
             }
         }
         #endregion
-       
+
         #region page methods
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -364,9 +364,10 @@ namespace IQCare.Web
         {
             if (!IsPostBack)
             {
-
+                if (Session["TechnicalAreaId"] == null) { Session["TechnicalAreaId"] = "0"; }
+                this.GetIdentifierTypeByService(Session["TechnicalAreaId"].ToString());
                 this.PopulateFacilityList();
-
+                //lblServiceArea.InnerText = Request.QueryString["srvNm"];
                 if (this.FilterByServiceLines)
                 {
                     this.PopulateServiceDropdown();
@@ -398,7 +399,7 @@ namespace IQCare.Web
         {
             Exception ex = Server.GetLastError();
             this.showErrorMessage(ref ex);
-        } 
+        }
         #endregion
 
         #region Subscriber events handlers
@@ -439,9 +440,9 @@ namespace IQCare.Web
             {
                 this.PatientEnrollmentChanged(sender, e);
             }
-        } 
+        }
         #endregion
-      
+
         /// <summary>
         /// Shows the error message.
         /// </summary>
@@ -449,29 +450,29 @@ namespace IQCare.Web
         void showErrorMessage(ref Exception ex)
         {
             this.isError = true;
-           
-                if (this.Debug)
-                {
-                    lblError.Text = ex.Message + ex.StackTrace + ex.Source;
-                }
-                else
-                {
-                    lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
-                    this.isError = this.divError.Visible = true;
-                    Exception lastError = ex;
+
+            if (this.Debug)
+            {
+                lblError.Text = ex.Message + ex.StackTrace + ex.Source;
+            }
+            else
+            {
+                lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
+                this.isError = this.divError.Visible = true;
+                Exception lastError = ex;
 
 
-                    lastError.Data.Add("Domain", "Patient Find Control Level");
-                  //  Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
-                  //  logger.LogError(ex);
+                lastError.Data.Add("Domain", "Patient Find Control Level");
+                //  Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
+                //  logger.LogError(ex);
 
 
-                }
+            }
 
-            
+
 
         }
-       
+
         #region Data methods
         /// <summary>
         /// Populates the patient list.
@@ -500,12 +501,12 @@ namespace IQCare.Web
                 DateTime? dateOfBirth = null;
                 if (!string.IsNullOrEmpty(txtDOB.Text.Trim())) dateOfBirth = Convert.ToDateTime(txtDOB.Text.Trim());
                 PatientManager = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
-                DataTable dtPatient = PatientManager.GetPatientSearchResults(Convert.ToInt32(ddFacility.SelectedValue),lName,mName,fName,
-                        _strIdentification,ddSex.SelectedValue,
+                DataTable dtPatient = PatientManager.GetPatientSearchResults(Convert.ToInt32(ddFacility.SelectedValue), lName, mName, fName, ddlIdentifier.SelectedValue,
+                        _strIdentification, ddSex.SelectedValue,
                         ddCareEndedStatus.SelectedValue,
                         dateOfBirth,
                         dateRegistration,
-                        FilterByServiceLines ? Convert.ToInt32(ddlServices.SelectedValue) : (this.SelectedServiceLine>0)? this.SelectedServiceLine: 999,
+                        FilterByServiceLines ? Convert.ToInt32(ddlServices.SelectedValue) : (this.SelectedServiceLine > 0) ? this.SelectedServiceLine : 999,
                         this.NumberOfRecords);
                 this.grdSearchResult.DataSource = dtPatient;
                 this.grdSearchResult.DataBind();
@@ -516,14 +517,14 @@ namespace IQCare.Web
                     this.lblError.Text = errorMsg;
                     isError = true;
                     //return;
-                   // MsgBuilder theBuilder = new MsgBuilder();
+                    // MsgBuilder theBuilder = new MsgBuilder();
                     //theBuilder.DataElements["MessageText"] = errorMsg;
 
-                    this.OnNotifyParent(this, new CommandEventArgs("NoPatientExists",null));
+                    this.OnNotifyParent(this, new CommandEventArgs("NoPatientExists", null));
                     return;
                     //return null;
                 }
-                                
+
                 grdSearchResult.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
             catch (Exception err)
@@ -585,6 +586,38 @@ namespace IQCare.Web
                 this.showErrorMessage(ref ex);
             }
         }
+
+        /// <summary>
+        /// Populates the facility list.
+        /// </summary>
+        void GetIdentifierTypeByService(string strServiceArea)
+        {
+            try
+            {
+                IPatientRegistration identifierManager;
+                identifierManager = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
+                DataTable theDT = identifierManager.GetIdentifierListByServiceName(strServiceArea);
+                DataRow theDR = theDT.NewRow();
+                theDR["IdentifierName"] = "All";
+                theDR["IdentifierID"] = 9999;
+                theDT.Rows.InsertAt(theDR, 0);
+                theDR = theDT.NewRow();
+                theDR["IdentifierName"] = "IQNumber";
+                theDR["IdentifierID"] = 10000;
+                theDT.Rows.InsertAt(theDR, 1);
+                BindFunctions theBindManger = new BindFunctions();
+                theBindManger.BindCombo(ddlIdentifier, theDT, "IdentifierName", "IdentifierId");
+                ddFacility.SelectedValue = "0";
+                txtidentificationno.Text = string.Empty;
+                txtidentificationno.Enabled = false;
+
+            }
+            catch (Exception ex)
+            {
+                this.showErrorMessage(ref ex);
+            }
+        }
+
         /// <summary>
         /// Gets the patient enrollement.
         /// </summary>
@@ -625,9 +658,9 @@ namespace IQCare.Web
             }
             else return null;
         }
-        
+
         #endregion /// <summary>
-     
+
         #region grid events
         /// Handles the RowCommand event of the grdSearchResult control.
         /// </summary>
@@ -711,17 +744,17 @@ namespace IQCare.Web
                     {
                         btn.ImageUrl = btn.ImageUrl.Replace("plus.png", "arrow.gif");
                         btn.CommandName = "PatientClick";
-                    }                  
+                    }
                 }
-                
+
                 e.Row.Cells[0].Style.Add("display", (this.IncludeEnrollement) ? "" : "none");
-                e.Row.Cells[9].Style.Add("display", (this.FilterByServiceLines || this.SelectedServiceLine > 0) ? "" : "none");  
+                e.Row.Cells[9].Style.Add("display", (this.FilterByServiceLines || this.SelectedServiceLine > 0) ? "" : "none");
             }
             if (e.Row.RowType == DataControlRowType.Header)
             {
-               
-                    e.Row.Cells[0].Style.Add("display", (this.IncludeEnrollement)?"" :"none");
-                    e.Row.Cells[9].Style.Add("display", (this.FilterByServiceLines || this.SelectedServiceLine > 0) ? "" : "none");  
+
+                e.Row.Cells[0].Style.Add("display", (this.IncludeEnrollement) ? "" : "none");
+                e.Row.Cells[9].Style.Add("display", (this.FilterByServiceLines || this.SelectedServiceLine > 0) ? "" : "none");
             }
         }
 
@@ -808,7 +841,7 @@ namespace IQCare.Web
                 e.Row.Attributes["style"] = "cursor:pointer";
             }
         }
-        
+
         #endregion
         /// <summary>
         /// Handles the Click event of the btnView control.
@@ -817,6 +850,13 @@ namespace IQCare.Web
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void btnView_Click(object sender, EventArgs e)
         {
+            if (Session["TechnicalAreaId"] != null)
+            {
+                if (Session["TechnicalAreaId"].ToString() == "206")
+                {
+                    grdSearchResult.Columns[9].Visible = false;
+                }
+            }
             this.PopulatePatientList();
         }
 
@@ -831,9 +871,10 @@ namespace IQCare.Web
             {
                 base.Session["PTServLines"] = null;
                 this.CancelFind(sender, e);
-               
-                
-            }else
+
+
+            }
+            else
                 Response.Redirect("~/frmFacilityHome.aspx");
         }
 
@@ -867,6 +908,12 @@ namespace IQCare.Web
             theHT.Add("Date of Birth", txtDOB.Text);
             theHT.Add("Sex", ddSex.SelectedValue);
             return theHT;
+        }
+
+        protected void ddlIdentifier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtidentificationno.Enabled = (ddlIdentifier.SelectedItem.ToString() == "Select") ? false : true;
+            txtidentificationno.Text = (ddlIdentifier.SelectedItem.ToString() == "Select") ? string.Empty : txtidentificationno.Text;
         }
     }
 }

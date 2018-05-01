@@ -9,7 +9,7 @@ using Interface.Administration;
 
 namespace IQCare.Web.AdminForms
 {
-    public partial class frmAdmin_AdmissionWards : LogPage 
+    public partial class frmAdmin_AdmissionWards : System.Web.UI.Page
     {
 
         /// <summary>

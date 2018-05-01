@@ -20,7 +20,7 @@ public partial class frmSystemCache : System.Web.UI.Page
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         #region Commented Old Code for GenerateCache
         //System.IO.FileInfo theFileInfo1 = new System.IO.FileInfo(Server.MapPath(".\\XMLFiles\\AllMasters.con").ToString());
@@ -135,6 +135,27 @@ public partial class frmSystemCache : System.Web.UI.Page
                     IQCareMsgBox.Show("#C1", theBuilder, this);
                 }
             }
+            DataSet theDS = new DataSet();
+            theDS.ReadXml(MapPath("XMLFiles\\ALLMasters.con"));
+            BindFunctions BindManager = new BindFunctions();
+            IQCareUtils theUtils = new IQCareUtils();
+            if (theDS.Tables["Mst_Facility"] != null)
+            {
+                DataView theDV = new DataView(theDS.Tables["Mst_Facility"]);
+                theDV.RowFilter = "DeleteFlag=0 and FacilityId=" + Convert.ToInt32(Session["AppLocationId"]);
+                if (theDV.Table != null)
+                {
+                    DataTable theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
+                    HttpContext.Current.Session["Billing"] = theDT.Rows[0]["Billing"].ToString();
+                    HttpContext.Current.Session["Wards"] = theDT.Rows[0]["Wards"].ToString();
+                    if (theDT.Rows[0]["PMSCM"].ToString() == "1")
+                    {
+                        Session["SCMModule"] = "PMSCM";
+                    }
+                    else { Session["SCMModule"] = null; }
+                }
+            }
+
         }
         catch (Exception err)
         {

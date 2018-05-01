@@ -98,6 +98,10 @@ namespace BusinessProcess.Administration
                 ClsUtility.AddParameters("@ExpirePaswordFlag", SqlDbType.Int, ht["ExpirePaswordFlag"].ToString());
                 ClsUtility.AddParameters("@ExpirePaswordDays", SqlDbType.VarChar, ht["ExpirePaswordDays"].ToString());
                 ClsUtility.AddParameters("@DateConstraint", SqlDbType.VarChar, ht["DateConstraint"].ToString());
+                ClsUtility.AddParameters("@Billing", SqlDbType.Int, ht["Billing"].ToString());
+                ClsUtility.AddParameters("@PMSCM", SqlDbType.Int, ht["PMSCM"].ToString());
+               
+                ClsUtility.AddParameters("@Wards", SqlDbType.Int, ht["Wards"].ToString());
                 Int32 RowsAffected = (Int32)FacilityManager.ReturnObject(ClsUtility.theParams, "Pr_Admin_InsertFacility_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                 if (RowsAffected <= 0)
                 {
@@ -169,7 +173,7 @@ namespace BusinessProcess.Administration
                 ClsUtility.AddParameters("@currency", SqlDbType.Int, currency.ToString());
                 ClsUtility.AddParameters("@AppGracePeriod", SqlDbType.Int, AppGracePeriod.ToString());
                 ClsUtility.AddParameters("@dateformat", SqlDbType.VarChar, dateformat.ToString());
-                ClsUtility.AddParameters("@PepFarStartDate", SqlDbType.DateTime, PepFarStartDate.ToString());
+                ClsUtility.AddParameters("@PepFarStartDate", SqlDbType.VarChar, String.Format("{0:dd-MMM-yyyy}", PepFarStartDate).ToString());
                 ClsUtility.AddParameters("@Status", SqlDbType.Int, Status.ToString());
                 ClsUtility.AddParameters("@UserId", SqlDbType.Int, UserID.ToString());
                 ClsUtility.AddParameters("@SystemId", SqlDbType.Int, SystemId.ToString());
@@ -189,6 +193,10 @@ namespace BusinessProcess.Administration
                 ClsUtility.AddParameters("@ExpirePaswordFlag", SqlDbType.Int, ht["ExpirePaswordFlag"].ToString());
                 ClsUtility.AddParameters("@ExpirePaswordDays", SqlDbType.VarChar, ht["ExpirePaswordDays"].ToString());
                 ClsUtility.AddParameters("@DateConstraint", SqlDbType.VarChar, ht["DateConstraint"].ToString());
+                ClsUtility.AddParameters("@Billing", SqlDbType.Int, ht["Billing"].ToString());
+                ClsUtility.AddParameters("@PMSCM", SqlDbType.Int, ht["PMSCM"].ToString());
+               
+                ClsUtility.AddParameters("@Wards", SqlDbType.Int, ht["Wards"].ToString());
                 int RowsAffected = (Int32)FacilityManager.ReturnObject(ClsUtility.theParams, "Pr_Admin_UpdateFacility_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                 if (RowsAffected == 0)
                 {
@@ -223,8 +231,7 @@ namespace BusinessProcess.Administration
                         theBL.DataElements["MessageText"] = "Error in Saving Facility record. Try Again..";
                         AppException.Create("#C1", theBL);
                     }
-                
-                
+
                 }
 
                 FacilityManager = null; 

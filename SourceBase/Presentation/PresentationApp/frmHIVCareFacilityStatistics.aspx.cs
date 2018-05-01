@@ -563,7 +563,7 @@ public partial class frmHIVCareFacilityStatistics : BasePage
     protected void hlLosttoFollowUp_Click(object sender, EventArgs e)
     {
         IReports ReportDetails = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports, BusinessProcess.Reports");
-        DataTable dtLosttoFollowupPatientReport = (DataTable)ReportDetails.GetLosttoFollowupPatientReport(Convert.ToInt32(Session["AppLocationId"])).Tables[0];
+        DataTable dtLosttoFollowupPatientReport = (DataTable)ReportDetails.GetLosttoFollowupPatientReport(Convert.ToInt32(Session["AppLocationId"]), Session["SystemId"].ToString()).Tables[0];
         string FName = "LstFollowup";
         IQWebUtils theUtils = new IQWebUtils();
         string thePath = Server.MapPath(".\\ExcelFiles\\" + FName + ".xls");

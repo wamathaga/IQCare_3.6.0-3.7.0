@@ -11,7 +11,7 @@ using Interface.Administration;
 
 namespace IQCare.Web
 {
-    public partial class frmWaitingList : LogPage
+    public partial class frmWaitingList : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,7 +35,7 @@ namespace IQCare.Web
                 if (theDV.Table != null)
                 {
                     DataTable theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
-                    DataRow dr = theDT.NewRow();
+                    DataRow dr=theDT.NewRow();
                     dr["Name"] = "Pharmacy";
                     dr["ID"] = 4;
                     theDT.Rows.Add(dr);
@@ -49,7 +49,7 @@ namespace IQCare.Web
                     theDT.Clear();
                 }
             }
-
+           
 
         }
 
@@ -71,7 +71,7 @@ namespace IQCare.Web
         /// </summary>
         void PopulateUsersList()
         {
-            //  if (ddWaitingFor.Items.Count > 0) return;
+          //  if (ddWaitingFor.Items.Count > 0) return;
             DataTable theUserDt;
             Iuser UManager = (Iuser)ObjectFactory.CreateInstance("BusinessProcess.Administration.BUser, BusinessProcess.Administration");
             theUserDt = (UManager.GetUserList()).Tables[0];
@@ -99,17 +99,17 @@ namespace IQCare.Web
             BindFunctions bindFunctions = new BindFunctions();
             //bindFunctions.BindCombo(ddWaitingFor, theDT, "Name", "UserID");
             BindUserDropdown(ddWaitingFor, string.Empty);
-
+        
             ddWaitingFor.Visible = true;
             lblWaitingfor.Visible = true;
-            //    ddWaitingFor.SelectedValue = base.Session["AppUserId"].ToString();
+        //    ddWaitingFor.SelectedValue = base.Session["AppUserId"].ToString();
         }
         private void loadWaitList()
         {
             IPatientRegistration PManager = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
             System.Data.DataTable theDt = PManager.GetPatientsOnWaitingList(Convert.ToInt32(ddwaitingList.SelectedItem.Value), Convert.ToInt32(Session["TechnicalAreaId"]));
             Session["WaitlistPatients"] = theDt;
-
+           
 
             grdWaitingList.DataSource = Session["WaitlistPatients"];
 
@@ -133,29 +133,17 @@ namespace IQCare.Web
             PManager.ChangeWaitingListStatus(WaitingListID, 1, Convert.ToInt32(base.Session["AppUserId"]));
 
 
-            // Added for bug ID 1062
-            if (ddwaitingList.SelectedItem.Text == "Laboratory")
-            {
-                String theOrdScript;
-                theOrdScript = "<script language='javascript' id='openPatient'>\n";
-                theOrdScript += "window.opener.location.href = './Laboratory/frm_LabTestResults.aspx';\n";
-                theOrdScript += "window.close();\n";
-                theOrdScript += "</script>\n";
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "closePage", theOrdScript);
-            }
-            else// (ddwaitingList.SelectedItem.Text == "Pharmacy")
-            {
-                String theOrdScript;
-                theOrdScript = "<script language='javascript' id='openPatient'>\n";
-                //theOrdScript += "window.opener.location.href = './ClinicalForms/frmPatient_Home.aspx';\n"; Bug ID 1062
-                theOrdScript += "window.opener.location.href = './ClinicalForms/frmPatient_History.aspx';\n";
-                theOrdScript += "window.close();\n";
-                theOrdScript += "</script>\n";
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "closePage", theOrdScript);
-            }
+            String theOrdScript;
+            theOrdScript = "<script language='javascript' id='openPatient'>\n";
+            theOrdScript += "window.opener.location.href = './ClinicalForms/frmPatient_Home.aspx';\n";
+            theOrdScript += "window.close();\n";
+            theOrdScript += "</script>\n";
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "closePage", theOrdScript);
 
-            // End addition.
+
+
             //  theUrl = "./ClinicalForms/frmPatient_Home.aspx";
+
             //  Response.Redirect(theUrl, false);
         }
 
@@ -197,7 +185,7 @@ namespace IQCare.Web
             }
             else
                 loadWaitList();
-
+          
 
         }
 

@@ -12,7 +12,7 @@ using Interface.Administration;
 
 namespace IQCare.Web.Admission
 {
-    public partial class frmAdmissionHome : LogPage
+    public partial class frmAdmissionHome : System.Web.UI.Page
     {
         bool isError = false;
 
@@ -227,7 +227,8 @@ namespace IQCare.Web.Admission
         void PopulateWards(int selectedWard = -1)
         {
             IWardsMaster wardMaster = (IWardsMaster)ObjectFactory.CreateInstance("BusinessProcess.Administration.BWardMaster, BusinessProcess.Administration");
-            var wards = wardMaster.GetWards(this.LocationID).Where(wd => wd.Active == true).OrderBy(wd => wd.WardName);
+            var wards = wardMaster.GetWards(this.LocationID)
+                .OrderBy(wd => wd.WardName);
 
             ddlPatientWard.Items.Clear();
             if (selectedWard == -1) 
@@ -239,14 +240,12 @@ namespace IQCare.Web.Admission
                 ddlPatientWard.Items.Add(new ListItem(string.Format("{0}  ({1})", wd.WardName, wd.Capacity - wd.Occupancy), wd.WardID.ToString()));
             }
             int wardCount = ddlPatientWard.Items.Count;
-            //Defect - Redmine #567
-            ListItem item = new ListItem("All wards", "0");
-            ddlPatientWard.Items.Insert(0, item);
+
             if (wardCount > 1)
             {
                // ddlPatientWard.Items.Add(new ListItem("All wards", "0"));
-                //ListItem item = new ListItem("All wards", "0");
-                //ddlPatientWard.Items.Insert(0, item);
+                ListItem item = new ListItem("All wards", "0");
+                ddlPatientWard.Items.Insert(0, item);
             }
             else if (wardCount == 1)
             {
@@ -328,45 +327,15 @@ namespace IQCare.Web.Admission
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
-                if (!IsPostBack)
-                {
-
-                    this.PopulateWards();
-                    btnNewAdmission.Visible = this.CanAdmit;
-                    textDischargeDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
-
-                }
-                this.InjectScript();
-            }
-            catch (Exception ex)
+            if (!IsPostBack)
             {
 
-                CLogger.WriteLog(ELogLevel.ERROR, ex.ToString());
-                if (Session["PatientId"] == null || Convert.ToInt32(Session["PatientId"]) != 0)
-                {
-                    IQCareMsgBox.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, this, "window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'</script>");
-                }
-                else
-                {
-                    if (Session["TechnicalAreaId"] != null || Convert.ToInt16(Session["TechnicalAreaId"]) != 0)
-                    {
-                        IQCareMsgBox.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, this, "window.location.href='../frmFacilityHome.aspx';");
-                        //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFacilityHome.aspx'</script>");
+                this.PopulateWards();
+                btnNewAdmission.Visible = this.CanAdmit;
+                textDischargeDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
 
-                    }
-                    else
-                    {
-
-                        IQCareMsgBox.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, this, "window.location.href='../frmLogin.aspx';");
-                        //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmLogin.aspx'</script>");
-                    }
-                }
-                ex = null;
             }
-           
+            this.InjectScript();
         }
         /// <summary>
         /// Handles the PreRender event of the Page control.

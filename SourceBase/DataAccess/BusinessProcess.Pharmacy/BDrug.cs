@@ -1634,6 +1634,18 @@ namespace BusinessProcess.Pharmacy
             return (DataSet)theManager.ReturnObject(ClsUtility.theParams, "pr_SCM_GetDrugInstructions_ExistingOrder", ClsDBUtility.ObjectEnum.DataSet);
         }
 
+        public DataSet GetPharmacyPrescriptions(int LocationID)
+        {
+            lock (this)
+            {
+                ClsObject PharmacyManager = new ClsObject();
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@LocationID", SqlDbType.Int, LocationID.ToString());
+                ClsUtility.AddParameters("@DBKey", SqlDbType.Int, ApplicationAccess.DBSecurity);
+                return (DataSet)PharmacyManager.ReturnObject(ClsUtility.theParams, "pr_Pharmacy_GetPharmacyPrescriptions", ClsDBUtility.ObjectEnum.DataSet);
+            }
+
+        }
 
     }
 }

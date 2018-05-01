@@ -387,7 +387,7 @@
                             </div>
                     </td>--%>
                         <td class="form leftallign" colspan="2" style="width: 50%">
-                            <label class="required">
+                            <label>
                                 TB Screening:</label>
                             <input id="rdoPerformed" onmouseup="up(this);" onfocus="up(this);" type="radio" value="show"
                                 name="Symptom" runat="server" />
@@ -707,7 +707,7 @@
                             <table width="100%">
                                 <tr>
                                     <td align="right" style="width: 50%">
-                                        <label id="OrderedBy" class="required">
+                                        <label id="OrderedBy">
                                             Ordered by:</label>
                                     </td>
                                     <td align="left">
@@ -721,7 +721,7 @@
                             <table width="100%">
                                 <tr>
                                     <td align="right" style="width: 50%">
-                                        <label id="OrderedByDate" class="required" for="pharmOrderedbyDate">
+                                        <label id="OrderedByDate" for="pharmOrderedbyDate">
                                             Ordered By Date:</label>
                                     </td>
                                     <td>
@@ -770,7 +770,7 @@
                     </tr>
                     <tr>
                         <td class="form" align="center" colspan="2">
-                            <label id="Signature" class="required right30">
+                            <label id="Signature" class="right30">
                                 Signature:</label>
                             <select id="ddlPharmSignature" onchange="specifyChangeStop(this.id);" name="Signature"
                                 runat="server">

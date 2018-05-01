@@ -229,6 +229,30 @@ public partial class frmAdmin_FacilitySetup : System.Web.UI.Page
                 chkdateconstraint.Checked = false;
 
             }
+            //Billing
+            if (theDV[0]["Billing"].ToString() == "1")
+            {
+                chkbilling.Checked = true;
+
+            }
+            else
+            {
+                chkbilling.Checked = false;
+
+            }
+            //PMSCM
+            if (theDV[0]["PMSCM"].ToString() == "1")
+            {
+                chkpmscm.Checked = true;
+
+            }
+            else
+            {
+                chkpmscm.Checked = false;
+
+            }
+           //Wards
+            chkwards.Checked = (theDV[0]["Wards"].ToString() == "1");
         
         //PMTCT Binding
             string strExpr;
@@ -546,7 +570,28 @@ public partial class frmAdmin_FacilitySetup : System.Web.UI.Page
             IQCareMsgBox.Show("#C1", theBuilder, this);
         }
     }
-
+    private Hashtable getFacilityParameters()
+    {
+        Hashtable htFacilityParameters = new Hashtable();
+        htFacilityParameters.Add("FacilityLogo", txtfacilityname.Text + ".jpg");
+        htFacilityParameters.Add("FacilityAddress", txtFacAddress.Text);
+        htFacilityParameters.Add("FacilityTel", txtFactele.Text);
+        htFacilityParameters.Add("FacilityCell", txtFacCell.Text);
+        htFacilityParameters.Add("FacilityFax", txtFacFax.Text);
+        htFacilityParameters.Add("FacilityEmail", txtFacEmail.Text);
+        htFacilityParameters.Add("FacilityFootertext", txtpharmfoottext.Text);
+        htFacilityParameters.Add("FacilityURL", txtFacURL.Text);
+        htFacilityParameters.Add("Facilitytemplate", this.Radio1.Checked == true ? Radio1.Value.ToString() : (this.Radio2.Checked == true ? Radio2.Value.ToString() : "0"));
+        htFacilityParameters.Add("StrongPassword", this.chkStrongPwd.Checked == true ? 1 : 0);
+        htFacilityParameters.Add("ExpirePaswordFlag", this.chkexpPwd.Checked == true ? 1 : 0);
+        htFacilityParameters.Add("ExpirePaswordDays", this.chkexpPwd.Checked == true ? txtnoofdays.Text : "");
+        htFacilityParameters.Add("DateConstraint", this.chkdateconstraint.Checked == true ? 1 : 0);
+        htFacilityParameters.Add("Billing", this.chkbilling.Checked == true ? 1 : 0);
+        htFacilityParameters.Add("PMSCM", this.chkpmscm.Checked == true ? 1 : 0);
+       // htFacilityParameters.Add("Records", chkrecords.Checked == true ? 1 : 0);
+        htFacilityParameters.Add("Wards", chkwards.Checked == true ? 1 : 0);
+        return htFacilityParameters;
+    }
     protected void btnSave_Click(object sender, EventArgs e)
     {
 
@@ -599,21 +644,7 @@ public partial class frmAdmin_FacilitySetup : System.Web.UI.Page
                 theFilelogo.SaveAs(Server.MapPath(string.Format("..//images//{0}", txtfacilityname.Text + ".jpg")));
                 
             }
-            Hashtable htFacilityParameters = new Hashtable();
-            htFacilityParameters.Add("FacilityLogo", txtfacilityname.Text + ".jpg");
-            htFacilityParameters.Add("FacilityAddress", txtFacAddress.Text);
-            htFacilityParameters.Add("FacilityTel", txtFactele.Text);
-            htFacilityParameters.Add("FacilityCell", txtFacCell.Text);
-            htFacilityParameters.Add("FacilityFax", txtFacFax.Text);
-            htFacilityParameters.Add("FacilityEmail", txtFacEmail.Text);
-            htFacilityParameters.Add("FacilityFootertext", txtpharmfoottext.Text);
-            htFacilityParameters.Add("FacilityURL", txtFacURL.Text);
-            htFacilityParameters.Add("Facilitytemplate", this.Radio1.Checked == true ? Radio1.Value.ToString() : (this.Radio2.Checked == true ? Radio2.Value.ToString():"0"));
-            htFacilityParameters.Add("StrongPassword", this.chkStrongPwd.Checked == true ? 1 : 0);
-            htFacilityParameters.Add("ExpirePaswordFlag", this.chkexpPwd.Checked == true ? 1 : 0);
-            htFacilityParameters.Add("ExpirePaswordDays", this.chkexpPwd.Checked == true ? txtnoofdays.Text : "");
-            htFacilityParameters.Add("DateConstraint", this.chkdateconstraint.Checked == true ? 1 : 0);
-
+            Hashtable htFacilityParameters = getFacilityParameters();
 
             /////////////////////////////////
             if (btnSave.Text == "Save")
@@ -746,20 +777,7 @@ public partial class frmAdmin_FacilitySetup : System.Web.UI.Page
             theFilelogo.SaveAs(Server.MapPath(string.Format("..//images//{0}", txtfacilityname.Text + ".jpg")));
 
         }
-        Hashtable htFacilityParameters = new Hashtable();
-        htFacilityParameters.Add("FacilityLogo", txtfacilityname.Text + ".jpg");
-        htFacilityParameters.Add("FacilityAddress", txtFacAddress.Text);
-        htFacilityParameters.Add("FacilityTel", txtFactele.Text);
-        htFacilityParameters.Add("FacilityCell", txtFacCell.Text);
-        htFacilityParameters.Add("FacilityFax", txtFacFax.Text);
-        htFacilityParameters.Add("FacilityEmail", txtFacEmail.Text);
-        htFacilityParameters.Add("FacilityFootertext", txtpharmfoottext.Text);
-        htFacilityParameters.Add("FacilityURL", txtFacURL.Text);
-        htFacilityParameters.Add("Facilitytemplate", this.Radio1.Checked == true ? Radio1.Value.ToString() : (this.Radio2.Checked == true ? Radio2.Value.ToString() : "0"));
-        htFacilityParameters.Add("StrongPassword", this.chkStrongPwd.Checked == true ? 1 : 0);
-        htFacilityParameters.Add("ExpirePaswordFlag", this.chkexpPwd.Checked == true ? 1 : 0);
-        htFacilityParameters.Add("ExpirePaswordDays", this.chkexpPwd.Checked == true ? txtnoofdays.Text : "");
-        htFacilityParameters.Add("DateConstraint", this.chkdateconstraint.Checked == true ? 1 : 0);
+        Hashtable htFacilityParameters = getFacilityParameters();
 
         if (txtPEPFAR_Fund.Text.Trim() == "")
         {

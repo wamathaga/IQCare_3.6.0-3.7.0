@@ -58,13 +58,31 @@ namespace IQCare.Web.Billing {
         protected global::System.Web.UI.WebControls.Label lblIQno;
         
         /// <summary>
-        /// UpdatePanel2 control.
+        /// upError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        protected global::System.Web.UI.UpdatePanel upError;
+        
+        /// <summary>
+        /// divError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel divError;
+        
+        /// <summary>
+        /// lblError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblError;
         
         /// <summary>
         /// TabContainer1 control.
@@ -400,13 +418,13 @@ namespace IQCare.Web.Billing {
         protected global::System.Web.UI.WebControls.Button buttonHidden;
         
         /// <summary>
-        /// notificationPanel1 control.
+        /// notificationPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel notificationPanel1;
+        protected global::System.Web.UI.UpdatePanel notificationPanel;
         
         /// <summary>
         /// panelNotify control.
@@ -488,15 +506,6 @@ namespace IQCare.Web.Billing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button2;
-        
-        /// <summary>
-        /// lblclientbillclose control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblclientbillclose;
         
         /// <summary>
         /// sProgress control.

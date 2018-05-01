@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -64,6 +65,7 @@
     <Compile Include="BErrorLogging.cs" />
     <Compile Include="BExport.cs" />
     <Compile Include="BFacility.cs" />
+    <Compile Include="BItemMaster.cs" />
     <Compile Include="BLabMst.cs" />
     <Compile Include="BOccupation.cs" />
     <Compile Include="BPassword.cs" />
@@ -93,6 +95,10 @@
     <ProjectReference Include="..\DataAccess.Entity\DataAccess.Entity.csproj">
       <Project>{B039AEFB-4059-4368-87BF-03545ACAB705}</Project>
       <Name>DataAccess.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities.Administration\Entities.Administration.csproj">
+      <Project>{177E6CFA-F240-448E-8E53-22A77AF1EAF7}</Project>
+      <Name>Entities.Administration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interface.Administration\Interface.Administration.csproj">
       <Project>{88425A40-338F-405B-BF91-D3A0E74863DE}</Project>

@@ -14,6 +14,10 @@
               <xs:element name="StrengthId" type="xs:int" minOccurs="0" />
               <xs:element name="FrequencyId" type="xs:int" minOccurs="0" />
               <xs:element name="FrequencyName" type="xs:string" minOccurs="0" />
+              <xs:element name="MorningDose" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MiddayDose" type="xs:decimal" minOccurs="0" />
+              <xs:element name="EveningDose" type="xs:decimal" minOccurs="0" />
+              <xs:element name="NightDose" type="xs:decimal" minOccurs="0" />
               <xs:element name="QtyDisp" type="xs:decimal" minOccurs="0" />
               <xs:element name="OrderedbyDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="CostPrice" type="xs:decimal" minOccurs="0" />

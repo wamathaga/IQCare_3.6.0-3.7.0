@@ -163,7 +163,7 @@ public partial class frmClinical_DeleteForm : BasePage
             case "Pharmacy":
                 if (Session["SystemId"].ToString() == "1")
                 {
-                    url = string.Format("{0}", "~/./Pharmacy/frmPharmacyForm.aspx?name=Delete");
+                    url = string.Format("{0}", "~/./PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?name=Delete");
                     Response.Redirect(url);
                 }
                 else
@@ -176,7 +176,7 @@ public partial class frmClinical_DeleteForm : BasePage
             case "Paediatric Pharmacy":
                 //if (Convert.ToInt32(Session["TechnicalAreaId"]) == 2)
                 //{
-                url = string.Format("{0}", "~/./Pharmacy/frmPharmacyForm.aspx?name=Delete");
+                url = string.Format("{0}", "~/./PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?name=Delete");
                 Response.Redirect(url);
                 //}
                 break;

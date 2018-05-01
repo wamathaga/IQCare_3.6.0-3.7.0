@@ -57,7 +57,7 @@ namespace PresentationApp.ClinicalForms.UserControl
                         string url = Request.Url.ToString();
                         string lastPart = url.Split('/').Last();
 
-                        if ((lastPart == "frm_Laboratory.aspx") || (lastPart == "frmPatient_Home.aspx")) 
+                        if (lastPart == "frm_Laboratory.aspx")
                         {
                             //CD4 Due date
                             DataTable CD4DT = theDSAlerts.Tables[2];
@@ -79,22 +79,8 @@ namespace PresentationApp.ClinicalForms.UserControl
                                         Page.ClientScript.RegisterStartupScript(HttpContext.Current.GetType(), "ViralDueDate", "ViralLoadDueDate('" + ((DateTime)ViralDT.Rows[0]["ViralLoadDueDate"]).ToString(Session["AppDateFormat"].ToString()) + "');", true);
                                 }
                             }
-                            
                         }
-                        if ((lastPart == "frm_LabTestResults.aspx") || (lastPart == "frmPatient_Home.aspx"))
-                        {
-                            //Urgent Lab Due date
-                            DataTable UrgentDT = theDSAlerts.Tables[4];
-                            if (UrgentDT.Rows.Count > 0)
-                            {
-                                if (!object.Equals(UrgentDT.Rows[0]["UrgentLabDueDate"], null))
-                                {
-                                    TimeSpan timespanVL = ((DateTime)UrgentDT.Rows[0]["UrgentLabDueDate"]) - DateTime.Now;
-                                    if (timespanVL.Days < 30)
-                                        Page.ClientScript.RegisterStartupScript(HttpContext.Current.GetType(), "UrgentDueDate", "UrgentLabDueDate('" + ((DateTime)UrgentDT.Rows[0]["UrgentLabDueDate"]).ToString(Session["AppDateFormat"].ToString()) + "');", true);
-                                }
-                            }
-                        }
+
 
                     }
                 }

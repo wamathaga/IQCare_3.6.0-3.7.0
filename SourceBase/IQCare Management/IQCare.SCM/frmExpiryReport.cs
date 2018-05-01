@@ -209,6 +209,7 @@ namespace IQCare.SCM
             //  string theFilePath = System.IO.Directory.GetParent(System.Windows.Forms.Application.ExecutablePath).Parent.Parent.Parent.FullName + "\\IQCare Management\\ExcelFiles\\";
               theFilePath = theFilePath + "ExpiryReport.xls";
               theUtil.ExportToExcel_Windows(theDT, theFilePath, "");
+              btnExport.Visible = false;
           }
           else
           {

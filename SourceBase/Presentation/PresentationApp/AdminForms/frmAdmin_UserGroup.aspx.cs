@@ -37,6 +37,15 @@ namespace PresentationApp.AdminForms
                 IQCareMsgBox.Show("BlankTextBox", theMsg, this);
                 return false;
             }
+            if (TreeViewUserGroupForms.CheckedNodes.Count == 0)
+            {
+
+                MsgBuilder theBuilder = new MsgBuilder();
+                theBuilder.DataElements["MessageText"] = "Please check whether parent node is checked";
+                IQCareMsgBox.Show("#C1", theBuilder, this);
+                return false;
+            }
+
             return true;
         }
 
@@ -84,112 +93,114 @@ namespace PresentationApp.AdminForms
             string FacilityName = string.Empty;
             string ModuleID = string.Empty;
             string ModuleName = string.Empty;
-            foreach (RadTreeNode trFacility in TreeViewUserGroupForms.Nodes)
-            {
-                string FormID = string.Empty;
-                string FormName = string.Empty;
-                string TabID = string.Empty;
-                string TabName = string.Empty;
-                string FunctionID = string.Empty;
-                string FunctionName = string.Empty;
-
-                if (trFacility.Checked)
+          
+                foreach (RadTreeNode trFacility in TreeViewUserGroupForms.Nodes)
                 {
-                    FacilityID = trFacility.Value;
-                    FacilityName = trFacility.Text;
-                    if (trFacility.Nodes.Count > 0)
-                    {
-                        for (int i = 0; i < trFacility.Nodes.Count; i++)
-                        {
-                            if (trFacility.Nodes[i].Checked && trFacility.Nodes[i].Text != "Records")
-                            {
-                                ModuleID = trFacility.Nodes[i].Value;
-                                ModuleName = trFacility.Nodes[i].Text;
+                    string FormID = string.Empty;
+                    string FormName = string.Empty;
+                    string TabID = string.Empty;
+                    string TabName = string.Empty;
+                    string FunctionID = string.Empty;
+                    string FunctionName = string.Empty;
 
-                                if (trFacility.Nodes[i].Nodes.Count > 0)
+                    if (trFacility.Checked)
+                    {
+                        FacilityID = trFacility.Value;
+                        FacilityName = trFacility.Text;
+                        if (trFacility.Nodes.Count > 0)
+                        {
+                            for (int i = 0; i < trFacility.Nodes.Count; i++)
+                            {
+                                if (trFacility.Nodes[i].Checked)
                                 {
-                                    for (int jFormType = 0; jFormType < trFacility.Nodes[i].Nodes.Count; jFormType++)
+                                    ModuleID = trFacility.Nodes[i].Value;
+                                    ModuleName = trFacility.Nodes[i].Text;
+
+                                    if (trFacility.Nodes[i].Nodes.Count > 0)
                                     {
-                                        if (trFacility.Nodes[i].Nodes[jFormType].Checked)
+                                        for (int jFormType = 0; jFormType < trFacility.Nodes[i].Nodes.Count; jFormType++)
                                         {
-                                            FormID = trFacility.Nodes[i].Nodes[jFormType].Value;
-                                            FormName = trFacility.Nodes[i].Nodes[jFormType].Text;
-                                            if (trFacility.Nodes[i].Nodes[jFormType].Nodes.Count > 0)
+                                            if (trFacility.Nodes[i].Nodes[jFormType].Checked)
                                             {
-                                                for (int jTabType = 0; jTabType < trFacility.Nodes[i].Nodes[jFormType].Nodes.Count; jTabType++)
+                                                FormID = trFacility.Nodes[i].Nodes[jFormType].Value;
+                                                FormName = trFacility.Nodes[i].Nodes[jFormType].Text;
+                                                if (trFacility.Nodes[i].Nodes[jFormType].Nodes.Count > 0)
                                                 {
-                                                    if (trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Checked)
+                                                    for (int jTabType = 0; jTabType < trFacility.Nodes[i].Nodes[jFormType].Nodes.Count; jTabType++)
                                                     {
-                                                        TabID = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Value;
-                                                        TabName = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Text;
-                                                        if (trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes.Count > 0)
+                                                        if (trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Checked)
                                                         {
-                                                            for (int jFunction = 0; jFunction < trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes.Count; jFunction++)
+                                                            TabID = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Value;
+                                                            TabName = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Text;
+                                                            if (trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes.Count > 0)
                                                             {
-                                                                if (trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes[jFunction].Checked)
+                                                                for (int jFunction = 0; jFunction < trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes.Count; jFunction++)
                                                                 {
-                                                                    FunctionID = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes[jFunction].Value;
-                                                                    FunctionName = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes[jFunction].Text;
-                                                                    theUserGroupTbl.Rows.Add(FacilityID, ModuleID, FormID, "", TabID, FunctionID);
+                                                                    if (trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes[jFunction].Checked)
+                                                                    {
+                                                                        FunctionID = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes[jFunction].Value;
+                                                                        FunctionName = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Nodes[jFunction].Text;
+                                                                        theUserGroupTbl.Rows.Add(FacilityID, ModuleID, FormID, "", TabID, FunctionID);
+                                                                    }
                                                                 }
                                                             }
-                                                        }
-                                                        else
-                                                        {
-                                                            FunctionID = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Value;
-                                                            FunctionName = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Text;
-                                                            theUserGroupTbl.Rows.Add(FacilityID, ModuleID, FormID, "", "", FunctionID);
+                                                            else
+                                                            {
+                                                                FunctionID = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Value;
+                                                                FunctionName = trFacility.Nodes[i].Nodes[jFormType].Nodes[jTabType].Text;
+                                                                theUserGroupTbl.Rows.Add(FacilityID, ModuleID, FormID, "", "", FunctionID);
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
                                     }
+                                    else { theUserGroupTbl.Rows.Add(FacilityID, ModuleID, "0", "0", "0", "1"); }
                                 }
-                                else { theUserGroupTbl.Rows.Add(FacilityID, ModuleID, "0", "", "", FunctionID); }
                             }
                         }
                     }
                 }
-            }
 
-            foreach (RadTreeNode trFacility in TreeViewUserGroupForms.Nodes)
-            {
-                if (trFacility.Checked)
+                foreach (RadTreeNode trFacility in TreeViewUserGroupForms.Nodes)
                 {
-                    FacilityID = trFacility.Value;
-                    //Common Items
-                    foreach (RadTreeNode trFormsReports in TreeViewUserGroupCommonForms.Nodes)
+                    if (trFacility.Checked)
                     {
-                        string FormTypeID = string.Empty;
-                        string FormTypeName = string.Empty;
-                        string FormID = string.Empty;
-                        string FormName = string.Empty;
-                        string FunctionID = string.Empty;
-                        string FunctionName = string.Empty;
-
-                        if (trFormsReports.Checked)
+                        FacilityID = trFacility.Value;
+                        //Common Items
+                        foreach (RadTreeNode trFormsReports in TreeViewUserGroupCommonForms.Nodes)
                         {
-                            FormTypeID = trFormsReports.Value;
-                            FormTypeName = trFormsReports.Text;
-                            if (trFormsReports.Nodes.Count > 0)
+                            string FormTypeID = string.Empty;
+                            string FormTypeName = string.Empty;
+                            string FormID = string.Empty;
+                            string FormName = string.Empty;
+                            string FunctionID = string.Empty;
+                            string FunctionName = string.Empty;
+
+                            if (trFormsReports.Checked)
                             {
-                                for (int i = 0; i < trFormsReports.Nodes.Count; i++)
+                                FormTypeID = trFormsReports.Value;
+                                FormTypeName = trFormsReports.Text;
+                                if (trFormsReports.Nodes.Count > 0)
                                 {
-                                    if (trFormsReports.Nodes[i].Checked)
+                                    for (int i = 0; i < trFormsReports.Nodes.Count; i++)
                                     {
-                                        FormID = trFormsReports.Nodes[i].Value;
-                                        FormName = trFormsReports.Nodes[i].Text;
-                                        if (trFormsReports.Nodes[i].Nodes.Count > 0)
+                                        if (trFormsReports.Nodes[i].Checked)
                                         {
-                                            for (int j = 0; j < trFormsReports.Nodes[i].Nodes.Count; j++)
+                                            FormID = trFormsReports.Nodes[i].Value;
+                                            FormName = trFormsReports.Nodes[i].Text;
+                                            if (trFormsReports.Nodes[i].Nodes.Count > 0)
                                             {
-                                                if (trFormsReports.Nodes[i].Nodes[j].Checked)
+                                                for (int j = 0; j < trFormsReports.Nodes[i].Nodes.Count; j++)
                                                 {
-                                                    FunctionID = trFormsReports.Nodes[i].Nodes[j].Value;
-                                                    FunctionName = trFormsReports.Nodes[i].Nodes[j].Text;
-                                                    //theUserGroupTbl.Rows.Add("0", "0", FormID, "", "", FunctionID);
-                                                    theUserGroupTbl.Rows.Add(FacilityID, "0", FormID, "", "", FunctionID);
+                                                    if (trFormsReports.Nodes[i].Nodes[j].Checked)
+                                                    {
+                                                        FunctionID = trFormsReports.Nodes[i].Nodes[j].Value;
+                                                        FunctionName = trFormsReports.Nodes[i].Nodes[j].Text;
+                                                        //theUserGroupTbl.Rows.Add("0", "0", FormID, "", "", FunctionID);
+                                                        theUserGroupTbl.Rows.Add(FacilityID, "0", FormID, "", "", FunctionID);
+                                                    }
                                                 }
                                             }
                                         }
@@ -199,74 +210,73 @@ namespace PresentationApp.AdminForms
                         }
                     }
                 }
-            }
-            //Customize List
-            foreach (RadTreeNode trFormsCL in TreeViewUserGroupAdminForms.Nodes)
-            {
-                ModuleID = string.Empty;
-                ModuleName = string.Empty;
-                string FormID = string.Empty;
-                string FormName = string.Empty;
-                string TabID = string.Empty;
-                string TabName = string.Empty;
-                string FunctionID = string.Empty;
-                string FunctionName = string.Empty;
-
-                if (trFormsCL.Checked)
+                //Customize List
+                foreach (RadTreeNode trFormsCL in TreeViewUserGroupAdminForms.Nodes)
                 {
-                    ModuleID = trFormsCL.Value;
-                    ModuleName = trFormsCL.Text;
-                    if (trFormsCL.Nodes.Count > 0)
+                    ModuleID = string.Empty;
+                    ModuleName = string.Empty;
+                    string FormID = string.Empty;
+                    string FormName = string.Empty;
+                    string TabID = string.Empty;
+                    string TabName = string.Empty;
+                    string FunctionID = string.Empty;
+                    string FunctionName = string.Empty;
+
+                    if (trFormsCL.Checked)
                     {
-                        for (int i = 0; i < trFormsCL.Nodes.Count; i++)
+                        ModuleID = trFormsCL.Value;
+                        ModuleName = trFormsCL.Text;
+                        if (trFormsCL.Nodes.Count > 0)
                         {
-                            if (trFormsCL.Nodes[i].Checked)
+                            for (int i = 0; i < trFormsCL.Nodes.Count; i++)
                             {
-                                FormID = trFormsCL.Nodes[i].Value;
-                                FormName = trFormsCL.Nodes[i].Text;
-                                if (trFormsCL.Nodes[i].Nodes.Count > 0)
+                                if (trFormsCL.Nodes[i].Checked)
                                 {
-                                    for (int j = 0; j < trFormsCL.Nodes[i].Nodes.Count; j++)
+                                    FormID = trFormsCL.Nodes[i].Value;
+                                    FormName = trFormsCL.Nodes[i].Text;
+                                    if (trFormsCL.Nodes[i].Nodes.Count > 0)
                                     {
-                                        if (trFormsCL.Nodes[i].Nodes[j].Checked)
+                                        for (int j = 0; j < trFormsCL.Nodes[i].Nodes.Count; j++)
                                         {
-                                            FunctionID = trFormsCL.Nodes[i].Nodes[j].Value;
-                                            FunctionName = trFormsCL.Nodes[i].Nodes[j].Text;
-                                            theUserGroupTbl.Rows.Add("0", ModuleID, FormID, FormName, "", FunctionID);
+                                            if (trFormsCL.Nodes[i].Nodes[j].Checked)
+                                            {
+                                                FunctionID = trFormsCL.Nodes[i].Nodes[j].Value;
+                                                FunctionName = trFormsCL.Nodes[i].Nodes[j].Text;
+                                                theUserGroupTbl.Rows.Add("0", ModuleID, FormID, FormName, "", FunctionID);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-            }
-            theDS.Tables.Add(theUserGroupTbl);
-            EditCareEnd = PIdentifiers = 0;
-            foreach (RadTreeNode trFormsCL in TreeViewUserGroupSplPrivledges.Nodes)
-            {
-                if (trFormsCL.Checked)
+                }
+                theDS.Tables.Add(theUserGroupTbl);
+                EditCareEnd = PIdentifiers = 0;
+                foreach (RadTreeNode trFormsCL in TreeViewUserGroupSplPrivledges.Nodes)
                 {
-                    switch (trFormsCL.Value)
+                    if (trFormsCL.Checked)
                     {
-                        case "SPL001":
-                            {
-                                EditCareEnd = 1; // Set out parameter
-                                break;
-                            }
-                        case "SPL002":
-                            {
-                                PIdentifiers = 1; // Set out parameter
-                                break;
-                            }
+                        switch (trFormsCL.Value)
+                        {
+                            case "SPL001":
+                                {
+                                    EditCareEnd = 1; // Set out parameter
+                                    break;
+                                }
+                            case "SPL002":
+                                {
+                                    PIdentifiers = 1; // Set out parameter
+                                    break;
+                                }
+
+                        }
 
                     }
-
                 }
-            }
 
-            return theDS;
+                return theDS;
         }
         #endregion
         private void GetFacilityServiceUserGroupData(DataSet theDS)

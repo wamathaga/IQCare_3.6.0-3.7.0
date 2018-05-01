@@ -8,7 +8,7 @@ namespace Interface.Scheduler
     public interface IAppointment
     {
         DataSet GetAppointmentStatus();
-        DataSet GetAppointmentGrid(int AppStatus, DateTime FromDate, DateTime ToDate, int LocationID);
+        DataSet GetAppointmentGrid(int AppStatus, string FromDate, string ToDate, int LocationID);
         DataTable CheckAppointmentExistance(int PatientId, int LocationId, String AppDate, int ReasonId, int visitId);
         //update by-nidhi
         //Desc- changing datetime to string

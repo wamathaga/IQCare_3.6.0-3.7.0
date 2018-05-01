@@ -1,19 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/IQCare.master" AutoEventWireup="true"
     CodeBehind="frmBilling_ReversalApproval.aspx.cs" Inherits="IQCare.Web.Billing.frmBilling_ReversalApproval" %>
-
 <%@ MasterType VirtualPath="~/MasterPage/IQCare.master" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="TransactionReversal.ascx" TagName="TransactionReversal" TagPrefix="uc1" %>
 <asp:Content ID="ctMain" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="server">
-    <script language="javascript" type="text/javascript">
-        function openReceiptPage(path) {
-            window.open(path, 'ReceiptPage', 'toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes');
-        }
-    </script>
-    <div class="container-fluid">
-        <h4 class="margin h4">
+<script language="javascript" type="text/javascript">
+    function openReceiptPage(path) {
+        window.open(path, 'ReceiptPage', 'toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes');
+    }
+</script>
+     <div>
+        <h1 class="margin" style="padding-left: 10px;">
             Bill Reversal Approval
-        </h4>
+        </h1>
         <div class="border center">
             <asp:UpdatePanel ID="panelFilter" runat="server" ChildrenAsTriggers="true">
                 <ContentTemplate>
@@ -27,8 +26,7 @@
         </div>
         <asp:UpdatePanel ID="divComponent" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-                <uc1:TransactionReversal ID="ReverseTransaction" runat="server" IsApproval="True"
-                    PrintReceiptJSMethod="openReceiptPage" PrintReceiptURL="./frmBilling_Reciept.aspx" />
+                <uc1:TransactionReversal ID="ReverseTransaction" runat="server" IsApproval="True" PrintReceiptJSMethod="openReceiptPage" PrintReceiptURL="./frmBilling_Reciept.aspx"/>
             </ContentTemplate>
             <Triggers>
             </Triggers>
@@ -41,7 +39,7 @@
                     background-color: #E0E0E0; z-index: 15000">
                     <asp:Panel ID="pnPopup_Title" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
                         cursor: move; height: 18px">
-                        <table class="table-condensed" style="width: 100%; height: 18px">
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 18px">
                             <tr>
                                 <td style="width: 5px; height: 19px;">
                                 </td>
@@ -54,7 +52,7 @@
                             </tr>
                         </table>
                     </asp:Panel>
-                    <table class="table-condensed" style="width: 100%;">
+                    <table border="0" cellpadding="15" cellspacing="0" style="width: 100%;">
                         <tr>
                             <td style="width: 48px" valign="middle" align="center">
                                 <asp:Image ID="imgNotice" runat="server" ImageUrl="~/images/mb_information.gif" Height="32px"

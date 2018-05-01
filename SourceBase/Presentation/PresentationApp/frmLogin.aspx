@@ -25,9 +25,20 @@
         }
         window.open(path);
     }
+
+    function getScreenSize() {
+        document.getElementById('ScreenWidth').value = screen.width;
+        document.getElementById('ScreenHeight').value = screen.height;
+        //alert("Width :" + screen.width + " - " + "Height :" + screen.height);
+        
+
+    }
 </script>
 <body>
+    
     <form id="signIn" style="width: 100%" enableviewstate="true" runat="server">
+    <asp:HiddenField ID="ScreenWidth" runat="server" />
+    <asp:HiddenField ID="ScreenHeight" runat="server" />
     <div class="loginpageheight">
         <div class="utility" align="right">
             <a class="utility" href="frmLogin.aspx" onclick="openHelp(); return false;">
@@ -87,7 +98,9 @@
                                             <tr>
                                                 <td class="pad18">
                                                     <asp:CheckBox ID="chkPref" runat="server" Text="Preferred Location" AutoPostBack="true"
-                                                        OnCheckedChanged="chkPref_CheckedChanged" /></br></br>
+                                                        OnCheckedChanged="chkPref_CheckedChanged" />
+                                                    <br></br>
+                                                    <br></br>
                                                     <label>
                                                         Facility/Satellite</label>
                                                     <asp:DropDownList ID="ddLocation" runat="server" Width="210px" Height="25px" >
@@ -95,7 +108,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="button"></br>
+                                                <td class="button">
+                                                    <br></br>
                                                     <asp:Button ID="btnLogin" runat="server" Text="Login" Width="110px" Height="25px" OnClick="btnLogin_Click" style="margin-left:20px;" />
                                                 </td>
                                             </tr>
@@ -127,6 +141,9 @@
                             <label class="right" style="width: 300">
                                 Release Date :
                                 <asp:Label CssClass="blue11 nomargin" ID="lblrelDate" Text="Date" runat="server"></asp:Label></label>
+                                 <label class="right" style="width:25%">
+                                
+                                </br><asp:Label CssClass="blue11 nomargin" ID="lblTestRelDate" Text="" runat="server"></asp:Label></label>
                         </td>
                     </tr>
                 </table>

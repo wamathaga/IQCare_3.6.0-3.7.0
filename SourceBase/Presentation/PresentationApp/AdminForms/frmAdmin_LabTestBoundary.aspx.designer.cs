@@ -75,6 +75,33 @@ public partial class frmAdmin_LabTestBoundary {
     protected global::System.Web.UI.WebControls.TextBox txtUpper;
     
     /// <summary>
+    /// tddetect control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlTableCell tddetect;
+    
+    /// <summary>
+    /// div1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl div1;
+    
+    /// <summary>
+    /// ddldetect control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddldetect;
+    
+    /// <summary>
     /// divDefault control.
     /// </summary>
     /// <remarks>

@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationApp", "Presenta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Presentation", "Application.Presentation\Application.Presentation.csproj", "{2E7534C9-101D-4B6D-8E57-056101E4D54D}"
 EndProject
-Project("{2CFEAB61-6A3B-4EB8-B523-560B4BEEF521}") = "PresentationApp.deploy", "PresentationApp.deploy\PresentationApp.deploy.wdproj", "{886A34DA-6701-45DC-BE6F-89D9532C9F93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQCareCustomReportConfig", "IQCareReport\IQCareCustomReportConfig.csproj", "{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}"
+EndProject
+Project("{2CFEAB61-6A3B-4EB8-B523-560B4BEEF521}") = "PresentationApp.csproj_deploy", "PresentationApp.csproj_deploy\PresentationApp.csproj_deploy.wdproj", "{EB84B0D0-822E-46B2-BC83-037934917A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,15 +76,25 @@ Global
 		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Release|.NET.ActiveCfg = Release|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{886A34DA-6701-45DC-BE6F-89D9532C9F93}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Release|.NET.ActiveCfg = Release|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Release|.NET.ActiveCfg = Release|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EB84B0D0-822E-46B2-BC83-037934917A54}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

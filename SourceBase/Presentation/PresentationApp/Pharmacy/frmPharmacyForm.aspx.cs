@@ -120,12 +120,12 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             if (HttpContext.Current.Session["ARTEndedStatus"].ToString() == "ART Stopped")
             {
                 sqlQuery = "select md.Drug_pk,convert(varchar(100),md.DrugName)[Drugname], ISNULL(Convert(varchar,SUM(st.Quantity)),0)[QTY] from dtl_stocktransaction st ";
-                sqlQuery += " Right outer join mst_drug md on md.Drug_pk=st.ItemId where dbo.fn_GetDrugTypeId_futures (md.Drug_pk) <>37 and DrugName LIKE '%" + prefixText + "%' and st.ExpiryDate > GETDATE() Group by md.Drug_pk,md.Drugname";
+                sqlQuery += " Right outer join mst_drug md on md.Drug_pk=st.ItemId and st.ExpiryDate > GETDATE() where dbo.fn_GetDrugTypeId_futures (md.Drug_pk) <>37 and DrugName LIKE '%" + prefixText + "%' Group by md.Drug_pk,md.Drugname";
             }
             else
             {
                 sqlQuery = "select md.Drug_pk,convert(varchar(100),md.DrugName)[Drugname], ISNULL(Convert(varchar,SUM(st.Quantity)),0)[QTY] from dtl_stocktransaction st ";
-                sqlQuery += " Right outer join mst_drug md on md.Drug_pk=st.ItemId where DrugName LIKE '%" + prefixText + "%' and st.ExpiryDate > GETDATE() Group by md.Drug_pk,md.Drugname";
+                sqlQuery += " Right outer join mst_drug md on md.Drug_pk=st.ItemId and st.ExpiryDate > GETDATE() where DrugName LIKE '%" + prefixText + "%' Group by md.Drug_pk,md.Drugname";
 
             }
         }
@@ -497,6 +497,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
 
             int PID = Convert.ToInt32(Session["PatientId"]);
             Session["PharmacyId"] = Convert.ToInt32(Session["PatientVisitId"]);
+            btnPrintLabel.Visible = true;
             //FillOldCustomData(pnlCustomList, PID);
             //FillOldCustomData(PID);
         }
@@ -1794,6 +1795,165 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 ((TextBox)x).Text = theDR["Dose"].ToString();
                             }
                         }
+
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        if (x.ID.StartsWith("drgMorning"))
+                        {
+                            ipos = Convert.ToInt32(x.ID.IndexOf("^"));
+                            if (ipos > 0)
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(10, ipos - 10));
+                            }
+                            else
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(10, x.ID.Length - 10));
+                            }
+                            //y = Convert.ToInt32(x.ID.Substring(11, x.ID.Length - 11));
+                            if (y == DrugId)
+                            {
+                                int DecPos = theDR["MorningDose"].ToString().IndexOf(".");
+                                if (DecPos != -1)
+                                {
+                                    //int DecValue = Convert.ToInt32(theDR["DispensedQuantity"].ToString().Substring(DecPos + 1, 2));
+                                    decimal DecValue = Convert.ToDecimal(theDR["MorningDose"].ToString().Substring(DecPos + 1, 2));
+                                    if (DecValue > 0)
+                                    {
+                                        ((TextBox)x).Text = theDR["MorningDose"].ToString();
+
+                                    }
+                                    else
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["MorningDose"]));
+                                    }
+                                }
+                                else
+                                {
+                                    if (theDR["MorningDose"] != System.DBNull.Value)
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["MorningDose"]));
+                                    }
+                                }
+                                //((TextBox)x).Text = theDR["Duration"].ToString();
+                            }
+                        }
+                        if (x.ID.StartsWith("drgNoon"))
+                        {
+                            ipos = Convert.ToInt32(x.ID.IndexOf("^"));
+                            if (ipos > 0)
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(7, ipos - 7));
+                            }
+                            else
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(7, x.ID.Length - 7));
+                            }
+                            //y = Convert.ToInt32(x.ID.Substring(11, x.ID.Length - 11));
+                            if (y == DrugId)
+                            {
+                                int DecPos = theDR["MiddayDose"].ToString().IndexOf(".");
+                                if (DecPos != -1)
+                                {
+                                    //int DecValue = Convert.ToInt32(theDR["DispensedQuantity"].ToString().Substring(DecPos + 1, 2));
+                                    decimal DecValue = Convert.ToDecimal(theDR["MiddayDose"].ToString().Substring(DecPos + 1, 2));
+                                    if (DecValue > 0)
+                                    {
+                                        ((TextBox)x).Text = theDR["MiddayDose"].ToString();
+
+                                    }
+                                    else
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["MiddayDose"]));
+                                    }
+                                }
+                                else
+                                {
+                                    if (theDR["MiddayDose"] != System.DBNull.Value)
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["MiddayDose"]));
+                                    }
+                                }
+                                //((TextBox)x).Text = theDR["Duration"].ToString();
+                            }
+                        }
+                        if (x.ID.StartsWith("drgEvening"))
+                        {
+                            ipos = Convert.ToInt32(x.ID.IndexOf("^"));
+                            if (ipos > 0)
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(10, ipos - 10));
+                            }
+                            else
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(10, x.ID.Length - 10));
+                            }
+                            //y = Convert.ToInt32(x.ID.Substring(11, x.ID.Length - 11));
+                            if (y == DrugId)
+                            {
+                                int DecPos = theDR["EveningDose"].ToString().IndexOf(".");
+                                if (DecPos != -1)
+                                {
+                                    //int DecValue = Convert.ToInt32(theDR["DispensedQuantity"].ToString().Substring(DecPos + 1, 2));
+                                    decimal DecValue = Convert.ToDecimal(theDR["EveningDose"].ToString().Substring(DecPos + 1, 2));
+                                    if (DecValue > 0)
+                                    {
+                                        ((TextBox)x).Text = theDR["EveningDose"].ToString();
+
+                                    }
+                                    else
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["EveningDose"]));
+                                    }
+                                }
+                                else
+                                {
+                                    if (theDR["EveningDose"] != System.DBNull.Value)
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["EveningDose"]));
+                                    }
+                                }
+                                //((TextBox)x).Text = theDR["Duration"].ToString();
+                            }
+                        }
+                        if (x.ID.StartsWith("drgNight"))
+                        {
+                            ipos = Convert.ToInt32(x.ID.IndexOf("^"));
+                            if (ipos > 0)
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(8, ipos - 8));
+                            }
+                            else
+                            {
+                                y = Convert.ToInt32(x.ID.Substring(8, x.ID.Length - 8));
+                            }
+                            //y = Convert.ToInt32(x.ID.Substring(11, x.ID.Length - 11));
+                            if (y == DrugId)
+                            {
+                                int DecPos = theDR["NightDose"].ToString().IndexOf(".");
+                                if (DecPos != -1)
+                                {
+                                    //int DecValue = Convert.ToInt32(theDR["DispensedQuantity"].ToString().Substring(DecPos + 1, 2));
+                                    decimal DecValue = Convert.ToDecimal(theDR["NightDose"].ToString().Substring(DecPos + 1, 2));
+                                    if (DecValue > 0)
+                                    {
+                                        ((TextBox)x).Text = theDR["NightDose"].ToString();
+
+                                    }
+                                    else
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["NightDose"]));
+                                    }
+                                }
+                                else
+                                {
+                                    if (theDR["NightDose"] != System.DBNull.Value)
+                                    {
+                                        ((TextBox)x).Text = Convert.ToString(Convert.ToInt32(theDR["NightDose"]));
+                                    }
+                                }
+                                //((TextBox)x).Text = theDR["Duration"].ToString();
+                            }
+                        }
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         if (x.ID.StartsWith("drgDuration"))
                         {
                             ipos = Convert.ToInt32(x.ID.IndexOf("^"));
@@ -2677,7 +2837,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             /////////////////////////////////////////////////
             Panel theheaderPnl = new Panel();
             theheaderPnl.ID = "pnlHeaderTBDrug";
-            theheaderPnl.Height = 20;
+            theheaderPnl.Height = 30;
             theheaderPnl.CssClass = "scrollable";
             theheaderPnl.Font.Bold = true;
             theheaderPnl.Controls.Clear();
@@ -2691,14 +2851,14 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theLabel1 = new Label();
             theLabel1.ID = "lblTBDrgNm";
             theLabel1.Text = "Drug Name";
-            theLabel1.Width = 220;
+            theLabel1.Width = 200;
             theheaderPnl.Controls.Add(theLabel1);
 
-            Label theLabel2 = new Label();
-            theLabel2.ID = "lblTBDrgDose";
-            theLabel2.Text = "Dose";
-            theLabel2.Width = 45;
-            theheaderPnl.Controls.Add(theLabel2);
+            //Label theLabel2 = new Label();
+            //theLabel2.ID = "lblTBDrgDose";
+            //theLabel2.Text = "Dose";
+            //theLabel2.Width = 45;
+            //theheaderPnl.Controls.Add(theLabel2);
 
             //Label theLabel3 = new Label();
             //theLabel3.ID = "lblTBDrgUnits";
@@ -2706,30 +2866,75 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             //theLabel3.Width = 90;
             //theheaderPnl.Controls.Add(theLabel3);
 
-            Label theLabel4 = new Label();
-            theLabel4.ID = "lblTBDrgFrequency";
-            theLabel4.Text = "Frequency";
-            theLabel4.Width = 80;
-            theheaderPnl.Controls.Add(theLabel4);
+            //Label theLabel4 = new Label();
+            //theLabel4.ID = "lblTBDrgFrequency";
+            //theLabel4.Text = "Frequency";
+            //theLabel4.Width = 80;
+            //theheaderPnl.Controls.Add(theLabel4);
+
+            Image morning = new Image(); 	 	
+	        morning.ID = "imgMorning" + MstPanel.ID; 	 	
+            morning.ImageUrl = @"..\Images\morning1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(morning); 	 	
+	 	 	
+	        Label lblSpace1 = new Label(); 	 	
+	        lblSpace1.Width = 1; 	 	
+	        lblSpace1.ID = "lblSpaceAdd_midday" + MstPanel.ID; 	 	
+	        lblSpace1.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpace1);
+
+            Image noon = new Image(); 	 	
+	        noon.ID = "imgNoon" + MstPanel.ID; 	 	
+	        noon.ImageUrl = @"..\Images\midday1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(noon); 	 	
+	 	 	
+	        Label lblSpace2 = new Label(); 	 	
+	        lblSpace2.Width = 1; 	 	
+	        lblSpace2.ID = "lblSpaceAdd_Noon" + MstPanel.ID; 	 	
+	        lblSpace2.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpace2); 
+
+            Image evening = new Image(); 	 	
+	        evening.ID = "imgEvening" + MstPanel.ID; 	 	
+	        evening.ImageUrl = @"..\Images\evening1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(evening); 	 	
+	 	 	
+	        Label lblSpaceEve = new Label(); 	 	
+	        lblSpaceEve.Width = 1; 	 	
+	        lblSpaceEve.ID = "lblSpaceAdd_eve" + MstPanel.ID; 	 	
+	        lblSpaceEve.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpaceEve);
+
+            Image night = new Image(); 	 	
+	        night.ID = "imgNight" + MstPanel.ID; 	 	
+	        night.ImageUrl = @"..\Images\night2.jpg"; 	 	
+	        theheaderPnl.Controls.Add(night); 	 	
+	 	 	
+	        Label lblSpaceNight = new Label(); 	 	
+	        lblSpaceNight.Width = 10; 	 	
+	        lblSpaceNight.ID = "lblSpaceAdd_Night" + MstPanel.ID; 	 	
+	        lblSpaceNight.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpaceNight);
+
 
             Label theLabel5 = new Label();
             theLabel5.ID = "lblTBDrgDuration";
             theLabel5.Text = "Duration<br/> (Days)";
-            theLabel5.Width = 55;
+            theLabel5.Width = 50;
             theLabel5.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel5);
 
             Label theLabel6 = new Label();
             theLabel6.ID = "lblTBDrgPrescribed";
-            theLabel6.Text = "Quantity<br/> Prescribed";
-            theLabel6.Width = 75;
+            theLabel6.Text = "Quantity<br/> Pres";
+            theLabel6.Width = 60;
             theLabel6.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel6);
 
             Label theLabel7 = new Label();
             theLabel7.ID = "lblTBDrgDispensed";
-            theLabel7.Text = "Quantity<br/> Dispensed";
-            theLabel7.Width = 75;
+            theLabel7.Text = "Quantity<br/> Disp";
+            theLabel7.Width = 60;
             theLabel7.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel7);
 
@@ -2833,7 +3038,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theDrugNm = new Label();
             theDrugNm.ID = "drgNm" + DrugId + "^" + Generic;
             theDrugNm.Text = theDV[0][1].ToString();
-            theDrugNm.Width = 210;
+            theDrugNm.Width = 190;
             thePnl.Controls.Add(theDrugNm);
 
             /////// Space//////
@@ -2844,44 +3049,79 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             thePnl.Controls.Add(theSpace);
             ////////////////////
 
-            TextBox theDose = new TextBox();
-            theDose.ID = "drgDose" + DrugId + "^" + Generic;
-            theDose.Width = 30;
-            theDose.Text = "";
-            theDose.Load += new EventHandler(Control_Load);
-            thePnl.Controls.Add(theDose);
+            //TextBox theDose = new TextBox();
+            //theDose.ID = "drgDose" + DrugId + "^" + Generic;
+            //theDose.Width = 30;
+            //theDose.Text = "";
+            //theDose.Load += new EventHandler(Control_Load);
+            //thePnl.Controls.Add(theDose);
 
             BindFunctions theBindMgr = new BindFunctions();
 
-            /////// Space//////
-            Label theSpace2 = new Label();
-            theSpace2.ID = "theSpace2*" + DrugId + "^" + Generic;
-            theSpace2.Width = 10;
-            theSpace2.Text = "";
-            thePnl.Controls.Add(theSpace2);
-            ////////////////////
+            ///////// Space//////
+            //Label theSpace2 = new Label();
+            //theSpace2.ID = "theSpace2*" + DrugId + "^" + Generic;
+            //theSpace2.Width = 10;
+            //theSpace2.Text = "";
+            //thePnl.Controls.Add(theSpace2);
+            //////////////////////
 
-            DropDownList theFrequency = new DropDownList();
+            //DropDownList theFrequency = new DropDownList();
 
-            theFrequency.ID = "drgFrequency" + DrugId + "^" + Generic;
-            theFrequency.Width = 70;
-            DataTable DTFreq = new DataTable();
-            //DTFreq = theDS.Tables[6]; // Rupesh 03-Sept 
-            DTFreq = theDS.Tables[8];
-            theBindMgr.BindCombo(theFrequency, DTFreq, "FrequencyName", "FrequencyId");
-            thePnl.Controls.Add(theFrequency);
+            //theFrequency.ID = "drgFrequency" + DrugId + "^" + Generic;
+            //theFrequency.Width = 70;
+            //DataTable DTFreq = new DataTable();
+            ////DTFreq = theDS.Tables[6]; // Rupesh 03-Sept 
+            //DTFreq = theDS.Tables[8];
+            //theBindMgr.BindCombo(theFrequency, DTFreq, "FrequencyName", "FrequencyId");
+            //thePnl.Controls.Add(theFrequency);
 
-            /////// Space//////
-            Label theSpace3 = new Label();
-            theSpace3.ID = "theSpace3*" + DrugId + "^" + Generic;
-            theSpace3.Width = 10;
-            theSpace3.Text = "";
-            thePnl.Controls.Add(theSpace3);
-            ////////////////////
+            ///////// Space//////
+            //Label theSpace3 = new Label();
+            //theSpace3.ID = "theSpace3*" + DrugId + "^" + Generic;
+            //theSpace3.Width = 10;
+            //theSpace3.Text = "";
+            //thePnl.Controls.Add(theSpace3);
+            //////////////////////
+
+            TextBox txtMorning = new TextBox(); 	 	
+	        txtMorning.ID = "drgMorning" + DrugId + "^" + Generic; 	 	
+	        txtMorning.Width = 37; 	 	
+	        txtMorning.Text = ""; 	 	
+	        txtMorning.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtMorning); 
+
+            TextBox txtNoon = new TextBox(); 	 	
+	        txtNoon.ID = "drgNoon" + DrugId + "^" + Generic; 	 	
+	        txtNoon.Width = 37; 	 	
+	        txtNoon.Text = ""; 	 	
+	        txtNoon.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtNoon);
+
+            TextBox txtEvening = new TextBox(); 	 	
+	        txtEvening.ID = "drgEvening" + DrugId + "^" + Generic; 	 	
+	        txtEvening.Width = 37; 	 	
+	        txtEvening.Text = ""; 	 	
+	        txtEvening.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtEvening); 
+
+            TextBox txtNight = new TextBox(); 	 	
+	        txtNight.ID = "drgNight" + DrugId + "^" + Generic; 	 	
+	        txtNight.Width = 37; 	 	
+	        txtNight.Text = ""; 	 	
+	        txtNight.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtNight); 	 	
+	 	 	
+	        ////////////Space//////////////////////// 	 	
+	        Label theSpaceNight = new Label(); 	 	
+	        theSpaceNight.ID = "theSpaceNight" + DrugId + "^" + Generic; 	 	
+	        theSpaceNight.Width = 10; 	 	
+	        theSpaceNight.Text = ""; 	 	
+	        thePnl.Controls.Add(theSpaceNight);
 
             TextBox theDuration = new TextBox();
             theDuration.ID = "drgDuration" + DrugId + "^" + Generic;
-            theDuration.Attributes.Add("OnBlur", "CalculateTotalDailyDose('ctl00_IQCareContentPlaceHolder_drgDose" + DrugId + "^" + Generic + "', 'ctl00_IQCareContentPlaceHolder_drgFrequency" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgDuration" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgQtyPrescribed" + DrugId + "^" + Generic + "');");
+            theDuration.Attributes.Add("OnBlur", "CalculateDrugsPrescribed('ctl00_IQCareContentPlaceHolder_drgMorning" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgNoon" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgEvening" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgNight" + DrugId + "^" + Generic + "', 'ctl00_IQCareContentPlaceHolder_drgDuration" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgQtyPrescribed" + DrugId + "^" + Generic + "','" + theDV[0]["syrup"].ToString() + "','" + theDV[0]["QtyUnitDisp"].ToString() + "');");
             theDuration.Width = 50;
             theDuration.Text = "";
             theDuration.Load += new EventHandler(Control_Load);
@@ -2898,7 +3138,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             TextBox theQtyPrescribed = new TextBox();
             theQtyPrescribed.ID = "drgQtyPrescribed" + DrugId + "^" + Generic;
 
-            theQtyPrescribed.Width = 60;
+            theQtyPrescribed.Width = 40;
             theQtyPrescribed.Text = "";
             //theQtyPrescribed.Load += new EventHandler(DecimalText_Load);
             theQtyPrescribed.Load += new EventHandler(Control_Load);
@@ -2907,14 +3147,14 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space////////////////////////
             Label theSpace5 = new Label();
             theSpace5.ID = "theSpace5*" + DrugId + "^" + Generic;
-            theSpace5.Width = 10;
+            theSpace5.Width = 15;
             theSpace5.Text = "";
             thePnl.Controls.Add(theSpace5);
             ////////////////////////////////////////
 
             TextBox theQtyDispensed = new TextBox();
             theQtyDispensed.ID = "drgQtyDispensed" + DrugId + "^" + Generic;
-            theQtyDispensed.Width = 60;
+            theQtyDispensed.Width = 40;
             theQtyDispensed.Text = "";
             if (Session["Paperless"].ToString() == "1" && Session["SCMModule"] == null)
             {
@@ -2948,7 +3188,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space////////////////////////
             Label theSpace8 = new Label();
             theSpace8.ID = "theSpace8*" + DrugId + "^" + Generic;
-            theSpace8.Width = 10;
+            theSpace8.Width = 15;
             theSpace8.Text = "";
             thePnl.Controls.Add(theSpace8);
             //////////////////////////////////////
@@ -2957,7 +3197,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
 
             DropDownList theTreatmenMonth = new DropDownList();
             theTreatmenMonth.ID = "drgTreatmenMonth" + DrugId + "^" + Generic;
-            theTreatmenMonth.Width = 60;
+            theTreatmenMonth.Width = 50;
             DataTable DTTrMonth = new DataTable();
             DTTrMonth = MakeTreatmentMonth();
             theBindMgr.BindCombo(theTreatmenMonth, DTTrMonth, "Name", "Id");
@@ -2966,7 +3206,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space///////////////////////
             Label theSpace7 = new Label();
             theSpace7.ID = "theSpace7" + DrugId;
-            theSpace7.Width = 10;
+            theSpace7.Width = 20;
             theSpace7.Text = "";
             thePnl.Controls.Add(theSpace7);
 
@@ -3094,7 +3334,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             /////////////////////////////////////////////////
             Panel theheaderPnl = new Panel();
             theheaderPnl.ID = "pnlARVhdrDrug" + MstPanel.ID;
-            theheaderPnl.Height = 20;
+            theheaderPnl.Height = 30;
             theheaderPnl.CssClass = "scrollable";
             theheaderPnl.Font.Bold = true;
             theheaderPnl.Font.Size = 9;
@@ -3109,7 +3349,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theLabel1 = new Label();
             theLabel1.ID = "lblDrgNm" + MstPanel.ID;
             theLabel1.Text = "Drug Name";
-            theLabel1.Width = 240;
+            theLabel1.Width = 200;
             theheaderPnl.Controls.Add(theLabel1);
 
 
@@ -3119,29 +3359,73 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             lblSpace.Text = "";
             theheaderPnl.Controls.Add(lblSpace);
 
-            Label theLabelDose = new Label();
-            theLabelDose.ID = "lblDrgDose" + MstPanel.ID;
-            theLabelDose.Text = "Dose";
-            theLabelDose.Width = 50;
-            theheaderPnl.Controls.Add(theLabelDose);
+            //Label theLabelDose = new Label();
+            //theLabelDose.ID = "lblDrgDose" + MstPanel.ID;
+            //theLabelDose.Text = "Dose";
+            //theLabelDose.Width = 50;
+            //theheaderPnl.Controls.Add(theLabelDose);
+
+            //Label lblSpace1 = new Label();
+            //lblSpace1.Width = 15;
+            //lblSpace1.ID = "lblSpaceAdd_1" + MstPanel.ID;
+            //lblSpace1.Text = "";
+            //theheaderPnl.Controls.Add(lblSpace1);
+
+            //Label theLabel4 = new Label();
+            //theLabel4.ID = "lblDrgFrequency" + MstPanel.ID;
+            //theLabel4.Text = "Frequency";
+            //theLabel4.Width = 70;
+            //theheaderPnl.Controls.Add(theLabel4);
+
+            //Label lblSpace2 = new Label();
+            //lblSpace2.Width = 30;
+            //lblSpace2.ID = "lblSpaceAdd_2" + MstPanel.ID;
+            //lblSpace2.Text = "";
+            //theheaderPnl.Controls.Add(lblSpace2);
+
+            Image morning = new Image(); 	 	
+	        morning.ID = "imgMorning" + MstPanel.ID; 	 	
+	        morning.ImageUrl = @"..\Images\morning1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(morning);
 
             Label lblSpace1 = new Label();
-            lblSpace1.Width = 15;
-            lblSpace1.ID = "lblSpaceAdd_1" + MstPanel.ID;
+            lblSpace1.Width = 1;
+            lblSpace1.ID = "lblSpaceAdd_midday" + MstPanel.ID;
             lblSpace1.Text = "";
             theheaderPnl.Controls.Add(lblSpace1);
 
-            Label theLabel4 = new Label();
-            theLabel4.ID = "lblDrgFrequency" + MstPanel.ID;
-            theLabel4.Text = "Frequency";
-            theLabel4.Width = 70;
-            theheaderPnl.Controls.Add(theLabel4);
+            Image noon = new Image(); 	 	
+	        noon.ID = "imgNoon" + MstPanel.ID; 	 	
+	        noon.ImageUrl = @"..\Images\midday1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(noon); 
 
-            Label lblSpace2 = new Label();
-            lblSpace2.Width = 30;
-            lblSpace2.ID = "lblSpaceAdd_2" + MstPanel.ID;
-            lblSpace2.Text = "";
-            theheaderPnl.Controls.Add(lblSpace2);
+            Label lblSpace2 = new Label(); 
+	        lblSpace2.Width = 1; 
+	        lblSpace2.ID = "lblSpaceAdd_Noon" + MstPanel.ID; 
+	        lblSpace2.Text = "";
+	        theheaderPnl.Controls.Add(lblSpace2);
+
+            Image evening = new Image(); 	 	
+	        evening.ID = "imgEvening" + MstPanel.ID; 	 	
+	        evening.ImageUrl = @"..\Images\evening1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(evening); 	 	
+	 	 	
+	        Label lblSpaceEve = new Label(); 	 	
+	        lblSpaceEve.Width = 1; 	 	
+	        lblSpaceEve.ID = "lblSpaceAdd_eve" + MstPanel.ID; 	 	
+	        lblSpaceEve.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpaceEve);
+
+            Image night = new Image(); 	 	
+	        night.ID = "imgNight" + MstPanel.ID; 	 	
+	        night.ImageUrl = @"..\Images\night2.jpg"; 	 	
+	        theheaderPnl.Controls.Add(night); 	 	
+	 	 	
+	        Label lblSpaceNight = new Label(); 	 	
+	        lblSpaceNight.Width = 20; 	 	
+	        lblSpaceNight.ID = "lblSpaceAdd_Night" + MstPanel.ID; 	 	
+	        lblSpaceNight.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpaceNight); 
 
             Label theLabel5 = new Label();
             theLabel5.ID = "lblDrgDuration" + MstPanel.ID;
@@ -3161,7 +3445,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             
 
             Label lblSpace3 = new Label();
-            lblSpace3.Width = 30;
+            lblSpace3.Width = 20;
             lblSpace3.ID = "lblSpaceAdd_4" + MstPanel.ID;
             lblSpace3.Text = "";
             theheaderPnl.Controls.Add(lblSpace3);
@@ -3169,25 +3453,25 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theLabel6 = new Label();
             theLabel6.ID = "lblDrgPrescribed" + MstPanel.ID;
             theLabel6.Text = "Quantity<br /> Prescribed";
-            theLabel6.Width = 70;
+            theLabel6.Width = 50;
             theLabel6.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel6);
 
             Label lblSpace4 = new Label();
-            lblSpace4.Width = 10;
+            lblSpace4.Width = 20;
             lblSpace4.ID = "lblSpaceAdd_5" + MstPanel.ID;
             lblSpace4.Text = "";
             theheaderPnl.Controls.Add(lblSpace4);
 
             Label theLabel7 = new Label();
             theLabel7.ID = "lblDrgDispensed" + MstPanel.ID;
-            theLabel7.Text = "Quantity<br /> Dispensed";
-            theLabel7.Width = 70;
+            theLabel7.Text = "Quantity<br /> Disp";
+            theLabel7.Width = 50;
             theLabel7.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel7);
 
             Label lblSpace5 = new Label();
-            lblSpace5.Width = 15;
+            lblSpace5.Width = 20;
             lblSpace5.ID = "lblpropSpace" + MstPanel.ID;
             lblSpace5.Text = "";
             theheaderPnl.Controls.Add(lblSpace5);
@@ -3260,7 +3544,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theDrugNm = new Label();
             theDrugNm.ID = "drgNm" + DrugId;
             theDrugNm.Text = theDV[0][1].ToString();
-            theDrugNm.Width = 240;
+            theDrugNm.Width = 200;
             
             thePnl.Controls.Add(theDrugNm);
 
@@ -3273,59 +3557,88 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
 
             thePnl.Controls.Add(theSpace);
 
-            TextBox theDose = new TextBox();
-            theDose.ID = "drgDose" + DrugId + "^" + Generic;
-            theDose.Width = 50;
-            theDose.Text = "";
-            theDose.Load += new EventHandler(Control_Load);
-            thePnl.Controls.Add(theDose);
+            //TextBox theDose = new TextBox();
+            //theDose.ID = "drgDose" + DrugId + "^" + Generic;
+            //theDose.Width = 50;
+            //theDose.Text = "";
+            //theDose.Load += new EventHandler(Control_Load);
+            //thePnl.Controls.Add(theDose);
 
-            BindFunctions theBindMgr = new BindFunctions();
+            //BindFunctions theBindMgr = new BindFunctions();
 
-            ////////////Space////////////////////////
-            Label theSpace1 = new Label();
-            theSpace1.ID = "theSpace1" + DrugId;
-            theSpace1.Width = 10;
-            theSpace1.Text = "";
-            thePnl.Controls.Add(theSpace1);
-            ////////////////////////////////////////
+            //////////////Space////////////////////////
+            //Label theSpace1 = new Label();
+            //theSpace1.ID = "theSpace1" + DrugId;
+            //theSpace1.Width = 10;
+            //theSpace1.Text = "";
+            //thePnl.Controls.Add(theSpace1);
+            //////////////////////////////////////////
 
-            DropDownList theDrugFrequency = new DropDownList();
-            theDrugFrequency.ID = "drgFrequency" + DrugId;
-            theDrugFrequency.Width = 80;
-            #region "BindCombo"
-            DataTable theDTF = new DataTable();
-            DataView theDVFrequency = new DataView(theDS_Custom.Tables[8]);
+            //DropDownList theDrugFrequency = new DropDownList();
+            //theDrugFrequency.ID = "drgFrequency" + DrugId;
+            //theDrugFrequency.Width = 80;
+            //#region "BindCombo"
+            //DataTable theDTF = new DataTable();
+            //DataView theDVFrequency = new DataView(theDS_Custom.Tables[8]);
 
-            DataTable theDTFrequency = new DataTable();
-            if (theDVFrequency.Count > 0)
-            {
-                IQCareUtils theUtils = new IQCareUtils();
-                theDTFrequency = theUtils.CreateTableFromDataView(theDVFrequency);
-                theBindMgr.BindCombo(theDrugFrequency, theDTFrequency, "FrequencyName", "FrequencyId");
-            }
-            #endregion
-            thePnl.Controls.Add(theDrugFrequency);
+            //DataTable theDTFrequency = new DataTable();
+            //if (theDVFrequency.Count > 0)
+            //{
+            //    IQCareUtils theUtils = new IQCareUtils();
+            //    theDTFrequency = theUtils.CreateTableFromDataView(theDVFrequency);
+            //    theBindMgr.BindCombo(theDrugFrequency, theDTFrequency, "FrequencyName", "FrequencyId");
+            //}
+            //#endregion
+            //thePnl.Controls.Add(theDrugFrequency);
+
+            TextBox txtMorning = new TextBox();
+	        txtMorning.ID = "drgMorning" + DrugId; 	 	
+	        txtMorning.Width = 37; 	 	
+	        txtMorning.Text = ""; 	 	
+	        txtMorning.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtMorning); 
+
+            TextBox txtNoon = new TextBox(); 	 	
+	        txtNoon.ID = "drgNoon" + DrugId; 	 	
+	        txtNoon.Width = 37; 	 	
+	        txtNoon.Text = ""; 	 	
+	        txtNoon.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtNoon); 
+
+            TextBox txtEvening = new TextBox(); 	 	
+	        txtEvening.ID = "drgEvening" + DrugId; 	 	
+	        txtEvening.Width = 37; 	 	
+	        txtEvening.Text = ""; 	 	
+	        txtEvening.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtEvening);
+
+            TextBox txtNight = new TextBox(); 	 	
+	        txtNight.ID = "drgNight" + DrugId; 	 	
+	        txtNight.Width = 37; 	 	
+	        txtNight.Text = ""; 	 	
+	        txtNight.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtNight); 
+
 
             ////////////Space////////////////////////
             Label theSpace2 = new Label();
             theSpace2.ID = "theSpace2" + DrugId;
-            theSpace2.Width = 15;
+            theSpace2.Width = 20;
             theSpace2.Text = "";
             thePnl.Controls.Add(theSpace2);
             ////////////////////////////////////////
 
             TextBox theDuration = new TextBox();
             theDuration.ID = "drgDuration" + DrugId;
-            theDuration.Attributes.Add("OnBlur", "CalculateTotalDailyDose('ctl00_IQCareContentPlaceHolder_drgDose" + DrugId + "^" + Generic + "', 'ctl00_IQCareContentPlaceHolder_drgFrequency" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgDuration" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgQtyPrescribed" + DrugId + "');");
-            theDuration.Width = 60;
+            theDuration.Attributes.Add("OnBlur", "CalculateDrugsPrescribed('ctl00_IQCareContentPlaceHolder_drgMorning" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgNoon" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgEvening" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgNight" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgDuration" + DrugId + "','ctl00_IQCareContentPlaceHolder_drgQtyPrescribed" + DrugId + "','" + theDV[0]["syrup"].ToString() + "','" + theDV[0]["QtyUnitDisp"].ToString() + "');");
+            theDuration.Width = 50;
             theDuration.Load += new EventHandler(Control_Load);
             thePnl.Controls.Add(theDuration);
 
             ////////////Space////////////////////////
             Label theSpace3 = new Label();
             theSpace3.ID = "theSpace3" + DrugId;
-            theSpace3.Width = 20;
+            theSpace3.Width = 15;
             theSpace3.Text = "";
             thePnl.Controls.Add(theSpace3);
             ////////////////////////////////////////
@@ -3333,20 +3646,20 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             TextBox theQtyPrescribed = new TextBox();
             theQtyPrescribed.ID = "drgQtyPrescribed" + DrugId;
 
-            theQtyPrescribed.Width = 60;
+            theQtyPrescribed.Width = 50;
             theQtyPrescribed.Load += new EventHandler(Control_Load);
             thePnl.Controls.Add(theQtyPrescribed);
             ////////////Space////////////////////////
             Label theSpace4 = new Label();
             theSpace4.ID = "theSpace4" + DrugId;
-            theSpace4.Width = 20;
+            theSpace4.Width = 15;
             theSpace4.Text = "";
             thePnl.Controls.Add(theSpace4);
             ////////////////////////////////////////
 
             TextBox theQtyDispensed = new TextBox();
             theQtyDispensed.ID = "drgQtyDispensed" + DrugId;
-            theQtyDispensed.Width = 60;
+            theQtyDispensed.Width = 50;
             theQtyDispensed.Load += new EventHandler(Control_Load);
             if (Session["Paperless"].ToString() == "1" && Session["SCMModule"] == null)
             {
@@ -3386,7 +3699,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space///////////////////////
             Label theSpace8 = new Label();
             theSpace8.ID = "theSpace8" + DrugId;
-            theSpace8.Width = 80;
+            theSpace8.Width = 90;
             theSpace8.Text = "";
             thePnl.Controls.Add(theSpace8);
 
@@ -3529,7 +3842,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             /////////////////////////////////////////////////
             Panel theheaderPnl = new Panel();
             theheaderPnl.ID = "pnlHeaderOtherDrug" + MstPanel.ID;
-            theheaderPnl.Height = 20;
+            theheaderPnl.Height = 30;
             theheaderPnl.CssClass = "scrollable";
             theheaderPnl.Font.Bold = true;
             theheaderPnl.Font.Size = 9;
@@ -3544,7 +3857,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theLabel1 = new Label();
             theLabel1.ID = "lblDrgNm" + MstPanel.ID;
             theLabel1.Text = "Drug Name";
-            theLabel1.Width = 240;
+            theLabel1.Width = 200;
             theheaderPnl.Controls.Add(theLabel1);
 
             Label lblSpace = new Label();
@@ -3553,34 +3866,78 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             lblSpace.Text = "";
             theheaderPnl.Controls.Add(lblSpace);
 
-            Label theLabel2 = new Label();
-            theLabel2.ID = "lblDrgDose";
-            theLabel2.Text = "Dose";
-            theLabel2.Width = 50;
-            theheaderPnl.Controls.Add(theLabel2);
+            //Label theLabel2 = new Label();
+            //theLabel2.ID = "lblDrgDose";
+            //theLabel2.Text = "Dose";
+            //theLabel2.Width = 50;
+            //theheaderPnl.Controls.Add(theLabel2);
 
-            //Label theLabel3 = new Label();
-            //theLabel3.ID = "lblDrgUnits";
-            //theLabel3.Text = "Unit";
-            //theLabel3.Width = 90;
-            //theheaderPnl.Controls.Add(theLabel3);
-            Label lblSpace1 = new Label();
-            lblSpace1.Width = 15;
-            lblSpace1.ID = "lblSpaceAdd_1" + MstPanel.ID;
-            lblSpace1.Text = "";
-            theheaderPnl.Controls.Add(lblSpace1);
+            ////Label theLabel3 = new Label();
+            ////theLabel3.ID = "lblDrgUnits";
+            ////theLabel3.Text = "Unit";
+            ////theLabel3.Width = 90;
+            ////theheaderPnl.Controls.Add(theLabel3);
+            //Label lblSpace1 = new Label();
+            //lblSpace1.Width = 15;
+            //lblSpace1.ID = "lblSpaceAdd_1" + MstPanel.ID;
+            //lblSpace1.Text = "";
+            //theheaderPnl.Controls.Add(lblSpace1);
 
-            Label theLabel4 = new Label();
-            theLabel4.ID = "lblDrgFrequency" + MstPanel.ID;
-            theLabel4.Text = "Frequency";
-            theLabel4.Width = 70;
-            theheaderPnl.Controls.Add(theLabel4);
+            //Label theLabel4 = new Label();
+            //theLabel4.ID = "lblDrgFrequency" + MstPanel.ID;
+            //theLabel4.Text = "Frequency";
+            //theLabel4.Width = 70;
+            //theheaderPnl.Controls.Add(theLabel4);
 
-            Label lblSpace2 = new Label();
-            lblSpace2.Width = 30;
-            lblSpace2.ID = "lblSpaceAdd_2" + MstPanel.ID;
-            lblSpace2.Text = "";
-            theheaderPnl.Controls.Add(lblSpace2);
+            //Label lblSpace2 = new Label();
+            //lblSpace2.Width = 30;
+            //lblSpace2.ID = "lblSpaceAdd_2" + MstPanel.ID;
+            //lblSpace2.Text = "";
+            //theheaderPnl.Controls.Add(lblSpace2);
+
+            Image morning = new Image(); 	 	
+	        morning.ID = "imgMorning" + MstPanel.ID; 	 	
+	        morning.ImageUrl = @"..\Images\morning1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(morning); 	 	
+	 	 	
+	        Label lblSpace1 = new Label();
+	        lblSpace1.Width = 1;
+	        lblSpace1.ID = "lblSpaceAdd_midday" + MstPanel.ID;
+	        lblSpace1.Text = "";
+	        theheaderPnl.Controls.Add(lblSpace1);
+
+            Image noon = new Image(); 	 	
+	        noon.ID = "imgNoon" + MstPanel.ID; 	 	
+	        noon.ImageUrl = @"..\Images\midday1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(noon); 	 	
+	 		 
+	        Label lblSpace2 = new Label();
+	        lblSpace2.Width = 1;
+	        lblSpace2.ID = "lblSpaceAdd_Noon" + MstPanel.ID;
+	        lblSpace2.Text = "";
+	        theheaderPnl.Controls.Add(lblSpace2);
+
+            Image evening = new Image(); 	 	
+	        evening.ID = "imgEvening" + MstPanel.ID; 	 	
+	        evening.ImageUrl = @"..\Images\evening1.jpg"; 	 	
+	        theheaderPnl.Controls.Add(evening); 	 	
+	 	 	
+	        Label lblSpaceEve = new Label(); 	 	
+	        lblSpaceEve.Width = 1; 	 	
+	        lblSpaceEve.ID = "lblSpaceAdd_eve" + MstPanel.ID; 	 	
+	        lblSpaceEve.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpaceEve);
+
+            Image night = new Image(); 	 	
+	        night.ID = "imgNight" + MstPanel.ID; 	 	
+	        night.ImageUrl = @"..\Images\night2.jpg"; 	 	
+	        theheaderPnl.Controls.Add(night); 	 	
+	 	 	
+	        Label lblSpaceNight = new Label(); 	 	
+	        lblSpaceNight.Width = 20; 	 	
+	        lblSpaceNight.ID = "lblSpaceAdd_Night" + MstPanel.ID; 	 	
+	        lblSpaceNight.Text = ""; 	 	
+	        theheaderPnl.Controls.Add(lblSpaceNight);
 
             Label theLabel5 = new Label();
             theLabel5.ID = "lblDrgDuration" + MstPanel.ID;
@@ -3590,33 +3947,33 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             theheaderPnl.Controls.Add(theLabel5);
 
             Label lblSpace3 = new Label();
-            lblSpace3.Width = 30;
+            lblSpace3.Width = 20;
             lblSpace3.ID = "lblSpaceAdd_4" + MstPanel.ID;
             lblSpace3.Text = "";
             theheaderPnl.Controls.Add(lblSpace3);
 
             Label theLabel6 = new Label();
             theLabel6.ID = "lblDrgPrescribed" + MstPanel.ID;
-            theLabel6.Text = "Quantity<br /> Prescribed";
-            theLabel6.Width = 70;
+            theLabel6.Text = "Quantity<br /> Pres";
+            theLabel6.Width = 50;
             theLabel6.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel6);
 
             Label lblSpace4 = new Label();
-            lblSpace4.Width = 10;
+            lblSpace4.Width = 20;
             lblSpace4.ID = "lblSpaceAdd_5" + MstPanel.ID;
             lblSpace4.Text = "";
             theheaderPnl.Controls.Add(lblSpace4);
 
             Label theLabel7 = new Label();
             theLabel7.ID = "lblDrgDispensed" + MstPanel.ID;
-            theLabel7.Text = "Quantity<br /> Dispensed";
-            theLabel7.Width = 70;
+            theLabel7.Text = "Quantity<br /> Disp";
+            theLabel7.Width = 50;
             theLabel7.Attributes.Add("Style", "text-align:center");
             theheaderPnl.Controls.Add(theLabel7);
 
             Label lblSpace5 = new Label();
-            lblSpace5.Width = 15;
+            lblSpace5.Width = 20;
             lblSpace5.ID = "lblpropSpace" + MstPanel.ID;
             lblSpace5.Text = "";
             theheaderPnl.Controls.Add(lblSpace5);
@@ -3690,7 +4047,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             Label theDrugNm = new Label();
             theDrugNm.ID = "drgNm" + DrugId + "^" + Generic;
             theDrugNm.Text = theDV[0][1].ToString();
-            theDrugNm.Width = 240;
+            theDrugNm.Width = 200;
             thePnl.Controls.Add(theDrugNm);
 
             /////// Space//////
@@ -3700,45 +4057,81 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             theSpace.Text = "";
             thePnl.Controls.Add(theSpace);
 
+            ////////////////////////
+            //TextBox theDose = new TextBox();
+            //theDose.ID = "drgDose" + DrugId + "^" + Generic;
+            //theDose.Width = 50;
+            //theDose.Text = "";
+            //theDose.Load += new EventHandler(Control_Load);
+            //thePnl.Controls.Add(theDose);
+
+            //BindFunctions theBindMgr = new BindFunctions();
+
+            ///////// Space//////
+            //Label theSpace2 = new Label();
+            //theSpace2.ID = "theSpace2*" + DrugId + "^" + Generic;
+            //theSpace2.Width = 10;
+            //theSpace2.Text = "";
+            //thePnl.Controls.Add(theSpace2);
             //////////////////////
-            TextBox theDose = new TextBox();
-            theDose.ID = "drgDose" + DrugId + "^" + Generic;
-            theDose.Width = 50;
-            theDose.Text = "";
-            theDose.Load += new EventHandler(Control_Load);
-            thePnl.Controls.Add(theDose);
 
-            BindFunctions theBindMgr = new BindFunctions();
+            //DropDownList theFrequency = new DropDownList();
+            //theFrequency.ID = "drgFrequency" + DrugId + "^" + Generic;
+            //theFrequency.Width = 80;
+            //DataTable DTFreq = new DataTable();
+            ////DTFreq = theDS.Tables[6]; // Rupesh 03-Sept 
+            //DTFreq = theDS.Tables[8];
+            //theBindMgr.BindCombo(theFrequency, DTFreq, "FrequencyName", "FrequencyId");
+            //thePnl.Controls.Add(theFrequency);
 
-            /////// Space//////
-            Label theSpace2 = new Label();
-            theSpace2.ID = "theSpace2*" + DrugId + "^" + Generic;
-            theSpace2.Width = 10;
-            theSpace2.Text = "";
-            thePnl.Controls.Add(theSpace2);
-            ////////////////////
+            ///////// Space//////
+            //Label theSpace3 = new Label();
+            //theSpace3.ID = "theSpace3*" + DrugId + "^" + Generic;
+            //theSpace3.Width = 15;
+            //theSpace3.Text = "";
+            //thePnl.Controls.Add(theSpace3);
+            ///////////////////////////////////
 
-            DropDownList theFrequency = new DropDownList();
-            theFrequency.ID = "drgFrequency" + DrugId + "^" + Generic;
-            theFrequency.Width = 80;
-            DataTable DTFreq = new DataTable();
-            //DTFreq = theDS.Tables[6]; // Rupesh 03-Sept 
-            DTFreq = theDS.Tables[8];
-            theBindMgr.BindCombo(theFrequency, DTFreq, "FrequencyName", "FrequencyId");
-            thePnl.Controls.Add(theFrequency);
+            TextBox txtMorning = new TextBox();
+	        txtMorning.ID = "drgMorning" + DrugId + "^" + Generic; 	 	
+	        txtMorning.Width = 37; 	 	
+	        txtMorning.Text = ""; 	 	
+	        txtMorning.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtMorning); 
 
-            /////// Space//////
-            Label theSpace3 = new Label();
-            theSpace3.ID = "theSpace3*" + DrugId + "^" + Generic;
-            theSpace3.Width = 15;
-            theSpace3.Text = "";
-            thePnl.Controls.Add(theSpace3);
-            ////////////////////
+            TextBox txtNoon = new TextBox(); 	 	
+	        txtNoon.ID = "drgNoon" + DrugId + "^" + Generic; 	 	
+	        txtNoon.Width = 37; 	 	
+	        txtNoon.Text = ""; 	 	
+	        txtNoon.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtNoon); 
+
+            TextBox txtEvening = new TextBox(); 	 	
+	        txtEvening.ID = "drgEvening" + DrugId + "^" + Generic; 	 	
+	        txtEvening.Width = 37; 	 	
+	        txtEvening.Text = ""; 	 	
+	        txtEvening.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtEvening); 	 	
+	 
+            TextBox txtNight = new TextBox(); 	 	
+	        txtNight.ID = "drgNight" + DrugId + "^" + Generic; 	 	
+	        txtNight.Width = 37; 	 	
+	        txtNight.Text = ""; 	 	
+	        txtNight.Load += new EventHandler(Control_Load); 	 	
+	        thePnl.Controls.Add(txtNight); 
+
+            ////////////Space//////////////////////// 	 	
+	        Label theSpaceNight = new Label(); 	 	
+	        theSpaceNight.ID = "theSpaceNight" + DrugId + "^" + Generic; 	 	
+	        theSpaceNight.Width = 20; 	 	
+	        theSpaceNight.Text = ""; 	 	
+	        thePnl.Controls.Add(theSpaceNight); 	 	
+	        ////////////////////////////////////////
 
             TextBox theDuration = new TextBox();
             theDuration.ID = "drgDuration" + DrugId + "^" + Generic;
-            theDuration.Attributes.Add("OnBlur", "CalculateTotalDailyDose('ctl00_IQCareContentPlaceHolder_drgDose" + DrugId + "^" + Generic + "', 'ctl00_IQCareContentPlaceHolder_drgFrequency" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgDuration" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgQtyPrescribed" + DrugId + "^" + Generic + "');");
-            theDuration.Width = 60;
+            theDuration.Attributes.Add("OnBlur", "CalculateDrugsPrescribed('ctl00_IQCareContentPlaceHolder_drgMorning" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgNoon" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgEvening" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgNight" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgDuration" + DrugId + "^" + Generic + "','ctl00_IQCareContentPlaceHolder_drgQtyPrescribed" + DrugId + "^" + Generic + "','" + theDV[0]["syrup"].ToString() + "','" + theDV[0]["QtyUnitDisp"].ToString() + "');");
+            theDuration.Width = 50;
             theDuration.Text = "";
             theDuration.Load += new EventHandler(Control_Load);
             thePnl.Controls.Add(theDuration);
@@ -3746,7 +4139,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space////////////////////////
             Label theSpace4 = new Label();
             theSpace4.ID = "theSpace4*" + DrugId + "^" + Generic;
-            theSpace4.Width = 20;
+            theSpace4.Width = 15;
             theSpace4.Text = "";
             thePnl.Controls.Add(theSpace4);
             ////////////////////////////////////////
@@ -3754,7 +4147,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             TextBox theQtyPrescribed = new TextBox();
             theQtyPrescribed.ID = "drgQtyPrescribed" + DrugId + "^" + Generic;
 
-            theQtyPrescribed.Width = 60;
+            theQtyPrescribed.Width = 50;
             theQtyPrescribed.Text = "";
             //theQtyPrescribed.Load += new EventHandler(DecimalText_Load);
             theQtyPrescribed.Load += new EventHandler(Control_Load);
@@ -3763,14 +4156,14 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space////////////////////////
             Label theSpace5 = new Label();
             theSpace5.ID = "theSpace5*" + DrugId + "^" + Generic;
-            theSpace5.Width = 20;
+            theSpace5.Width = 15;
             theSpace5.Text = "";
             thePnl.Controls.Add(theSpace5);
             ////////////////////////////////////////
 
             TextBox theQtyDispensed = new TextBox();
             theQtyDispensed.ID = "drgQtyDispensed" + DrugId + "^" + Generic;
-            theQtyDispensed.Width = 60;
+            theQtyDispensed.Width = 50;
             theQtyDispensed.Text = "";
             if (Session["Paperless"].ToString() == "1" && Session["SCMModule"] == null)
             {
@@ -3811,7 +4204,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             ////////////Space///////////////////////
             Label theSpace8 = new Label();
             theSpace8.ID = "theSpace8" + DrugId;
-            theSpace8.Width = 80;
+            theSpace8.Width = 90;
             theSpace8.Text = "";
             thePnl.Controls.Add(theSpace8);
 
@@ -4457,6 +4850,12 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
         DataColumn theDrgSchedule;
         DataColumn theQtyPrescribed;
         DataColumn theQtyDispensed;
+        ////////////////////////////////////////////// 	 	
+	    DataColumn theMorning; 	 	
+	    DataColumn theNoon; 	 	
+	    DataColumn theEvening; 	 	
+	    DataColumn theNight; 	 	
+	    //////////////////////////////////////////////
 
 
         theDrugName = new DataColumn("DrugID");
@@ -4540,6 +4939,24 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
         thPatientInstructions.DataType = System.Type.GetType("System.String");
         theDT.Columns.Add(thPatientInstructions);
 
+        ////////////////////////////////////////////////////////////////////////////////////////// 	 	
+	    theMorning = new DataColumn("Morning"); 	 	
+	    theMorning.DataType = System.Type.GetType("System.Decimal"); 	 	
+	    theDT.Columns.Add(theMorning); 	 	
+	 	 	
+	    theNoon = new DataColumn("Noon"); 	 	
+	    theNoon.DataType = System.Type.GetType("System.Decimal"); 	 	
+	    theDT.Columns.Add(theNoon); 	 	
+	 	 	
+	    theEvening = new DataColumn("Evening"); 	 	
+	    theEvening.DataType = System.Type.GetType("System.Decimal"); 	 	
+	    theDT.Columns.Add(theEvening); 	 	
+	 	 	
+	    theNight = new DataColumn("Night"); 	 	
+	    theNight.DataType = System.Type.GetType("System.Decimal"); 	 	
+	    theDT.Columns.Add(theNight); 	 	
+	    ///////////////////////////////////////////////////////////////////////////////////////
+
         return theDT;
 
     }
@@ -4579,11 +4996,17 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
         }
 
         #region "Variables"
-        decimal Dose = 0;
+        //////////////////	4599	        decimal Dose = 0; 
+	    decimal morning = 0; 	 	
+	    decimal noon = 0; 	 	
+	    decimal evening = 0; 	 	
+	    decimal night = 0; 	 	
+	    ///////////////// 
+        //decimal Dose = 0;
         int UnitId = 0;
         int theStrengthId = 0;
         int theFixedDrugId = 0;
-        int theFrequencyId = 0;
+        //int theFrequencyId = 0;
         Decimal theDuration = 0;
         Decimal theQtyPrescribed = 0;
         Decimal theQtyDispensed = 0;
@@ -4615,11 +5038,17 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                 #endregion
                 foreach (DataRow theDR in theARVDrug.Rows)
                 {
-                    Dose = 0;
+                    ///////////////////////
+	                morning = 0; 	 	
+	                noon = 0; 	 	
+	                evening = 0; 	 	
+	                night = 0; 	 	
+	                //////////////////////
+                    //Dose = 0;
                     UnitId = 0;
                     theStrengthId = 0;
                     theFixedDrugId = 0;
-                    theFrequencyId = 0;
+                    //theFrequencyId = 0;
                     theDuration = 0;
                     theQtyPrescribed = 0;
                     theQtyDispensed = 0;
@@ -4657,28 +5086,28 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
 
                                             if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgFrequency"))
                                             {
-                                                theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
-                                                #region "18-Jun-07 - 5"
-                                                if (theFrequencyId != 0)
-                                                    TotColFilled++;
-                                                #endregion
+                                                //theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
+                                                //#region "18-Jun-07 - 5"
+                                                //if (theFrequencyId != 0)
+                                                //    TotColFilled++;
+                                                //#endregion
                                             }
                                         }
 
                                     }
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.TextBox))
                                     {
-                                        if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgDose"))
-                                        {
-                                            if (((TextBox)x).Text != "")
-                                            {
-                                                Dose = Convert.ToDecimal(((TextBox)x).Text);
-                                                #region "18-Jun-07 - 9"
-                                                if (Dose != 0)
-                                                    TotColFilled++;
-                                                #endregion
-                                            }
-                                        }
+                                        //if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgDose"))
+                                        //{
+                                        //    if (((TextBox)x).Text != "")
+                                        //    {
+                                        //        Dose = Convert.ToDecimal(((TextBox)x).Text);
+                                        //        #region "18-Jun-07 - 9"
+                                        //        if (Dose != 0)
+                                        //            TotColFilled++;
+                                        //        #endregion
+                                        //    }
+                                        //}
                                         if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgDuration"))
                                         {
                                             if (((TextBox)x).Text != "")
@@ -4764,6 +5193,56 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                             }
                                         }
 
+                                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	 	
+	                                    if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgMorning")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            morning = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            #region "18-Jun-07 - 9" 	 	
+	                                            if (morning != 0) 	 	
+	                                                TotColFilled++; 	 	
+	                                            #endregion 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgNoon")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            noon = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            #region "18-Jun-07 - 9" 	 	
+	                                            if (noon != 0) 	 	
+	                                                TotColFilled++; 	 	
+	                                            #endregion 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgEvening")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            evening = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            #region "18-Jun-07 - 9" 	 	
+	                                            if (evening != 0) 	 	
+	                                                TotColFilled++; 	 	
+	                                            #endregion 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^" + theDR["GenericId"].ToString()) && x.ID.StartsWith("drgNight")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            night = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            #region "18-Jun-07 - 9" 	 	
+	                                            if (night != 0) 	 	
+	                                                TotColFilled++; 	 	
+	                                            #endregion 	 	
+	                                        } 	 	
+	                                    } 	 	
+	                                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
 
                                         //}
                                     }
@@ -4818,17 +5297,17 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 //paper less
                                 if (Session["Paperless"].ToString() == "1")
                                 {
-                                    if (theStrengthId != 0 && Dose != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                                    if (theStrengthId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
                                     {
 
                                         theRow = theDT.NewRow();
                                         theRow["DrugId"] = theDR["DrugId"];
                                         theRow["GenericId"] = 0;
 
-                                        theRow["Dose"] = Dose;
+                                        //theRow["Dose"] = Dose;
                                         theRow["UnitId"] = 0;
                                         theRow["StrengthId"] = theStrengthId;
-                                        theRow["FrequencyId"] = theFrequencyId;
+                                        //theRow["FrequencyId"] = theFrequencyId;
                                         theRow["Duration"] = theDuration;
                                         theRow["QtyPrescribed"] = theQtyPrescribed;
                                         if (theQtyDispensed == 99)
@@ -4844,12 +5323,18 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                         theRow["Prophylaxis"] = theProphylaxis;
                                         theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                                         theRow["PatientInstructions"] = patientInstructions;
+                                        ///////////////////////////////////////////////////// 	 	
+	                                    theRow["Morning"] = morning; 	 	
+	                                    theRow["Noon"] = noon; 	 	
+	                                    theRow["Evening"] = evening; 	 	
+	                                    theRow["Night"] = night; 	 	
+	                                    /////////////////////////////////////////////////////
                                         theDT.Rows.Add(theRow);
                                         #region "Reset Variables
-                                        Dose = 0;
+                                        //Dose = 0;
                                         UnitId = 0;
                                         theStrengthId = 0;
-                                        theFrequencyId = 0;
+                                        //theFrequencyId = 0;
                                         theDuration = 0;
                                         theQtyPrescribed = 0;
                                         theQtyDispensed = 0;
@@ -4869,17 +5354,17 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 }
                                 else
                                 {
-                                    if (theStrengthId != 0 && Dose != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                                    if (theStrengthId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
                                     {
                                         theRow = theDT.NewRow();
 
                                         theRow["DrugId"] = theDR["DrugId"];
                                         theRow["GenericId"] = 0;
 
-                                        theRow["Dose"] = Dose;
+                                        //theRow["Dose"] = Dose;
                                         theRow["UnitId"] = 0;
                                         theRow["StrengthId"] = theStrengthId;
-                                        theRow["FrequencyId"] = theFrequencyId;
+                                        //theRow["FrequencyId"] = theFrequencyId;
                                         theRow["Duration"] = theDuration;
                                         theRow["QtyPrescribed"] = theQtyPrescribed;
 
@@ -4889,12 +5374,18 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                         theRow["Prophylaxis"] = theProphylaxis;
                                         theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                                         theRow["PatientInstructions"] = patientInstructions;
+                                        ///////////////////////////////////////////////////// 	 	
+	                                    theRow["Morning"] = morning; 	 	
+	                                    theRow["Noon"] = noon; 	 	
+	                                    theRow["Evening"] = evening; 	 	
+	                                    theRow["Night"] = night; 	 	
+	                                    /////////////////////////////////////////////////////
                                         theDT.Rows.Add(theRow);
                                         #region "Reset Variables
-                                        Dose = 0;
+                                        //Dose = 0;
                                         UnitId = 0;
                                         theStrengthId = 0;
-                                        theFrequencyId = 0;
+                                        //theFrequencyId = 0;
                                         theDuration = 0;
                                         theQtyPrescribed = 0;
                                         theQtyDispensed = 0;
@@ -4922,9 +5413,9 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 if (ddlTreatment.SelectedItem.Value.ToString() == "223")
                                 {
                                     if (Session["SCMModule"] != null)
-                                        ChkColFilled = 3;
+                                        ChkColFilled = 6;// 3;
                                     else
-                                        ChkColFilled = 4;
+                                        ChkColFilled = 7;// 4;
                                     if ((TotColFilled > 0 && TotColFilled < ChkColFilled) && (theContainer.ID == "PnlOIARV"))
                                     {
                                         theDT.Rows.Clear();
@@ -4938,7 +5429,8 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 }
                                 else
                                 {
-                                    if ((TotColFilled > 0 && TotColFilled < 2) && (theContainer.ID == "PnlOIARV"))
+                                    //if ((TotColFilled > 0 && TotColFilled < 2) && (theContainer.ID == "PnlOIARV"))
+                                    if ((TotColFilled > 0 && TotColFilled < 6) && (theContainer.ID == "PnlOIARV"))
                                     {
                                         theDT.Rows.Clear();
                                         theRow = theDT.NewRow();
@@ -4974,9 +5466,9 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     return theDT;
                 foreach (DataRow theDR in theADDARVDrug.Rows)
                 {
-                    Dose = 0;
+                    //Dose = 0;
                     theStrengthId = 0;
-                    theFrequencyId = 0;
+                    //theFrequencyId = 0;
                     theDuration = 0;
                     theQtyPrescribed = 0;
                     theQtyDispensed = 0;
@@ -4999,32 +5491,32 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 {
 
                                     DrugID = Convert.ToInt32(theDR["DrugId"]);
-                                    if (x.GetType() == typeof(System.Web.UI.WebControls.DropDownList))
-                                    {
-                                        c = x.ID.Length;
+                                    //if (x.GetType() == typeof(System.Web.UI.WebControls.DropDownList))
+                                    //{
+                                    //    c = x.ID.Length;
 
-                                        if (x.ID.StartsWith("drgFrequency"))
-                                        {
-                                            if (x.ID.Substring(12, c - 12) == DrugID.ToString() && x.ID.StartsWith("drgFrequency"))
-                                            {
-                                                theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
-                                                TotelColFilled++;
-                                            }
-                                        }
-                                    }
+                                    //    if (x.ID.StartsWith("drgFrequency"))
+                                    //    {
+                                    //        if (x.ID.Substring(12, c - 12) == DrugID.ToString() && x.ID.StartsWith("drgFrequency"))
+                                    //        {
+                                    //            theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
+                                    //            TotelColFilled++;
+                                    //        }
+                                    //    }
+                                    //}
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.TextBox))
                                     {
-                                        if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgDose"))
-                                        {
-                                            if (((TextBox)x).Text != "")
-                                            {
-                                                Dose = Convert.ToDecimal(((TextBox)x).Text);
-                                                #region "18-Jun-07 - 9"
-                                                if (Dose != 0)
-                                                    TotelColFilled++;
-                                                #endregion
-                                            }
-                                        }
+                                        //if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgDose"))
+                                        //{
+                                        //    if (((TextBox)x).Text != "")
+                                        //    {
+                                        //        Dose = Convert.ToDecimal(((TextBox)x).Text);
+                                        //        #region "18-Jun-07 - 9"
+                                        //        if (Dose != 0)
+                                        //            TotelColFilled++;
+                                        //        #endregion
+                                        //    }
+                                        //}
                                         if (x.ID.StartsWith("drgDuration"))
                                         {
                                             c = x.ID.Length;
@@ -5107,6 +5599,62 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                                 }
                                             }
                                         }
+
+                                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	 	
+	                                    if (x.ID.StartsWith("drgMorning")) 	 	
+	                                    { 	 	
+	                                        c = x.ID.Length; 	 	
+	                                        if (x.ID.Substring(10, c - 10) == DrugID.ToString() && x.ID.StartsWith("drgMorning")) 	 	
+	                                        { 	 	
+	                                            if (((TextBox)x).Text != "") 	 	
+	                                            { 	 	
+	                                                morning = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                                TotelColFilled++; 	 	
+	                                            } 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.StartsWith("drgNoon")) 	 	
+	                                    { 	 	
+	                                        c = x.ID.Length; 	 	
+	                                        if (x.ID.Substring(7, c - 7) == DrugID.ToString() && x.ID.StartsWith("drgNoon")) 	 	
+	                                        { 	 	
+	                                            if (((TextBox)x).Text != "") 	 	
+	                                            { 	 	
+	                                                noon = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                                TotelColFilled++; 	 	
+	                                            } 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.StartsWith("drgEvening")) 	 	
+	                                    { 	 	
+	                                        c = x.ID.Length; 	 	
+	                                        if (x.ID.Substring(10, c - 10) == DrugID.ToString() && x.ID.StartsWith("drgEvening")) 	 	
+	                                        { 	 	
+	                                            if (((TextBox)x).Text != "") 	 	
+	                                            { 	 	
+	                                                evening = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                                TotelColFilled++; 	 	
+	                                            } 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.StartsWith("drgNight")) 	 	
+	                                    { 	 	
+	                                        c = x.ID.Length; 	 	
+	                                        if (x.ID.Substring(8, c - 8) == DrugID.ToString() && x.ID.StartsWith("drgNight")) 	 	
+	                                        { 	 	
+	                                            if (((TextBox)x).Text != "") 	 	
+	                                            { 	 	
+	                                                night = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                                TotelColFilled++; 	 	
+	                                            } 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	 	 	
+	                                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
                                     }
 
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.CheckBox))
@@ -5168,7 +5716,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 {
                                     //if (theStrengthId != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theFinanced != 99 && theProphylaxis != 999)
                                     //if (theStrengthId != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
-                                    if (theStrengthId != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                                    if (theStrengthId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
                                     {
                                         theRow = theDT.NewRow();
                                         if (Convert.ToInt32(theDR["Generic"]) == 0)
@@ -5181,10 +5729,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                             theRow["DrugId"] = 0;
                                             theRow["GenericId"] = DrugID;
                                         }
-                                        theRow["Dose"] = Dose;
+                                        //theRow["Dose"] = Dose;
                                         theRow["UnitId"] = 0;
                                         theRow["StrengthId"] = theStrengthId;
-                                        theRow["FrequencyId"] = theFrequencyId;
+                                        //theRow["FrequencyId"] = theFrequencyId;
                                         theRow["Duration"] = theDuration;
                                         theRow["QtyPrescribed"] = theQtyPrescribed;
                                         if (theQtyDispensed == 99)
@@ -5201,13 +5749,25 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                         theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                                         theRow["PatientInstructions"] = patientInstructions;
                                         theRow["Financed"] = theFinanced;
+                                        ///////////////////////////////////////////////////////////// 	 	
+	                                    theRow["Morning"] = morning; 	 	
+	                                    theRow["Noon"] = noon; 	 	
+	                                    theRow["Evening"] = evening; 	 	
+	                                    theRow["Night"] = night; 	 	
+	                                    /////////////////////////////////////////////////////////////// 
 
                                         theDT.Rows.Add(theRow);
                                         #region "Reset Variables
-                                        Dose = 0;
+                                        /////////////////////////////////////////
+	                                    morning = 0; 	 	
+	                                    noon = 0; 	 	
+	                                    evening = 0; 	 	
+	                                    night = 0; 	 	
+	                                    ///////////////////////////////////////// 
+                                        //Dose = 0;
                                         UnitId = 0;
                                         theStrengthId = 0;
-                                        theFrequencyId = 0;
+                                        //theFrequencyId = 0;
                                         theDuration = 0;
                                         theQtyPrescribed = 0;
                                         theQtyDispensed = 0;
@@ -5231,7 +5791,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
 
                                     //if (theStrengthId != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theFinanced != 99 && theProphylaxis != 999)
                                     //if (theStrengthId != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
-                                    if (theStrengthId != 0 && theFrequencyId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                                    if (theStrengthId != 0 && theDuration != 0 && theQtyPrescribed != 0 && theQtyDispensed != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
                                     {
                                         theRow = theDT.NewRow();
                                         if (Convert.ToInt32(theDR["Generic"]) == 0)
@@ -5244,10 +5804,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                             theRow["DrugId"] = 0;
                                             theRow["GenericId"] = theDR["DrugId"];
                                         }
-                                        theRow["Dose"] = Dose;
+                                        //theRow["Dose"] = Dose;
                                         theRow["UnitId"] = 0;
                                         theRow["StrengthId"] = theStrengthId;
-                                        theRow["FrequencyId"] = theFrequencyId;
+                                        //theRow["FrequencyId"] = theFrequencyId;
                                         theRow["Duration"] = theDuration;
                                         theRow["QtyPrescribed"] = theQtyPrescribed;
                                         theRow["QtyDispensed"] = theQtyDispensed;
@@ -5256,13 +5816,25 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                         theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
 
                                         theRow["Financed"] = theFinanced;
+                                        ///////////////////////////////////////////////////////////////////// 	 	
+	                                    theRow["Morning"] = morning; 	 	
+	                                    theRow["Noon"] = noon; 	 	
+	                                    theRow["Evening"] = evening; 	 	
+	                                    theRow["Night"] = night; 	 	
+	                                    /////////////////////////////////////////////////////////////////////
 
                                         theDT.Rows.Add(theRow);
                                         #region "Reset Variables
-                                        Dose = 0;
+                                        ///////////////////////////////////////
+	                                    morning = 0; 	 	
+	                                    noon = 0; 	 	
+	                                    evening = 0; 	 	
+	                                    night = 0; 	 	
+	                                    //////////////////////////////////////////
+                                        //Dose = 0;
                                         UnitId = 0;
                                         theStrengthId = 0;
-                                        theFrequencyId = 0;
+                                        //theFrequencyId = 0;
                                         theDuration = 0;
                                         theQtyPrescribed = 0;
                                         theQtyDispensed = 0;
@@ -5293,10 +5865,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     {
                         if (Session["SCMModule"] != null)
                             //ChkColFilled = 4; if profilixis is consider
-                            ChkColFilled = 3;
+                            ChkColFilled = 6;// 3;
                         else
                             //ChkColFilled = 5;
-                            ChkColFilled = 4;
+                            ChkColFilled = 7;// 4;
                         if ((TotelColFilled > 0 && TotelColFilled < ChkColFilled) && (theContainer.ID == "pnlPedia"))
                         {
                             theDT.Rows.Clear();
@@ -5312,10 +5884,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     {
                         if (Session["SCMModule"] != null)
                             //ChkColFilled = 5;
-                            ChkColFilled = 4;
+                            ChkColFilled = 6;// 4;
                         else
                             //ChkColFilled = 6;
-                            ChkColFilled = 5;
+                            ChkColFilled = 7;// 5;
 
                         if ((TotelColFilled > 0 && TotelColFilled < ChkColFilled) && (theContainer.ID == "pnlPedia"))
                         {
@@ -5348,10 +5920,16 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     return theDT;
                 foreach (DataRow theDR in theADDTBDrug.Rows)
                 {
+                    /////////////////////////////////////// 	 	
+	                morning = 0; 	 	
+	                noon = 0; 	 	
+	                evening = 0; 	 	
+	                night = 0; 	 	
+	                //////////////////////////////////////
                     DrugID = 0;
-                    Dose = 0;
+                    //Dose = 0;
                     theStrengthId = 0;
-                    theFrequencyId = 0;
+                    //theFrequencyId = 0;
                     theDuration = 0;
                     theQtyPrescribed1 = 0;
                     theQtyDispensed1 = 0;
@@ -5390,11 +5968,11 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.DropDownList))
                                     {
 
-                                        if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgFrequency"))
-                                        {
-                                            theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
-                                            TotelColFilled++;
-                                        }
+                                        //if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgFrequency"))
+                                        //{
+                                        //    theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
+                                        //    TotelColFilled++;
+                                        //}
                                         if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgTreatmenPhase"))
                                         {
                                             theTreatmentPhase = Convert.ToString(((DropDownList)x).SelectedValue);
@@ -5412,17 +5990,17 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.TextBox))
                                     {
 
-                                        if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgDose"))
-                                        {
-                                            if (((TextBox)x).Text != "")
-                                            {
-                                                Dose = Convert.ToDecimal(((TextBox)x).Text);
-                                                #region "18-Jun-07 - 9"
-                                                if (Dose != 0)
-                                                    TotelColFilled++;
-                                                #endregion
-                                            }
-                                        }
+                                        //if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgDose"))
+                                        //{
+                                        //    if (((TextBox)x).Text != "")
+                                        //    {
+                                        //        Dose = Convert.ToDecimal(((TextBox)x).Text);
+                                        //        #region "18-Jun-07 - 9"
+                                        //        if (Dose != 0)
+                                        //            TotelColFilled++;
+                                        //        #endregion
+                                        //    }
+                                        //}
                                         if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgDuration"))
                                         {
                                             if (((TextBox)x).Text != "")
@@ -5465,6 +6043,44 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                                 }
                                             }
                                         }
+
+                                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgMorning")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            morning = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgNoon")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            noon = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgEvening")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            evening = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgNight")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            night = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	                                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                     }
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.CheckBox))
                                     {
@@ -5516,7 +6132,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     {
                         //if (UnitId != 0 || theFrequencyId != 0 || Dose != 0 || theDuration != 0 || theQtyPrescribed != 0 || theQtyDispensed != 0 || theTreatmentPhase != "0" || theMonth != 0 || theFinanced != 99)
                         //if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && theTreatmentPhase != "0" && theMonth != 0 && printPrescriptionStatus != 999 && patientInstructions != "999" || theProphylaxis != 999)
-                        if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && theTreatmentPhase != "0" && theMonth != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                        if (theDuration != 0 && theQtyPrescribed1 != 0 && theTreatmentPhase != "0" && theMonth != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
                         {
                             theRow = theDT.NewRow();
                             if (Convert.ToInt32(theDR["Generic"]) == 0)
@@ -5529,10 +6145,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 theRow["DrugId"] = 0;
                                 theRow["GenericId"] = DrugID;
                             }
-                            theRow["Dose"] = Dose;
+                            //theRow["Dose"] = Dose;
                             theRow["UnitId"] = UnitId;
                             theRow["StrengthId"] = theStrengthId;
-                            theRow["FrequencyId"] = theFrequencyId;
+                            //theRow["FrequencyId"] = theFrequencyId;
                             theRow["Duration"] = theDuration;
                             theRow["QtyPrescribed"] = theQtyPrescribed1;
                             //theRow["QtyDispensed"] = theQtyDispensed;
@@ -5544,12 +6160,24 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                             theRow["Prophylaxis"] = theProphylaxis;
                             theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                             theRow["PatientInstructions"] = patientInstructions;
+                            ///////////////////////////////////////////////////////////////////// 	 	
+	                        theRow["Morning"] = morning; 	 	
+	                        theRow["Noon"] = noon; 	 	
+	                        theRow["Evening"] = evening; 	 	
+	                        theRow["Night"] = night; 	 	
+	                        ////////////////////////////////////////////////////////////////////////
                             theDT.Rows.Add(theRow);
                             #region "Reset Variables
-                            Dose = 0;
+                            //////////////////////////////////////////////////////
+	                        morning = 0; 	 	
+	                        noon = 0; 	 	
+	                        evening = 0; 	 	
+	                        night = 0; 	 	
+	                        ////////////////////////////////////////////////////
+                            //Dose = 0;
                             UnitId = 0;
                             theStrengthId = 0;
-                            theFrequencyId = 0;
+                            //theFrequencyId = 0;
                             theDuration = 0;
                             theQtyPrescribed = 0;
                             theQtyDispensed = 0;
@@ -5570,7 +6198,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     else
                     {
                         //if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && theQtyDispensed1 != 0 && theTreatmentPhase != "0" && theMonth != 0 && theProphylaxis != 999 && printPrescriptionStatus != 999 && patientInstructions != "999")
-                        if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && theQtyDispensed1 != 0 && theTreatmentPhase != "0" && theMonth != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                        if (theDuration != 0 && theQtyPrescribed1 != 0 && theQtyDispensed1 != 0 && theTreatmentPhase != "0" && theMonth != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
                         {
                             theRow = theDT.NewRow();
                             if (Convert.ToInt32(theDR["Generic"]) == 0)
@@ -5583,10 +6211,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 theRow["DrugId"] = 0;
                                 theRow["GenericId"] = DrugID;
                             }
-                            theRow["Dose"] = Dose;
+                            //theRow["Dose"] = Dose;
                             theRow["UnitId"] = UnitId;
                             theRow["StrengthId"] = theStrengthId;
-                            theRow["FrequencyId"] = theFrequencyId;
+                            //theRow["FrequencyId"] = theFrequencyId;
                             theRow["Duration"] = theDuration;
                             theRow["QtyPrescribed"] = theQtyPrescribed1;
                             //theRow["QtyDispensed"] = theQtyDispensed;
@@ -5598,12 +6226,24 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                             theRow["Prophylaxis"] = theProphylaxis;
                             theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                             theRow["PatientInstructions"] = patientInstructions;
+                            //////////////////////////////////////////////////////////////////// 	 	
+	                        theRow["Morning"] = morning; 	 	
+	                        theRow["Noon"] = noon; 	 	
+	                        theRow["Evening"] = evening; 	 	
+	                        theRow["Night"] = night; 	 	
+	                        //////////////////////////////////////////////////////////////////// 
                             theDT.Rows.Add(theRow);
                             #region "Reset Variables
-                            Dose = 0;
+                            //////////////////////////////////////////////////////////////
+	                        morning = 0; 	 	
+	                        noon = 0; 	 	
+	                        evening = 0; 	 	
+	                        night = 0; 	 	
+	                        ///////////////////////////////////////////////////////////////
+                            //Dose = 0;
                             UnitId = 0;
                             theStrengthId = 0;
-                            theFrequencyId = 0;
+                            //theFrequencyId = 0;
                             theDuration = 0;
                             theQtyPrescribed = 0;
                             theQtyDispensed = 0;
@@ -5628,10 +6268,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
 
                     if (Session["SCMModule"] != null)
                         //ChkColFilled = 5;
-                        ChkColFilled = 4;
+                        ChkColFilled = 8;// 4;
                     else
                         //ChkColFilled = 6;
-                        ChkColFilled = 5;
+                        ChkColFilled = 9;// 5;
 
                     if ((TotelColFilled > 0 && TotelColFilled < ChkColFilled) && (theContainer.ID == "pnlOtherTBMedicaton"))
                     {
@@ -5664,9 +6304,15 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     return theDT;
                 foreach (DataRow theDR in theOtherDrug.Rows)
                 {
+                    ////////////////////////////////////////////////// 	 	
+	                morning = 0; 	 	
+	                noon = 0; 	 	
+	                evening = 0; 	 	
+	                night = 0; 	 	
+	                //////////////////////////////////////////////////
                     DrugID = 0;
                     theStrengthId = 0;
-                    theFrequencyId = 0;
+                    //theFrequencyId = 0;
                     theDuration = 0;
                     theQtyPrescribed1 = 0;
                     theQtyDispensed1 = 0;
@@ -5699,31 +6345,31 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                     {
                                         DrugID = Convert.ToInt32(theDR["DrugId"]);
                                     }
-                                    if (x.GetType() == typeof(System.Web.UI.WebControls.DropDownList))
-                                    {
-                                        //if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("theUnit"))
-                                        //{
-                                        //    UnitId = Convert.ToInt32(((DropDownList)x).SelectedValue);
-                                        //}
-                                        if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgFrequency"))
-                                        {
-                                            theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
-                                            TotelColFilled++;
-                                        }
-                                    }
+                                    //if (x.GetType() == typeof(System.Web.UI.WebControls.DropDownList))
+                                    //{
+                                    //    //if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("theUnit"))
+                                    //    //{
+                                    //    //    UnitId = Convert.ToInt32(((DropDownList)x).SelectedValue);
+                                    //    //}
+                                    //    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgFrequency"))
+                                    //    {
+                                    //        theFrequencyId = Convert.ToInt32(((DropDownList)x).SelectedValue);
+                                    //        TotelColFilled++;
+                                    //    }
+                                    //}
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.TextBox))
                                     {
-                                        if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgDose"))
-                                        {
-                                            if (((TextBox)x).Text != "")
-                                            {
-                                                Dose = Convert.ToDecimal(((TextBox)x).Text);
-                                                #region "18-Jun-07 - 9"
-                                                if (Dose != 0)
-                                                    TotelColFilled++;
-                                                #endregion
-                                            }
-                                        }
+                                        //if (x.ID.EndsWith(theDR["DrugId"].ToString() + "^0") && x.ID.StartsWith("drgDose"))
+                                        //{
+                                        //    if (((TextBox)x).Text != "")
+                                        //    {
+                                        //        Dose = Convert.ToDecimal(((TextBox)x).Text);
+                                        //        #region "18-Jun-07 - 9"
+                                        //        if (Dose != 0)
+                                        //            TotelColFilled++;
+                                        //        #endregion
+                                        //    }
+                                        //}
 
                                         if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgDuration"))
                                         {
@@ -5767,6 +6413,41 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                                 }
                                             }
                                         }
+
+                                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////// 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgMorning")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            morning = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgNoon")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            noon = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgEvening")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            evening = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	                                    if (x.ID.EndsWith(DrugID.ToString() + "^" + theDR["Generic"].ToString()) && x.ID.StartsWith("drgNight")) 	 	
+	                                    { 	 	
+	                                        if (((TextBox)x).Text != "") 	 	
+	                                        { 	 	
+	                                            night = Convert.ToDecimal(((TextBox)x).Text); 	 	
+	                                            TotelColFilled++; 	 	
+	                                        } 	 	
+	                                    } 	 	
+	                                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                     }
                                     if (x.GetType() == typeof(System.Web.UI.WebControls.CheckBox))
                                     {
@@ -5816,7 +6497,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     if (Session["Paperless"].ToString() == "1")
                     {
                         //if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && printPrescriptionStatus != 999 && patientInstructions != "999" || theProphylaxis != 999)
-                        if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                        if (theDuration != 0 && theQtyPrescribed1 != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
                         {
                             theRow = theDT.NewRow();
                             if (Convert.ToInt32(theDR["Generic"]) == 0)
@@ -5829,10 +6510,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 theRow["DrugId"] = 0;
                                 theRow["GenericId"] = DrugID;
                             }
-                            theRow["Dose"] = Dose;
+                            //theRow["Dose"] = Dose;
                             theRow["UnitId"] = UnitId;
                             theRow["StrengthId"] = theStrengthId;
-                            theRow["FrequencyId"] = theFrequencyId;
+                            //theRow["FrequencyId"] = theFrequencyId;
                             theRow["Duration"] = theDuration;
                             theRow["QtyPrescribed"] = theQtyPrescribed1;
                             //theRow["QtyDispensed"] = theQtyDispensed;
@@ -5842,12 +6523,24 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                             theRow["Prophylaxis"] = theProphylaxis;
                             theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                             theRow["PatientInstructions"] = patientInstructions;
+                            /////////////////////////////////////////////////////////// 	 	
+	                        theRow["Morning"] = morning; 	 	
+	                        theRow["Noon"] = noon; 	 	
+	                        theRow["Evening"] = evening; 	 	
+	                        theRow["Night"] = night; 	 	
+	                        ///////////////////////////////////////////////////////////
                             theDT.Rows.Add(theRow);
                             #region "Reset Variables
-                            Dose = 0;
+                            /////////////////////////////////////
+	                        morning = 0; 	 	
+	                        noon = 0; 	 	
+	                        evening = 0; 	 	
+	                        night = 0; 	 	
+	                        /////////////////////////////////// 
+                            //Dose = 0;
                             UnitId = 0;
                             theStrengthId = 0;
-                            theFrequencyId = 0;
+                            //theFrequencyId = 0;
                             theDuration = 0;
                             theQtyPrescribed = 0;
                             theQtyDispensed = 0;
@@ -5868,7 +6561,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     else
                     {
                         //if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && theQtyDispensed1 != 0 && printPrescriptionStatus != 999 && patientInstructions != "999" || theProphylaxis != 999)
-                        if (theFrequencyId != 0 && Dose != 0 && theDuration != 0 && theQtyPrescribed1 != 0 && theQtyDispensed1 != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
+                        if (theDuration != 0 && theQtyPrescribed1 != 0 && theQtyDispensed1 != 0 && printPrescriptionStatus != 999 && patientInstructions != "999")
                         {
                             theRow = theDT.NewRow();
                             if (Convert.ToInt32(theDR["Generic"]) == 0)
@@ -5881,10 +6574,10 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                                 theRow["DrugId"] = 0;
                                 theRow["GenericId"] = DrugID;
                             }
-                            theRow["Dose"] = Dose;
+                            //theRow["Dose"] = Dose;
                             theRow["UnitId"] = UnitId;
                             theRow["StrengthId"] = theStrengthId;
-                            theRow["FrequencyId"] = theFrequencyId;
+                            //theRow["FrequencyId"] = theFrequencyId;
                             theRow["Duration"] = theDuration;
                             theRow["QtyPrescribed"] = theQtyPrescribed1;
                             //theRow["QtyDispensed"] = theQtyDispensed;
@@ -5894,12 +6587,24 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                             theRow["Prophylaxis"] = theProphylaxis;
                             theRow["PrintPrescriptionStatus"] = printPrescriptionStatus;
                             theRow["PatientInstructions"] = patientInstructions;
+                            //////////////////////////////////////////////////////////////// 	 	
+	                        theRow["Morning"] = morning; 	 	
+	                        theRow["Noon"] = noon; 	 	
+	                        theRow["Evening"] = evening; 	 	
+	                        theRow["Night"] = night; 	 	
+	                        //////////////////////////////////////////////////////////////////
                             theDT.Rows.Add(theRow);
                             #region "Reset Variables
-                            Dose = 0;
+                            //////////////////////////////////////
+	                        morning = 0; 	 	
+	                        noon = 0; 	 	
+	                        evening = 0; 	 	
+	                        night = 0; 	 	
+	                        ////////////////////////////
+                            //Dose = 0;
                             UnitId = 0;
                             theStrengthId = 0;
-                            theFrequencyId = 0;
+                            //theFrequencyId = 0;
                             theDuration = 0;
                             theQtyPrescribed = 0;
                             theQtyDispensed = 0;
@@ -5922,9 +6627,9 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
                     int ChkColFilled;
                     if (Session["SCMModule"] != null)
                         //ChkColFilled = 5;
-                        ChkColFilled = 4;
+                        ChkColFilled = 6;// 4;
                     else
-                        ChkColFilled = 5;
+                        ChkColFilled = 7;// 5;
                     //ChkColFilled = 6;
 
                     if ((TotelColFilled > 0 && TotelColFilled < ChkColFilled) && (theContainer.ID == "PnlOtMed"))
@@ -6152,7 +6857,7 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
         else
         {
             string theUrl;
-            theUrl = string.Format("{0}", "../ClinicalForms/frmPatient_Home.aspx");
+            theUrl = string.Format("{0}", "../ClinicalForms/frmPatient_Home.aspx?Func=Delete");
             Response.Redirect(theUrl);
         }
 
@@ -8059,6 +8764,15 @@ public partial class Pharmacy_frmPharmacyForm : BasePage
             string theUrl = string.Format("{0}&ReportName={1}&sts={2}", "../Reports/frmReportViewer.aspx?name=Add", "PharmacyPrescription", "0");
             Response.Redirect(theUrl);
         }
+    }
+
+    protected void btnPrintLabel_Click(object sender, EventArgs e)
+    {
+        string theScript;
+        theScript = "<script language='javascript' id='DrgPopup'>\n";
+        theScript += "window.open('../Pharmacy/frmprintdialog.aspx?visitID=" + Convert.ToInt32(Session["PatientVisitId"].ToString()) + "&ptnpk=" + Convert.ToInt32(Session["PatientId"].ToString()) + "' ,'DrugSelection','toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');\n";
+        theScript += "</script>\n";
+        Page.RegisterStartupScript("DrgPopup", theScript);
     }
 
 }

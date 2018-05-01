@@ -505,20 +505,20 @@ namespace BusinessProcess.Clinical
             {
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
-                ClsUtility.AddParameters("@VisitDate", SqlDbType.DateTime, VisitDate.ToString());
+                ClsUtility.AddParameters("@VisitDate", SqlDbType.VarChar, VisitDate.ToString());
                 ClsObject PatientARTStatus = new ClsObject();
                 return (DataSet)PatientARTStatus.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetPregnantStatus_Constella", ClsDBUtility.ObjectEnum.DataSet);
             }
 
         }
-        public DataSet GetAppointment(int patientID, int locationID, string AppDate, int AppReason)
+        public DataSet GetAppointment(int patientID, int locationID, DateTime AppDate, int AppReason)
         {
             lock (this)
             {
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                 ClsUtility.AddParameters("@locationid", SqlDbType.Int, locationID.ToString());
-                ClsUtility.AddParameters("@AppDate", SqlDbType.VarChar, AppDate.ToString());
+                ClsUtility.AddParameters("@AppDate", SqlDbType.DateTime, AppDate.ToString());
                 ClsUtility.AddParameters("@AppReason", SqlDbType.Int, AppReason.ToString());
                 ClsObject PatientAppStatus = new ClsObject();
                 return (DataSet)PatientAppStatus.ReturnObjectNewImpl(ClsUtility.theParams, "pr_clinical_Appointment_Constella", ClsDBUtility.ObjectEnum.DataSet);

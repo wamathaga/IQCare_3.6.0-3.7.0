@@ -119,12 +119,12 @@ public partial class frmScheduler_AppointmentMain : System.Web.UI.Page
             {
                 if (ddAppointmentStatus.SelectedValue == "12")
                 {
-                    theDtSet = FormManager.GetAppointmentGrid(1, Convert.ToDateTime(theUtil.MakeDate("01-01-1900")), Convert.ToDateTime(theUtil.MakeDate("01-01-1900")), Convert.ToInt32(Session["AppLocationId"]));
+                    theDtSet = FormManager.GetAppointmentGrid(1, "01-Jan-1900", "01-Jan-1900", Convert.ToInt32(Session["AppLocationId"]));
 
                 }
                 else
                 {
-                    theDtSet = FormManager.GetAppointmentGrid(2, Convert.ToDateTime(theUtil.MakeDate("01-01-1900")), Convert.ToDateTime(theUtil.MakeDate("01-01-1900")), Convert.ToInt32(Session["AppLocationId"]));
+                    theDtSet = FormManager.GetAppointmentGrid(2, "01-Jan-1900", "01-Jan-1900", Convert.ToInt32(Session["AppLocationId"]));
                 }
 
             }
@@ -134,11 +134,11 @@ public partial class frmScheduler_AppointmentMain : System.Web.UI.Page
                 {
                     if (ddAppointmentStatus.SelectedValue == "12")
                     {
-                        theDtSet = FormManager.GetAppointmentGrid(1, Convert.ToDateTime(txtFrom.Text), Convert.ToDateTime(txtTo.Text), Convert.ToInt32(Session["AppLocationId"]));
+                        theDtSet = FormManager.GetAppointmentGrid(1, Convert.ToDateTime(txtFrom.Text).ToString("dd-MMM-yyy"), Convert.ToDateTime(txtTo.Text).ToString("dd-MMM-yyy"), Convert.ToInt32(Session["AppLocationId"]));
                     }
                     else
                     {
-                        theDtSet = FormManager.GetAppointmentGrid(2, Convert.ToDateTime(txtFrom.Text), Convert.ToDateTime(txtTo.Text), Convert.ToInt32(Session["AppLocationId"]));
+                        theDtSet = FormManager.GetAppointmentGrid(2, Convert.ToDateTime(txtFrom.Text).ToString("dd-MMM-yyy"), Convert.ToDateTime(txtTo.Text).ToString("dd-MMM-yyy"), Convert.ToInt32(Session["AppLocationId"]));
                     }
 
                 }
@@ -149,7 +149,7 @@ public partial class frmScheduler_AppointmentMain : System.Web.UI.Page
         {
             if (checkDate())
             {
-                theDtSet = FormManager.GetAppointmentGrid(3, Convert.ToDateTime(txtFrom.Text), Convert.ToDateTime(txtTo.Text), Convert.ToInt32(Session["AppLocationId"]));
+                theDtSet = FormManager.GetAppointmentGrid(3, Convert.ToDateTime(txtFrom.Text).ToString("dd-MMM-yyy"), Convert.ToDateTime(txtTo.Text).ToString("dd-MMM-yyy"), Convert.ToInt32(Session["AppLocationId"]));
 
             }
 
@@ -537,17 +537,18 @@ public partial class frmScheduler_AppointmentMain : System.Web.UI.Page
         else if (ddAppointmentStatus.SelectedValue == "15")
             theAppStatus = 3;
 
-        if (txtFrom.Text == "")
+        if (string.IsNullOrWhiteSpace(txtFrom.Text))
         {
             txtFrom.Text = "1-1-1900";
 
         }
-        if (txtTo.Text == "")
+        //if (txtTo.Text == " ")
+        if (string.IsNullOrWhiteSpace(txtTo.Text))
         {
 
             txtTo.Text = "1-1-1900";
         }
-        DataTable dtAppointment = (DataTable)FormManager.GetAppointmentGrid(theAppStatus, Convert.ToDateTime(theUtil.MakeDate(txtFrom.Text)), Convert.ToDateTime(theUtil.MakeDate(txtTo.Text)), Convert.ToInt32(Session["AppLocationId"])).Tables[0];
+        DataTable dtAppointment = (DataTable)FormManager.GetAppointmentGrid(theAppStatus, Convert.ToDateTime(theUtil.MakeDate(txtFrom.Text)).ToString("dd-MMM-yyy"), Convert.ToDateTime(theUtil.MakeDate(txtTo.Text)).ToString("dd-MMM-yyy"), Convert.ToInt32(Session["AppLocationId"])).Tables[0];
 
         DataTable theDT = dtAppointment.Copy();
         theDT.Columns.Remove("ptn_pk");

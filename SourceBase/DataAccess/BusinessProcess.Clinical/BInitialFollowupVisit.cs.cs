@@ -54,7 +54,8 @@ namespace BusinessProcess.Clinical
                ClsUtility.AddParameters("@UserId", SqlDbType.Int, hashTable["UserID"].ToString());
 
                //Appointment Scheduling
-               ClsUtility.AddParameters("@visitDate", SqlDbType.DateTime, hashTable["visitDate"].ToString());
+               if (hashTable["visitDate"].ToString() != "")
+                   ClsUtility.AddParameters("@visitDate", SqlDbType.DateTime, hashTable["visitDate"].ToString());
                ClsUtility.AddParameters("@TypeofVisit", SqlDbType.Int, hashTable["TypeofVisit"].ToString());
                ClsUtility.AddParameters("@Scheduled", SqlDbType.Int, hashTable["Scheduled"].ToString());
                ClsUtility.AddParameters("@treatmentSupporterName", SqlDbType.VarChar, hashTable["treatmentSupporterName"].ToString());
@@ -73,17 +74,20 @@ namespace BusinessProcess.Clinical
                ClsUtility.AddParameters("@pregnant", SqlDbType.Int, hashTable["pregnant"].ToString());
                if (hashTable["pregnant"].ToString() == "89")
                {
-                   ClsUtility.AddParameters("@EDD", SqlDbType.DateTime, hashTable["EDD"].ToString());
+                   if (hashTable["EDD"].ToString() != "")
+                       ClsUtility.AddParameters("@EDD", SqlDbType.DateTime, hashTable["EDD"].ToString());
                    ClsUtility.AddParameters("@ANCNo", SqlDbType.Int, hashTable["ANCNo"].ToString());
                    ClsUtility.AddParameters("@ReferredtoPMTCT", SqlDbType.Int, hashTable["ReferredtoPMTCT"].ToString());
                }
                if (hashTable["pregnant"].ToString() == "91")
                {
-                   ClsUtility.AddParameters("@DateofInducedAbortion", SqlDbType.DateTime, hashTable["DateofInducedAbortion"].ToString());
+                   if (hashTable["DateofInducedAbortion"].ToString() != "")
+                       ClsUtility.AddParameters("@DateofInducedAbortion", SqlDbType.DateTime, hashTable["DateofInducedAbortion"].ToString());
                }
                if (hashTable["pregnant"].ToString() == "92")
                {
-                   ClsUtility.AddParameters("@DateofMiscarriage", SqlDbType.DateTime, hashTable["DateofMiscarriage"].ToString());
+                   if (hashTable["DateofMiscarriage"].ToString() != "")
+                       ClsUtility.AddParameters("@DateofMiscarriage", SqlDbType.DateTime, hashTable["DateofMiscarriage"].ToString());
                }
 
                //Family planning
@@ -98,7 +102,8 @@ namespace BusinessProcess.Clinical
                ClsUtility.AddParameters("@TBStatus", SqlDbType.Int, hashTable["TBStatus"].ToString());
                if (hashTable.ContainsKey("TBStartDate"))
                {
-                   ClsUtility.AddParameters("@TBRxStart", SqlDbType.DateTime, hashTable["TBStartDate"].ToString());
+                   if (hashTable["TBStartDate"].ToString() != "")
+                       ClsUtility.AddParameters("@TBRxStart", SqlDbType.DateTime, hashTable["TBStartDate"].ToString());
                }
                if (hashTable.ContainsKey("TBTreatmentNo"))
                {
@@ -124,7 +129,8 @@ namespace BusinessProcess.Clinical
                ClsUtility.AddParameters("@TherapyPlan", SqlDbType.Int, hashTable["TherapyPlan"].ToString());
                ClsUtility.AddParameters("@TherapyReasonCode", SqlDbType.Int, hashTable["TherapyReasonCode"].ToString());
                ClsUtility.AddParameters("@TherapyOther", SqlDbType.VarChar, hashTable["TherapyOther"].ToString());
-               ClsUtility.AddParameters("@PrescribedARVStartDate", SqlDbType.DateTime, hashTable["PrescribedARVStartDate"].ToString());
+               if (hashTable["PrescribedARVStartDate"].ToString() != "")
+                   ClsUtility.AddParameters("@PrescribedARVStartDate", SqlDbType.DateTime, hashTable["PrescribedARVStartDate"].ToString());
 
 
                ClsUtility.AddParameters("@numOfDaysHospitalized", SqlDbType.VarChar, hashTable["numOfDaysHospitalized"].ToString());
@@ -132,7 +138,8 @@ namespace BusinessProcess.Clinical
                ClsUtility.AddParameters("@infantFeedingOption", SqlDbType.Int, hashTable["infantFeedingOption"].ToString());
 
                ClsUtility.AddParameters("@attendingClinician", SqlDbType.Int, hashTable["attendingClinician"].ToString());
-               ClsUtility.AddParameters("@Datenextappointment", SqlDbType.DateTime, hashTable["Datenextappointment"].ToString());
+               if (hashTable["Datenextappointment"].ToString() != "")
+                   ClsUtility.AddParameters("@Datenextappointment", SqlDbType.DateTime, hashTable["Datenextappointment"].ToString());
 
 
 

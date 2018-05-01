@@ -13,14 +13,13 @@ using Interface.Clinical;
 using Interface.SCM;
 using IQCare.CustomConfig;
 using System.Drawing;
-using Application.Common;
 
 namespace IQCare.Web.Billing
 {
     /// <summary>
     /// Payment Page. Use the plugin for the payment mode
     /// </summary>
-    public partial class frmBilling_PayBill : LogPage
+    public partial class frmBilling_PayBill : System.Web.UI.Page
     {
 
         /// <summary>
@@ -105,8 +104,8 @@ namespace IQCare.Web.Billing
             get
             {
                 decimal _amt = 0M;
-                decimal.TryParse(this.HDAmountDue.Value, out _amt);
-                return _amt;
+                 decimal.TryParse(this.HDAmountDue.Value, out _amt);
+                 return _amt;
             }
             set
             {
@@ -126,7 +125,7 @@ namespace IQCare.Web.Billing
                 decimal _amt = 0M;
                 decimal.TryParse(this.HDBillAmount.Value, out _amt);
                 return _amt;
-
+             
             }
             set
             {
@@ -222,7 +221,7 @@ namespace IQCare.Web.Billing
                     phPayMethod.Controls.Remove(oldControl);
                 }
             }
-
+           
             if (payBillControl != null)
             {
                 _oldControl = payControl;
@@ -265,13 +264,13 @@ namespace IQCare.Web.Billing
             ((IPayment)sender).Clear();
             this.DisplayMode("ITEMS");
             //this.PopulateBillTransactions();        
-            //  this.phPayMethod.Controls.Clear();
-            phPayMethod.Controls.Remove((Control)sender);
+          //  this.phPayMethod.Controls.Clear();
+            phPayMethod.Controls.Remove((Control)sender);                  
             Session.Remove("PayControl");
             UpdatePanel1.Update();
             upBill.Update();
             this.Init_page();
-            //  ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Selector", "ToggleCheckUncheckAllOptionAsNeeded();", true);
+          //  ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Selector", "ToggleCheckUncheckAllOptionAsNeeded();", true);
         }
 
         /// <summary>
@@ -407,17 +406,17 @@ namespace IQCare.Web.Billing
         /// Raises the <see cref="E:System.Web.UI.Control.Init" /> event to initialize the page.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        /* protected override void OnInit(EventArgs e)
-         {
-             base.OnInit(e);
+       /* protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
             
-         }
-         protected override void LoadViewState(object savedState)
-         {
-             base.LoadViewState(savedState);
-           // if(_oldControl !=null) phPayMethod.Controls.Remove(_oldControl);
+        }
+        protected override void LoadViewState(object savedState)
+        {
+            base.LoadViewState(savedState);
+          // if(_oldControl !=null) phPayMethod.Controls.Remove(_oldControl);
 
-         }*/
+        }*/
         /// <summary>
         /// Handles the PreRender event of the Page control.
         /// </summary>
@@ -701,44 +700,22 @@ namespace IQCare.Web.Billing
         void showErrorMessage(ref Exception ex)
         {
             this.isError = true;
-            //if (this.Debug)
-            //{
-            //    lblError.Text = ex.Message + ex.StackTrace + ex.Source;
-            //}
-            //else
-            //{
-            //    lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
-            //    this.isError = this.divError.Visible = true;
-            //    Exception lastError = ex;
-
-
-            //    lastError.Data.Add("Domain", "Pay Bill Page");
-            //    Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
-            //    logger.LogError(ex);
-
-            //}
-            CLogger.WriteLog(ELogLevel.ERROR, ex.ToString());
-            if (Session["PatientId"] == null || Convert.ToInt32(Session["PatientId"]) != 0)
+            if (this.Debug)
             {
-                this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'");
-                //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'</script>");
+                lblError.Text = ex.Message + ex.StackTrace + ex.Source;
             }
             else
             {
-                if (Session["TechnicalAreaId"] != null || Convert.ToInt16(Session["TechnicalAreaId"]) != 0)
-                {
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFacilityHome.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFacilityHome.aspx'</script>");
+                lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
+                this.isError = this.divError.Visible = true;
+                Exception lastError = ex;
 
-                }
-                else
-                {
 
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmLogin.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmLogin.aspx'</script>");
-                }
+                lastError.Data.Add("Domain", "Pay Bill Page");
+                Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
+                logger.LogError(ex);
+
             }
-            ex = null;
 
         }
         /// <summary>
@@ -747,18 +724,14 @@ namespace IQCare.Web.Billing
         /// <param name="strMessage">The string message.</param>
         /// <param name="strTitle">The string title.</param>
         /// <param name="errorFlag">if set to <c>true</c> [error flag].</param>
-        void NotifyAction(string strMessage, string strTitle, bool errorFlag, string onOkScript = "")
+        void NotifyAction(string strMessage, string strTitle, bool errorFlag)
         {
+
             lblNoticeInfo.Text = strMessage;
             lblNotice.Text = strTitle;
             lblNoticeInfo.ForeColor = (errorFlag) ? System.Drawing.Color.DarkRed : System.Drawing.Color.Black;
             lblNoticeInfo.Font.Bold = true;
             imgNotice.ImageUrl = (errorFlag) ? "~/images/mb_hand.gif" : "~/images/mb_information.gif";
-            btnOkAction.OnClientClick = "";
-            if (onOkScript != "" && errorFlag == true)
-            {
-                btnOkAction.OnClientClick = onOkScript;
-            }
             this.notifyPopupExtender.Show();
         }
         /// <summary>
@@ -947,13 +920,13 @@ namespace IQCare.Web.Billing
                     List<int> ItemToReverse = new List<int>();
                     bMrg.RequestTransactionReversal(Convert.ToInt32(HTransactionID.Value), this.UserID, textReason.Text.Trim(), DateTime.Now, ItemToReverse);
                     mpeReverse.Hide();
-                    this.NotifyAction("Request to Reverse Receipt <br/> Number " + labelReceipt.Text + " Successfully.", string.Format("Reverse {0} ", labelReceipt.Text), false);
+                    this.NotifyAction("Request to Reverse Receipt Number " + labelReceipt.Text + " Successfully ..", string.Format("Reverse {0} ", labelReceipt.Text), false);
                     this.PopulateBillTransactions();
                 }
                 catch (Exception ex)
                 {
                     this.showErrorMessage(ref ex);
-                    this.NotifyAction("Request to Reverse Receipt Number " + labelReceipt.Text + " Failed.<br />" + ex.Message, string.Format("Failed Reverse {0} ", labelReceipt.Text), true);
+                    this.NotifyAction("Request to Reverse Receipt Number " + labelReceipt.Text + " Failed ..<br />" + ex.Message, string.Format("Failed Reverse {0} ", labelReceipt.Text), true);
                 }
 
             };
@@ -989,11 +962,11 @@ namespace IQCare.Web.Billing
                     totalSelected = totalSelected + decimal.Parse(dataRow["Amount"].ToString());
                     lblTotal.Text = totalSelected.ToString();
                 }
-
-
+                
+                
             }
         }
-
+      
         /// <summary>
         /// Buttons the proceed.
         /// </summary>
@@ -1027,7 +1000,7 @@ namespace IQCare.Web.Billing
                     }
                     else
                     {
-                        gridRow.BackColor = Color.White;
+                       gridRow.BackColor = Color.White;
                     }
                 }
             };
@@ -1048,7 +1021,7 @@ namespace IQCare.Web.Billing
             Session["PayControl"] = ht;
             this.AddPayControl(ht);
 
-            //  ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Highlightor", "highlight();", true);
+          //  ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Highlightor", "highlight();", true);
         }
         /// <summary>
         /// Handles the PreRender event of the grdPayItems control.

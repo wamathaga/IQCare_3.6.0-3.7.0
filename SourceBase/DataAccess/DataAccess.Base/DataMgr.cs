@@ -73,10 +73,10 @@ namespace DataAccess.Base
         public static object GetConnection_Master()
         {
             Utility objUtil = new Utility();
-            string constr = objUtil.Decrypt(((NameValueCollection)ConfigurationSettings.GetConfig("appSettings"))["ConnectionString"]);
+            string constr = objUtil.Decrypt(((NameValueCollection)ConfigurationSettings.GetConfig("appSettings"))["ConnectionStringMaster"]);
            // constr = constr.Substring(0, constr.Length - 6);
            // constr += "master";
-            constr = constr.Substring(0, constr.IndexOf("g=") + 2).ToString() + "Master";
+            //constr = constr.Substring(0, constr.IndexOf("g=") + 2).ToString() + "Master";
             constr += ";connect timeout=" + ((NameValueCollection)ConfigurationSettings.GetConfig("appSettings"))["SessionTimeOut"].ToString();
             constr += ";packet size=4128;Min Pool Size=3;Max Pool Size=200;";
             //set nocount off;set arithabort on;set concat_null_yields_null on;set ansi_nulls on;";

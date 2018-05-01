@@ -403,6 +403,58 @@
                                 </td>
                             </tr>
                         </table>
+                        <table width="100%">
+                            <tr>
+                                <td width="50%" align="right">
+                                    <div class="whitebg" id="div1" runat="server">
+                                        <label class="center">
+                                            Billing (Check to Activate):
+                                        </label>
+                                    </div>
+                                </td>
+                                <td width="50%" align="left">
+                                    <input type="checkbox" id="chkbilling" runat="server" />
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%">
+                            <tr>
+                                <td width="50%" align="right">
+                                    <div class="whitebg" id="div2" runat="server">
+                                        <label class="center">
+                                            PM/SCM (Check to Activate):
+                                        </label>
+                                    </div>
+                                </td>
+                                <td width="50%" align="left">
+                                    <input type="checkbox" id="chkpmscm" runat="server" />
+                                </td>
+                            </tr>
+                             <tr style="display:none">
+                                <td width="50%" align="right">
+                                    <div class="whitebg" id="divrecords" runat="server">
+                                        <label class="center">
+                                            Records (Check to Activate):
+                                        </label>
+                                    </div>
+                                </td>
+                                <td width="50%" align="left">
+                                    <input type="checkbox" id="chkrecords" runat="server" />
+                                </td>
+                            </tr>
+                             <tr>
+                                <td width="50%" align="right">
+                                    <div class="whitebg" id="divwards" runat="server">
+                                        <label class="center">
+                                            Wards (Check to Activate):
+                                        </label>
+                                    </div>
+                                </td>
+                                <td width="50%" align="left">
+                                    <input type="checkbox" id="chkwards" runat="server" />
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td class="border center whitebg" style="width: 50%">
                         <table width="100%">

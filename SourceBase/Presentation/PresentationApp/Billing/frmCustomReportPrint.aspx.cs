@@ -8,7 +8,7 @@ using System.Data;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmCustomReportPrint : LogPage
+    public partial class frmCustomReportPrint : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

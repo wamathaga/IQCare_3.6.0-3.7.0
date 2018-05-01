@@ -100,8 +100,8 @@
                                 <asp:TextBox ID="txtusername" runat="server"></asp:TextBox>
                             </td>
                             <td class="border pad5 whitebg" align="center" nowrap="noWrap">
-                                <label class="right" for="UserName">
-                                    Designation:</label>
+                                <label class="right required" for="UserName">
+                                    *Designation:</label>
                                 <asp:DropDownList ID="dddesignation" runat="server">
                                 </asp:DropDownList>
                             </td>

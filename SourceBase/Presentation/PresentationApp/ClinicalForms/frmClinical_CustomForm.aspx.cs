@@ -70,6 +70,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
         //{
         //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
         //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+        
         ICustomForm MgrValidate = (ICustomForm)ObjectFactory.CreateInstance(ObjFactoryParameter);
         Ajax.Utility.RegisterTypeForAjax(typeof(frmClinical_CustomForm));
         int FeatureID = 0, PatientID = 0, VisitID, LocationID;
@@ -126,7 +127,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             {
                 MgrValidate = (ICustomForm)ObjectFactory.CreateInstance(ObjFactoryParameter);
                 DataSet theDS = MgrValidate.Validate(Header.InnerText, "01-01-1900", Convert.ToString(Session["PatientId"]));
-                AuthenticationRight(FeatureID, "Add", Convert.ToInt32(tabcontainer.ActiveTab.ID));
+                AuthenticationRight(FeatureID, "Add", 0);
                 hdnVisitId.Value = "0";
             }
             else if (Request.QueryString["Name"] == "Delete" && Convert.ToInt32(Session["PatientVisitId"]) > 0)
@@ -138,7 +139,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                     //BindValue(PatientID, VisitID, LocationID, DIVCustomItem, Convert.ToInt32(theDRBindValue["TabId"]));
                     BindValue(PatientID, VisitID, LocationID, tabcontainer, dsvisit.Tables[23]);
                 }
-                AuthenticationRight(FeatureID, "Delete", Convert.ToInt32(tabcontainer.ActiveTab.ID));
+                AuthenticationRight(FeatureID, "Delete", 0);
                 MsgBuilder theBuilder = new MsgBuilder();
                 theBuilder.DataElements["FormName"] = "This";
                 IQCareMsgBox.ShowConfirm("DeleteForm", theBuilder, btnsave);
@@ -246,41 +247,46 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                                 {
                                     DataView theDVConditionalField = new DataView(((DataSet)Session["AllData"]).Tables[17]);
                                     string[] theId = ((HtmlInputRadioButton)y).ID.Split('-');
-                                    theDVConditionalField.RowFilter = "ConFieldId=" + theId.GetValue(3);
+                                    theDVConditionalField.RowFilter = "ConFieldId=" + theId.GetValue(3) + " and ConditionalFieldSectionId=1";
                                     if (theDVConditionalField.Count > 0)
                                     {
                                         foreach (DataRow theDRCon in theDVConditionalField.ToTable().Rows)
                                         {
-                                            System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlTrue('" + theDRCon["conControlId"] + "');", true);
-                                            RemoveContolStausInHastTable(theDRCon["conControlId"].ToString());
+                                            if (theDRCon["ControlId"].ToString() == "9")
+                                            {
+                                                System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlTrue('" + theDRCon["conControlId"] + "');", true);
+                                                RemoveContolStausInHastTable(theDRCon["conControlId"].ToString());
+                                            }
+                                            else
+                                            {
+                                                System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlTrue('" + theDRCon["conControlId"] + "');", true);
+                                                RemoveContolStausInHastTable(theDRCon["conControlId"].ToString());
+                                            }
                                         }
                                         EventArgs s = new EventArgs();
                                         this.HtmlRadioButtonSelect(y);
                                     }
                                 }
-
-                                //else if (((HtmlInputRadioButton)y).Checked == true && ((HtmlInputRadioButton)y).Value == "No")
-                                //{
-                                //    DataView theDVConditionalField = new DataView(((DataSet)Session["AllData"]).Tables[17]);
-                                //    string[] theId = ((HtmlInputRadioButton)y).ID.Split('-');
-                                //    EventArgs s = new EventArgs();
-                                //    this.HtmlRadioButtonSelect(y);
-                                //}
-
-                                //if (((HtmlInputRadioButton)y).Checked == false && ((HtmlInputRadioButton)y).Value == "Yes")
-                                //{
-                                //    DataView theDVConditionalField = new DataView(((DataSet)Session["AllData"]).Tables[17]);
-                                //    string[] theId = ((HtmlInputRadioButton)y).ID.Split('-');
-                                //    theDVConditionalField.RowFilter = "ConFieldId=" + theId.GetValue(3);
-                                //    if (theDVConditionalField.Count > 0)
-                                //    {
-                                //        foreach (DataRow theDRCon in theDVConditionalField.ToTable().Rows)
-                                //        {
-                                //            System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlFalse('" + theDRCon["conControlId"] + "');", true);
-
-                                //        }
-                                //    }
-                                //}
+                                else if (((HtmlInputRadioButton)y).Checked == true && ((HtmlInputRadioButton)y).Value == "No")
+                                {
+                                    DataView theDVConditionalField = new DataView(((DataSet)Session["AllData"]).Tables[17]);
+                                    string[] theId = ((HtmlInputRadioButton)y).ID.Split('-');
+                                    theDVConditionalField.RowFilter = "ConFieldId=" + theId.GetValue(3) + " and ConditionalFieldSectionId=2";
+                                    if (theDVConditionalField.Count > 0)
+                                    {
+                                        foreach (DataRow theDRCon in theDVConditionalField.ToTable().Rows)
+                                        {
+                                            if (theDRCon["ControlId"].ToString() == "9")
+                                            {
+                                                System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableValueYes('" + theDRCon["conControlId"] + "');", true);
+                                            }
+                                            else
+                                            {
+                                                System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlTrue('" + theDRCon["conControlId"] + "');", true);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             else if (y.GetType().ToString() == "System.Web.UI.WebControls.DropDownList")
                             {
@@ -304,7 +310,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                                                 else
                                                 {
                                                     //john
-                                                    System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlFalse('" + theDRCon["conControlId"] + "');", true);
+                                                    //System.Web.UI.ScriptManager.RegisterStartupScript(Page, typeof(Page), "" + theDRCon["conControlId"] + "", "EnableControlFalse('" + theDRCon["conControlId"] + "');", true);
                                                 }
                                             }
 
@@ -599,29 +605,11 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
 
     private void CreateDateImage(object theControl, string ControlID, bool theConField, bool MMMYYYY)
     {
-        bool dateenable = true;
         string[] Field = ((Control)theControl).ID.Split('-');
         DataTable theDT = (DataTable)ViewState["BusRule"];
         TextBox theDateText = (TextBox)theControl;
         foreach (DataRow DR in theDT.Rows)
         {
-            if (Field[1] == Convert.ToString(DR["FieldName"]) && Field[2] == Convert.ToString(DR["TableName"]) && Field[3] == Convert.ToString(DR["FieldId"])
-                    && Convert.ToString(DR["BusRuleId"]) == "14" && Session["PatientSex"].ToString() != "Male")
-                dateenable = false;
-
-            if (Field[1] == Convert.ToString(DR["FieldName"]) && Field[2] == Convert.ToString(DR["TableName"]) && Field[3] == Convert.ToString(DR["FieldId"])
-            && Convert.ToString(DR["BusRuleId"]) == "15" && Session["PatientSex"].ToString() != "Female")
-                dateenable = false;
-
-            if (Field[1] == Convert.ToString(DR["FieldName"]) && Field[2] == Convert.ToString(DR["TableName"]) && Field[3] == Convert.ToString(DR["FieldId"])
-            && Convert.ToString(DR["BusRuleId"]) == "16")
-            {
-                if (Convert.ToDecimal(Session["PatientAge"]) >= Convert.ToDecimal(DR["Value"]) && Convert.ToDecimal(Session["PatientAge"]) <= Convert.ToDecimal(DR["Value1"]))
-                {
-                }
-                else
-                    dateenable = false;
-            }
             if (Field[1] == Convert.ToString(DR["FieldName"]) && Convert.ToString(DR["BusRuleId"]) == "21" && MMMYYYY == false)
             {
                 theDateText = (TextBox)theControl;
@@ -633,25 +621,22 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
         }
         if (MMMYYYY == false)
         {
-            if (dateenable)
-            {
-                theDateText = (TextBox)theControl;
-                theDateText.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
-                theDateText.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3')");
-                Image theDateImage = new Image();
-                theDateImage.ID = "img" + theDateText.ID;
-                theDateImage.Height = 22;
-                theDateImage.Width = 22;
-                //theDateImage.Visible = theEnable;
-                theDateImage.ToolTip = "Date Helper";
-                theDateImage.ImageUrl = "~/images/cal_icon.gif";
-                tabcontainer.ID = "TAB";
-                theDateImage.Attributes.Add("onClick", "w_displayDatePicker('ctl00_IQCareContentPlaceHolder_" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + ((TextBox)theControl).ClientID + "');");
-                DIVCustomItem.Controls.Add(new LiteralControl("&nbsp;"));
-                DIVCustomItem.Controls.Add(theDateImage);
-                // ApplyBusinessRules(theDateImage, ControlID, theEnable);
-                DIVCustomItem.Controls.Add(new LiteralControl("<span class='smallerlabel'>(DD-MMM-YYYY)</span>"));
-            }
+            theDateText = (TextBox)theControl;
+            theDateText.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
+            theDateText.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3')");
+            Image theDateImage = new Image();
+            theDateImage.ID = "img" + theDateText.ID;
+            theDateImage.Height = 22;
+            theDateImage.Width = 22;
+            //theDateImage.Visible = theEnable;
+            theDateImage.ToolTip = "Date Helper";
+            theDateImage.ImageUrl = "~/images/cal_icon.gif";
+            tabcontainer.ID = "TAB";
+            theDateImage.Attributes.Add("onClick", "w_displayDatePicker('ctl00_IQCareContentPlaceHolder_" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + ((TextBox)theControl).ClientID + "');");
+            DIVCustomItem.Controls.Add(new LiteralControl("&nbsp;"));
+            DIVCustomItem.Controls.Add(theDateImage);
+            // ApplyBusinessRules(theDateImage, ControlID, theEnable);
+            DIVCustomItem.Controls.Add(new LiteralControl("<span class='smallerlabel'>(DD-MMM-YYYY)</span>"));
         }
     }
 
@@ -734,23 +719,6 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
 
             else if (Field[0].ToUpper() == "TXTDT")
             {
-                if (Field[1] == Convert.ToString(DR["FieldName"]) && Field[2] == Convert.ToString(DR["TableName"]) && Field[3] == Convert.ToString(DR["FieldId"])
-                    && Convert.ToString(DR["BusRuleId"]) == "14" && Session["PatientSex"].ToString() != "Male")
-                    theEnable = false;
-
-                if (Field[1] == Convert.ToString(DR["FieldName"]) && Field[2] == Convert.ToString(DR["TableName"]) && Field[3] == Convert.ToString(DR["FieldId"])
-                && Convert.ToString(DR["BusRuleId"]) == "15" && Session["PatientSex"].ToString() != "Female")
-                    theEnable = false;
-
-                if (Field[1] == Convert.ToString(DR["FieldName"]) && Field[2] == Convert.ToString(DR["TableName"]) && Field[3] == Convert.ToString(DR["FieldId"])
-                && Convert.ToString(DR["BusRuleId"]) == "16")
-                {
-                    if (Convert.ToDecimal(Session["PatientAge"]) >= Convert.ToDecimal(DR["Value"]) && Convert.ToDecimal(Session["PatientAge"]) <= Convert.ToDecimal(DR["Value1"]))
-                    {
-                    }
-                    else
-                        theEnable = false;
-                }
                 // Date format for like "MMM-yyyy"
                 //if (Field[1] == Convert.ToString(DR["FieldName"]) && Convert.ToString(DR["BusRuleId"]) == "21")
                 //{
@@ -876,7 +844,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             //        tbox.Attributes.Add("onblur", "isCheckNormal('ctl00_IQCareContentPlaceHolder_" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + tbox.ClientID + "', '" + Column + "', '" + Min + "', '" + Max + "', '" + MinNormalVal + "', '" + MaxNormalval + "')");
             //    }
             //}
-            tbox.Enabled = theEnable;
+
 
         }
         else if (theControl.GetType().ToString() == "System.Web.UI.WebControls.DropDownList")
@@ -893,7 +861,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
         else if (theControl.GetType().ToString() == "System.Web.UI.HtmlControls.HtmlInputRadioButton")
         {
             HtmlInputRadioButton Rdobtn = (HtmlInputRadioButton)theControl;
-            Rdobtn.Visible = theEnable;
+            //Rdobtn.Visible = theEnable;
         }
         else if (theControl.GetType().ToString() == "System.Web.UI.WebControls.Image")
         {
@@ -995,6 +963,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
     {
         //try
         //{
+        tabcontainer.ID = "TAB";
         bool theAutoPopulate = false;
         DataTable theBusinessRuleDT = (DataTable)ViewState["BusRule"];
         DataView theBusinessRuleDV = new DataView(theBusinessRuleDT);
@@ -1047,6 +1016,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             theSingleText.ID = "TXT-" + Column + "-" + Table + "-" + FieldId + "-" + TabID;
             theSingleText.Width = 180;
             theSingleText.MaxLength = 50;
+            theSingleText.Attributes.Add("onkeyup", "chkMultiString('ctl00_IQCareContentPlaceHolder_" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + theSingleText.ClientID + "')");
             Hashtable ht = new Hashtable();
             if (theEnable == false)
             {
@@ -1488,7 +1458,6 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             Control ctl = (TextBox)theDateText;
             theDateText.Width = 83;
             theDateText.MaxLength = 11;
-            ApplyBusinessRules(theDateText, ControlID, theEnable);
             if (theEnable == false)
             {
                 string str = "ctl00_IQCareContentPlaceHolder_" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + theDateText.ClientID + "";
@@ -1503,7 +1472,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             //theDateText.Enabled = theEnable;
             DIVCustomItem.Controls.Add(theDateText);
             CreateDateImage(theDateText, ControlID, theEnable, false);
-            
+            ApplyBusinessRules(theDateText, ControlID, theEnable);
             TextBox thehiddenText = new TextBox();
             thehiddenText.ID = "" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + theDateText.ClientID + "";
             thehiddenText.Width = 0;
@@ -1754,7 +1723,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
 
             TextBox theMultiText = new TextBox();
             theMultiText.ID = "TXTMulti-" + Column + "-" + Table + "-" + FieldId + "-" + TabID;
-
+            theMultiText.Attributes.Add("onkeyup", "chkMultiString('ctl00_IQCareContentPlaceHolder_" + tabcontainer.ID + "_" + tbChildPanel.ID + "_" + theMultiText.ClientID + "')");
             //theMultiText.ID = "TXTMulti-" + Column + "-" + Table;
             if (spanfield == true)
             {
@@ -1853,6 +1822,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                 PnlMulti.ID = "Pnl_-" + Table + "-" + FieldId;
                 PnlMulti.ToolTip = Label;
                 PnlMulti.Enabled = theEnable;
+                PnlMulti.ClientIDMode = ClientIDMode.Static;
                 PnlMulti.Controls.Add(new LiteralControl("<div class='customdivborder1 leftallign' runat='server' nowrap='nowrap'>"));
 
                 if (CodeID == "")
@@ -2296,26 +2266,28 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             IQCareUtils theUtils = new IQCareUtils();
             DrugType = GetFilterId(FieldId, Column);
             DataView theDVName = new DataView((DataTable)Session["DrugTypeName"]);
-            if (DrugType > 0)
-            {
+            //if (DrugType > 0)
+            //{
                 theDVName.RowFilter = "DrugTypeId=" + DrugType + "";
                 HiddenField theHF = new HiddenField();
                 Label theLabel = new Label();
                 theLabel.ID = "lblDrg-" + Column + "-" + DrugType;
                 theHF.ID = "hfDrg-11-" + FieldId + "-" + Column + "-" + DrugType;
-                theLabel.Text = Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString();
-                theLabel.Font.Bold = true;
-                if (SetBusinessrule(FieldId, Column) == true)
-                {
-                    DIVCustomItem.Controls.Add(new LiteralControl("<label class='required' align='left' id='lbl" + Label + "-" + FieldId + "'>" + Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString() + " :</label>"));
-                    ARLHeader.Add(theLabel.Text);
-                }
-                else
-                {
-                    DIVCustomItem.Controls.Add(new LiteralControl("<label align='left' id='lbl" + Label + "-" + FieldId + "'>" + Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString() + " :</label>"));
-                }
-                theHF.Value = Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString();
-                DIVCustomItem.Controls.Add(theHF);
+                
+                //theLabel.Text = Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString();
+                //theLabel.Font.Bold = true;
+                //if (SetBusinessrule(FieldId, Column) == true)
+                //{
+                //    DIVCustomItem.Controls.Add(new LiteralControl("<label class='required' align='left' id='lbl" + Label + "-" + FieldId + "'>" + Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString() + " :</label>"));
+                //    //ARLHeader.Add(theLabel.Text);
+                //}
+                //else
+                //{
+                //    DIVCustomItem.Controls.Add(new LiteralControl("<label align='left' id='lbl" + Label + "-" + FieldId + "'>" + Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString() + " :</label>"));
+                //}
+                //theHF.Value = Label + " - " + theDVName.ToTable().Rows[0]["DrugTypeName"].ToString();
+                //DIVCustomItem.Controls.Add(theHF);
+                DIVCustomItem.Controls.Add(new LiteralControl("<label align='left' id='lbl" + Label + "-" + FieldId + "'>Drug:</label>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("</td>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("</tr>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("<tr>"));
@@ -2325,13 +2297,13 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                 theBtn.ID = "BtnDrg-" + Column + "-" + Table + "-" + FieldId + "-" + TabID;
                 theBtn.Text = "Drug Selection";
 
-                if (Session["Selected" + DrugType + ""] == null)
-                {
-                    DataView theDV = new DataView((DataTable)Session["MasterCustomfrmReg"]);
-                    theDV.RowFilter = "DrugTypeId=" + DrugType + " and Generic=0";
-                    DataTable theDT = theUtils.CreateTableFromDataView(theDV);
-                    Session["" + DrugType + ""] = theDT;
-                }
+                //if (Session["Selected" + DrugType + ""] == null)
+                //{
+                //    DataView theDV = new DataView((DataTable)Session["MasterCustomfrmReg"]);
+                //    theDV.RowFilter = "DrugTypeId=" + DrugType + " and Generic=0";
+                //    DataTable theDT = theUtils.CreateTableFromDataView(theDV);
+                //    Session["" + DrugType + ""] = theDT;
+                //}
                 theBtn.Enabled = theEnable;
                 theBtn.Attributes.Add("onclick", "javascript:OpenPharmacyDialog('" + DrugType + "'); return false");
                 DIVCustomItem.Controls.Add(theBtn);
@@ -2339,23 +2311,23 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                 DIVCustomItem.Controls.Add(new LiteralControl("</tr>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("<tr>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("<td style='width:100%' align='left'>"));
-                DrugsHeading(DrugType);
-                ApplyBusinessRules(theBtn, theBtn.ID, theEnable);
-                if (Convert.ToInt32(Session["PatientVisitId"]) > 0)
-                {
-                    DrugDataBinding(theBtn.ID, DrugType);
-                }
+                //DrugsHeading(DrugType);
+                //ApplyBusinessRules(theBtn, theBtn.ID, theEnable);
+                //if (Convert.ToInt32(Session["PatientVisitId"]) > 0)
+                //{
+                //    DrugDataBinding(theBtn.ID, DrugType);
+                //}
 
-                if ((DataTable)Session["Selected" + DrugType + ""] != null)
-                {
-                    DataTable theDT = (DataTable)Session["Selected" + DrugType + ""];
-                    LoadNewDrugs(theDT);
-                }
+                //if ((DataTable)Session["Selected" + DrugType + ""] != null)
+                //{
+                //    DataTable theDT = (DataTable)Session["Selected" + DrugType + ""];
+                //    LoadNewDrugs(theDT);
+                //}
 
                 DIVCustomItem.Controls.Add(new LiteralControl("</td>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("</tr>"));
                 DIVCustomItem.Controls.Add(new LiteralControl("</table>"));
-            }
+            //}
 
         }
 
@@ -2396,35 +2368,35 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             DIVCustomItem.Controls.Add(new LiteralControl("</tr>"));
             DIVCustomItem.Controls.Add(new LiteralControl("<tr>"));
             DIVCustomItem.Controls.Add(new LiteralControl("<td style='width:100%' align='left'>"));
-            ApplyBusinessRules(theBtn, theBtn.ID, theEnable);
-            if ((DataSet)Session["AddLab"] != null)
-            {
-                ViewState["LabMaster"] = ((DataSet)Session["AddLab"]).Tables[0];
-                ViewState["AddLab"] = ((DataSet)Session["AddLab"]).Tables[1];
-                Session.Remove("AddLab");
-            }
-            if (Convert.ToString(ViewState["btnlabisEnable"]) == "2")
-            {
-                ViewState["AddLab"] = null;
-            }
+            //ApplyBusinessRules(theBtn, theBtn.ID, theEnable);
+            //if ((DataSet)Session["AddLab"] != null)
+            //{
+            //    ViewState["LabMaster"] = ((DataSet)Session["AddLab"]).Tables[0];
+            //    ViewState["AddLab"] = ((DataSet)Session["AddLab"]).Tables[1];
+            //    Session.Remove("AddLab");
+            //}
+            //if (Convert.ToString(ViewState["btnlabisEnable"]) == "2")
+            //{
+            //    ViewState["AddLab"] = null;
+            //}
 
-            if ((DataTable)ViewState["AddLab"] != null)
-            {
+            //if ((DataTable)ViewState["AddLab"] != null)
+            //{
 
-                foreach (DataRow theDR in ((DataTable)ViewState["AddLab"]).Rows)
-                {
-                    if (theDR["Flag"] == System.DBNull.Value)
-                    {
-                        BindCustomControls(theDR);
-                    }
-                }
-                Session["SelectedData"] = ViewState["AddLab"];
-            }
+            //    foreach (DataRow theDR in ((DataTable)ViewState["AddLab"]).Rows)
+            //    {
+            //        if (theDR["Flag"] == System.DBNull.Value)
+            //        {
+            //            BindCustomControls(theDR);
+            //        }
+            //    }
+            //    Session["SelectedData"] = ViewState["AddLab"];
+            //}
 
-            if (Convert.ToInt32(Session["PatientVisitId"]) > 0)
-            {
-                LabDataBinding();
-            }
+            //if (Convert.ToInt32(Session["PatientVisitId"]) > 0)
+            //{
+            //    LabDataBinding();
+            //}
 
             DIVCustomItem.Controls.Add(new LiteralControl("</td>"));
             DIVCustomItem.Controls.Add(new LiteralControl("</tr>"));
@@ -4480,11 +4452,11 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             btnDynSave.ID = "btnSave-" + distincttabdr["TabId"];
             btnDynSave.Text = "Save";
             btnDynSave.Click += new EventHandler(btnDynSave_Click);
-            if (Convert.ToInt32(Session["AppUserId"]) > 1 && Convert.ToInt32(Session["PatientVisitId"]) == 0 && Authentication.HasTabModuleFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Add, Convert.ToInt32(Session["TechnicalAreaId"]), (DataTable)Session["UserRight"]) == false)
+            if (Convert.ToInt32(Session["AppUserId"]) > 1 &&  Convert.ToInt32(Session["PatientVisitId"]) == 0 && Authentication.HasTabFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Add, (DataTable)Session["UserRight"]) == false)
             {
                 btnDynSave.Enabled = false;
             }
-            if (Convert.ToInt32(Session["AppUserId"]) > 1 && Convert.ToInt32(Session["PatientVisitId"]) > 0 && Authentication.HasTabModuleFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Update, Convert.ToInt32(Session["TechnicalAreaId"]), (DataTable)Session["UserRight"]) == false)
+            if (Convert.ToInt32(Session["AppUserId"]) > 1 &&  Convert.ToInt32(Session["PatientVisitId"]) > 0 && Authentication.HasTabFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Update, (DataTable)Session["UserRight"]) == false)
             {
                 btnDynSave.Enabled = false;
             }
@@ -4493,11 +4465,11 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             btnDynDQ.ID = "btnDQ-" + distincttabdr["TabId"];
             btnDynDQ.Click += new EventHandler(btnDynDQ_Click);
             btnDynDQ.Text = "Data Quality Check";
-            if (Convert.ToInt32(Session["AppUserId"]) > 1 && Convert.ToInt32(Session["PatientVisitId"]) == 0 && Authentication.HasTabModuleFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Add, Convert.ToInt32(Session["TechnicalAreaId"]), (DataTable)Session["UserRight"]) == false)
+            if (Convert.ToInt32(Session["AppUserId"]) > 1 && Convert.ToInt32(Session["PatientVisitId"]) == 0 &&  Authentication.HasTabFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Add, (DataTable)Session["UserRight"]) == false)
             {
                 btnDynDQ.Enabled = false;
             }
-            if (Convert.ToInt32(Session["AppUserId"]) > 1 && Convert.ToInt32(Session["PatientVisitId"]) > 0 && Authentication.HasTabModuleFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Update, Convert.ToInt32(Session["TechnicalAreaId"]), (DataTable)Session["UserRight"]) == false)
+            if (Convert.ToInt32(Session["AppUserId"]) > 1 && Convert.ToInt32(Session["PatientVisitId"]) > 0 && Authentication.HasTabFunctionRight(Convert.ToInt32(distincttabdr["TabId"]), FunctionAccess.Update, (DataTable)Session["UserRight"]) == false)
             {
                 btnDynDQ.Enabled = false;
             }
@@ -5570,10 +5542,10 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                                     if (str[0] != "SELECTLISTAuto")
                                     {
                                         DRTemp["Column"] = str[1];
-                                        if (((DropDownList)x).Enabled == true)
+                                        //if (((DropDownList)x).Enabled == true)
                                             DRTemp["Value"] = ((DropDownList)x).SelectedValue;
-                                        else
-                                            DRTemp["Value"] = "";
+                                        //else
+                                        //DRTemp["Value"] = "";
                                         DRTemp["TableName"] = str[2];
                                         DRTemp["FieldID"] = str[3];
                                         DRTemp["TabId"] = str[4];
@@ -5632,10 +5604,6 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                                 DRTemp["TabId"] = str[4];
                                 TempDT.Rows.Add(DRTemp);
                             }
-
-
-
-
                         }
                     }
                 }
@@ -11352,6 +11320,12 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                                 foreach (DataRow theDR in theDT.Rows)
                                 {
                                     string[] arrID = ((Panel)y).ID.Split('-');
+
+                                    if (((Panel)y).Enabled == true)
+                                    {
+                                        string a = "true";
+                                    }
+
                                     if (Convert.ToString(theDR["ControlId"]) == "9" && arrID[2] == Convert.ToString(theDR["FieldID"]) && Convert.ToInt32(theDR["BusRuleId"]) <= 13)
                                     {
                                         MultiSelectName = Convert.ToString(theDR["Name"]);
@@ -11545,11 +11519,11 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
     {
         AuthenticationManager Authentication = new AuthenticationManager();
 
-        btnPrint.Enabled = Authentication.HasFunctionRightwithModuleTabs(FeatureID, FunctionAccess.Print, Convert.ToInt32(Session["TechnicalAreaId"]), iTabID, (DataTable)Session["UserRight"]);
+        btnPrint.Enabled = Authentication.HasFunctionRight(FeatureID, FunctionAccess.Print, (DataTable)Session["UserRight"]);
 
         if (Mode == "Add")
         {
-            btnsave.Enabled = Authentication.HasFunctionRightwithModuleTabs(FeatureID, FunctionAccess.Add, Convert.ToInt32(Session["TechnicalAreaId"]), iTabID, (DataTable)Session["UserRight"]);
+            btnsave.Enabled = Authentication.HasFunctionRight(FeatureID, FunctionAccess.Add, (DataTable)Session["UserRight"]);
         }
         else if (Mode == "Edit")
         {
@@ -11561,7 +11535,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
             // iSavedUserID = mgrUserValidate.GetCustomFormSavedByUser(FeatureID, iTabID);
             iSavedUserID = mgrUserValidate.GetCustomFormSavedByUser(Convert.ToInt32(Session["PatientVisitId"]), iTabID);
 
-            bool bCanUpdate = Authentication.HasFunctionRightwithModuleTabs(FeatureID, FunctionAccess.Update, Convert.ToInt32(Session["TechnicalAreaId"]), iTabID, (DataTable)Session["UserRight"]);
+            bool bCanUpdate = Authentication.HasFunctionRight(FeatureID, FunctionAccess.Update, (DataTable)Session["UserRight"]);
             //if user is different from who saved the form
             bCanUpdate = ((iSavedUserID > 0) && Convert.ToInt32(Session["AppUserID"]) == 1);
 
@@ -11569,9 +11543,15 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
         }
         else if (Mode == "Delete")
         {
-            btnsave.Enabled = Authentication.HasFunctionRightwithModuleTabs(FeatureID, FunctionAccess.Delete, Convert.ToInt32(Session["TechnicalAreaId"]), iTabID, (DataTable)Session["UserRight"]);
+            btnsave.Enabled = Authentication.HasFunctionRight(FeatureID, FunctionAccess.Delete, (DataTable)Session["UserRight"]);
         }
 
+        //Privilages for Care End
+        if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
+        {
+            btnsave.Enabled = true;
+            btncomplete.Enabled = true;
+        }
     }
 
     private void SaveCancel()
@@ -11638,7 +11618,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
         else
         {
             string theUrl;
-            theUrl = string.Format("{0}", "frmPatient_Home.aspx");
+            theUrl = string.Format("{0}", "frmPatient_Home.aspx?Func=Delete");
             Response.Redirect(theUrl);
         }
 

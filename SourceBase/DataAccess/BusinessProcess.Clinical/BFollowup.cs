@@ -33,7 +33,7 @@ namespace BusinessProcess.Clinical
             {
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@patientID", SqlDbType.Int, patientid.ToString());
-                ClsUtility.AddParameters("@HIVvisitdate", SqlDbType.VarChar, visitdate.ToString());
+                ClsUtility.AddParameters("@HIVvisitdate", SqlDbType.DateTime, visitdate.ToString());
                 ClsUtility.AddParameters("@visittype", SqlDbType.Int, visittype.ToString());
                 ClsObject IEManager = new ClsObject();
                 return (DataSet)IEManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_GetPatient_No_of_VisitDateConstella", ClsDBUtility.ObjectEnum.DataSet);
@@ -97,13 +97,13 @@ namespace BusinessProcess.Clinical
         }
         //Saving and Updating
 
-        public int Save_Update_FollowUP(int patientID, int VisitID, int LocationID, Hashtable ht, DataSet theDS_ARTFU, int VisitIE, int rdoARVSideEffectsNone, int rdoARVSideEffectsNotDocumented, int rdoOIsAIDsIllnessNone, int rdoOIsAIDsIllnessNotDocumented, int userID, Boolean Save, Boolean Update, string createDate, int DataQualityFlag, DataTable theCustomFieldData)
+        public int Save_Update_FollowUP(int patientID, int VisitID, int LocationID, Hashtable ht, DataSet theDS_ARTFU, int VisitIE, int rdoARVSideEffectsNone, int rdoARVSideEffectsNotDocumented, int rdoOIsAIDsIllnessNone, int rdoOIsAIDsIllnessNotDocumented, int userID, Boolean Save, Boolean Update, DateTime createDate, int DataQualityFlag, DataTable theCustomFieldData)
         {
             int retval = 0;
             ClsObject FollowupManager = new ClsObject();
-            if (createDate == "")
+            if (createDate.Year.ToString() == "1")
             {
-                createDate = "01-Jan-1900";
+                createDate = Convert.ToDateTime("01-01-1900");
             }
             try
             {
@@ -116,16 +116,16 @@ namespace BusinessProcess.Clinical
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                 ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
-                ClsUtility.AddParameters("@HIVvisitdate", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                ClsUtility.AddParameters("@HIVvisitdate", SqlDbType.DateTime, ht["Visitdate"].ToString());
                 ClsUtility.AddParameters("@PrevARVsCD4", SqlDbType.Int, ht["txtpriorARVsFU"].ToString());
-                ClsUtility.AddParameters("@PrevARVsCD4Date", SqlDbType.VarChar, ht["txtpriorARVsCD4DateFU"].ToString());
+                ClsUtility.AddParameters("@PrevARVsCD4Date", SqlDbType.DateTime, ht["txtpriorARVsCD4DateFU"].ToString());
                 ClsUtility.AddParameters("@VisitID_IE", SqlDbType.VarChar, VisitIE.ToString());
                 ClsUtility.AddParameters("@Visit_typeID", SqlDbType.Int, ht["VisittypeIDFU"].ToString());
                 ClsUtility.AddParameters("@Pregnant", SqlDbType.Int, ht["Pregnant"].ToString());
                 ClsUtility.AddParameters("@Delivered", SqlDbType.VarChar, ht["Delivered"].ToString());
-                ClsUtility.AddParameters("@DelDate", SqlDbType.VarChar, ht["DelDate"].ToString());
-                ClsUtility.AddParameters("@EDDDate", SqlDbType.VarChar, ht["EDDDate"].ToString());
-                ClsUtility.AddParameters("@lmp", SqlDbType.VarChar, ht["LMPdate"].ToString());
+                ClsUtility.AddParameters("@DelDate", SqlDbType.DateTime, ht["DelDate"].ToString());
+                ClsUtility.AddParameters("@EDDDate", SqlDbType.DateTime, ht["EDDDate"].ToString());
+                ClsUtility.AddParameters("@lmp", SqlDbType.DateTime, ht["LMPdate"].ToString());
                 ClsUtility.AddParameters("@MissedLastWeek", SqlDbType.Int, ht["DosesMissedLastWeek"].ToString());
                 ClsUtility.AddParameters("@MissedLastMonth", SqlDbType.Int, ht["DosesMissedLastMonth"].ToString());
                 ClsUtility.AddParameters("@NumDOTPerWeek", SqlDbType.Int, ht["NumDOTPerWeek"].ToString());
@@ -133,7 +133,7 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@SupportGroup", SqlDbType.Bit, ht["SupportGroup"].ToString());
                 ClsUtility.AddParameters("@InterruptedDate", SqlDbType.DateTime, ht["InterruptedDate"].ToString());
                 ClsUtility.AddParameters("@InterruptedNumDays", SqlDbType.Int, ht["InterruptedNumDays"].ToString());
-                ClsUtility.AddParameters("@StoppedDate", SqlDbType.VarChar, ht["stoppedDate"].ToString());
+                ClsUtility.AddParameters("@StoppedDate", SqlDbType.DateTime, ht["stoppedDate"].ToString());
                 ClsUtility.AddParameters("@StoppedNumDays", SqlDbType.Int, ht["stoppedNumDays"].ToString());
                 ClsUtility.AddParameters("@HerbalMeds", SqlDbType.Bit, ht["HerbalMeds"].ToString());
                 ClsUtility.AddParameters("@Temp", SqlDbType.Decimal, ht["physTemp"].ToString());
@@ -147,12 +147,12 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@WHOStage", SqlDbType.Int, ht["phyWHOstage"].ToString());
                 ClsUtility.AddParameters("@WABStage", SqlDbType.Int, ht["physWABStage"].ToString());
                 ClsUtility.AddParameters("@ARVtherapyPlan", SqlDbType.Int, ht["ARVtherapyplan"].ToString());
-                ClsUtility.AddParameters("@ARTEnddate", SqlDbType.VarChar, ht["ARTEndDate"].ToString());
+                ClsUtility.AddParameters("@ARTEnddate", SqlDbType.DateTime, ht["ARTEndDate"].ToString());
                 ClsUtility.AddParameters("@ARVTHerapyReasonCode", SqlDbType.Int, ht["ArvTherapyReasonCode"].ToString());
                 ClsUtility.AddParameters("@TherapyOther", SqlDbType.Int, ht["ARVTherapyReasonOther"].ToString());
                 ClsUtility.AddParameters("@AppExist", SqlDbType.VarChar, ht["AppExist"].ToString());
                 ClsUtility.AddParameters("@VisitIDApp", SqlDbType.VarChar, Convert.ToString(ht["VisitIDApp"]));
-                ClsUtility.AddParameters("@appdate", SqlDbType.VarChar, Convert.ToString(ht["appdate"]));
+                ClsUtility.AddParameters("@appdate", SqlDbType.DateTime, Convert.ToString(ht["appdate"]));
                 ClsUtility.AddParameters("@appreason", SqlDbType.VarChar, Convert.ToString(ht["appreason"]));
                 ClsUtility.AddParameters("@employeeID", SqlDbType.BigInt, ht["Signatureid"].ToString());
                 ClsUtility.AddParameters("@signatureid", SqlDbType.BigInt, ht["Signatureid"].ToString());
@@ -165,7 +165,7 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@ClinicalNotes", SqlDbType.VarChar, ht["ClinicalNotes"].ToString());
                 //Ajay Kumar-05-Jan-2010 End
                 ClsUtility.AddParameters("@Flag", SqlDbType.Int, ht["Flag"].ToString());
-                int retvalother = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_SaveUpdateFollowUp_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                retval = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_SaveUpdateFollowUp_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                 //if (Save == true)
                 //{
                 //    int retvalother = (int)FollowupManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_SaveFollowUp_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
@@ -414,7 +414,7 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                         ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                         ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, rdoOIsAIDsIllnessNone.ToString());
-                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                         ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, "Blank");
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         int retvalAssocCondLeft = (int)FollowupManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_Save_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
@@ -426,7 +426,7 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                         ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                         ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, rdoOIsAIDsIllnessNotDocumented.ToString());
-                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                         ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, "Blank");
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         int retvalAssocCondLeft = (int)FollowupManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_Save_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
@@ -440,7 +440,7 @@ namespace BusinessProcess.Clinical
                             ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                             ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                             ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, theDS_ARTFU.Tables[5].Rows[i]["OI_AIDS_ID1"].ToString());
-                            ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                            ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                             ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, theDS_ARTFU.Tables[5].Rows[i][1].ToString());
                             ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                             int retvalAssocCondLeft = (int)FollowupManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_Save_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
@@ -463,11 +463,11 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                         ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                         ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, rdoOIsAIDsIllnessNone.ToString());
-                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                         ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, "Blank");
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         ClsUtility.AddParameters("@Visit_pkID", SqlDbType.Int, VisitID.ToString());
-                        ClsUtility.AddParameters("@createdate", SqlDbType.VarChar, createDate.ToString());
+                        ClsUtility.AddParameters("@createdate", SqlDbType.DateTime, createDate.ToString());
                         int retvalAssocCondLeft = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_Update_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                     }
 
@@ -477,11 +477,11 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                         ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                         ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, rdoOIsAIDsIllnessNotDocumented.ToString());
-                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                         ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, "Blank");
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         ClsUtility.AddParameters("@Visit_pkID", SqlDbType.Int, VisitID.ToString());
-                        ClsUtility.AddParameters("@createdate", SqlDbType.VarChar, createDate.ToString());
+                        ClsUtility.AddParameters("@createdate", SqlDbType.DateTime, createDate.ToString());
                         int retvalAssocCondLeft = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_Update_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                     }
 
@@ -493,11 +493,11 @@ namespace BusinessProcess.Clinical
                             ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                             ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                             ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, theDS_ARTFU.Tables[5].Rows[i]["OI_AIDS_ID1"].ToString());
-                            ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                            ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                             ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, theDS_ARTFU.Tables[5].Rows[i][1].ToString());
                             ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                             ClsUtility.AddParameters("@Visit_pkID", SqlDbType.Int, VisitID.ToString());
-                            ClsUtility.AddParameters("@createdate", SqlDbType.VarChar, createDate.ToString());
+                            ClsUtility.AddParameters("@createdate", SqlDbType.DateTime, createDate.ToString());
                             int retvalAssocCondLeft = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_Update_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                         }
                     }
@@ -512,7 +512,7 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                         ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                         ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, theDS_ARTFU.Tables[6].Rows[i]["OI_AIDS_ID2"].ToString());
-                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                         ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, theDS_ARTFU.Tables[6].Rows[i][1].ToString());
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         int retvalAssocCondright = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_Save_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
@@ -526,11 +526,11 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
                         ClsUtility.AddParameters("@locationid", SqlDbType.Int, LocationID.ToString());
                         ClsUtility.AddParameters("@HIVAssocDiseaseID", SqlDbType.Int, theDS_ARTFU.Tables[6].Rows[i]["OI_AIDS_ID2"].ToString());
-                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.VarChar, ht["Visitdate"].ToString());
+                        ClsUtility.AddParameters("@DateofHIVAssocDisease", SqlDbType.DateTime, ht["Visitdate"].ToString());
                         ClsUtility.AddParameters("@DiseaseDesc", SqlDbType.VarChar, theDS_ARTFU.Tables[6].Rows[i][1].ToString());
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         ClsUtility.AddParameters("@Visit_pkID", SqlDbType.Int, VisitID.ToString());
-                        ClsUtility.AddParameters("@createdate", SqlDbType.VarChar, createDate.ToString());
+                        ClsUtility.AddParameters("@createdate", SqlDbType.DateTime, createDate.ToString());
                         int retvalAssocCondright = (int)FollowupManager.ReturnObjectNewImpl(ClsUtility.theParams, "pr_Clinical_Update_OI_AID_ILLNESS_FU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                     }
                 }
@@ -568,7 +568,7 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@AssessmentID", SqlDbType.Int, theDS_ARTFU.Tables[7].Rows[i]["AssessmentID"].ToString());
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, userID.ToString());
                         ClsUtility.AddParameters("@Visit_pkID", SqlDbType.Int, VisitID.ToString());
-                        ClsUtility.AddParameters("@createdate", SqlDbType.VarChar, createDate.ToString());
+                        ClsUtility.AddParameters("@createdate", SqlDbType.Int, createDate.ToString());
                         int retvalAssessment = (int)FollowupManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_UpdateAssessmentFU_Constella", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                     }
                 }

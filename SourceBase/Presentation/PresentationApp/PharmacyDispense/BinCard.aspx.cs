@@ -14,7 +14,7 @@ using System.IO;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class BinCard : LogPage
+    public partial class BinCard : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

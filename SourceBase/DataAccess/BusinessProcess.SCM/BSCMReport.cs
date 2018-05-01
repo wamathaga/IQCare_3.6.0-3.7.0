@@ -31,8 +31,8 @@ namespace BusinessProcess.SCM
                     ClsUtility.Init_Hashtable();
                     ClsObject objPOdetails = new ClsObject();
                     ClsUtility.AddParameters("@Storeid", SqlDbType.Int, StoreId.ToString());
-                    ClsUtility.AddParameters("@TransDate", SqlDbType.Date, TransDate.ToString());
-                    ClsUtility.AddParameters("@ExpiryDate", SqlDbType.Date, ExpiryDate.ToString());
+                    ClsUtility.AddParameters("@TransDate", SqlDbType.VarChar, TransDate.ToString("dd-MMM-yyyy"));
+                    ClsUtility.AddParameters("@ExpiryDate", SqlDbType.VarChar, ExpiryDate.ToString("dd-MMM-yyyy"));
                     return
                         (DataTable)
                         objPOdetails.ReturnObject(ClsUtility.theParams, "pr_SCM_GetExperyReport_Futures",
@@ -60,8 +60,8 @@ namespace BusinessProcess.SCM
                     ClsObject objPOdetails = new ClsObject();
                     ClsUtility.AddParameters("@StoreId", SqlDbType.Int, StoreId.ToString());
                     ClsUtility.AddParameters("@ItemId", SqlDbType.Int, ItemId.ToString());
-                    ClsUtility.AddParameters("@FromDate", SqlDbType.DateTime, FromDate.ToString());
-                    ClsUtility.AddParameters("@ToDate", SqlDbType.DateTime, ToDate.ToString());
+                    ClsUtility.AddParameters("@FromDate", SqlDbType.VarChar, FromDate.ToString("dd-MMM-yyyy"));
+                    ClsUtility.AddParameters("@ToDate", SqlDbType.VarChar, ToDate.ToString("dd-MMM-yyyy"));
                     return
                         (DataSet)
                         objPOdetails.ReturnObject(ClsUtility.theParams, "pr_SCM_GetStockSummary_Futures",
@@ -88,8 +88,8 @@ namespace BusinessProcess.SCM
                     ClsObject objPOdetails = new ClsObject();
                     ClsUtility.AddParameters("@StoreId", SqlDbType.Int, StoreId.ToString());
                     ClsUtility.AddParameters("@ItemId", SqlDbType.Int, ItemId.ToString());
-                    ClsUtility.AddParameters("@FromDate", SqlDbType.DateTime, FromDate.ToString());
-                    ClsUtility.AddParameters("@ToDate", SqlDbType.DateTime, ToDate.ToString());
+                    ClsUtility.AddParameters("@FromDate", SqlDbType.VarChar, FromDate.ToString("dd-MMM-yyyy"));
+                    ClsUtility.AddParameters("@ToDate", SqlDbType.VarChar, ToDate.ToString("dd-MMM-yyyy"));
                     return
                         (DataSet)
                         objPOdetails.ReturnObject(ClsUtility.theParams, "pr_SCM_GetBatchSummary_Futures",
@@ -115,8 +115,8 @@ namespace BusinessProcess.SCM
                     ClsUtility.Init_Hashtable();
                     ClsObject objPOdetails = new ClsObject();
                     ClsUtility.AddParameters("@StoreId", SqlDbType.Int, StoreId.ToString());
-                    ClsUtility.AddParameters("@StartDate", SqlDbType.DateTime, FromDate.ToString());
-                    ClsUtility.AddParameters("@EndDate", SqlDbType.DateTime, ToDate.ToString());
+                    ClsUtility.AddParameters("@StartDate", SqlDbType.VarChar, FromDate.ToString("dd-MMM-yyyy"));
+                    ClsUtility.AddParameters("@EndDate", SqlDbType.VarChar, ToDate.ToString("dd-MMM-yyyy"));
                     ClsUtility.AddParameters("@Password", SqlDbType.VarChar, ApplicationAccess.DBSecurity);
                     return
                         (DataSet)
@@ -146,10 +146,56 @@ namespace BusinessProcess.SCM
                     ClsObject objPOdetails = new ClsObject();
                     ClsUtility.AddParameters("@StoreId", SqlDbType.Int, StoreId.ToString());
                     ClsUtility.AddParameters("@ItemId", SqlDbType.Int, ItemId.ToString());
-                    ClsUtility.AddParameters("@FromDate", SqlDbType.DateTime, FromDate.ToString());
-                    ClsUtility.AddParameters("@ToDate", SqlDbType.DateTime, ToDate.ToString());
+                    ClsUtility.AddParameters("@FromDate", SqlDbType.VarChar, FromDate.ToString("dd-MMM-yyyy"));
+                    ClsUtility.AddParameters("@ToDate", SqlDbType.VarChar, ToDate.ToString("dd-MMM-yyyy"));
                     ClsUtility.AddParameters("@LocationId", SqlDbType.Int, LocationId.ToString());
                     return (DataSet)objPOdetails.ReturnObject(ClsUtility.theParams, "pr_SCM_BinCard_Futures", ClsDBUtility.ObjectEnum.DataSet);
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (this.Connection != null)
+                        DataMgr.ReleaseConnection(this.Connection);
+                }
+            }
+        }
+
+        public DataSet PharmacyDashBoard(int StoreId)
+        {
+            lock (this)
+            {
+                try
+                {
+                    ClsUtility.Init_Hashtable();
+                    ClsObject objPOdetails = new ClsObject();
+                    ClsUtility.AddParameters("@StoreId", SqlDbType.Int, StoreId.ToString());
+                    return (DataSet)objPOdetails.ReturnObject(ClsUtility.theParams, "pr_SCM_GetDashBoardDetails", ClsDBUtility.ObjectEnum.DataSet);
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (this.Connection != null)
+                        DataMgr.ReleaseConnection(this.Connection);
+                }
+            }
+        }
+
+        public DataTable GetStocksPerStore(int StoreId)
+        {
+            lock (this)
+            {
+                try
+                {
+                    ClsUtility.Init_Hashtable();
+                    ClsObject objPOdetails = new ClsObject();
+                    ClsUtility.AddParameters("@StoreId", SqlDbType.Int, StoreId.ToString());
+                    return (DataTable)objPOdetails.ReturnObject(ClsUtility.theParams, "pr_SCM_GetStocksPerStore", ClsDBUtility.ObjectEnum.DataTable);
                 }
                 catch
                 {

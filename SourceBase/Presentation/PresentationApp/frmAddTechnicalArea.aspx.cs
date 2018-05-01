@@ -137,11 +137,31 @@ public partial class frmAddTechnicalArea : BasePage
         {
             DSModules = ptnMgr.GetModuleNames(Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["AppUserId"]));
             theDT = DSModules.Tables[0];
+            DataRow[] toBeDeleted;
+            toBeDeleted = theDT.Select("ModuleName = 'RECORDS'");
+            if (toBeDeleted.Length > 0)
+            {
+                foreach (DataRow dr in toBeDeleted)
+                {
+                    theDT.Rows.Remove(dr);
+                    theDT.AcceptChanges();
+                }
+            }
         }
         else if (Convert.ToInt32(Session["AppUserId"]) > 1)
         {
             DSModules = ptnMgr.GetModuleNames(Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["AppUserId"]));
             theDT = DSModules.Tables[2];
+            DataRow[] toBeDeleted;
+            toBeDeleted = theDT.Select("ModuleName = 'RECORDS'");
+            if (toBeDeleted.Length > 0)
+            {
+                foreach (DataRow dr in toBeDeleted)
+                {
+                    theDT.Rows.Remove(dr);
+                    theDT.AcceptChanges();
+                }
+            }
         }
         if (theDT.Rows.Count > 0)
         {
@@ -533,9 +553,14 @@ public partial class frmAddTechnicalArea : BasePage
 
         if (txtenrollmentDate.Value == "")
         {
-            MsgBuilder theBuilder = new MsgBuilder();
-            theBuilder.DataElements["Control"] = "Enrollment Date";
-            IQCareMsgBox.Show("BlankTextBox", theBuilder, this);
+            //MsgBuilder theBuilder = new MsgBuilder();
+            //theBuilder.DataElements["Control"] = "Enrollment Date";
+            //IQCareMsgBox.Show("BlankTextBox", theBuilder, this);
+            string script = "<script language = 'javascript' defer ='defer' id = 'confirmenrolment'>\n";
+            script += "alert('Enrollment Date cannot be blank.');\n";
+            script += "document.getElementById('extruderLeftmain').style.display = 'inline';\n";
+            script += "</script>\n";
+            ClientScript.RegisterStartupScript(this.GetType(), "confirmenrolment", script);
             txtenrollmentDate.Focus();
             return false;
         }
@@ -543,13 +568,23 @@ public partial class frmAddTechnicalArea : BasePage
         DateTime theReEnrolDate = Convert.ToDateTime(theUtils.MakeDate(txtReEnrollmentDate.Value));
         if (theEnrolDate > theCurrentDate)
         {
-            IQCareMsgBox.Show("EnrolDate", this);
+            //IQCareMsgBox.Show("EnrolDate", this);
+            string script = "<script language = 'javascript' defer ='defer' id = 'confirmenrolment'>\n";
+            script += "alert('Enrollment date cannot be greater than the current date.');\n";
+            script += "document.getElementById('extruderLeftmain').style.display = 'inline';\n";
+            script += "</script>\n";
+            ClientScript.RegisterStartupScript(this.GetType(), "confirmenrolment", script);
             txtenrollmentDate.Focus();
             return false;
         }
         if (theEnrolDate < RegistrationDate)
         {
-            IQCareMsgBox.Show("RegistrationDate", this);
+            //IQCareMsgBox.Show("RegistrationDate", this);
+            string script = "<script language = 'javascript' defer ='defer' id = 'confirmenrolment'>\n";
+            script += "alert('Enrollment date cannot be Less than Registration date.');\n";
+            script += "document.getElementById('extruderLeftmain').style.display = 'inline';\n";
+            script += "</script>\n";
+            ClientScript.RegisterStartupScript(this.GetType(), "confirmenrolment", script);
             txtenrollmentDate.Focus();
             return false;
         }
@@ -557,14 +592,24 @@ public partial class frmAddTechnicalArea : BasePage
         {
             if (theReEnrolDate > theCurrentDate)
             {
-                IQCareMsgBox.Show("ReEnrolDate", this);
+                //IQCareMsgBox.Show("ReEnrolDate", this);
+                string script = "<script language = 'javascript' defer ='defer' id = 'confirmenrolment'>\n";
+                script += "alert('Re-Enrollment date cannot be greater than the current date.');\n";
+                script += "document.getElementById('extruderLeftmain').style.display = 'inline';\n";
+                script += "</script>\n";
+                ClientScript.RegisterStartupScript(this.GetType(), "confirmenrolment", script);
                 txtReEnrollmentDate.Focus();
                 return false;
             }
 
             if (theReEnrolDate < (DateTime)ViewState["CareEndedDate"])
             {
-                IQCareMsgBox.Show("RegistrationCareEndDate", this);
+                string script = "<script language = 'javascript' defer ='defer' id = 'confirmreenrolment'>\n";
+                script += "alert('Re-Enrollment date cannot be Less than Care Termination date');\n";
+                script += "document.getElementById('extruderLeftmain').style.display = 'inline';\n";
+                script += "</script>\n";
+                ClientScript.RegisterStartupScript(this.GetType(), "confirmreenrolment", script);
+                //IQCareMsgBox.Show("RegistrationCareEndDate", this);
                 txtReEnrollmentDate.Focus();
                 return false;
             }
@@ -572,7 +617,12 @@ public partial class frmAddTechnicalArea : BasePage
 
         if (textblankstatus.ToString() == "0")
         {
-            IQCareMsgBox.Show("IdentifierRequired", this);
+            //IQCareMsgBox.Show("IdentifierRequired", this);
+            string script = "<script language = 'javascript' defer ='defer' id = 'confirmenrolment'>\n";
+            script += "alert('Atleast one identifier field is required to register in service.');\n";
+            script += "document.getElementById('extruderLeftmain').style.display = 'inline';\n";
+            script += "</script>\n";
+            ClientScript.RegisterStartupScript(this.GetType(), "confirmenrolment", script);
             return false;
         }
 
@@ -582,15 +632,24 @@ public partial class frmAddTechnicalArea : BasePage
     protected void btnSaveContinue_Click(object sender, EventArgs e)
     {
         SavePatientRegistration();
+        ClientScript.RegisterStartupScript(this.GetType(), "Changingextruder", "<script language = 'javascript' defer ='defer' id = 'confirmextrufalse'>document.getElementById('extruderLeftmain').style.display = 'none';</script>");
         if (FieldValidation() == false)
         {
+                return;
+        }
+        string msg = ValidationMessage();
+        if (msg.Length > 51)
+        {            
+            MsgBuilder theBuilder1 = new MsgBuilder();
+            theBuilder1.DataElements["MessageText"] = msg;
+            IQCareMsgBox.Show("#C1", theBuilder1, this);
             return;
         }
         if (InsertUpdateIdentifiers() == true)
         {
             SaveCancel();
         }
-    }
+       }
     private void SaveCancel()
     {
 
@@ -608,6 +667,8 @@ public partial class frmAddTechnicalArea : BasePage
             theUrl = "./ClinicalForms/frmPatient_Home.aspx";
         }
 
+        string strSrvName = ddlTecharea.SelectedItem.Text;
+        string moduleid = ddlTecharea.SelectedItem.Value;
 
         ClientScript.RegisterStartupScript(this.GetType(), "Changing", "<script>fnChange();</script>");
         string script = "<script language = 'javascript' defer ='defer' id = 'confirm'>\n";
@@ -615,10 +676,13 @@ public partial class frmAddTechnicalArea : BasePage
         script += "ans=window.confirm('Service Registration Form saved successfully. Do you want to close?');\n";
         script += "if (ans==true)\n";
         script += "{\n";
-        script += "window.location.href='" + theUrl + "';\n";
+        script += String.Format("window.location.href='{0}';\n", theUrl);
+        if (Session["TechnicalAreaName"].ToString() == "Records")
+            script += "window.open('./ClinicalForms/frmPatientWaitingList.aspx?srvNm=" + strSrvName + "&mod=" + moduleid + "&PID=" + patientID + "', 'popupwindow', 'toolbars=no,location=no,directories=no,dependent=yes,top=150,left=150,maximize=yes,resizable=no,width=800,height=500,scrollbars=yes');\n";
         script += "}\n";
+        script += "else {document.getElementById('extruderLeftmain').style.display = 'inline';}\n"; 
         script += "</script>\n";
-        RegisterStartupScript("confirm", script);
+        ClientScript.RegisterStartupScript(this.GetType(), "confirm", script);
     }
 
     protected void btnContinue_Click(object sender, EventArgs e)
@@ -655,8 +719,18 @@ public partial class frmAddTechnicalArea : BasePage
         //VY added in case of records this would go back to find add patients
         if (Session["TechnicalAreaName"] == "Records")
         {
+            int patientID = Convert.ToInt32(Session["PatientId"]);
             String theUrl = String.Format("./frmFindAddCustom.aspx?srvNm={0}&mod={1}", "Records", 0);
-            Response.Redirect(theUrl);
+            string strSrvName = ddlTecharea.SelectedItem.Text;
+            string moduleid = ddlTecharea.SelectedItem.Value;
+
+            String theOrdScript;
+            theOrdScript = "<script language='javascript' id='PrintReciept'>\n";
+            theOrdScript += "window.location.href = '" + theUrl + "';\n";
+            theOrdScript += "window.open('./ClinicalForms/frmPatientWaitingList.aspx?srvNm=" + strSrvName + "&mod=" + moduleid + "&PID=" + patientID + "', 'popupwindow', 'toolbars=no,location=no,directories=no,dependent=yes,top=150,left=150,maximize=yes,resizable=no,width=800,height=500,scrollbars=yes');\n";
+            theOrdScript += "</script>\n";
+            ClientScript.RegisterStartupScript(this.GetType(), "waitingList", theOrdScript);
+          
 
         }
         else
@@ -686,8 +760,10 @@ public partial class frmAddTechnicalArea : BasePage
             pnlIdentFields.Controls.Add(new LiteralControl("<table width='100%'>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<tr>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:40%' align='right'>"));
-
-            pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
+            if (theLabelDV[0]["RequiredFlag"].ToString() == "1")
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center' class='required'>" + fieldlabel + " :</label>"));
+            else
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
 
             pnlIdentFields.Controls.Add(new LiteralControl("</td>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:60%'>"));
@@ -711,8 +787,10 @@ public partial class frmAddTechnicalArea : BasePage
             pnlIdentFields.Controls.Add(new LiteralControl("<table width='100%'>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<tr>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:40%' align='right'>"));
-
-            pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
+            if (theLabelDV[0]["RequiredFlag"].ToString() == "1")
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center' class='required'>" + fieldlabel + " :</label>"));
+            else
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
 
             pnlIdentFields.Controls.Add(new LiteralControl("</td>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:60%'>"));
@@ -737,7 +815,10 @@ public partial class frmAddTechnicalArea : BasePage
             pnlIdentFields.Controls.Add(new LiteralControl("<tr>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:40%' align='right'>"));
 
-            pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
+            if (theLabelDV[0]["RequiredFlag"].ToString() == "1")
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center' class='required'>" + fieldlabel + " :</label>"));
+            else
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
 
             pnlIdentFields.Controls.Add(new LiteralControl("</td>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:60%'>"));
@@ -762,7 +843,10 @@ public partial class frmAddTechnicalArea : BasePage
             pnlIdentFields.Controls.Add(new LiteralControl("<tr>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:40%' align='right'>"));
 
-            pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
+            if (theLabelDV[0]["RequiredFlag"].ToString() == "1")
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center' class='required'>" + fieldlabel + " :</label>"));
+            else
+                pnlIdentFields.Controls.Add(new LiteralControl("<label align='center'>" + fieldlabel + " :</label>"));
 
             pnlIdentFields.Controls.Add(new LiteralControl("</td>"));
             pnlIdentFields.Controls.Add(new LiteralControl("<td style='width:60%'>"));
@@ -1226,7 +1310,31 @@ public partial class frmAddTechnicalArea : BasePage
             PatientManager = null;
         }
     }
+    private String ValidationMessage()
+    {        
+        string strmsg = "Following values are required to complete this:\\n\\n";
+        DataTable DTModuleIdents = (DataTable)ViewState["ModuleIdentifiers"];
 
+        for (int j = 0; j <= DTModuleIdents.Rows.Count - 1; j++)
+        {
+            foreach (Control x in pnlIdentFields.Controls)
+            {
+                if (x.GetType() == typeof(System.Web.UI.WebControls.TextBox))
+                {
+                    if (("txt" + DTModuleIdents.Rows[j]["FieldName"].ToString() == ((TextBox)x).ID) && (DTModuleIdents.Rows[j]["RequiredFlag"].ToString() == "1"))
+                    {
+                        if (((TextBox)x).Text == "")
+                        {
+                            strmsg += DTModuleIdents.Rows[j]["FieldLabel"] + " is Required";
+                            strmsg = strmsg + "\\n";
+                        }
+                    }
+                }
+            }
+        } 
+
+        return strmsg;
+    }
     protected void btnReEnollPatient_Click(object sender, EventArgs e)
     {
         trReEnroll.Visible = true;

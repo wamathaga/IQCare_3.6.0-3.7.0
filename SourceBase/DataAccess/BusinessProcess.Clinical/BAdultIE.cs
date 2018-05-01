@@ -388,7 +388,7 @@ namespace BusinessProcess.Clinical
                         //oUtility.AddParameters("@WeightForAge", SqlDbType.Int, ConverTotValue.NullToInt(adultIEFields.ddlweightforage).ToString());
                         //oUtility.AddParameters("@WeightForHeight", SqlDbType.Int, ConverTotValue.NullToInt(adultIEFields.txtweightforheight).ToString());
                         oUtility.AddParameters("@DiagnosisConfirmed", SqlDbType.Int, ConverTotValue.NullToInt(adultIEFields.DiagnosisConfirmed).ToString());
-                        oUtility.AddParameters("@ConfirmHIVPosDate", SqlDbType.DateTime, String.Format("{0:dd-MMM-yyyy}", ConverTotValue.NullToDate(adultIEFields.ConfirmHIVPosDate).ToString()));
+                        oUtility.AddParameters("@ConfirmHIVPosDate", SqlDbType.VarChar, String.Format("{0:dd-MMM-yyyy}", ConverTotValue.NullToDate(adultIEFields.ConfirmHIVPosDate).ToString()));
                         oUtility.AddParameters("@ChildAccompaniedByCaregiver", SqlDbType.Int, ConverTotValue.NullToInt(adultIEFields.ChildAccompaniedByCaregiver).ToString());
                         oUtility.AddParameters("@TreatmentSupporterRelationship", SqlDbType.Int, ConverTotValue.NullToInt(adultIEFields.TreatmentSupporterRelationship).ToString());
                         oUtility.AddParameters("@HealthEducation", SqlDbType.Bit, ConverTotValue.NullToBoolean(adultIEFields.HealthEducation).ToString());
@@ -408,8 +408,8 @@ namespace BusinessProcess.Clinical
 
                         oUtility.AddParameters("@SpecifyOtherRefferedTo", SqlDbType.VarChar, ConverTotValue.NullToString(adultIEFields.SpecifyOtherRefferedTo).ToString());
                         oUtility.AddParameters("@SignatureID", SqlDbType.Int, ConverTotValue.NullToInt(adultIEFields.SignatureID).ToString());
-                        oUtility.AddParameters("@VisitDate", SqlDbType.DateTime, ConverTotValue.NullToDate(adultIEFields.VisitDate).ToString());
-                        oUtility.AddParameters("@StartTime", SqlDbType.DateTime, DateTime.Now.ToString());
+                        oUtility.AddParameters("@VisitDate", SqlDbType.VarChar, ConverTotValue.NullToDate(adultIEFields.VisitDate).ToString());
+                        oUtility.AddParameters("@StartTime", SqlDbType.VarChar, DateTime.Now.ToString());
                         theDT = (DataTable)expressManagerTest.ReturnObjectNewImpl(oUtility.theParams, "Pr_clinical_addadultie_triagetab", ClsDBUtility.ObjectEnum.DataTable);
 
 

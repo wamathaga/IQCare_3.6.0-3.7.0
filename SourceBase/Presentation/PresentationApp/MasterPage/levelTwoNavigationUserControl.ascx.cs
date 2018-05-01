@@ -11,6 +11,8 @@ using Application.Presentation;
 using Application.Common;
 using Interface.Clinical;
 using System.Configuration;
+using Interface.SCM;
+using System.Web.Services;
 
 
 public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.UserControl
@@ -26,12 +28,12 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        IPatientHome PatientManager;
+
         setSessionIds_Patient();
 
         try
         {
-            Ajax.Utility.RegisterTypeForAjax(typeof(MasterPage_levelTwoNavigationUserControl));
+            //Ajax.Utility.RegisterTypeForAjax(typeof(MasterPage_levelTwoNavigationUserControl));
             string url = Request.RawUrl.ToString();
             Application["PrvFrm"] = url;
             if (!IsPostBack)
@@ -48,6 +50,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 RemoveMenuItemByValue(patientLevelMenu.Items, "mnuDebitNote");
 
             //patientLevelMenu.Attributes.Add("onClick", "alert('executed');");
+            patientLevelMenu.MenuItemClick += patientLevelMenu_MenuItemClick1;
         }
         catch (Exception err)
         {
@@ -137,21 +140,35 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
     #region "Disable Menu Items"
     private void disableMenuItem()
     {
-        patientLevelMenu.Items[0].Selectable = false;
+        patientLevelMenu.Items[0].Enabled = false;
         for (int i = 0; i < patientLevelMenu.Items[0].ChildItems.Count; i++)
         {
             patientLevelMenu.Items[0].ChildItems[i].Selectable = false;
         }
-
-        patientLevelMenu.Items[4].Selectable = false;
+        patientLevelMenu.Items[1].Selectable = false;
+        patientLevelMenu.Items[2].Enabled = false;
+        patientLevelMenu.Items[3].Enabled = false;
+        patientLevelMenu.Items[4].Enabled = false;
         for (int i = 0; i < patientLevelMenu.Items[4].ChildItems.Count; i++)
         {
             patientLevelMenu.Items[4].ChildItems[i].Selectable = false;
         }
+        if (Convert.ToString(Session["CareEndFlag"]) == "1")
+        {
+            patientLevelMenu.Items[4].Enabled = true;
+            for (int i = 0; i < patientLevelMenu.Items[4].ChildItems.Count; i++)
+            {
+                patientLevelMenu.Items[4].ChildItems[i].Selectable = true;
+            }
+        }
+        patientLevelMenu.Items[5].Enabled = false;
+        patientLevelMenu.Items[7].Enabled = false;
+        //VY Disable Waiting Lsit 2015-03-31
+        patientLevelMenu.FindItem("mnuWaitingList").Enabled = false;
     }
     #endregion
 
-    [Ajax.AjaxMethod(Ajax.HttpSessionStateRequirement.ReadWrite)]
+    //[Ajax.AjaxMethod(Ajax.HttpSessionStateRequirement.ReadWrite)]
     public void SetPatientId_Session()
     {
         HttpContext.Current.Session["PatientVisitId"] = 0;
@@ -161,7 +178,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
     }
 
     //Dynamic Forms
-    [Ajax.AjaxMethod(Ajax.HttpSessionStateRequirement.ReadWrite)]
+    //   [Ajax.AjaxMethod(Ajax.HttpSessionStateRequirement.ReadWrite)]
     public void SetDynamic_Session(string id)
     {
         HttpContext.Current.Session["PatientVisitId"] = 0;
@@ -197,7 +214,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             theDT = theDV.ToTable();
 
             Session["FilteredUserRight"] = theDT;
-            
+
 
 
             AuthenticationManager Authentication = new AuthenticationManager();
@@ -218,7 +235,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 //mnuFollowupART.Visible = false;
                 RemoveMenuItemByValue(patientLevelMenu.Items, "mnuFollowupART");
             }
-           
+
 
             if (Authentication.HasFeatureRight(ApplicationAccess.HomeVisit, theDT) == false)
             {
@@ -244,7 +261,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 RemoveMenuItemByValue(patientLevelMenu.Items, "mnuNonARTFollowUp");
             }
 
-            
+
 
             if (Authentication.HasFeatureRight(ApplicationAccess.DeleteForm, theDT) == false)
             {
@@ -301,7 +318,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             {
                 RemoveMenuItemByValue(patientLevelMenu.Items, "mnuExposedInfant");
             }
-            
+
             if (Authentication.HasFeatureRight(ApplicationAccess.FollowupEducation, theDT) == false)
             {
                 //mnuFollowupEducation.Visible = false;
@@ -321,7 +338,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 //mnuPatientRecord.Visible = false;
 
             }
-            
+
 
             if (Authentication.HasFeatureRight(ApplicationAccess.Transfer, theDT) == false)
             {
@@ -369,7 +386,29 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             {
                 RemoveMenuItemByValue(patientLevelMenu.Items, "mnuARTTherapy");
             }
-           
+
+            if (Authentication.HasFeatureRight(ApplicationAccess.Dashboard, theDT) == false)
+            {
+                RemoveMenuItemByValue(PharmacyDispensingMenu.Items, "Dashboard");
+            }
+            if (Authentication.HasFeatureRight(ApplicationAccess.Dispense, theDT) == false)
+            {
+                RemoveMenuItemByValue(PharmacyDispensingMenu.Items, "Dispense");
+            }
+            if (Authentication.HasFeatureRight(ApplicationAccess.StockSummaryWeb, theDT) == false)
+            {
+                RemoveMenuItemByValue(PharmacyDispensingMenu.Items, "StockSummaryWeb");
+            }
+            if (Authentication.HasFeatureRight(ApplicationAccess.StockManagement, theDT) == false)
+            {
+                RemoveMenuItemByValue(PharmacyDispensingMenu.Items, "StockManagement");
+            }
+            //Consumables linked to billing 
+            if (Session["Billing"].ToString() != "1")
+            {
+                RemoveMenuItemByValue(patientLevelMenu.Items, "mnuConsumablesIssuance");
+            }
+
         }
 
     }
@@ -426,11 +465,19 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 MenuItem child = new MenuItem(featureName, url);
                 if (Convert.ToInt32(dtrules.Rows[i]["FeatureId"]) == 5 && Session["PaperLess"].ToString() == "1")
                 {
-                    child = new MenuItem("Laboratory", url);
-                    patientLevelMenu.Items[4].ChildItems.Add(child);
+                        Boolean Lab = false;
+                        for (int m = 0; m < patientLevelMenu.Items[2].ChildItems.Count; m++)
+                        {
+                            if (patientLevelMenu.Items[2].ChildItems[m].Text == "Laboratory") { Lab = true; }
+                        }
+                        if (Lab == false)
+                        {
+                            child = new MenuItem("Laboratory", url);
+                            patientLevelMenu.Items[2].ChildItems.Add(child);
+                        }
                 }
                 else
-                    patientLevelMenu.Items[4].ChildItems.Add(child);
+                    patientLevelMenu.Items[2].ChildItems.Add(child);
                 DataTable theCEntedStatusDT = (DataTable)Session["CEndedStatus"];
                 string CareEnded = string.Empty;
                 if (theCEntedStatusDT != null)
@@ -935,9 +982,9 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             if (Convert.ToInt32(theDR["Featureid"]) != 71)
             {
                 string theURL = "", theLabTest = "";
-                if (Convert.ToInt32(theDR["FeatureId"]) == 3) { theURL = string.Format("{0}", "../Pharmacy/frmPharmacyForm.aspx?Prog=''"); }
+                if (Convert.ToInt32(theDR["FeatureId"]) == 3) { theURL = string.Format("{0}", "../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?Prog=''"); }
                 //theURL = string.Format("{0}", "../Pharmacy/frmPharmacy_Custom.aspx?Prog=''");
-                else if (Convert.ToInt32(theDR["FeatureId"]) == 4) { theURL = string.Format("{0}", "../Pharmacy/frmPharmacyForm.aspx?Prog=''"); }
+                else if (Convert.ToInt32(theDR["FeatureId"]) == 4) { theURL = string.Format("{0}", "../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?Prog=''"); }
                 //theURL = string.Format("{0}", "../Pharmacy/frmPharmacy_Custom.aspx?Prog=''");
                 else if (Convert.ToInt32(theDR["FeatureId"]) == 5 && Session["PaperLess"].ToString() == "0")
                 //theURL = string.Format("{0}sts={1}", "../Laboratory/frmLabOrder.aspx?", lblpntStatus.Text);
@@ -955,7 +1002,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 else if (theDR["FeatureName"].ToString() == "CareEnd_" + moduleName)
                     theURL = string.Format("{0}", "../Scheduler/frmScheduler_ContactCareTracking.aspx?");
                 else if (theDR["FeatureName"].ToString() == "Pharmacy")
-                    theURL = string.Format("{0}|{1}", "../Pharmacy/frmPharmacy_Custom.aspx?", theDR["FeatureId"].ToString());
+                    theURL = string.Format("{0}|{1}", "../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?", theDR["FeatureId"].ToString());
                 else
                     theURL = string.Format("{0}|{1}", "../ClinicalForms/frmClinical_CustomForm.aspx?", theDR["FeatureId"].ToString());
                 if (ModuleId.ToString() == "1")
@@ -1004,7 +1051,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                         //else
                         //{
 
-                            LoadCreateNewMenu(theURL, rowNo);
+                        LoadCreateNewMenu(theURL, rowNo);
                         //}
                     }
                 }
@@ -1152,15 +1199,12 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         }
 
 
-        //if (Session["PaperLess"].ToString() == "1")
-        //{
-        //    RemoveMenuItemByValue(patientLevelMenu.Items, "mnuLabOrder");
-        //}
-        //else
-        //{
-        //    RemoveMenuItemByValue(patientLevelMenu.Items, "mnuOrderLabTest");
-        //    RemoveMenuItemByValue(patientLevelMenu.Items, "mnuOrderLabTestPMTCT");
-        //}
+        if (Session["PaperLess"].ToString() == "0")
+        {
+            RemoveMenuItemByValue(patientLevelMenu.Items, "mnuWaitingList");//waiting list available only in paerless mode
+
+        }
+
     }
 
     private void Init_Menu()
@@ -1176,7 +1220,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         if (Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
 
         DataTable dtPatientInfo = (DataTable)Session["PatientInformation"];
@@ -1212,6 +1256,8 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 GblIQCare.Scheduler = 0;
             }
         }
+        if (Session["Billing"].ToString() == "1")
+            setBillStaus();
         //################  Master Settings ###################
         string UserID = "";
         if (Session["AppUserID"].ToString() != null)
@@ -1230,11 +1276,13 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             string PatientExitReason = string.Empty;
             string PMTCTCareEnded = string.Empty;
             string CareEnded = string.Empty;
+            Session["CareendedStatus"] = 0;
             if (theCEntedStatusDT.Rows.Count > 0)
             {
                 PatientExitReason = Convert.ToString(theCEntedStatusDT.Rows[0]["PatientExitReason"]);
                 PMTCTCareEnded = Convert.ToString(theCEntedStatusDT.Rows[0]["PMTCTCareEnded"]);
                 CareEnded = Convert.ToString(theCEntedStatusDT.Rows[0]["CareEnded"]);
+                Session["CareendedStatus"] = CareEnded;
                 if (CareEnded == "1")
                 {
                     disableMenuItem();
@@ -1273,10 +1321,10 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 theUrl = string.Format("{0}", "../ClinicalForms/frmClinical_InitialEvaluation.aspx");
                 AssignUrl(patientLevelMenu.Items, "mnuInitEval", theUrl);
                 //########### ART-FollowUp ############
-                string theUrl18 = string.Format("{0}", "../ClinicalForms/frmClinical_ARTFollowup.aspx");
+                string theUrl18 = string.Format("{0}&sts={1}", "../ClinicalForms/frmClinical_ARTFollowup.aspx?", "0");
                 AssignUrl(patientLevelMenu.Items, "mnuFollowupART", theUrl18);
                 //########### Non-ART Follow-Up #########
-                string theUrl1 = string.Format("{0}", "../ClinicalForms/frmClinical_NonARTFollowUp.aspx");
+                string theUrl1 = string.Format("{0}&sts={1}", "../ClinicalForms/frmClinical_NonARTFollowUp.aspx?", "0");
                 Session.Remove("ExixstDS1");
                 AssignUrl(patientLevelMenu.Items, "mnuNonARTFollowUp", theUrl1);
                 //########### Patient Record ############ 
@@ -1290,7 +1338,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                     {
                         if (Convert.ToBoolean(ConfigurationManager.AppSettings["EnablePharmacyStaticForm"].ToString()))
                         {
-                            theUrl = string.Format("{0}", "../Pharmacy/frmPharmacyForm.aspx?Prog=ART");
+                            theUrl = string.Format("{0}&sts={1}", "../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?Prog=ART", "0");
                             AssignUrl(patientLevelMenu.Items, "mnuPharmacy", theUrl);
                         }
                     }
@@ -1399,7 +1447,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         AssignUrl(patientLevelMenu.Items, "mnuHIVCareARTEncounter", theUrl2);
 
         //########### Kenya Blue Card #########
-        theUrl = string.Format("{0}", "../ClinicalForms/frmClinical_InitialFollowupVisit.aspx");
+        theUrl = string.Format("{0}", "../ClinicalForms/frmClinical_InitialFollowupVisit.aspx?status=0");
         AssignUrl(patientLevelMenu.Items, "mnuARTVisit", theUrl);
 
         theUrl = string.Format("{0}", "../ClinicalForms/frmClinical_RevisedAdultfollowup.aspx");
@@ -1575,7 +1623,11 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         {
             SetPatientId_Session();
             //if (e.Item.Value.Substring(0, 15).ToString().Equals("mnuOrderLabTest") || e.Item.Value.Equals("../Laboratory/LabOrderForm.aspx?name=Add&sts=0"))
-            string strMenuValue = e.Item.Value.Substring(0, 15);
+            string strMenuValue = string.Empty;
+            
+            if(!String.IsNullOrEmpty(e.Item.Value.ToString()))
+                strMenuValue = e.Item.Value.Substring(0, 15);
+
             if (strMenuValue.Equals("mnuOrderLabTest") || strMenuValue.Equals("mnuLabOrderDynm") || e.Item.Value.Equals("../Laboratory/frm_Laboratory.aspx?name=Add&sts=0"))
             {
 
@@ -1602,8 +1654,8 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             script += "\n var menuTable = document.getElementById('" + patientLevelMenu.ClientID + "');";
             script += "\n var menuLinks = menuTable.getElementsByTagName('a');";
             script += "\n   for(i=0;i<menuLinks.length;i++)";
-            script += "\n     {";
-            script += "\n       menuLinks[i].onclick = function(){ MasterPage_levelTwoNavigationUserControl.SetPatientId_Session();}";
+            script += "\n     {";            
+            script += "\n       menuLinks[i].onclick = function(){  MasterPage_levelTwoNavigationUserControl.SetPatientId_Session();}";
             script += "\n     }";
             script += "\n   setOnClickForNextLevelMenuItems(menuTable.nextSibling);";
             script += "\n }";
@@ -1615,7 +1667,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             script += "\n        var subMenuLinks = currentMenuItemsContainer.getElementsByTagName('a');";
             script += "\n        for(i=0;i<subMenuLinks.length;i++)";
             script += "\n          {";
-            script += "\n            if(subMenuLinks[i] != 'javascript:openClinicalSummary();'){subMenuLinks[i].onclick = function(){MasterPage_levelTwoNavigationUserControl.SetPatientId_Session();}}";
+            script += "\n            if(subMenuLinks[i] != 'javascript:openClinicalSummary();'){subMenuLinks[i].onclick = function(){ PageMethods.SetPatientId_Session('bb', CallSuccess, CallFailed);}}";
             script += "\n          }";
             script += "\n        setOnClickForNextLevelMenuItems(currentMenuItemsContainer.nextSibling);";
             script += "\n      }";
@@ -1661,6 +1713,148 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 "Redirect",
                 script,
                 true);
+        }
+    }
+    //TODO Done code for Bill 
+    private void setBillStaus()
+    {
+        System.IO.FileInfo fileinfo = new System.IO.FileInfo(Request.Url.AbsolutePath);
+        string pageName = fileinfo.Name;
+
+
+        try
+        {
+            if (pageName.Equals("frmBilling_ClientBill.aspx") || pageName.Equals("frmBilling_PayBill.aspx"))
+            {
+                Tr1.Visible = false;
+                Tr2.Visible = false;
+                patientLevelMenu.Visible = false;
+                return;
+
+            }
+
+            int visitTypeID = getVisitTypeID(pageName);
+            if (visitTypeID == 99)
+            {
+                Tr2.Visible = false;
+            }
+            else if (visitTypeID == 6)//Lab order form show labs paid for
+            {
+                Tr2.Visible = true;
+                Label theLabelBill;
+                IBilling BillingManager = (IBilling)ObjectFactory.CreateInstance("BusinessProcess.SCM.BBilling, BusinessProcess.SCM");
+                DataTable theLabsDt = BillingManager.GetPaidLabs(int.Parse(Session["PatientId"].ToString()));
+                String labs = "", labelText = "Attention:This service has not been paid for!!";
+                foreach (DataRow row in theLabsDt.Rows)
+                {
+                    labs = String.Format("{0}{1}, ", labs, row[0]);
+                }
+                if (theLabsDt.Rows.Count == 0)
+                {
+
+                    labelText = "Attention:This service has not been paid for!!";
+                    theLabelBill = new Label { ID = "Lbl_bill", ForeColor = System.Drawing.Color.Red, Text = labelText };
+                }
+                else
+                {
+                    labelText = "Patient is cleared to recieve the following lab tests: " + labs.ToUpper();
+                    theLabelBill = new Label { ID = "Lbl_bill", ForeColor = System.Drawing.Color.Green, Text = labelText };
+
+                }
+
+                thePnlBill.Controls.Add(theLabelBill);
+            }
+            else if (visitTypeID == 4)//Pharmacy form
+            {
+                Tr2.Visible = true;
+                Label theLabelBill;
+                IBilling BillingManager = (IBilling)ObjectFactory.CreateInstance("BusinessProcess.SCM.BBilling, BusinessProcess.SCM");
+                DataTable theDrugsDt = BillingManager.GetPaidDrugs(int.Parse(Session["PatientId"].ToString()));
+                String drugs = "", labelText = "Attention:This service has not been paid for!!";
+                foreach (DataRow row in theDrugsDt.Rows)
+                {
+                    drugs = String.Format("{0}{1} {2},{3} ", drugs, row[1], row[0], Environment.NewLine);
+                }
+                if (theDrugsDt.Rows.Count == 0)
+                {
+
+                    labelText = "Attention:This service has not been paid for!!";
+                    theLabelBill = new Label { ID = "Lbl_bill", ForeColor = System.Drawing.Color.Red, Text = labelText };
+                }
+                else
+                {
+                    labelText = "Patient is cleared to recieve the following Drugs: " + Environment.NewLine + drugs;
+                    theLabelBill = new Label { ID = "Lbl_bill", ForeColor = System.Drawing.Color.Green, Text = labelText };
+
+                }
+
+                thePnlBill.Controls.Add(theLabelBill);
+            }
+            else
+            {
+                //check whether this is a form that has previously been filled if so it dosnt have to be paid for again
+                if (Session["PatientVisitId"] != null && int.Parse(Session["PatientVisitId"].ToString()) != 0) return;
+                IBilling BillingManager = (IBilling)ObjectFactory.CreateInstance("BusinessProcess.SCM.BBilling, BusinessProcess.SCM");
+                bool itemPaid;
+                DataTable drItemStatus = BillingManager.isVisitTypePaid(visitTypeID, int.Parse(Session["PatientId"].ToString()));
+
+                itemPaid = Int32.Parse(drItemStatus.Rows[0][0].ToString()) > 0 ? true : false;
+                if (itemPaid == true)
+                {
+                    Tr2.Visible = true;
+                    Label theLabelBill = new Label { ID = "Lbl_bill", ForeColor = System.Drawing.Color.Green, Text = "Patient is cleared to recieve this service" };
+                    thePnlBill.Controls.Add(theLabelBill);
+
+                }
+                else
+                {
+                    //Check if the item has a price i.e it has been configured to be sold and set the visibility based on this
+                    Tr2.Visible = Decimal.Parse(drItemStatus.Rows[0][1].ToString()) > 0 ? true : false;
+                    Label theLabelBill = new Label { ID = "Lbl_bill", ForeColor = System.Drawing.Color.Red, Text = "Attention:This service has not been paid for!!" };
+                    thePnlBill.Controls.Add(theLabelBill);
+
+                }
+
+
+            }
+        }
+        catch (Exception ex)
+        {
+
+            MsgBuilder theBuilder = new MsgBuilder();
+            theBuilder.DataElements["MessageText"] = ex.Message.ToString();
+            IQCareMsgBox.Show("#C1", theBuilder, this);
+            return;
+        }
+    }
+    private int getVisitTypeID(String pageName)
+    {
+        try
+        {
+            switch (pageName.TrimEnd(".aspx".ToCharArray()))
+            {
+                case "frmClinical_ARTHistory":
+                    return 18;
+                case "frmClinical_ARVTherapy":
+                    return 19;
+                case "frmClinical_InitialFollowupVisit":
+                    return 17;
+                case "frmPharmacyForm":
+                case "frmPharmacy_Custom":
+                    return 4;
+                case "frmLabOrder":
+                case "frmDynamicLab":
+                    return 6;
+                case "frmClinical_CustomForm":
+                    return int.Parse(HttpContext.Current.Session["FeatureID"].ToString());
+                default:
+                    return 99;
+            }
+        }
+        catch (Exception ex)
+        {
+
+            return 99;
         }
     }
 }

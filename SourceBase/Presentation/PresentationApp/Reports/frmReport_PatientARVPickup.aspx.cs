@@ -116,7 +116,7 @@ public partial class frmReport_PatientARVPickup : System.Web.UI.Page
             DataTable dtDrugARVPickup = new DataTable();
             if (chkAll.Checked == false)
             {
-                dtDrugARVPickup = (DataTable)ReportDetails.GetDrugARVPickup(thePatientId2, Convert.ToDateTime(theStartDate), Convert.ToDateTime(theEndDate), theSatelliteId, theCountryID, thePosId, LocationID).Tables[0];
+                dtDrugARVPickup = (DataTable)ReportDetails.GetDrugARVPickup(thePatientId2, Convert.ToDateTime(theStartDate).ToString("dd-MMM-yyyy"), Convert.ToDateTime(theEndDate).ToString("dd-MMM-yyyy"), theSatelliteId, theCountryID, thePosId, LocationID).Tables[0];
             }
             
 

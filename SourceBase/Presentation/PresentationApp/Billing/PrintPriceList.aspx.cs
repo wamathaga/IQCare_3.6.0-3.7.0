@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace IQCare.Web.Billing
 {
-    public partial class PrintPriceList : LogPage
+    public partial class PrintPriceList : System.Web.UI.Page
     {
         /// <summary>
         /// The XML document

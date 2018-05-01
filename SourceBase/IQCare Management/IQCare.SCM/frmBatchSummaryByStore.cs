@@ -269,8 +269,9 @@ namespace IQCare.SCM
                     theDT.Columns.Remove("BatchId");
                     string theFilePath = System.Configuration.ConfigurationSettings.AppSettings["ExcelFilesPath"];
                     //string theFilePath = System.IO.Directory.GetParent(System.Windows.Forms.Application.ExecutablePath).Parent.Parent.Parent.FullName + "\\IQCare Management\\ExcelFiles\\";
-                    theFilePath = theFilePath + "BatchSummary.xls";
+                    theFilePath = theFilePath + "BatchSummary.xlsx";
                     theUtil.ExportToExcel_Windows(theDT, theFilePath, "");
+                    btnExport.Enabled = false;
                 }
                 else
                 {

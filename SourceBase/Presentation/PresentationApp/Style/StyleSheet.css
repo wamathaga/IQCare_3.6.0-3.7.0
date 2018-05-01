@@ -4,6 +4,11 @@
 }
 
 /* ajax__tab_xp-theme theme */
+.ajax__tab_header
+{
+    font-weight:bold;
+    color:#000066;
+    }
 .ajax__tab_xp-theme .ajax__tab_header 
 {
     font-family:verdana,tahoma,helvetica;
@@ -63,6 +68,11 @@
 }
 
 /* ajax__tab_yuitabview-theme theme (img/yui/sprite.png) */
+.ajax__tab_header
+{
+    font-weight:bold;
+    color:#000066;
+    }
 .ajax__tab_yuitabview-theme .ajax__tab_header 
 {
     font-family:arial,helvetica,clean,sans-serif;
@@ -107,6 +117,11 @@
 }
 
 /* ajax__tab_technorati-theme theme */
+.ajax__tab_header
+{
+    font-weight:bold;
+    color:#000066;
+    }
 .ajax__tab_technorati-theme .ajax__tab_header 
 {
     font-family:"Helvetica Neue", Arial, Sans-Serif;
@@ -125,11 +140,11 @@
 .ajax__tab_technorati-theme .ajax__tab_header .ajax__tab_inner 
 {
     background:url(img/technorati/tab.png) no-repeat right top;
-    border-color:#666;
-    color:#666;
+    border-color:#000066;
+    color:#000066;
     padding:3px 10px 2px 0px;
 }
-.ajax__tab_technorati-theme .ajax__tab_hover .ajax__tab_inner 
+.ajax__tab_technorati-theme .ajax__tab_hover /*.ajax__tab_inner */
 {
     color:#000000;
 }
@@ -141,8 +156,8 @@
 .ajax__tab_technorati-theme .ajax__tab_active .ajax__tab_inner 
 {
     background:url(img/technorati/tab.png) no-repeat right -40px;
-    color:#000000;
-    border-color:#333
+    color:#000066;
+    border-color:#000066
 }
 .ajax__tab_technorati-theme .ajax__tab_body 
 {
@@ -155,6 +170,11 @@
 }
 
 /* ajax__tab_msngallery-theme theme */
+.ajax__tab_header
+{
+    font-weight:bold;
+    color:#000066;
+    }
 .ajax__tab_msngallery-theme .ajax__tab_header 
 {
     background:url(img/msngallery/tab-line.png) repeat-x bottom;
@@ -207,6 +227,11 @@
 }
 
 /* ajax__tab_ie-theme theme */
+.ajax__tab_header
+{
+    font-weight:bold;
+    color:#000066;
+    }
 .ajax__tab_ie-theme .ajax__tab_header 
 {
     padding-left:5px;

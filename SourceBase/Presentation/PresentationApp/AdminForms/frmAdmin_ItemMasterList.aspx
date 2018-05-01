@@ -55,10 +55,10 @@
             width: 800px !important;
         }
     </style>
-    <h5 class="forms" align="left" style="margin-top: 10px">
-        Billable Master List</h5>
-    <div class="rounded container-fluid">
-        <table class="table-condensed" width="100%">
+    <h2 class="forms" align="left" style="margin-top:10px">
+        Billable Master List</h2>
+    <div class="rounded">
+        <table cellspacing="6" cellpadding="0" width="100%" border="0">
             <tbody>
                 <tr>
                     <td align="left" style="padding-left: 10px; padding-right: 15px">
@@ -95,6 +95,7 @@
                                         </td>
                                     </tr>
                                 </table>
+                               
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="ddlMainItem" EventName="SelectedIndexChanged" />
@@ -162,14 +163,15 @@
                                                                     cursor: move; height: 18px">
                                                                     <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 14px">
                                                                         <tr>
-                                                                            <td valign="top" colspan="2" style="font-weight: bold; padding: 3px">
-                                                                                <asp:Label ID="lblActionTitle" runat="server" Text="Add / Edit Items" ForeColor="White"></asp:Label>
+                                                                            <td valign="top" colspan="2" style="font-weight: bold;
+                                                                                padding: 3px">
+                                                                                <asp:Label ID="lblActionTitle" runat="server" Text="Add / Edit Items" ForeColor=White></asp:Label>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
                                                                 </asp:Panel>
                                                                 <table cellpadding="1" cellspacing="1" border="0" width="680px" style="border: solid 1px #808080;
-                                                                    background-color: white; margin-bottom: 10px; margin-top: 5px;">
+                                                                    background-color: white; margin-bottom: 10px;margin-top:5px;">
                                                                     <tr>
                                                                         <td colspan="2" align="left">
                                                                             <i>All of the fields in this section are required.</i>
@@ -190,36 +192,36 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="left" style="float: right; margin-right: 10%;">
-                                                                            <b>Item Type:</b>
+                                                                        <td align="left" style="float:right; margin-right:10%;"><b>
+                                                                            Item Type:</b>
                                                                         </td>
                                                                         <td valign="top" colspan="1" style="font-weight: bold; padding: 3px" align="left">
                                                                             <asp:Label ID="labelItemMainType" runat="server" Text=""></asp:Label>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="left" style="float: right; margin-right: 10%;" class="required">
-                                                                            <b>Item Name:</b>
+                                                                        <td align="left" style="float:right; margin-right:10%;" class="required"><b>
+                                                                            Item Name:</b>
                                                                         </td>
                                                                         <td align="left">
                                                                             <asp:TextBox ID="textItemName" runat="server" Width="180px" AutoComplete="false"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr style="display: <%= ShowHideSubTypes() %>;">
-                                                                        <td align="left" style="float: right; margin-right: 10%;" class="required">
-                                                                            <b>Item SubType:</b>
+                                                                        <td align="left" style="float:right; margin-right:10%;" class="required"><b>
+                                                                            Item SubType:</b>
                                                                         </td>
                                                                         <td align="left">
                                                                             <div id="divSubTypes" class="divborder checkbox" style="margin-top: 2px; margin-bottom: 2px;
-                                                                                overflow: auto; margin-left: 0px; background-color: White;">
+                                                                                overflow: auto; margin-left:0px; background-color:White;">
                                                                                 <asp:RadioButtonList ID="checkListSubTypes" runat="server" AutoPostBack="false" Width="180px"
                                                                                     RepeatColumns="1" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="left" style="float: right; margin-right: 10%;" class="required">
-                                                                            <b>Status:</b>
+                                                                        <td align="left" style="float:right; margin-right:10%;" class="required"><b>
+                                                                            Status:</b>
                                                                         </td>
                                                                         <td>
                                                                             <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal">
@@ -236,16 +238,8 @@
                                                                     <tr>
                                                                         <td colspan="2" style="white-space: nowrap; padding: 5px; text-align: center; padding-top: 5px;
                                                                             padding-bottom: 5px">
-                                                                            <asp:Button ID="buttonSubmitItem" runat="server" Text="Save" OnClick="SaveItem" CssClass="btn btn-primary"
-                                                                                Height="30px" Width="10%" Style="text-align: left;" />
-                                                                            <label class="glyphicon glyphicon-floppy-disk" style="margin-left: -3%; margin-right: 2%;
-                                                                                vertical-align: sub; color: #fff;">
-                                                                            </label>
-                                                                            <asp:Button ID="buttonClose" runat="server" Text="Close" CssClass="btn btn-primary"
-                                                                                Height="30px" Width="10%" Style="text-align: left;" />
-                                                                            <label class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; margin-right: 2%;
-                                                                                vertical-align: sub; color: #fff;">
-                                                                            </label>
+                                                                            <asp:Button ID="buttonSubmitItem" runat="server" Text="Save" Width="80px" OnClick="SaveItem" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                            <asp:Button ID="buttonClose" runat="server" Text="Close" Width="80px" />
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -253,26 +247,17 @@
                                                             <ajaxToolkit:ModalPopupExtender ID="mpeItemPopup" runat="server" TargetControlID="buttonRaiseItemPopup"
                                                                 PopupControlID="divData" BackgroundCssClass="modalBackground" DropShadow="True"
                                                                 BehaviorID="addedititems" PopupDragHandleControlID="divTitle" Enabled="True"
-                                                                DynamicServicePath="" CancelControlID="buttonClose">
+                                                                DynamicServicePath=""  CancelControlID="buttonClose">
                                                             </ajaxToolkit:ModalPopupExtender>
                                                             <!-- Confirmation Popup -->
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="form pad5 center" style="text-align: center">
-                                                            <asp:Button ID="buttonAddItem" runat="server" Text="Add Item" OnClick="AddNewItem"
-                                                                CssClass="btn btn-primary" Height="30px" Width="11%" Style="text-align: left;" />
-                                                            <label class="glyphicon glyphicon-plus" style="margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">
-                                                            </label>
-                                                            <%--    <asp:Button ID="buttonCancelAddItem" runat="server" Text="Cancel" Style="display: none;
-                                                                text-align: left;" CssClass="btn btn-primary" Height="30px" Width="8%" />
-                                                            <label class="glyphicon glyphicon-remove" style="display: none; margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">--%>
-                                                            <asp:Button ID="Button3" runat="server" OnClick="btn_close_Click" Text="Close" CssClass="btn btn-primary"
-                                                                Height="30px" Width="9%" />
-                                                            <label class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">
+                                                            <asp:Button ID="buttonAddItem" runat="server" Text="Add Item" Width="90px" OnClick="AddNewItem" />
+                                                            <asp:Button ID="buttonCancelAddItem" runat="server" Text="Cancel" Style="display: none" />
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <asp:Button ID="Button3" runat="server" OnClick="btn_close_Click" Text="Close" />
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -311,7 +296,7 @@
                                                     </table>
                                                 </asp:Panel>
                                                 <table cellpadding="1" cellspacing="1" border="0" width="680px" style="border: solid 1px #808080;
-                                                    background-color: white; margin-bottom: 10px">
+                                                    background-color:  #CCFFFF; margin-bottom: 10px">
                                                     <tr>
                                                         <td style="width: 100%">
                                                             <hr class="forms">
@@ -324,29 +309,29 @@
                                                     <tr>
                                                         <td style="width: 100%" class="border pad5">
                                                             <%--<div class="border pad5">--%>
-                                                            <label class="" style="margin-left: 1px">
-                                                                Select Item Type:</label>
-                                                            <asp:DropDownList runat="server" ID="ddlBillingItemType" Width="240px" OnSelectedIndexChanged="BillingGroupChanged"
-                                                                AutoPostBack="true">
-                                                            </asp:DropDownList>
-                                                            <%-- </div>--%>
+                                                                <label class="" style="margin-left: 1px">
+                                                                    Select Item Type:</label>
+                                                                <asp:DropDownList runat="server" ID="ddlBillingItemType" Width="240px" OnSelectedIndexChanged="BillingGroupChanged"
+                                                                    AutoPostBack="true">
+                                                                </asp:DropDownList>
+                                                           <%-- </div>--%>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td style="width: 100%" class="border pad5">
-                                                            <%--  <div class="border pad5">--%>
-                                                            <label class="" style="margin-left: 1px">
-                                                                Find Item:</label>
-                                                            <asp:TextBox ID="textSearchName" runat="server" AutoPostBack="true" Width="580px"
-                                                                Font-Names="Courier New" OnTextChanged="SearchNameChanged"></asp:TextBox>
-                                                            <div id="divwidthfooter" runat="server" style="z-index: 4500000" />
-                                                            <ajaxToolkit:AutoCompleteExtender ID="aceSearchItems" runat="server" CompletionInterval="30"
-                                                                CompletionListCssClass="autocomplete_completionListElement" CompletionListItemCssClass="autocomplete_listItem"
-                                                                CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" CompletionSetCount="10"
-                                                                BehaviorID="AutoCompleteExFooter" EnableCaching="false" FirstRowSelected="false"
-                                                                MinimumPrefixLength="3" OnClientItemSelected="ace1_itemSelected" ServiceMethod="SearchItems"
-                                                                TargetControlID="textSearchName" CompletionListElementID="divwidthfooter">
-                                                                <Animations>
+                                                          <%--  <div class="border pad5">--%>
+                                                                <label class="" style="margin-left: 1px">
+                                                                    Find Item:</label>
+                                                                <asp:TextBox ID="textSearchName" runat="server" AutoPostBack="true" Width="580px"
+                                                                    Font-Names="Courier New" OnTextChanged="SearchNameChanged"></asp:TextBox>
+                                                                <div id="divwidthfooter" runat="server" style="z-index: 4500000" />
+                                                                <ajaxToolkit:AutoCompleteExtender ID="aceSearchItems" runat="server" CompletionInterval="30"
+                                                                    CompletionListCssClass="autocomplete_completionListElement" CompletionListItemCssClass="autocomplete_listItem"
+                                                                    CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" CompletionSetCount="10"
+                                                                    BehaviorID="AutoCompleteExFooter" EnableCaching="false" FirstRowSelected="false"
+                                                                    MinimumPrefixLength="3" OnClientItemSelected="ace1_itemSelected" ServiceMethod="SearchItems"
+                                                                    TargetControlID="textSearchName" CompletionListElementID="divwidthfooter">
+                                                                    <Animations>
                                                                       <OnShow>
                                                                           <Sequence>
                                                                               <OpacityAction Opacity="0" />
@@ -364,13 +349,13 @@
                                                                               <Length PropertyKey="height" StartValueScript="$find('AutoCompleteExFooter')._height" EndValue="0" />
                                                                           </Parallel>
                                                                       </OnHide>
-                                                                </Animations>
-                                                            </ajaxToolkit:AutoCompleteExtender>
-                                                            <%-- </div>--%>
+                                                                    </Animations>
+                                                                </ajaxToolkit:AutoCompleteExtender>
+                                                           <%-- </div>--%>
                                                             <br />
                                                         </td>
                                                     </tr>
-                                                    <tr style="display: none">
+                                                    <tr style="display:none">
                                                         <td style="width: 100%">
                                                             <hr class="forms">
                                                         </td>
@@ -379,71 +364,64 @@
                                                         <td style="width: 100%" class="border pad5">
                                                             <%--<fieldset title="Details">
                                                                 <legend>Billable Details</legend>--%>
-                                                            <label class="" style="margin-left: 1px">
-                                                                Billable Details:</label>
-                                                            <div id="divdetails" class="grid" style="width: 100%;">
-                                                                <div class="rounded">
-                                                                    <div class="mid-outer">
-                                                                        <div class="mid-inner">
-                                                                            <div class="mid" style="max-height: 200px; min-height: 120px; overflow: auto">
-                                                                                <div id="divGridItems">
-                                                                                    <asp:GridView ID="gridSelectedItems" runat="server" AllowSorting="True" AutoGenerateColumns="False"
-                                                                                        BorderColor="White" BorderWidth="1px" CellPadding="0" CssClass="datatable" PageIndex="1"
-                                                                                        DataKeyNames="ItemID,ItemTypeID" ShowFooter="False" ShowHeaderWhenEmpty="True"
-                                                                                        Width="100%" GridLines="None" EmptyDataText="No items for the billables" OnRowCommand="gridSelectedItems_RowCommand">
-                                                                                        <Columns>
-                                                                                            <asp:TemplateField HeaderText="Item Name">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="labelItemName" runat="server" Text='<%# Bind("itemname") %>'></asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                                <ItemStyle Width="400px" />
-                                                                                                <HeaderStyle HorizontalAlign="Left" />
-                                                                                            </asp:TemplateField>
-                                                                                            <asp:TemplateField HeaderText="Item Type">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="lblItemType" runat="server" Text='<%# Bind("ItemTypeName") %>'></asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                                <ItemStyle Width="15%" Wrap="false" />
-                                                                                                <HeaderStyle HorizontalAlign="Left" />
-                                                                                            </asp:TemplateField>
-                                                                                            <asp:TemplateField ShowHeader="False">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:ImageButton ID="DeleteItemButton" runat="server" CommandName="RemoveItem" ImageUrl="~/Images/del.gif"
-                                                                                                        CommandArgument="<%# Container.DataItemIndex %>" ToolTip="Remove Item" />
-                                                                                                </ItemTemplate>
-                                                                                                <ItemStyle Width="20px" Wrap="false" />
-                                                                                            </asp:TemplateField>
-                                                                                        </Columns>
-                                                                                        <HeaderStyle HorizontalAlign="Left" />
-                                                                                        <RowStyle CssClass="row" />
-                                                                                    </asp:GridView>
+                                                                <label class="" style="margin-left: 1px">
+                                                                    Billable Details:</label>
+                                                                <div id="divdetails" class="grid" style="width: 100%;">
+                                                                    <div class="rounded">
+                                                                        <div class="mid-outer">
+                                                                            <div class="mid-inner">
+                                                                                <div class="mid" style="max-height: 200px; min-height: 120px; overflow: auto">
+                                                                                    <div id="divGridItems">
+                                                                                        <asp:GridView ID="gridSelectedItems" runat="server" AllowSorting="True" AutoGenerateColumns="False"
+                                                                                            BorderColor="White" BorderWidth="1px" CellPadding="0" CssClass="datatable" PageIndex="1"
+                                                                                            DataKeyNames="ItemID,ItemTypeID" ShowFooter="False" ShowHeaderWhenEmpty="True"
+                                                                                            Width="100%" GridLines="None" EmptyDataText="No items for the billables" OnRowCommand="gridSelectedItems_RowCommand">
+                                                                                            <Columns>
+                                                                                                <asp:TemplateField HeaderText="Item Name">
+                                                                                                    <ItemTemplate>
+                                                                                                        <asp:Label ID="labelItemName" runat="server" Text='<%# Bind("itemname") %>'></asp:Label>
+                                                                                                    </ItemTemplate>
+                                                                                                    <ItemStyle Width="400px" />
+                                                                                                    <HeaderStyle HorizontalAlign="Left" />
+                                                                                                </asp:TemplateField>
+                                                                                                <asp:TemplateField HeaderText="Item Type">
+                                                                                                    <ItemTemplate>
+                                                                                                        <asp:Label ID="lblItemType" runat="server" Text='<%# Bind("ItemTypeName") %>'></asp:Label>
+                                                                                                    </ItemTemplate>
+                                                                                                    <ItemStyle Width="15%" Wrap="false" />
+                                                                                                    <HeaderStyle HorizontalAlign="Left" />
+                                                                                                </asp:TemplateField>
+                                                                                                <asp:TemplateField ShowHeader="False">
+                                                                                                    <ItemTemplate>
+                                                                                                        <asp:ImageButton ID="DeleteItemButton" runat="server" CommandName="RemoveItem" ImageUrl="~/Images/del.gif"
+                                                                                                            CommandArgument="<%# Container.DataItemIndex %>" ToolTip="Remove Item" />
+                                                                                                    </ItemTemplate>
+                                                                                                    <ItemStyle Width="20px" Wrap="false" />
+                                                                                                </asp:TemplateField>
+                                                                                            </Columns>
+                                                                                            <HeaderStyle HorizontalAlign="Left" />
+                                                                                            <RowStyle CssClass="row" />
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="bottom-outer">
+                                                                            <div class="bottom-inner">
+                                                                                <div class="bottom">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="bottom-outer">
-                                                                        <div class="bottom-inner">
-                                                                            <div class="bottom">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <%-- </fieldset>--%>
+                                                           <%-- </fieldset>--%>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td style="white-space: nowrap; padding: 5px; text-align: center; padding-top: 5px;
                                                             padding-bottom: 5px">
-                                                            <asp:Button ID="buttonSaveBillable" runat="server" Text="Save" OnClick="SaveBillableDetails"
-                                                                CssClass="btn btn-primary" Height="30px" Width="8%" Style="text-align: left;" />
-                                                            <label class="glyphicon glyphicon-floppy-disk" style="margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">
-                                                            </label>
-                                                            <asp:Button ID="buttonHide" runat="server" Text="Close" CssClass="btn btn-primary"
-                                                                Height="30px" Width="8%" Style="text-align: left;" />
-                                                            <label class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">
+                                                            <asp:Button ID="buttonSaveBillable" runat="server" Text="Save" Width="80px" OnClick="SaveBillableDetails" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <asp:Button ID="buttonHide" runat="server" Text="Close" Width="80px" />
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -530,8 +508,9 @@
                                                                     margin: 0px 0px 0px 0px; cursor: move; height: 18px">
                                                                     <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 14px">
                                                                         <tr>
-                                                                            <td valign="top" colspan="2" style="font-weight: bold; padding: 3px">
-                                                                                <asp:Label ID="labelSubTypeTitle" runat="server" Text="Add / Edit Items" ForeColor="White"></asp:Label>
+                                                                            <td valign="top" colspan="2" style="font-weight: bold;
+                                                                                padding: 3px">
+                                                                                <asp:Label ID="labelSubTypeTitle" runat="server" Text="Add / Edit Items" ForeColor=White></asp:Label>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -558,32 +537,32 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right">
-                                                                            <b>Item Type:</b>
+                                                                        <td align="right"><b>
+                                                                            Item Type:</b>
                                                                         </td>
-                                                                        <td valign="top" colspan="1" style="font-weight: bold; padding: 3px" align="left">
+                                                                        <td valign="top" colspan="1" style="font-weight: bold; padding: 3px" align="left" >
                                                                             <asp:Label ID="labelItemTypeST" runat="server" Text=""></asp:Label>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right" class="required">
-                                                                            <b>Sub-Type Name:</b>
+                                                                        <td align="right" class="required"><b>
+                                                                            Sub-Type Name:</b>
                                                                         </td>
                                                                         <td align="left">
                                                                             <asp:TextBox ID="textSubTypeName" runat="server" Width="180px" AutoComplete="false"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr style="display: none">
-                                                                        <td align="right" class="required">
-                                                                            <b>Item Type:</b>
+                                                                        <td align="right" class="required"><b>
+                                                                            Item Type:</b>
                                                                         </td>
                                                                         <td valign="top" colspan="1" style="font-weight: bold; padding: 3px" align="left">
                                                                             <asp:DropDownList ID="ddlItemType" runat="server" Width="180px" AutoPostBack="false" />
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right" class="required">
-                                                                            <b>Status:</b>
+                                                                        <td align="right" class="required"><b>
+                                                                            Status:</b>
                                                                         </td>
                                                                         <td>
                                                                             <asp:RadioButtonList ID="rblSubTypeStatus" runat="server" RepeatDirection="Horizontal">
@@ -614,17 +593,11 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="form pad5 center" style="text-align: center">
+                                                         <td class="form pad5 center" style="text-align: center">
                                                             <asp:Button ID="buttonAddSubType" runat="server" Text="Add Sub Type" OnClick="buttonAddSubType_Click"
-                                                                CssClass="btn btn-primary" Height="30px" Width="14%" Style="text-align: left;" />
-                                                            <label class="glyphicon glyphicon-plus" style="margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">
-                                                            </label>
-                                                            <asp:Button ID="Button1" runat="server" OnClick="btn_close_Click" Text="Close" CssClass="btn btn-primary"
-                                                                Height="30px" Width="8%" Style="text-align: left;" />
-                                                            <label class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; margin-right: 2%;
-                                                                vertical-align: sub; color: #fff;">
-                                                            </label>
+                                                                Width="90px" />
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <asp:Button ID="Button1" runat="server" OnClick="btn_close_Click" Text="Close" />
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -706,10 +679,9 @@
         <!--class="form pad5 center">-->
         <asp:UpdatePanel ID="notificationPanel" runat="server">
             <ContentTemplate>
-                <asp:Panel ID="pnNotify" runat="server" Style="display: none; width: 460px; border: solid 1px #808080;
-                    z-index: 15000">
+                <asp:Panel ID="pnNotify" runat="server" Style="display: none; width: 460px; border: solid 1px #808080;z-index: 15000">
                     <asp:Panel ID="pnPopup_Title" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
-                        cursor: move; height: 18px; background-color: #F0F0F0;">
+                        cursor: move; height: 18px;background-color: #F0F0F0;">
                         <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 18px">
                             <tr style="background-color: #479ADA;">
                                 <td style="width: 5px; height: 19px;">
@@ -752,7 +724,7 @@
         <%--   </td>
                 </tr>--%>
     </div>
-    <%-- <div style="text-align: center; padding: 10px; white-space: nowrap; border: solid 1px #808080;"
+   <%-- <div style="text-align: center; padding: 10px; white-space: nowrap; border: solid 1px #808080;"
         class="form pad5 center">
     </div>--%>
     <asp:UpdateProgress ID="sProgress" runat="server" DisplayAfter="5">

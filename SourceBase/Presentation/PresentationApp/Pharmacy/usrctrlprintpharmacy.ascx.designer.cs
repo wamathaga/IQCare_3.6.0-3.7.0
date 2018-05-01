@@ -13,22 +13,22 @@ namespace PresentationApp.Pharmacy {
     public partial class usrctrlprintpharmacy {
         
         /// <summary>
-        /// lblfacility control.
+        /// lbldrugName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblfacility;
+        protected global::System.Web.UI.WebControls.Label lbldrugName;
         
         /// <summary>
-        /// lblstore control.
+        /// txtprintInstruction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblstore;
+        protected global::System.Web.UI.WebControls.TextBox txtprintInstruction;
         
         /// <summary>
         /// lblpName control.
@@ -40,13 +40,22 @@ namespace PresentationApp.Pharmacy {
         protected global::System.Web.UI.WebControls.Label lblpName;
         
         /// <summary>
-        /// lbldrugName control.
+        /// lblstore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbldrugName;
+        protected global::System.Web.UI.WebControls.Label lblstore;
+        
+        /// <summary>
+        /// lblfacility control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblfacility;
         
         /// <summary>
         /// lblunit control.
@@ -58,12 +67,12 @@ namespace PresentationApp.Pharmacy {
         protected global::System.Web.UI.WebControls.Label lblunit;
         
         /// <summary>
-        /// txtprintInstruction control.
+        /// lblinstruction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtprintInstruction;
+        protected global::System.Web.UI.WebControls.Label lblinstruction;
     }
 }

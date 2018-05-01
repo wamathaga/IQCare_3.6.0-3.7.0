@@ -180,7 +180,7 @@ public partial class Reports_frmReportFacilityJump : System.Web.UI.Page
                     if (txtSatelliteNo.Text != "" && txtCountryNo.Text != "" && txtPosNo.Text != "" && txtPatientId.Text != "")
                     {
 
-                        DataTable dtDrugARVPickup = (DataTable)ReportDetails.GetDrugARVPickup(Convert.ToInt32(txtPatientId.Text), Convert.ToDateTime("01-01-1900"), Convert.ToDateTime("01-01-1900"), txtSatelliteNo.Text, txtCountryNo.Text, txtPosNo.Text, 0).Tables[0];
+                        DataTable dtDrugARVPickup = (DataTable)ReportDetails.GetDrugARVPickup(Convert.ToInt32(txtPatientId.Text), Convert.ToDateTime("01-01-1900").ToString("dd-MMM-yyyy"), Convert.ToDateTime("01-01-1900").ToString("dd-MMM-yyyy"), txtSatelliteNo.Text, txtCountryNo.Text, txtPosNo.Text, 0).Tables[0];
                         if (dtDrugARVPickup.Rows.Count > 0)
                         {
                             dtDrugARVPickup.WriteXmlSchema(Server.MapPath("..\\XMLFiles\\SinglePatientARVPickUP.xml"));

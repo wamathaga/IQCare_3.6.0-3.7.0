@@ -51,11 +51,11 @@ namespace BusinessProcess.Administration
             {
                 TableName = "lnk_" + TableName;
             }
-            else if (TableName == "VW_UserDesignationTransaction")
+            else if(TableName.ToUpper().StartsWith("VW_"))
             {
-                TableName = "mst_Employee" ;
+                //TableName = TableName;
             }
-            else 
+            else
             {
                 TableName = "mst_" + TableName;
             }

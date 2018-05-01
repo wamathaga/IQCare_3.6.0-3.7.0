@@ -176,8 +176,8 @@ namespace BusinessProcess.Administration
             int DrugID = 0;
             int theReturnValue = 0;
             int theAffectedRows = 0;
-            
-            DataTable theReturnDT = new DataTable();
+
+            DataSet theReturnDS = new DataSet();
             DataTable theExistRow = new DataTable();
             try
             {
@@ -378,9 +378,9 @@ namespace BusinessProcess.Administration
                                     ClsUtility.AddParameters("@UserID", SqlDbType.Int, UserID.ToString());
                                     ClsUtility.AddParameters("@Status", SqlDbType.Int, Status.ToString());
                                     ClsUtility.AddParameters("@Update", SqlDbType.Int, Update.ToString());
-                                    theReturnDT = (DataTable)DrugManager.ReturnObject(ClsUtility.theParams, "Pr_Admin_InsertDrug_Constella", ClsDBUtility.ObjectEnum.DataTable);
+                                    theReturnDS = (DataSet)DrugManager.ReturnObject(ClsUtility.theParams, "Pr_Admin_InsertDrug_Constella", ClsDBUtility.ObjectEnum.DataSet);
 
-                                    if (theReturnDT.Rows[0][0].ToString() == "0")
+                                    if (theReturnDS.Tables[2].Rows[0][0].ToString() == "0")
                                     {
                                         MsgBuilder theMsg = new MsgBuilder();
                                         theMsg.DataElements["MessageText"] = "Drug Already Exists. Try Again..";
@@ -393,11 +393,11 @@ namespace BusinessProcess.Administration
 
                                     foreach (DataRow drgeneric in Generics.Rows)
                                     {
-                                        
-                                        
-                                        if (DrugName != "" && theReturnDT.Rows[0][0].ToString() != "0")
+
+
+                                        if (DrugName != "" && theReturnDS.Tables[2].Rows[0][0].ToString() != "0")
                                         {
-                                            DrugID = Convert.ToInt32(theReturnDT.Rows[0][0].ToString());
+                                            DrugID = Convert.ToInt32(theReturnDS.Tables[2].Rows[0][0].ToString());
                                         }
                                         else
                                             DrugID = 0;
@@ -407,7 +407,7 @@ namespace BusinessProcess.Administration
                                         {
                                             theGeneric = Convert.ToInt32(drgeneric["Id"].ToString());
                                         }
-                                        int DeleteFlag = Convert.ToInt32(theReturnDT.Rows[0]["DeleteFlag"]);
+                                        int DeleteFlag = Convert.ToInt32(theReturnDS.Tables[2].Rows[0]["DeleteFlag"]);
                                         ClsUtility.Init_Hashtable();
                                         ClsUtility.AddParameters("@DrugId", SqlDbType.Int, DrugID.ToString());
                                         ClsUtility.AddParameters("@StrengthId", SqlDbType.Int, dr[0].ToString());

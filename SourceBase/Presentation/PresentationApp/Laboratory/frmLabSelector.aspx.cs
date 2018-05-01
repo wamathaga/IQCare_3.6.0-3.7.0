@@ -148,28 +148,31 @@ public partial class frmLabSelector : System.Web.UI.Page
         try
         {
             DataTable theDT = (DataTable)ViewState["SelectedLab"];
-            DataView theDV = new DataView((DataTable)ViewState["LabData"]);
-            theDV.RowFilter = "SubTestId = " + lstLabList.SelectedValue;
-            DataRow theDR = theDT.NewRow();
-            theDR[0] = Convert.ToInt32(theDV[0][0]);
-            theDR[1] = theDV[0][1].ToString();
-            theDR[2] = Convert.ToInt32(theDV[0][2]);
-            theDR[3] = theDV[0][3].ToString();
-            theDR[4] = Convert.ToInt32(theDV[0][4]);
-           
-            theDT.Rows.Add(theDR);
-            lstSelectedLab.DataSource = theDT;
-            lstSelectedLab.DataBind();
-            ViewState["SelectedLab"] = theDT;
+            if (lstLabList.SelectedValue !="")
+            {
+                DataView theDV = new DataView((DataTable)ViewState["LabData"]);
+                theDV.RowFilter = "SubTestId = " + lstLabList.SelectedValue;
+                DataRow theDR = theDT.NewRow();
+                theDR[0] = Convert.ToInt32(theDV[0][0]);
+                theDR[1] = theDV[0][1].ToString();
+                theDR[2] = Convert.ToInt32(theDV[0][2]);
+                theDR[3] = theDV[0][3].ToString();
+                theDR[4] = Convert.ToInt32(theDV[0][4]);
 
-            DataTable theDT1 = (DataTable)ViewState["LabData"];
-            DataRow []theDR1 = theDT1.Select("SubTestId=" + lstLabList.SelectedValue);  
-            theDT1.Rows.Remove(theDR1[0]);
-            lstLabList.DataSource = theDT1;
-            lstLabList.DataBind();
-            ViewState["LabData"] = theDT1;
-            txtSearch.Focus();
-            txtSearch_TextChanged(sender, e); 
+                theDT.Rows.Add(theDR);
+                lstSelectedLab.DataSource = theDT;
+                lstSelectedLab.DataBind();
+                ViewState["SelectedLab"] = theDT;
+
+                DataTable theDT1 = (DataTable)ViewState["LabData"];
+                DataRow[] theDR1 = theDT1.Select("SubTestId=" + lstLabList.SelectedValue);
+                theDT1.Rows.Remove(theDR1[0]);
+                lstLabList.DataSource = theDT1;
+                lstLabList.DataBind();
+                ViewState["LabData"] = theDT1;
+                txtSearch.Focus();
+                txtSearch_TextChanged(sender, e);
+            }
         }
         catch(Exception err)
         {
@@ -183,32 +186,35 @@ public partial class frmLabSelector : System.Web.UI.Page
     {
         try
         {
-            DataTable theDT = (DataTable)ViewState["LabData"];
-            DataView theDV = new DataView((DataTable)ViewState["SelectedLab"]);
-            theDV.RowFilter = "SubTestId = " + lstSelectedLab.SelectedValue;
+            if (lstSelectedLab.SelectedValue != "")
+            {
+                DataTable theDT = (DataTable)ViewState["LabData"];
+                DataView theDV = new DataView((DataTable)ViewState["SelectedLab"]);
+                theDV.RowFilter = "SubTestId = " + lstSelectedLab.SelectedValue;
 
-            DataRow theDR = theDT.NewRow();
-            theDR[0] = Convert.ToInt32(theDV[0][0]);
-            theDR[1] = theDV[0][1].ToString();
-            theDR[2] = Convert.ToInt32(theDV[0][2]);
-            theDR[3] = theDV[0][3].ToString();
-            theDR[4] = Convert.ToInt32(theDV[0][4]);
-           
-            
-            theDT.Rows.Add(theDR);
-            IQCareUtils theUtils = new IQCareUtils();
-            theDV = theUtils.GridSort(theDT, "SubTestName", "asc");
-            theDT = theUtils.CreateTableFromDataView(theDV);
-            lstLabList.DataSource = theDT;
-            lstLabList.DataBind();
-            ViewState["LabData"] = theDT;
+                DataRow theDR = theDT.NewRow();
+                theDR[0] = Convert.ToInt32(theDV[0][0]);
+                theDR[1] = theDV[0][1].ToString();
+                theDR[2] = Convert.ToInt32(theDV[0][2]);
+                theDR[3] = theDV[0][3].ToString();
+                theDR[4] = Convert.ToInt32(theDV[0][4]);
 
-            DataTable theDT1 = (DataTable)ViewState["SelectedLab"];
-            DataRow[] theDR1 = theDT1.Select("SubTestID=" + lstSelectedLab.SelectedValue);   
-            theDT1.Rows.Remove(theDR1[0]);
-            lstSelectedLab.DataSource = theDT1;
-            lstSelectedLab.DataBind();
-            ViewState["SelectedLab"] = theDT1;
+
+                theDT.Rows.Add(theDR);
+                IQCareUtils theUtils = new IQCareUtils();
+                theDV = theUtils.GridSort(theDT, "SubTestName", "asc");
+                theDT = theUtils.CreateTableFromDataView(theDV);
+                lstLabList.DataSource = theDT;
+                lstLabList.DataBind();
+                ViewState["LabData"] = theDT;
+
+                DataTable theDT1 = (DataTable)ViewState["SelectedLab"];
+                DataRow[] theDR1 = theDT1.Select("SubTestID=" + lstSelectedLab.SelectedValue);
+                theDT1.Rows.Remove(theDR1[0]);
+                lstSelectedLab.DataSource = theDT1;
+                lstSelectedLab.DataBind();
+                ViewState["SelectedLab"] = theDT1;
+            }
         }
         catch (Exception err)
         {

@@ -923,7 +923,7 @@
                     <tr>
                         <td class="border whitebg formcenter" valign="middle">
                             <label id="lblarvplan">
-                                *ARV Therapy:</label>
+                                ARV Therapy:</label>
                             <select id="lstclinPlanFU" onchange="specifyChangeStop(this.id);" name="clinPlanFU"
                                 runat="server">
                                 <option value="0" selected="selected">Select</option>

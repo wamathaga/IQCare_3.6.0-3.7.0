@@ -552,7 +552,7 @@ public partial class ClinicalForms_frmFollowUpEducationCTC : BasePage
             VisitDate = Convert.ToDateTime(theDR["VisitDate"]);
             Visit_pk = Convert.ToInt32(theDR["Visit_pk"]);
 
-            FollowupEducation.SaveFollowupEducation(Id, Ptn_pk, CouncellingTypeId, CouncellingTopicId, Visit_pk, LocationID, VisitDate, Comments, OtherDetail, UserId, DeleteFlag);
+            FollowupEducation.SaveFollowupEducation(Id, Ptn_pk, CouncellingTypeId, CouncellingTopicId, Visit_pk, LocationID, VisitDate.ToString("dd-MMM-yyyy"), Comments, OtherDetail, UserId, DeleteFlag);
         }
 
         ClearSession();

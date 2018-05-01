@@ -30,6 +30,10 @@ public partial class ClinicalForms_frmAllergy : System.Web.UI.Page
     DataSet theDSDrug;
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["PatientId"] != null)
+        {
+            Session["lblpntstatus"] = Convert.ToInt32((Master.FindControl("levelTwoNavigationUserControl1").FindControl("lblpntStatus") as Label).Text);
+        }
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
@@ -168,6 +172,8 @@ public partial class ClinicalForms_frmAllergy : System.Web.UI.Page
         {
             ifPopUp();
         }
+
+        txtAllergyDate.Attributes.Add("onblur", "isCheckValidDate('" + Application["AppCurrentDate"] + "', '" + txtAllergyDate.ClientID + "', '" + txtAllergyDate.ClientID + "');");
     }
 
 
@@ -515,6 +521,7 @@ public partial class ClinicalForms_frmAllergy : System.Web.UI.Page
         theCol6.ItemStyle.CssClass = "textstyle";
         theCol6.DataField = "otherAllergen";
         theCol6.ReadOnly = true;
+        theCol6.ItemStyle.Width = 200;
         grdAllergy.Columns.Add(theCol6);
 
         BoundField theCol7 = new BoundField();
@@ -522,6 +529,7 @@ public partial class ClinicalForms_frmAllergy : System.Web.UI.Page
         theCol7.ItemStyle.CssClass = "textstyle";
         theCol7.DataField = "typeReaction";
         theCol7.ReadOnly = true;
+        theCol7.ItemStyle.Width = 200;
         grdAllergy.Columns.Add(theCol7);
 
         BoundField theCol8 = new BoundField(); // double

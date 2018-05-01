@@ -45,12 +45,15 @@ using Application.Presentation;
 
         private void BindGrid()
         {
+            //Jayant - 01/05/2015
             IModule objModuleDetail;
             objModuleDetail = (IModule)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BModule,BusinessProcess.FormBuilder");
             objDsModuleDetails = objModuleDetail.GetModuleDetail();
             if (objDsModuleDetails.Tables[0].Rows.Count > 0)
             {
-                ShowGrid(objDsModuleDetails.Tables[0]);
+                DataView theDVModule = new DataView(objDsModuleDetails.Tables[0]);
+                theDVModule.RowFilter = "ModuleName <> 'RECORDS' AND ModuleName <> 'Pharmacy Dispense'";
+                ShowGrid(theDVModule.ToTable());
             }
         }
 
@@ -127,14 +130,11 @@ using Application.Presentation;
                 DataTable tbl1 = (DataTable)dgwModuleDetails.DataSource;
                 if (e.RowIndex > tbl1.Rows.Count)
                     return;
-
                 GblIQCare.ModuleId = Convert.ToInt32(dgwModuleDetails.Rows[e.RowIndex].Cells[0].Value);
                 GblIQCare.ModuleName = dgwModuleDetails.Rows[e.RowIndex].Cells[1].Value.ToString();
                 GblIQCare.UpdateFlag = Convert.ToInt32(dgwModuleDetails.Rows[e.RowIndex].Cells[4].Value);
                 GblIQCare.Identifier = Convert.ToInt32(dgwModuleDetails.Rows[e.RowIndex].Cells[5].Value);
                 GblIQCare.PharmacyFlag = Convert.ToInt32(dgwModuleDetails.Rows[e.RowIndex].Cells[6].Value);
-                
-
                 if (dgwModuleDetails.Rows[e.RowIndex].Cells[3].Value.ToString() == "Published")
                 {
                     IQCareWindowMsgBox.ShowWindow("PublicTechenicalArea", this);
@@ -153,7 +153,6 @@ using Application.Presentation;
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
-
         }
 
         private void dgwModuleDetails_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -255,15 +254,31 @@ using Application.Presentation;
                         }
                         if (Status == "Un-Published")
                         {
-                            Hashtable theHT = new Hashtable();
-                            theHT.Add("ModuleID", intModuleId);
-                            theHT.Add("Status", 2);
-                            theHT.Add("DeleteFlag", 0);
-                            theHT.Add("UserID", GblIQCare.AppUserId);
-                            DataTable theDT = new DataTable();
-                            objIdentifier = (IModule)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BModule, BusinessProcess.FormBuilder");
-                            Int32 intExistModuleId = objIdentifier.StatusUpdate(theHT);
-                            BindGrid();
+                            if (objDsModuleDetails.Tables[0].Rows.Count > 0)
+                            {
+                                IQCareUtils Util=new IQCareUtils();
+                                DataView theModDV = new DataView(objDsModuleDetails.Tables[0]);
+                                theModDV.RowFilter = "ModuleId=" + intModuleId;
+                                DataTable theModDT = Util.CreateTableFromDataView(theModDV);
+                                if (theModDT.Rows[0]["PatientIdentifier"].ToString() != "")
+                                {
+                                    Hashtable theHT = new Hashtable();
+                                    theHT.Add("ModuleID", intModuleId);
+                                    theHT.Add("Status", 2);
+                                    theHT.Add("DeleteFlag", 0);
+                                    theHT.Add("UserID", GblIQCare.AppUserId);
+                                    DataTable theDT = new DataTable();
+                                    objIdentifier = (IModule)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BModule, BusinessProcess.FormBuilder");
+                                    Int32 intExistModuleId = objIdentifier.StatusUpdate(theHT);
+                                    BindGrid();
+                                }
+                                else
+                                {
+                                    IQCareWindowMsgBox.ShowWindow("Link/Add atleast one Identifier with this Module", "", "", this);
+                                    return;
+
+                                }
+                            }
 
                         }
 

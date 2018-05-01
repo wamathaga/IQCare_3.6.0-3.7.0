@@ -337,6 +337,7 @@ namespace IQCare.SCM
                     string theFilePath = System.Configuration.ConfigurationSettings.AppSettings["ExcelFilesPath"];
                     theFilePath = theFilePath + "StockSummary.xls";
                     theUtil.ExportToExcel_Windows(theDT, theFilePath, "");
+                    btnExport.Enabled = false;
                 }
                 else
                 {

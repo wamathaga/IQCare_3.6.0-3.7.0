@@ -51,6 +51,8 @@
   <ItemGroup>
     <Compile Include="IAdultIE.cs" />
     <Compile Include="IAllergyInfo.cs" />
+    <Compile Include="IConsumable.cs" />
+    <Compile Include="IConsumableItem.cs" />
     <Compile Include="IContact.cs" />
     <Compile Include="ICustomForm.cs" />
     <Compile Include="IDeleteForm.cs" />

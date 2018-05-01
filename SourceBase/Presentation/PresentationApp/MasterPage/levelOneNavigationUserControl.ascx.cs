@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -12,6 +13,8 @@ using Application.Common;
 
 public partial class MasterPage_levelOneNavigationUserControl : System.Web.UI.UserControl
 {
+    AuthenticationManager Authentication = new AuthenticationManager();
+
     protected void Page_Load(object sender, EventArgs e)
     {
         //Session["SystemId"] = null;
@@ -24,6 +27,7 @@ public partial class MasterPage_levelOneNavigationUserControl : System.Web.UI.Us
         }
         
         AuthenticateRights();
+        CreatePlugInMenu();
     }
 
     #region "Hide menu item by value"
@@ -73,6 +77,7 @@ public partial class MasterPage_levelOneNavigationUserControl : System.Web.UI.Us
         }
     }
     #endregion
+
     #region "Hiding Links for PASDP"
 
     private void AuthenticatePASDP()
@@ -119,13 +124,12 @@ public partial class MasterPage_levelOneNavigationUserControl : System.Web.UI.Us
 
 
     #endregion
+
     #region "User Functions ReportHeader footer master"
     private void AuthenticateRights()
     {
-        
-         
-        AuthenticationManager Authentication = new AuthenticationManager();
-        if (Session["UserRight"].ToString() != "")
+
+        if (Session["UserRight"].ToString() != "" || Session["UserRight"] != null)
         {
             if (Authentication.HasFeatureRight(ApplicationAccess.FacilitySetup, (DataTable)Session["UserRight"]) == false)
             {
@@ -202,9 +206,112 @@ public partial class MasterPage_levelOneNavigationUserControl : System.Web.UI.Us
             {
                 RemoveMenuItemByValue(mainMenu.Items, "Backup/Restore Database");
             }
+            //TODO Added by Naveen 2015-02-04 for billing menu authentification
+            if (Authentication.HasFeatureRight(ApplicationAccess.Billing, (DataTable)Session["UserRight"]) == false)
+            {
+                RemoveMenuItemByValue(mainMenu.Items, "Patient Bills");
+            }
+            if (Authentication.HasFeatureRight(ApplicationAccess.BillingReports, (DataTable)Session["UserRight"]) == false)
+            {
+                RemoveMenuItemByValue(mainMenu.Items, "Billing Reports");
+            }
+            if (Authentication.HasFeatureRight(ApplicationAccess.BillingReversal, (DataTable)Session["UserRight"]) == false)
+            {
+                RemoveMenuItemByValue(mainMenu.Items, "Reverse Billing");
+            }
 
+            if (Authentication.HasFeatureRight(ApplicationAccess.Consumables, (DataTable)Session["UserRight"]) == false)
+            {
+                RemoveMenuItemByValue(mainMenu.Items, "Consumables");
+            }
+            if (Convert.ToString(Session["Billing"]) != "1")
+            {
+                RemoveMenuItemByValue(mainMenu.Items, "Billing");
+            }
 
         }
     }
     #endregion
+
+    #region Create / configure Plug-in menu items
+
+    private void CreatePlugInMenu() 
+    {
+        if (IsPostBack)
+            return;
+
+        List<MenuItem> rmvMenuItem = new List<MenuItem>();
+        MenuItem mnuItem;
+
+        try
+        {
+            IFacility MenuManager = (IFacility)ObjectFactory.CreateInstance("BusinessProcess.Security.BFacility, BusinessProcess.Security");
+            DataSet dsMenu = MenuManager.GetPluginModuleAndFeaturesForFacility(Convert.ToInt32(Session["FacilityID"]));
+
+
+            MenuItem pluginMenu, pluginSubMenu;
+            
+            string modName = String.Empty;
+            string fetName = String.Empty;
+            
+            if (dsMenu != null && dsMenu.Tables.Count > 0)
+            {
+                //Create Module menu
+                for (int i = 0; i < dsMenu.Tables[0].Rows.Count; i++)
+                {
+                    //Create parent menu first
+                    pluginMenu = new MenuItem();
+                    modName = Convert.ToString(dsMenu.Tables[0].Rows[i]["ModuleName"].ToString());
+                    pluginMenu.Selectable = false;
+                    pluginMenu.Text = modName;
+                    pluginMenu.Value = modName + "|#" ;
+                    pluginMenu.NavigateUrl = "#";
+                    
+                    //filter rows for parent menu
+                    var tblFiltered = dsMenu.Tables[1].AsEnumerable().Where(row => row.Field<String>("ModuleName") == modName).OrderByDescending(row => row.Field<String>("ModuleName")).ToList();
+                    var lstDT = tblFiltered.Any() ? tblFiltered.CopyToDataTable() : new DataTable();
+
+                    //Create sub menu for parent menu (module)
+                    foreach (DataRow drSMenu in lstDT.Rows)
+                    {
+                        //Create menu if permitted
+                        if (Convert.ToBoolean(Authentication.HasFeatureRight(Convert.ToInt32(drSMenu["FeatureID"].ToString()), (DataTable)Session["UserRight"])))
+                        {
+                            pluginSubMenu = new MenuItem();
+                            fetName = Convert.ToString(drSMenu["FeatureName"].ToString());
+                            pluginSubMenu.Value = drSMenu["FeatureID"].ToString() + "|" + drSMenu["FeatureURL"].ToString();
+                            pluginSubMenu.Text = fetName;
+                            pluginMenu.ChildItems.Add(pluginSubMenu);
+                        }
+                    }
+                    mainMenu.FindItem("plugin").ChildItems.Add(pluginMenu);
+                }
+                Session["PlugInMenuLoaded"] = true;
+            }
+
+            if(!(dsMenu.Tables[0].Rows.Count > 0))
+                RemoveMenuItemByValue(mainMenu.Items, "plugin");
+        }
+        catch (Exception ex)
+        {
+            Response.Write("<script type='text/javascript'>alert('" + ex.Message + "')</script>");
+            Response.Flush();
+        }
+    }
+
+
+    #endregion
+
+    protected void mainMenu_MenuItemClick(object sender, MenuEventArgs e)
+    {
+        string[] menuVal = e.Item.Value.ToString().Split('|');
+        Session["SelectedFeatureID"] = menuVal[0];
+        
+        List<string> lst = menuVal.ToList<string>();
+        if (lst.Count > 1)
+            Response.Redirect(menuVal[1]);
+        else
+            return;
+        
+    }
 }

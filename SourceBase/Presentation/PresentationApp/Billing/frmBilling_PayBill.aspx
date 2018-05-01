@@ -25,7 +25,8 @@
             var grdPayItems = document.getElementById('<%=grdPayItems.ClientID%>');
             for (i = 1; i < grdPayItems.rows.length - 1; i++) {
                 if (grdPayItems.rows[i].cells[0].getElementsByTagName("input")[0].checked) {
-                    totalPrice += parseFloat(grdPayItems.rows[i].cells[4].getElementsByTagName("span")[0].innerText.replace(/,/g, ''));
+                     totalPrice += parseFloat(grdPayItems.rows[i].cells[4].getElementsByTagName("span")[0].innerText)
+                   
                 }
 
             }

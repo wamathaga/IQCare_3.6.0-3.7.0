@@ -271,7 +271,7 @@ namespace Touch
         private void GetLostToFollow()
         {
             IReports ReportDetails = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports, BusinessProcess.Reports");
-            DataTable dtLost = (DataTable)ReportDetails.GetLosttoFollowupPatientReport(Convert.ToInt32(rcbFacility.SelectedValue)).Tables[0];
+            DataTable dtLost = (DataTable)ReportDetails.GetLosttoFollowupPatientReport(Convert.ToInt32(rcbFacility.SelectedValue), Session["SystemId"].ToString()).Tables[0];
             dtLost.DefaultView.Sort = dtLost.Columns[1].ColumnName + " DESC";
             dtLost = dtLost.DefaultView.ToTable();
             rgdLostTF.DataSource = dtLost;

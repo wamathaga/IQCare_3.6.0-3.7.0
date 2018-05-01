@@ -1056,7 +1056,7 @@ public partial class frmReportCustomNew : System.Web.UI.Page
             lblWhere1.ID = "lblWhere1" + gPanelId + gRowId;
             lblWhere1.Text = "Where";
             lblWhere1.Font.Bold = true;
-            lblWhere1.Width = 35;
+            lblWhere1.Width = 40;
             lblWhere1.Visible = true;
             pnl2.Controls.Add(lblWhere1);
 
@@ -1099,7 +1099,7 @@ public partial class frmReportCustomNew : System.Web.UI.Page
             Label lblValue1 = new Label();
             lblValue1.ID = "lblValue1" + gPanelId + gRowId;
             lblValue1.Text = "Value";
-            lblValue1.Width = 30;
+            lblValue1.Width = 35;
             lblValue1.Font.Bold = true;
             lblValue1.Visible = true;
             //   if ((Convert.ToInt32(theDR["RowId"]) >= 3) && (gIsLT == true))

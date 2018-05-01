@@ -40,6 +40,15 @@ namespace IQCare.Web {
         protected global::System.Web.UI.WebControls.Panel pnlSearch;
         
         /// <summary>
+        /// ddlIdentifier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlIdentifier;
+        
+        /// <summary>
         /// lblidentificationno control.
         /// </summary>
         /// <remarks>
@@ -58,15 +67,6 @@ namespace IQCare.Web {
         protected global::System.Web.UI.WebControls.TextBox txtidentificationno;
         
         /// <summary>
-        /// FTEID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.FilteredTextBoxExtender FTEID;
-        
-        /// <summary>
         /// ddFacility control.
         /// </summary>
         /// <remarks>
@@ -83,6 +83,15 @@ namespace IQCare.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlServices;
+        
+        /// <summary>
+        /// lblCareendedstatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCareendedstatus;
         
         /// <summary>
         /// ddCareEndedStatus control.

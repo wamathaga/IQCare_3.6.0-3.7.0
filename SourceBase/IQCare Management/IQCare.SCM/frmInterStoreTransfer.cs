@@ -239,7 +239,7 @@ namespace IQCare.SCM
                             theDRowItem["ItemID"] = Convert.ToInt32(strarry[0]);
                             theDRowItem["BatchID"] = Convert.ToInt32(strarry[1]);
                             // theDRowItem["ExpiryDate"] = Convert.ToDateTime(String.Format(MM-strarry[1]);//String.Format("{0:dd-MMM-yyyy}",
-                           theDRowItem["ExpiryDate"]= Convert.ToDateTime(strarry[2]);
+                           theDRowItem["ExpiryDate"]= Convert.ToDateTime(strarry[2]).ToString("dd-MMM-yyyy");
                            theDRowItem["AvaliableQty"] = Convert.ToInt32(dgwItemSubitemDetails.Rows[i].Cells["AvailableQTY"].Value); ;
                         }
 

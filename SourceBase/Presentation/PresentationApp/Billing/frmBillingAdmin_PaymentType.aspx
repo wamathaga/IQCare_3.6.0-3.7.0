@@ -5,9 +5,9 @@
 <%@ MasterType VirtualPath="~/MasterPage/IQCare.master" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="server">
-    <div class="container-fluid">
-        <h5 class="margin" style="padding-left: 10px;">
-            <asp:Label ID="lblHeader" runat="server" Text=""></asp:Label></h5>
+    <div>
+        <h1 class="margin" style="padding-left: 10px;">
+            <asp:Label ID="lblHeader" runat="server" Text=""></asp:Label></h1>
         <div class="center" style="padding: 5px;">
             <div class="border center">
                 <table width="100%" border="0" cellpadding="0" cellspacing="6">
@@ -89,16 +89,8 @@
                         </tr>
                         <tr>
                             <td class="pad5 center">
-                                <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" CssClass="btn btn-primary"
-                                    Height="30px" Width="8%" Style="text-align: left;" />
-                                <label class="glyphicon glyphicon-plus" style="margin-left: -3%; margin-right: 1%;
-                                    vertical-align: sub; color: #fff;">
-                                </label>
-                                <asp:Button ID="btnCancel" runat="server" Text="Close" CssClass="btn btn-primary"
-                                    Height="30px" Width="8%" Style="text-align: left; margin-left:2%;" />
-                                <label class="glyphicon glyphicon-remove" style="margin-left: -3%; margin-right: 2%;
-                                    vertical-align: sub; color: #fff;">
-                                </label>
+                                <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" Width="60px" />
+                                <asp:Button ID="btnCancel" runat="server" Text="Close" Width="60px" />
                             </td>
                         </tr>
                     </tbody>
@@ -109,7 +101,7 @@
                     <asp:Button ID="btnShowItems" runat="server" Text="" Width="60px" Style="display: none" />
                     <asp:Panel ID="divItems" runat="server" Style="display: none; width: 680px; border: solid 1px #808080;
                         background-color: #479ADA" DefaultButton="buttonSubmit">
-                        <asp:Panel ID="divItemTitle" runat="server" Style="border: solid 0px #808080; margin: 0px 0px 0px 0px;
+                        <asp:Panel ID="divItemTitle" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
                             cursor: move; height: 18px">
                             <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 18px">
                                 <tr>
@@ -124,7 +116,7 @@
                                 </tr>
                             </table>
                         </asp:Panel>
-                        <table class= "table-condensed" width="680px" style="border: solid 0px #808080;
+                        <table cellpadding="1" cellspacing="1" border="0" width="680px" style="border: solid 1px #808080;
                             background-color: #EBEBEB; margin-bottom: 10px">
                             <tr>
                                 <td colspan="2" align="left">
@@ -226,16 +218,8 @@
                             <tr>
                                 <td colspan="2" style="white-space: nowrap; padding: 5px; text-align: center; padding-top: 5px;
                                     padding-bottom: 5px">
-                                    <asp:Button ID="buttonSubmit" runat="server" Text="Save" OnClick="buttonSubmit_Click"
-                                        CssClass="btn btn-primary" Height="30px" Width="10%" Style="text-align: left;" />
-                                    <label class="glyphicon glyphicon-floppy-disk" style="margin-left: -3%; margin-right: 1%;
-                                        vertical-align: sub; color: #fff;">
-                                    </label>
-                                    <asp:Button ID="buttonClose" runat="server" Text="Close" CssClass="btn btn-primary"
-                                        Height="30px" Width="10%" Style="text-align: left;" />
-                                    <label class="glyphicon glyphicon-remove-circle" style="margin-left: -2.5%; margin-right: 2%;
-                                        vertical-align: sub; color: #fff;">
-                                    </label>
+                                    <asp:Button ID="buttonSubmit" runat="server" Text="Save" Width="80px" OnClick="buttonSubmit_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <asp:Button ID="buttonClose" runat="server" Text="Close" Width="80px" />
                                 </td>
                             </tr>
                         </table>

@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="Facility Billing Reports" Language="C#" MasterPageFile="~/MasterPage/IQCare.master"
     AutoEventWireup="true" CodeBehind="frmBillingReportPage.aspx.cs" Inherits="IQCare.Web.Billing.frmBillingReportPage" %>
-
-<%@ MasterType VirtualPath="~/MasterPage/IQCare.master" %>
+    <%@ MasterType VirtualPath="~/MasterPage/IQCare.master" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 <asp:Content ID="ctReportPage" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="server">
+   
     <script type="text/javascript">
         function printPage() {
             window.open("./frmCustomReportPrint.aspx");
@@ -13,11 +13,11 @@
             window.open(path, 'popupwindow', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=yes,resizable=no,width=950,height=650,scrollbars=yes');
         }
     </script>
-    <div class="container-fluid">
-        <h5 class="forms" align="left">
+    <div>
+        <h2 class="forms" align="left">
             Billing Reports
             <br />
-        </h5>
+        </h2>
         <div id="div-BillingReports" class="GridView whitebg" style="width: 950">
             <ajaxToolkit:TabContainer ID="TabContainer1" runat="server" Width="100%" ActiveTabIndex="0">
                 <ajaxToolkit:TabPanel ID="tbpnlStaticreports" runat="server">
@@ -90,7 +90,8 @@
                                         <td style="width: 30%" align="left">
                                             <asp:TextBox runat="server" ID="textDateFrom" Width="80px" />
                                             <ajaxToolkit:CalendarExtender runat="server" TargetControlID="textDateFrom" Format="dd-MMM-yyyy"
-                                                ID="ceStartDate" Enabled="True"></ajaxToolkit:CalendarExtender>
+                                                ID="ceStartDate" Enabled="True">
+                                            </ajaxToolkit:CalendarExtender>
                                         </td>
                                     </tr>
                                     <tr>
@@ -100,7 +101,8 @@
                                         <td style="width: 60%" align="left">
                                             <asp:TextBox runat="server" ID="textDateTo" Width="80px" />
                                             <ajaxToolkit:CalendarExtender runat="server" TargetControlID="textDateTo" Format="dd-MMM-yyyy"
-                                                ID="ceEndDate" Enabled="True"></ajaxToolkit:CalendarExtender>
+                                                ID="ceEndDate" Enabled="True">
+                                            </ajaxToolkit:CalendarExtender>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -109,16 +111,8 @@
                             <br />
                             <div style="background-color: #FFFFFF; border-top: solid 1px #808080; width: 100%;
                                 text-align: center; padding-top: 5px; padding-bottom: 5px">
-                                <asp:Button ID="btnActionOK" runat="server" Text="Continue" CssClass="btn btn-primary"
-                                    Height="30px" Width="28%" Style="text-align: left;" />
-                                <label class="glyphicon glyphicon-circle-arrow-right" style="margin-left: -7%; margin-right: 2%;
-                                    vertical-align: sub; color: #fff;">
-                                </label>
-                                <asp:Button ID="btnActionCancel" runat="server" Text="Cancel" CssClass="btn btn-primary"
-                                    Height="30px" Width="24%" Style="text-align: left;" />
-                                <label class="glyphicon glyphicon-remove-circle" style="margin-left: -7%; margin-right: 2%;
-                                    vertical-align: sub; color: #fff;">
-                                </label>
+                                <asp:Button ID="btnActionOK" runat="server" Text="Continue" Width="80px" />
+                                <asp:Button ID="btnActionCancel" runat="server" Text="Cancel" Width="80px" />
                             </div>
                         </asp:Panel>
                         <ajaxToolkit:ModalPopupExtender ID="parameterPopup" runat="server" BehaviorID="programmaticModalPopupBehavior"
@@ -133,10 +127,10 @@
                         Custom reports
                     </HeaderTemplate>
                     <ContentTemplate>
-                        <asp:Panel ID="divErrorCR" runat="server" Style="padding: 5px" CssClass="background-color: #FFFFC0; border: solid 1px #C00000"
-                            HorizontalAlign="Left" Visible="False">
-                            <asp:Label ID="lblErrorCR" runat="server" Style="font-weight: bold; color: #800000"></asp:Label>
-                        </asp:Panel>
+                    <asp:Panel ID="divErrorCR" runat="server" Style="padding: 5px" CssClass="background-color: #FFFFC0; border: solid 1px #C00000"
+                                HorizontalAlign="Left" Visible="False">
+                                <asp:Label ID="lblErrorCR" runat="server" Style="font-weight: bold; color: #800000"></asp:Label>
+                            </asp:Panel>
                         <table width="100%" border="0">
                             <tbody>
                                 <tr>
@@ -148,11 +142,7 @@
                                         </asp:DropDownList>
                                     </td>
                                     <td>
-                                        <asp:Button ID="btnGenerate" runat="server" Text="Generate" OnClick="btnGenerate_Click"
-                                            CssClass="btn btn-success" Height="30px" Width="32%" Style="text-align: left;" />
-                                        <label class="glyphicon glyphicon-eye-open" style="margin-left: -8%; margin-right: 2%;
-                                            vertical-align: sub; color: #fff;">
-                                        </label>
+                                        <asp:Button ID="btnGenerate" runat="server" Text="Generate" OnClick="btnGenerate_Click" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -195,13 +185,8 @@
                                     <td align="center">
                                         <asp:Button ID="btnExport" runat="server" Text="Export To Excel" OnClick="btnExport_Click"
                                             Visible="False" />
-                                        <asp:Button ID="btnPrint" runat="server" Text="       Print       " Visible="False"
-                                            OnClientClick="printPage()" />
-                                        <asp:Button ID="btn_close" runat="server" OnClick="btn_close_Click" Text=" Close "
-                                            CssClass="btn btn-primary" Height="30px" Width="8%" Style="text-align: left;" />
-                                        <label class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; margin-right: 2%;
-                                            vertical-align: sub; color: #fff;">
-                                        </label>
+                                        <asp:Button ID="btnPrint" runat="server" Text="Print" Visible="False" OnClientClick="printPage()" />
+                                        <asp:Button ID="btn_close" runat="server" OnClick="btn_close_Click" Text="Close" />
                                     </td>
                                 </tr>
                             </table>
@@ -236,8 +221,9 @@
                                     <asp:TemplateField HeaderText="Value">
                                         <ItemTemplate>
                                             <asp:TextBox runat="server" ID="paramValue"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" TargetControlID="paramValue" Format="dd-MMM-yyyy"
-                                                ID="ceParamValue" Enabled="True"></ajaxToolkit:CalendarExtender>
+                                             <ajaxToolkit:CalendarExtender runat="server" TargetControlID="paramValue" Format="dd-MMM-yyyy"
+                                                ID="ceParamValue" Enabled="True">
+                                            </ajaxToolkit:CalendarExtender>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -246,16 +232,9 @@
                             <br />
                             <div style="background-color: #FFFFFF; border-top: solid 1px #808080; width: 100%;
                                 text-align: center; padding-top: 5px; padding-bottom: 5px">
-                                <asp:Button ID="btnActionOKCustomReport" runat="server" Text="Continue" OnClick="btnActionOKCustomReport_Click"
-                                    CssClass="btn btn-primary" Height="30px" Width="20%" Style="text-align: left;" />
-                                <label class="glyphicon glyphicon-circle-arrow-right" style="margin-left: -5%; margin-right: 2%;
-                                    vertical-align: sub; color: #fff;">
-                                </label>
-                                <asp:Button ID="btnActionCancelCustomReport" runat="server" Text="Cancel" CssClass="btn btn-primary"
-                                    Height="30px" Width="18%" Style="text-align: left;" />
-                                <label class="glyphicon glyphicon-remove-circle" style="margin-left: -5%; margin-right: 2%;
-                                    vertical-align: sub; color: #fff;">
-                                </label>
+                                <asp:Button ID="btnActionOKCustomReport" runat="server" Text="Continue" Width="80px"
+                                    OnClick="btnActionOKCustomReport_Click" />
+                                <asp:Button ID="btnActionCancelCustomReport" runat="server" Text="Cancel" Width="80px" />
                             </div>
                         </asp:Panel>
                         <ajaxToolkit:ModalPopupExtender ID="parameterPopupCustomR" runat="server" TargetControlID="btnRaisePopupCustomReport"

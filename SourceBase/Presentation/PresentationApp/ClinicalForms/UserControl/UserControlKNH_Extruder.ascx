@@ -67,18 +67,25 @@
         color: white;
         top: 0;
         padding: 10px 0 10px 10px;
-        
+        margin-right: -37px;
         width: 30px;
         position: absolute;
         right: 0;
         -moz-border-radius: 0 10px 10px 0;
+        -webkit-border-top-left-radius: 0;
         -webkit-border-top-right-radius: 10px;
+        -webkit-border-bottom-left-radius: 0;
         -webkit-border-bottom-right-radius: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 0;
         -moz-box-shadow: #666 2px 0px 3px;
         -webkit-box-shadow: #666 2px 0px 3px;
+        box-shadow: #666 2px 0px 3px;
     }
     
-    .extruder.left.a .content
+    .extruder.left.a .content .extruder-content
     {
         border-right: 3px solid #772B14;
     }
@@ -98,7 +105,7 @@
     {
         background: #2C7F96;
     }
-     .extruder.left.a1 .flap
+    .extruder.left.a1 .flap
     {
         background: #4765EB;
     }
@@ -106,7 +113,7 @@
     {
         background: #4765EB;
     }
-     .extruder.left.a2 .flap 
+    .extruder.left.a2 .flap
     {
         background: #A62241;
     }
@@ -115,7 +122,6 @@
         background: #A62241;
     }
 </style>
-
 <script type="text/javascript">
 //    $(document).ready(function () {
     $(function () {
@@ -123,6 +129,7 @@
         $("#extruderLeft").buildMbExtruder({
             position: "left",
             width: "400px",
+            height:"auto",
             //extruderOpacity: .8,
             hidePanelsOnClose: true,
             accordionPanels: true,
@@ -134,6 +141,7 @@
         $("#extruderLeft3").buildMbExtruder({
             position: "left",
             width: 600,
+            height:"auto",
             //extruderOpacity: .8,
             onExtOpen: function () { },
             onExtContentLoad: function () { },
@@ -143,6 +151,7 @@
         $("#extruderLeft1").buildMbExtruder({
             position: "left",
             width: 400,
+            height:"auto",
             //extruderOpacity: .8,
             onExtOpen: function () { },
             onExtContentLoad: function () { },
@@ -155,6 +164,7 @@
             $("#extruderLeft2").buildMbExtruder({
                 position: "left",
                 width: 400,
+                height:"auto",
                 //extruderOpacity: 1,
                 onExtOpen: function () { },
                 onExtContentLoad: function () { },
@@ -170,15 +180,21 @@
 
 </script>
 <div>
-    <div class="longText" style="position: relative; padding-left: 50px">
-        <div id="extruderLeft" class="{title:'Allergies / ARV History'}" style="background-color:#A62241;">
-            <uc2:UserControl_VitalsExtruder ID="UserControl_VitalsExtruder1" runat="server" />
+    <div id="extruderLeftmain" class="longText" style="position: relative; padding-left: 50px">
+        <div id="extruderLeft" class="{title:'Allergies / ARV History'}" style="background-color: #A62241;">
+            <div>
+                <uc2:UserControl_VitalsExtruder ID="UserControl_VitalsExtruder1" runat="server" />
+            </div>
         </div>
-        <div id="extruderLeft1" class="a1 {title:'Lab Results'}" style="background-color:#4765EB;">
-            <uc4:UserControlKNH_LabResults ID="UserControlKNH_LabResults1" runat="server" />
+        <div id="extruderLeft1" class="a1 {title:'Lab Results'}" style="background-color: #4765EB;">
+            <div>
+                <uc4:UserControlKNH_LabResults ID="UserControlKNH_LabResults1" runat="server" />
+            </div>
         </div>
-        <div id="extruderLeft2" class="a2 {title:'Work Plan'}" style="background-color:#2C7F96;">
-            <uc5:UserControlKNH_WorkPlanExtruder ID="UserControlKNH_WorkPlanExtruder1" runat="server" />
+        <div id="extruderLeft2" class="a2 {title:'Work Plan'}" style="background-color: #2C7F96;">
+            <div>
+                <uc5:UserControlKNH_WorkPlanExtruder ID="UserControlKNH_WorkPlanExtruder1" runat="server" />
+            </div>
         </div>
         <%--<div id="extruderLeft3" class="a {title:'Nutrition'}">
             <uc6:UserControl_Nutrition ID="UserControl_Nutrition1" runat="server" />

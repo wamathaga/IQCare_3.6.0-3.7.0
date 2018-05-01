@@ -468,9 +468,9 @@ namespace Application.Presentation
                         strfName = (x.ID.Substring(stpos, enpos).ToString()).Replace(" ", "_");
                         string theDate = "";
                         if (((TextBox)x).Text.Trim() == "")
-                            theDate = "01-01-1900";
+                            theDate = "01-Jan-1900";
                         else
-                            theDate = Convert.ToDateTime(((TextBox)x).Text).ToString();
+                            theDate = Convert.ToDateTime(((TextBox)x).Text).ToString("dd-MMM-yyyy");
 
                         if (theInsertUpdate == "Insert")
                         {

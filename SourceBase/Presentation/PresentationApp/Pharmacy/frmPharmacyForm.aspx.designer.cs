@@ -451,4 +451,13 @@ public partial class Pharmacy_frmPharmacyForm {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Button btnPresPrint;
+    
+    /// <summary>
+    /// btnPrintLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button btnPrintLabel;
 }

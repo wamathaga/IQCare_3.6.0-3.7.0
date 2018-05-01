@@ -60,7 +60,7 @@
                             <!-- class="border pad5 whitebg"-->
                             <table class="center" width="100%" border="0" cellpadding="0" cellspacing="6">
                                 <tr>
-                                    <td class="border pad5 whitebg" valign="top" width="20%">
+                                    <td class="border pad5 whitebg" valign="middle" width="20%">
                                         <div runat="server" id="divUnit">
                                             <label>
                                                 Units:</label>
@@ -68,8 +68,8 @@
                                             </asp:DropDownList>
                                         </div>
                                     </td>
-                                    <td class="border pad5 whitebg" id="tdDate" runat="server" visible="true" valign="top"
-                                        width="60%">
+                                    <td class="border pad5 whitebg" id="tdDate" runat="server" visible="true" valign="middle"
+                                        width="38%">
                                         <div runat="server" id="divBoundary">
                                             <label>
                                                 Boundary : Lower</label>
@@ -79,14 +79,24 @@
                                             <asp:TextBox ID="txtUpper" MaxLength="11" runat="server" Width="70px"></asp:TextBox>
                                         </div>
                                     </td>
-                                    <td class="border pad5 whitebg" valign="top" width="20%">
-                                        <div runat="server" id="divDefault">
+                                    <td class="border pad5 whitebg" id="tddetect" runat="server" visible="true" valign="middle"
+                                        width="25%">
+                                        <div runat="server" id="div1">
                                             <label>
-                                                Default:</label>
-                                            <asp:DropDownList ID="ddDefault" runat="server" Width="70px">
+                                                Undetectable Option:</label>
+                                            <asp:DropDownList ID="ddldetect" runat="server" Width="45px">
                                             </asp:DropDownList>
                                         </div>
                                     </td>
+                                    <td class="border pad5 whitebg" valign="middle" width="18%">
+                                        <div runat="server" id="divDefault">
+                                            <label>
+                                                Default:</label>
+                                            <asp:DropDownList ID="ddDefault" runat="server" Width="45px">
+                                            </asp:DropDownList>
+                                        </div>
+                                    </td>
+                                    
                                 </tr>
                             </table>
                         </td>

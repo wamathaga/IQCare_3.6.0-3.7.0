@@ -30,6 +30,15 @@ public partial class MasterPage_levelTwoNavigationUserControl {
     protected global::System.Web.UI.WebControls.Menu patientLevelMenu;
     
     /// <summary>
+    /// PharmacyDispensingMenu control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Menu PharmacyDispensingMenu;
+    
+    /// <summary>
     /// lblpntStatus control.
     /// </summary>
     /// <remarks>
@@ -91,4 +100,31 @@ public partial class MasterPage_levelTwoNavigationUserControl {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Panel thePnlIdent;
+    
+    /// <summary>
+    /// Tr2 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlTableRow Tr2;
+    
+    /// <summary>
+    /// thePnlBill control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel thePnlBill;
+    
+    /// <summary>
+    /// UserControl_Alerts1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::PresentationApp.ClinicalForms.UserControl.UserControl_Alerts UserControl_Alerts1;
 }

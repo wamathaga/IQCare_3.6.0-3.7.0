@@ -1241,17 +1241,18 @@ public partial class ClinicalForms_frm_PriorArt_HivCare : BasePage
                 btnsave.Enabled = false;
                 btncomplete.Enabled = false;
             }
-            //Privilages for Care End
-            if (Convert.ToString(Session["CareEndFlag"]) == "1")
-            {
-                btnsave.Enabled = true;
-                btncomplete.Enabled = true;
-            }
+           
         }
         if (Convert.ToString(((DataTable)Session["PtnPrgStatus"]).Rows[0][0]) == "Care Ended")
         {
             btnsave.Enabled = false;
             btncomplete.Enabled = false;
+        }
+        //Privilages for Care End
+        if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
+        {
+            btnsave.Enabled = true;
+            btncomplete.Enabled = true;
         }
     }
     protected void Init_Form()

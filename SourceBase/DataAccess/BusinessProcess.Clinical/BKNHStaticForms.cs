@@ -768,7 +768,7 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@OtherCounselling", SqlDbType.VarChar, theHT["OtherCounselling"].ToString());
                 if (theHT["TCA"].ToString() != "")
                     ClsUtility.AddParameters("@TCA", SqlDbType.Int, theHT["TCA"].ToString());
-                ClsUtility.AddParameters("@startTime", SqlDbType.DateTime, theHT["startTime"].ToString());
+                ClsUtility.AddParameters("@startTime", SqlDbType.VarChar, theHT["startTime"].ToString());
                 ClsUtility.AddParameters("@FormName", SqlDbType.VarChar, theHT["FormName"].ToString());
 
                 theDS = (DataSet)ClsObj.ReturnObject(ClsUtility.theParams, "pr_Clinical_SaveUpdate_PwP_UserControl", ClsDBUtility.ObjectEnum.DataSet);
@@ -870,6 +870,17 @@ namespace BusinessProcess.Clinical
                 theDS = (DataSet)ClsObj.ReturnObject(ClsUtility.theParams, "pr_Clinical_Get_KNH_Adult_followup_Form_Autopopulating_data", ClsDBUtility.ObjectEnum.DataSet);
 
                 return theDS;
+            }
+        }
+
+        public DataSet GetAlerts(int PatientId)
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@Ptn_pk", SqlDbType.Int, PatientId.ToString());
+                ClsObject FamilyInfo = new ClsObject();
+                return (DataSet)FamilyInfo.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetAlerts", ClsDBUtility.ObjectEnum.DataSet);
             }
         }
 

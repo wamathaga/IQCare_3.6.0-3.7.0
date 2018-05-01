@@ -28,8 +28,9 @@ public partial class frmFindAddPatient : BasePage
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
+        this.GetIdentifierTypeByService(Session["TechnicalAreaId"].ToString());
         AuthenticationManager Authentication = new AuthenticationManager();
         IFacilitySetup FacilityMaster = (IFacilitySetup)ObjectFactory.CreateInstance("BusinessProcess.Administration.BFacility, BusinessProcess.Administration");
         theFacilityDS = FacilityMaster.GetSystemBasedLabels(Convert.ToInt32(Session["SystemId"]), 999, 0);
@@ -44,6 +45,7 @@ public partial class frmFindAddPatient : BasePage
         txtfirstname.Text = "";
         txtmiddlename.Text = "";
         txtlastname.Text = "";
+        txtidentificationno.Text = string.Empty;
 
         if (Request.QueryString["mnuClicked"] != null)
         {
@@ -257,21 +259,46 @@ public partial class frmFindAddPatient : BasePage
         return theHT;
     }
 
+    void GetIdentifierTypeByService(string strServiceArea)
+    {
+        IPatientRegistration identifierManager;
+        identifierManager = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
+        DataTable theDT = identifierManager.GetIdentifierListByServiceName(strServiceArea);
+        DataRow theDR = theDT.NewRow();
+        theDR["IdentifierName"] = "All";
+        theDR["IdentifierID"] = 9999;
+        theDT.Rows.InsertAt(theDR, 0);
+        theDR = theDT.NewRow();
+        theDR["IdentifierName"] = "IQNumber";
+        theDR["IdentifierID"] = 10000;
+        theDT.Rows.InsertAt(theDR, 1);
+        BindFunctions theBindManger = new BindFunctions();
+        theBindManger.BindCombo(ddlIdentifier, theDT, "IdentifierName", "IdentifierId");
+        ddFacility.SelectedValue = "0";
+        txtidentificationno.Text = string.Empty;
+        txtidentificationno.Enabled = false;
+    }
+
+
     protected void BindServiceDropdown()
     {
         BindFunctions BindManager = new BindFunctions();
         IPatientRegistration ptnMgr = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
         DataSet DSModules = ptnMgr.GetModuleNames(Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["AppUserId"]));
 
-        DataTable theDT = new DataTable();
-        
-        //if Admin user load all service areas
-        if(Convert.ToString(Session["AppUserId"])=="1")
-            theDT = DSModules.Tables[0];
-        else
-            theDT = DSModules.Tables[2];
+        DataTable theModDT = new DataTable();
 
-        
+        //if Admin user load all service areas
+        if (Convert.ToString(Session["AppUserId"]) == "1")
+            theModDT = DSModules.Tables[0];
+        else
+            theModDT = DSModules.Tables[2];
+
+        DataView theModDV = new DataView(theModDT);
+        theModDV.RowFilter = "ModuleId NOT IN(206,207)";
+        IQCareUtils theModUtils = new IQCareUtils();
+        DataTable theDT = new DataTable();
+        theDT = theModUtils.CreateTableFromDataView(theModDV);
         if (theDT.Rows.Count > 0)
         {
             BindManager.BindCombo(ddlServices, theDT, "ModuleName", "ModuleID");
@@ -331,7 +358,7 @@ public partial class frmFindAddPatient : BasePage
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         SetEnrollmentCombo();
         Ajax.Utility.RegisterTypeForAjax(typeof(frmFindAddPatient));
@@ -768,7 +795,7 @@ public partial class frmFindAddPatient : BasePage
             PatientManager = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
             DataSet dsPatient = new DataSet();
 
-            dsPatient = PatientManager.GetPatientSearchResults(Convert.ToInt32(ddFacility.SelectedValue), txtlastname.Text, txtmiddlename.Text, txtfirstname.Text, txtidentificationno.Text, ddSex.SelectedValue, Convert.ToDateTime(theDOB), ddCareEndedStatus.SelectedValue, Convert.ToInt32(ddlServices.SelectedValue));
+            dsPatient = PatientManager.GetPatientSearchResults(Convert.ToInt32(ddFacility.SelectedValue), txtlastname.Text, txtmiddlename.Text, txtfirstname.Text, ddlIdentifier.SelectedValue, txtidentificationno.Text, ddSex.SelectedValue, Convert.ToDateTime(theDOB).ToString("dd-MMM-yyyy"), ddCareEndedStatus.SelectedValue, Convert.ToInt32(ddlServices.SelectedValue));
 
             this.grdSearchResult.DataSource = dsPatient.Tables[0];
             Session["GrdData"] = dsPatient.Tables[0];
@@ -839,4 +866,10 @@ public partial class frmFindAddPatient : BasePage
     //    else { url = string.Format("{0}&sts={1}", "./ClinicalForms/frmClinical_EnrolmentPMTCT.aspx?name=Add", 0); }
     //    Response.Redirect(url);
     //}
+
+    protected void ddlIdentifier_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        txtidentificationno.Enabled = (ddlIdentifier.SelectedItem.ToString() == "Select") ? false : true;
+        txtidentificationno.Text = (ddlIdentifier.SelectedItem.ToString() == "Select") ? string.Empty : txtidentificationno.Text;
+    }
 }

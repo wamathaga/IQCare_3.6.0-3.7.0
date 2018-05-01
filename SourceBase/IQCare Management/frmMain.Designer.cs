@@ -59,13 +59,11 @@
             this.mnuConfigCareTermination = new System.Windows.Forms.ToolStripMenuItem();
             this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurePharmacyFieldsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuReportFieldValidation = new System.Windows.Forms.ToolStripMenuItem();
             this.listViewFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridviewFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuQueryBuilder = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPMSCM = new System.Windows.Forms.ToolStripMenuItem();
             this.masterListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuPatientDrugDispense = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuPurchaseOrder = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuGoodReceivedNote = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,8 +81,13 @@
             this.mnuConfigureBudget = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuVisitConfiguration = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuBudgetView = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBilling = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPriceList = new System.Windows.Forms.ToolStripMenuItem();
+            this.billingDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.billablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.iQCareHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOthers = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCalculator = new System.Windows.Forms.ToolStripMenuItem();
@@ -152,6 +155,7 @@
             this.mnuFormBuilder,
             this.mnuQueryBuilder,
             this.mnuPMSCM,
+            this.mnuBilling,
             this.mnuHelp,
             this.mnuOthers,
             this.logoutToolStripMenuItem,
@@ -285,7 +289,6 @@
             this.mnuConfigCareTermination,
             this.configureToolStripMenuItem,
             this.configurePharmacyFieldsToolStripMenuItem,
-            this.mnuReportFieldValidation,
             this.listViewFormToolStripMenuItem,
             this.gridviewFormToolStripMenuItem});
             this.mnuFormBuilder.Name = "mnuFormBuilder";
@@ -402,13 +405,6 @@
             this.configurePharmacyFieldsToolStripMenuItem.Visible = false;
             this.configurePharmacyFieldsToolStripMenuItem.Click += new System.EventHandler(this.configurePharmacyFieldsToolStripMenuItem_Click);
             // 
-            // mnuReportFieldValidation
-            // 
-            this.mnuReportFieldValidation.Name = "mnuReportFieldValidation";
-            this.mnuReportFieldValidation.Size = new System.Drawing.Size(274, 22);
-            this.mnuReportFieldValidation.Text = "Report Field Validation";
-            this.mnuReportFieldValidation.Click += new System.EventHandler(this.mnuReportFieldValidation_Click);
-            // 
             // listViewFormToolStripMenuItem
             // 
             this.listViewFormToolStripMenuItem.Name = "listViewFormToolStripMenuItem";
@@ -436,7 +432,6 @@
             // 
             this.mnuPMSCM.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.masterListToolStripMenuItem,
-            this.mnuPatientDrugDispense,
             this.toolStripSeparator10,
             this.mnuPurchaseOrder,
             this.mnuGoodReceivedNote,
@@ -465,13 +460,6 @@
             this.masterListToolStripMenuItem.Text = "Master Lists";
             this.masterListToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.masterListToolStripMenuItem.Click += new System.EventHandler(this.masterListToolStripMenuItem_Click);
-            // 
-            // mnuPatientDrugDispense
-            // 
-            this.mnuPatientDrugDispense.Name = "mnuPatientDrugDispense";
-            this.mnuPatientDrugDispense.Size = new System.Drawing.Size(192, 22);
-            this.mnuPatientDrugDispense.Text = "Dispense Drugs ";
-            this.mnuPatientDrugDispense.Click += new System.EventHandler(this.mnuPatientDrugDispense_Click);
             // 
             // toolStripSeparator10
             // 
@@ -586,10 +574,43 @@
             this.mnuBudgetView.Text = "Budget View";
             this.mnuBudgetView.Click += new System.EventHandler(this.holisticBudgetViewToolStripMenuItem_Click);
             // 
+            // mnuBilling
+            // 
+            this.mnuBilling.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuPriceList,
+            this.billingDetailsToolStripMenuItem,
+            this.billablesToolStripMenuItem});
+            this.mnuBilling.Name = "mnuBilling";
+            this.mnuBilling.Size = new System.Drawing.Size(52, 20);
+            this.mnuBilling.Text = "Billing";
+            this.mnuBilling.Visible = false;
+            // 
+            // mnuPriceList
+            // 
+            this.mnuPriceList.Name = "mnuPriceList";
+            this.mnuPriceList.Size = new System.Drawing.Size(145, 22);
+            this.mnuPriceList.Text = "Price List";
+            this.mnuPriceList.Click += new System.EventHandler(this.mnuPriceList_Click);
+            // 
+            // billingDetailsToolStripMenuItem
+            // 
+            this.billingDetailsToolStripMenuItem.Name = "billingDetailsToolStripMenuItem";
+            this.billingDetailsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.billingDetailsToolStripMenuItem.Text = "Billing Details";
+            this.billingDetailsToolStripMenuItem.Click += new System.EventHandler(this.billingDetailsToolStripMenuItem_Click);
+            // 
+            // billablesToolStripMenuItem
+            // 
+            this.billablesToolStripMenuItem.Name = "billablesToolStripMenuItem";
+            this.billablesToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.billablesToolStripMenuItem.Text = "Billables";
+            this.billablesToolStripMenuItem.Click += new System.EventHandler(this.billablesToolStripMenuItem_Click);
+            // 
             // mnuHelp
             // 
             this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSeparator8,
+            this.iQCareHelpToolStripMenuItem,
             this.mnuAbout});
             this.mnuHelp.Name = "mnuHelp";
             this.mnuHelp.Size = new System.Drawing.Size(44, 20);
@@ -598,13 +619,21 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(128, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(132, 6);
+            // 
+            // iQCareHelpToolStripMenuItem
+            // 
+            this.iQCareHelpToolStripMenuItem.Name = "iQCareHelpToolStripMenuItem";
+            this.iQCareHelpToolStripMenuItem.ShowShortcutKeys = false;
+            this.iQCareHelpToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.iQCareHelpToolStripMenuItem.Text = "Help Manual";
+            this.iQCareHelpToolStripMenuItem.Click += new System.EventHandler(this.iQCareHelpToolStripMenuItem_Click);
             // 
             // mnuAbout
             // 
             this.mnuAbout.Name = "mnuAbout";
-            this.mnuAbout.Size = new System.Drawing.Size(131, 22);
-            this.mnuAbout.Text = "&About ... ...";
+            this.mnuAbout.Size = new System.Drawing.Size(135, 22);
+            this.mnuAbout.Text = "&About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
             // mnuOthers
@@ -998,11 +1027,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuConfigCareTermination;
         private System.Windows.Forms.ToolStripMenuItem mnuManageCareEndedFields;
         private System.Windows.Forms.ToolStripMenuItem mnuSplFormLinking;
-        private System.Windows.Forms.ToolStripMenuItem mnuReportFieldValidation;
         private System.Windows.Forms.ToolStripMenuItem listViewFormToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gridviewFormToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuPMSCM;
-        private System.Windows.Forms.ToolStripMenuItem mnuPatientDrugDispense;
         private System.Windows.Forms.ToolStripMenuItem masterListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuConfigureBudget;
         private System.Windows.Forms.ToolStripMenuItem mnuDisposeItem;
@@ -1027,6 +1054,11 @@
         private System.Windows.Forms.ToolStripMenuItem managePharmacyFieldsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurePharmacyFieldsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backupDatabaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem iQCareHelpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuBilling;
+        private System.Windows.Forms.ToolStripMenuItem mnuPriceList;
+        private System.Windows.Forms.ToolStripMenuItem billingDetailsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem billablesToolStripMenuItem;
     }
 }
 

@@ -11,7 +11,7 @@ using Application.Common;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacy_Dashboard : LogPage
+    public partial class frmPharmacy_Dashboard : System.Web.UI.Page
     {
         BindFunctions theBindManager = new BindFunctions();
 

@@ -17,7 +17,7 @@ namespace PresentationApp.ClinicalForms.UserControl
 
         protected void btnLab_Click(object sender, EventArgs e)
         {
-            IQCareUtils.Redirect("../Laboratory/LabOrderForm.aspx", "_blank", "toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes");
+            IQCareUtils.Redirect("../Laboratory/frm_Laboratory.aspx", "_blank", "toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes");
         }
 
     }

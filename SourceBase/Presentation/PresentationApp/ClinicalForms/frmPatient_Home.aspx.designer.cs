@@ -48,6 +48,15 @@ public partial class frmPatient_Home {
     protected global::System.Web.UI.WebControls.Label lblpatientname;
     
     /// <summary>
+    /// lbldob control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lbldob;
+    
+    /// <summary>
     /// lblage control.
     /// </summary>
     /// <remarks>
@@ -127,6 +136,15 @@ public partial class frmPatient_Home {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.LinkButton btnTechChange;
+    
+    /// <summary>
+    /// pnlnotification control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Telerik.Web.UI.RadAjaxPanel pnlnotification;
     
     /// <summary>
     /// TabDiv control.

@@ -5,7 +5,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="PatientWardAdmission.ascx" TagName="PatientWardAdmission" TagPrefix="paf" %>
 <asp:Content ID="ctMain" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="server">
-    <%-- <script src="../Incl/quicksearch.js" type="text/javascript" defer="defer"></script>
+<%-- <script src="../Incl/quicksearch.js" type="text/javascript" defer="defer"></script>
     <script type="text/javascript">
         $(function () {
             $('.search_textbox').each(function (i) {
@@ -18,22 +18,17 @@
         });
 
     </script>--%>
-    <div class="container-fluid">
-        <h4 class="forms h4" align="left">
-            Wards Admission</h4>
+    <div></br>
+        <h2 class="forms" align="left">
+            Wards Admission</h2>
         <asp:UpdatePanel runat="server" ID="divWardComponent">
             <ContentTemplate>
-                <table class="table-condensed" width="100%">
+                <table cellspacing="6" cellpadding="0" width="100%" border="0">
                     <tbody>
                         <tr>
-                            <td class="form">
-                                <center>
-                                    <asp:Button ID="btnNewAdmission" runat="server" Text="New Admission" CssClass="btn btn-success"
-                                        Height="30px" Width="80%" Style="text-align: left;" />
-                                    <label class="glyphicon glyphicon-plus-sign" style="margin-left: -15%; vertical-align: -webkit-baseline-middle;
-                                        color: #fff;">
-                                    </label>
-                                </center>
+                            <td class="form" ><center>
+                                <asp:Button ID="btnNewAdmission" runat="server" Text="New Admission" Width="120px"
+                                    Style="display: block; margin-bottom: 5px" class="greenbutton" /></center>
                             </td>
                             <td class="form" style="text-align: right; vertical-align: top; elevation: above;
                                 white-space: nowrap">
@@ -47,12 +42,8 @@
                                         <asp:ListItem Selected="True">No</asp:ListItem>
                                         <asp:ListItem>Yes</asp:ListItem>
                                     </asp:RadioButtonList>
-                                    &nbsp;&nbsp;&nbsp;<asp:Button ID="btnFilter" runat="server" Text="View" OnClick="btnFilter_Click"
-                                        CssClass="btn btn-primary" Height="30px" Width="9%" Style="text-align: left;" />
-                                    <label class="glyphicon glyphicon-list" style="margin-left: -3%; vertical-align: -webkit-baseline-middle;
-                                        color: #fff;">
-                                    </label>
-                                </asp:Panel>
+                                    &nbsp;&nbsp;&nbsp;<asp:Button ID="btnFilter" runat="server" Text="View" Width="120px"
+                                        OnClick="btnFilter_Click" /></asp:Panel>
                             </td>
                         </tr>
                     </tbody>
@@ -62,7 +53,7 @@
                 <asp:AsyncPostBackTrigger ControlID="buttonDischarge" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
-        <table width="100%" class="table-condensed">
+        <table cellspacing="6" cellpadding="0" width="100%" border="0">
             <tbody>
                 <tr>
                     <td align="left" style="padding-left: 10px; padding-right: 15px">
@@ -73,7 +64,7 @@
                                     <asp:Label ID="lblError" runat="server" Style="font-weight: bold; color: #800000"
                                         Text=""></asp:Label>
                                 </asp:Panel>
-                                <asp:HiddenField ID="HSelectedID" runat="server" />
+                                <asp:HiddenField ID="HSelectedID" runat="server" />                           
                                 <asp:HiddenField ID="HDate" runat="server" />
                                 <asp:HiddenField ID="HStatus" runat="server" />
                             </ContentTemplate>
@@ -84,7 +75,7 @@
         </table>
         <asp:UpdatePanel ID="divGridComponent" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-                <table class="table-condensed" width="100%">
+                <table cellspacing="6" cellpadding="0" width="100%" border="0">
                     <tbody>
                         <tr>
                             <td class="pad5 formbg border">
@@ -95,10 +86,12 @@
                                                 <div class="mid" style="height: 280px; overflow: auto">
                                                     <div id="div-AdmissionsGridview" class="GridView whitebg">
                                                         <asp:GridView ID="gridAdmission" runat="server" AllowSorting="True" AutoGenerateColumns="False"
-                                                            BorderColor="White" BorderWidth="1px" CellPadding="0" GridLines="None" CssClass="datatable"
-                                                            EmptyDataText="No Data to display" ShowHeaderWhenEmpty="True" Width="100%" BorderStyle="Solid"
-                                                            DataKeyNames="AdmissionID,PatientID,WardID" OnRowCommand="gridAdmission_RowCommand"
-                                                            OnRowDataBound="gridAdmission_RowDataBound" OnDataBound="gridAdmission_DataBound">
+                                                            BorderColor="White" BorderWidth="1px" CellPadding="0" GridLines="None" 
+                                                            CssClass="datatable"  EmptyDataText="No Data to display"
+                                                            ShowHeaderWhenEmpty="True" Width="100%" BorderStyle="Solid" DataKeyNames="AdmissionID,PatientID,WardID"
+                                                            OnRowCommand="gridAdmission_RowCommand" 
+                                                            OnRowDataBound="gridAdmission_RowDataBound" 
+                                                            ondatabound="gridAdmission_DataBound">
                                                             <Columns>
                                                                 <asp:BoundField DataField="PatientName" HeaderText="Patient" />
                                                                 <asp:BoundField DataField="PatientNumber" HeaderText="Patient #" />
@@ -112,13 +105,13 @@
                                                                     <ItemTemplate>
                                                                         <div style="white-space: nowrap">
                                                                             <asp:Button ID="buttonDetails" runat="server" CausesValidation="false" CommandName="ViewEdit"
-                                                                                Text="View/Edit" CommandArgument="<%# Container.DataItemIndex %>" ForeColor="White"
-                                                                                CssClass="btn btn-primary" Height="30px"></asp:Button>
+                                                                                Text="View/Edit" CommandArgument="<%# Container.DataItemIndex %>" ForeColor="Blue">
+                                                                            </asp:Button>
                                                                             <span style='display: <%# ShowDischarge(Eval("Discharged")) %>; white-space: nowrap'>
                                                                                 <asp:Button ID="buttonDischarge" runat="server" CausesValidation="false" CommandName="Discharge"
                                                                                     Text="Discharge" CommandArgument="<%# Container.DataItemIndex %>" Visible="true"
-                                                                                    ForeColor="White" CssClass="btn btn-primary" Height="30px" />
-                                                                            </span>
+                                                                                    ForeColor="Blue" />
+                                                                            </span>                                                                           
                                                                         </div>
                                                                     </ItemTemplate>
                                                                 </asp:TemplateField>
@@ -153,7 +146,7 @@
         </asp:UpdatePanel>
         <asp:UpdatePanel ID="divAdmitComponent" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-                <paf:PatientWardAdmission ID="AdmitPatient" runat="server" OpenMode="VIEW" />
+                <paf:patientwardadmission id="AdmitPatient" runat="server" openmode="VIEW" />
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="gridAdmission" EventName="RowCommand" />
@@ -163,14 +156,26 @@
         <asp:UpdatePanel ID="divDischargeComponent" runat="server">
             <ContentTemplate>
                 <asp:Button ID="btnCal" runat="server" Style="display: none" />
-                <asp:Panel ID="panelDischarge" runat="server" Style="display: none; width: 350px;
+                <asp:Panel ID="panelDischarge" runat="server" Style="display: none; width: 320px;
                     border: solid 1px #808080; background-color: #6699FF" Width="320px" DefaultButton="buttonDischarge">
-                    <asp:Panel ID="divTitle" runat="server" Style="cursor: move; height: 18px">
-                        <h5 class=" h5" align="center">
-                            Discharge Patient Form
-                        </h5>
+                    <asp:Panel ID="divTitle" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
+                        cursor: move; height: 18px">
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 18px">
+                            <tr>
+                                <td style="width: 5px; height: 19px;">
+                                </td>
+                                <td style="width: 100%; height: 19px;">
+                                    <h2 class="forms" align="left">
+                                        Discharge Patient Form
+                                    </h2>
+                                </td>
+                                <td style="width: 5px; height: 19px;">
+                                </td>
+                            </tr>
+                        </table>
                     </asp:Panel>
-                    <table width="350px" style="margin-bottom: 10px" class="table-condensed border left whitebg">
+                    <table cellpadding="1" cellspacing="2" border="0" width="320px" style="border: solid 0px #808080;
+                        background-color: #CCFFFF; margin-bottom: 10px" class="border left whitebg">
                         <tr>
                             <td style="width: 48px" valign="middle" align="center">
                                 <asp:Image ID="Image2" runat="server" ImageUrl="~/images/mb_information.gif" Height="32px"
@@ -181,10 +186,9 @@
                                     Please note that this action cannot be reversed.
                                 </div>
                                 Discharge Date:&nbsp;&nbsp;&nbsp;
-                                <asp:TextBox ID="textDischargeDate" runat="server" Width="80px" MaxLength="12" AutoComplete="false"></asp:TextBox>
-                                <img id="Img4" onclick="w_displayDatePicker('<%=textDischargeDate.ClientID%>');"
-                                    height="24" alt="Date Helper" src="../images/cal_icon.gif" width="22" border="0"
-                                    name="appDateimg" style="vertical-align: bottom;" />
+                                <asp:TextBox ID="textDischargeDate" runat="server" Width="120px" MaxLength="12" AutoComplete="false"></asp:TextBox>
+                                <asp:ImageButton runat="Server" ID="Image1" Height="22" Style="hspace: 3; width: 22;
+                                    height: 22" ImageUrl="~/Images/cal_icon.gif" AlternateText="Click to show calendar" />
                                 <ajaxToolkit:CalendarExtender ID="calendarButtonExtender" runat="server" TargetControlID="textDischargeDate"
                                     PopupButtonID="Image1" Format="dd-MMM-yyyy" OnClientDateSelectionChanged="disable_future_dates" />
                             </td>
@@ -192,11 +196,11 @@
                         <tr>
                             <td class="form pad5 center" style="white-space: nowrap; text-align: center; border: 0"
                                 colspan="2">
-                                <div id="divAction" style="white-space: nowrap">
-                                    <asp:Button ID="buttonDischarge" runat="server" Text="Discharge" Width="80px" OnClick="buttonDischarge_Click"
-                                        CssClass="btn btn-info" Height="30px" Style="text-align: center" />
-                                    <asp:Button ID="buttonCancel" runat="server" Text="Cancel" Width="80px" CssClass="btn btn-info"
-                                        Height="30px" Style="text-align: center" />
+                                <div id="divAction" style="white-space: nowrap; border: 0; text-align: center;">
+                                    &nbsp;&nbsp;&nbsp;<asp:Button ID="buttonDischarge" runat="server" Text="Discharge"
+                                        Width="120px" OnClick="buttonDischarge_Click" />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <asp:Button ID="buttonCancel" runat="server" Text="Cancel" Width="80px" />
                                 </div>
                             </td>
                         </tr>
@@ -216,7 +220,8 @@
                     background-color: #E0E0E0; z-index: 15000">
                     <asp:Panel ID="pnPopup_Title" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
                         cursor: move; height: 18px">
-                        <table class="table-condensed" style="width: 100%; height: 18px; background-color: #6699FF">
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 18px;
+                            background-color: #6699FF">
                             <tr>
                                 <td style="width: 5px; height: 19px;">
                                 </td>
@@ -229,7 +234,7 @@
                             </tr>
                         </table>
                     </asp:Panel>
-                    <table class="table-condensed" style="width: 100%;">
+                    <table border="0" cellpadding="15" cellspacing="0" style="width: 100%;">
                         <tr>
                             <td style="width: 48px" valign="middle" align="center">
                                 <asp:Image ID="imgNotice" runat="server" ImageUrl="~/images/mb_information.gif" Height="32px"

@@ -22,7 +22,7 @@ namespace BusinessProcess.Administration
         /// <param name="PriceDate">The price date.</param>
         /// <param name="WithPriceOnly">The with price only.</param>
         /// <returns></returns>
-        public DataTable FindItems(String filter, int? ItemTypeID = null, int? ExcludeItemTypeID = null, DateTime? PriceDate = null, bool? WithPriceOnly = true, int? SCMFlag = null)
+        public DataTable FindItems(String filter, int? ItemTypeID = null, int? ExcludeItemTypeID = null, DateTime? PriceDate = null, bool? WithPriceOnly = true)
         {
             lock (this)
             {
@@ -36,8 +36,6 @@ namespace BusinessProcess.Administration
                     ClsUtility.AddExtendedParameters("@BillingDate", SqlDbType.DateTime, PriceDate.Value.ToString("dd-MMM-yyyy"));
                 if (WithPriceOnly.HasValue)
                     ClsUtility.AddExtendedParameters("@HasPrice", SqlDbType.Bit, WithPriceOnly.Value);
-                if (SCMFlag.HasValue)
-                    ClsUtility.AddExtendedParameters("@SCMFlag", SqlDbType.Int, SCMFlag.Value);
                 ClsObject BillManager = new ClsObject();
                 //return (DataTable)BillManager.ReturnObject(ClsUtility.theParams, "dbo.pr_Billing_GetAllBillableItems", ClsUtility.ObjectEnum.DataTable);
                 return (DataTable)BillManager.ReturnObject(ClsUtility.theParams, "dbo.pr_Admin_FindItemByName", ClsDBUtility.ObjectEnum.DataTable);
@@ -298,7 +296,7 @@ namespace BusinessProcess.Administration
                     ClsUtility.AddExtendedParameters("@AdmissionID", SqlDbType.Int, AdmissionID);
                     ClsUtility.AddExtendedParameters("@DischargedBy", SqlDbType.Int, DischargedBy);
                     ClsUtility.AddExtendedParameters("@UserID", SqlDbType.Int, UserID);
-                    ClsUtility.AddExtendedParameters("@DischargeDate", SqlDbType.VarChar, DischargeDate.ToString("dd-MMM-yyyy"));
+                    ClsUtility.AddExtendedParameters("@DischargeDate", SqlDbType.DateTime, DischargeDate);
                     itemManager.ReturnObject(ClsUtility.theParams, "pr_Wards_DischargePatient", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                 }
                 catch

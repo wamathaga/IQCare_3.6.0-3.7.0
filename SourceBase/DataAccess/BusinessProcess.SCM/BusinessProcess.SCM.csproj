@@ -49,6 +49,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -59,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BBilling.cs" />
     <Compile Include="BBudgetConfigDetail.cs" />
     <Compile Include="BDrug.cs" />
     <Compile Include="BLaboratory.cs" />
@@ -83,6 +85,10 @@
     <ProjectReference Include="..\DataAccess.Entity\DataAccess.Entity.csproj">
       <Project>{B039AEFB-4059-4368-87BF-03545ACAB705}</Project>
       <Name>DataAccess.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities.Billing\Entities.Billing.csproj">
+      <Project>{BB198AEB-D1AB-4137-A449-1C4F3B9275F7}</Project>
+      <Name>Entities.Billing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interface.SCM\Interface.SCM.csproj">
       <Project>{F7FD68D2-006E-41AC-90A7-887A3EA6A1BC}</Project>

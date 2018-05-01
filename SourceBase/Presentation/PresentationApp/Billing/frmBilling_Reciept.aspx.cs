@@ -9,7 +9,7 @@ using Entities.Billing;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBilling_Reciept : LogPage
+    public partial class frmBilling_Reciept : System.Web.UI.Page
     {
         ReportDocument rptDocument;
         /// <summary>

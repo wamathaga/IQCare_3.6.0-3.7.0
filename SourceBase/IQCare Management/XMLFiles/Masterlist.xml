@@ -17,7 +17,7 @@
     <ItemName TableName="Store" CategoryId="0" FormName="frmStoreMaster" ListName="Store Detail" FeatureID="143" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>
     <ItemName TableName="StoreSourceDestination" CategoryId="0" FormName="frmStoreSourcDestLinking" ListName="Store Source Destination Linking" FeatureID="147" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>
     <ItemName TableName="StoreItem" CategoryId="0" FormName="frmSupplierItem" ListName="Store Item Linking" FeatureID="149" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>
-    <ItemName TableName="StoreUser" CategoryId="0" FormName="frmStoreUserLinking" ListName="Store User Linking" FeatureID="148" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>
+    <!--<ItemName TableName="StoreUser" CategoryId="0" FormName="frmStoreUserLinking" ListName="Store User Linking" FeatureID="148" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>-->
     <ItemName TableName="Supplier" CategoryId="0" FormName="frmSupplierMaster" ListName="Supplier" FeatureID="133" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>
     <ItemName TableName="SupplierItem" CategoryId="0" FormName="frmSupplierItem" ListName="Supplier Item Linking" FeatureID="144" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>
     <!--<ItemName TableName="Batch" CategoryId="0" FormName="frmCommonItemMaster" ListName="Batch Number" FeatureID="150" Update="0" SystemId="1" ModuleId="0" CountryID="99"/>-->

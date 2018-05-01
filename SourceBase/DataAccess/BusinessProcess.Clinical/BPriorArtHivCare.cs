@@ -638,7 +638,7 @@ namespace BusinessProcess.Clinical
             {
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
-                ClsUtility.AddParameters("@VisitDate", SqlDbType.DateTime, VisitDate.ToString());
+                ClsUtility.AddParameters("@VisitDate", SqlDbType.VarChar, VisitDate.ToString());
                 ClsObject PatientARTStatus = new ClsObject();
                 return (DataSet)PatientARTStatus.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetPregnantStatus_Constella", ClsDBUtility.ObjectEnum.DataSet);
             }

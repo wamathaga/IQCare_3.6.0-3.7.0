@@ -53,7 +53,7 @@
       <HintPath>..\..\External Dlls\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Application.Common">
-      <HintPath>..\..\DataAccess\Application.Common\obj\Debug\Application.Common.dll</HintPath>
+      <HintPath>..\..\..\References\Application.Common.dll</HintPath>
     </Reference>
     <Reference Include="Application.Interface">
       <HintPath>..\..\..\References\Application.Interface.dll</HintPath>
@@ -84,6 +84,10 @@
     </Reference>
     <Reference Include="Interface.Security">
       <HintPath>..\..\..\References\Interface.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Owc11">
       <HintPath>..\PresentationApp\bin\Microsoft.Office.Interop.Owc11.dll</HintPath>
@@ -130,6 +134,15 @@
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -137,6 +150,15 @@
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
   <ItemGroup>

@@ -415,9 +415,21 @@ public partial class frmPatient_History : BasePage
                 break;
 
             case "Pharmacy":
-                //if (Convert.ToInt32(Session["TechnicalAreaId"]) == 2)
-                //{
-                if (!Authentication.HasFeatureRight(ApplicationAccess.AdultPharmacy, filteresdDT))
+
+                if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"])== "1")
+                {
+                    if (Session["SystemId"].ToString() == "1")
+                    {
+                        url = string.Format("{0}", "~/./PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx");
+                        Response.Redirect(url);
+                    }
+                    else
+                    {
+                        url = string.Format("{0}", "~/./Pharmacy/frmPharmacy_CTC.aspx");
+                        Response.Redirect(url);
+                    }
+                }
+                else if (!Authentication.HasFeatureRight(ApplicationAccess.AdultPharmacy, filteresdDT))
                 {
                     MsgBuilder theBuilder = new MsgBuilder();
                     theBuilder.DataElements["MessageText"] = "You are Not Authorized to Access this Form.";
@@ -427,7 +439,7 @@ public partial class frmPatient_History : BasePage
                 {
                     if (Session["SystemId"].ToString() == "1")
                     {
-                        url = string.Format("{0}", "~/./Pharmacy/frmPharmacyForm.aspx");
+                        url = string.Format("{0}", "~/./PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx");
                         Response.Redirect(url);
                     }
                     else
@@ -436,12 +448,11 @@ public partial class frmPatient_History : BasePage
                         Response.Redirect(url);
                     }
                 }
-                //}
                 break;
             case "Paediatric Pharmacy":
                 //if (Convert.ToInt32(Session["TechnicalAreaId"]) == 2)
                 //{
-                url = string.Format("{0}", "~/./Pharmacy/frmPharmacyForm.aspx");
+                url = string.Format("{0}", "~/./PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx");
                 Response.Redirect(url);
                 //}
                 break;
@@ -522,7 +533,7 @@ public partial class frmPatient_History : BasePage
                     {
                         if (DRCustomFrm["FeatureName"].ToString().Substring(0, 9) == "Pharmacy_")
                         {
-                            url = string.Format("{0}", "~/./Pharmacy/frmPharmacy_Custom.aspx");
+                            url = string.Format("{0}", "~/./PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx");
                         }
                         else
                         {

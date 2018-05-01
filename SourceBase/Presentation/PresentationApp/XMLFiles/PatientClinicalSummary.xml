@@ -67,8 +67,10 @@
         <xs:element name="Table3">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="RegimenType" type="xs:string" minOccurs="0" />
-              <xs:element name="VisitDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="VisitDate" type="xs:string" minOccurs="0" />
+              <xs:element name="regimentype" type="xs:string" minOccurs="0" />
+              <xs:element name="RegimenLine" type="xs:string" minOccurs="0" />
+              <xs:element name="ChangeReason" type="xs:string" minOccurs="0" />
               <xs:element name="SideEffects" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>

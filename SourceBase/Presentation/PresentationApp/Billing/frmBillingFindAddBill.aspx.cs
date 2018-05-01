@@ -6,7 +6,7 @@ using Interface.SCM;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBillingFindAddBill : LogPage
+    public partial class frmBillingFindAddBill : System.Web.UI.Page
     {
         //int LocationID;
         /// <summary>

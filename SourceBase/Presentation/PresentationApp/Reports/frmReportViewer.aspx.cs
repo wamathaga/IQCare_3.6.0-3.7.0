@@ -231,7 +231,8 @@ public partial class Reports_frmReportViewer : System.Web.UI.Page
     private DataSet GetDSPrintPrescription()
     {
         IDrug PediatricManager = (IDrug)ObjectFactory.CreateInstance("BusinessProcess.Pharmacy.BDrug, BusinessProcess.Pharmacy");
-        int PharmacyID = Convert.ToInt32(Session["PatientVisitId"]);
+        //int PharmacyID = Convert.ToInt32(Session["PatientVisitId"]);
+        int PharmacyID = Convert.ToInt32(Session["ptnPharmacyPK"]);
         int PatientID = Convert.ToInt32(Session["PatientId"]);
         ViewState["PatientId"] = PatientID;
 
@@ -688,7 +689,7 @@ public partial class Reports_frmReportViewer : System.Web.UI.Page
             }
             if (Request.QueryString["ReportName"].ToString() == "PharmacyPrescription")
             {
-                Response.Redirect("../Pharmacy/frmPharmacyForm.aspx");
+                Response.Redirect("../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx");
             }
         }
         else

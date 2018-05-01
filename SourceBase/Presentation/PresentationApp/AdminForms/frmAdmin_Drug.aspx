@@ -98,7 +98,7 @@
                                     <asp:Button ID="btnAddDose" runat="server" Text="Add Strengths" OnClick="btnAddDose_Click" />
                                 </div>
                             </td>
-                            <td id="FrequencyID" class="border center pad5 whitebg" style="width: 50%" runat="server"
+                            <td id="FrequencyID" visible="false" class="border center pad5 whitebg" style="width: 50%" runat="server"
                                 align="left">
                                 <div id="arvShow1" runat="server">
                                     <label class="center">

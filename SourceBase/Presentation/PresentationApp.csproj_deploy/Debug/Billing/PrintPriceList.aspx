@@ -1,1 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PrintPriceList.aspx.cs" Inherits="IQCare.Web.Billing.PrintPriceList" %>

@@ -112,7 +112,49 @@ namespace Application.Common
         //****IQTools***////////
         public static int IQToolsReports = 225;
 
-        //
+        // for billing 
+        public static int Billing = 236;
+        public static int BillingConfiguration = 237;
+        public static int BillingReports = 238;
+        public static int BillingReversal = 239;
+        public static int Consumables = 240;       
+        public static int BillingType = 235;
+      
+        /// The billing cheque payment
+        
+        public static int BillingChequePayment = 241;        
+        /// The billing insurance payment        
+        public static int BillingInsurancePayment = 242;
+        /// <summary>
+        /// The billing payment type
+        /// </summary>
+        public static int BillingReceivePayment = 243;
+        /// <summary>
+        /// The billing payment type
+        /// </summary>
+        public static int BillingWriteOffBill = 246;
+
+        //patients Ward
+
+        public static int NewWardAdmission = 250;
+        public static int UpdateWardAdmission = 251;
+        public static int DischargePatient = 252;
+        public static int Wards = 253;
+
+        #region "PharmacyDispense"
+
+        public static int Dashboard = 254;
+        public static int Dispense = 255;
+        public static int StockSummaryWeb = 256;
+        public static int StockManagement = 257;
+
+        #endregion
+        #region  "Waiting List"
+        public static int WaitingList = 258;
+
+        #endregion
+
+
 
 
         #region "CTC"

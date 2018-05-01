@@ -22,7 +22,7 @@ using System.Web.Hosting;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBilling_PriceList : LogPage
+    public partial class frmBilling_PriceList : System.Web.UI.Page
     {
         bool isError = false;
 
@@ -232,7 +232,7 @@ namespace IQCare.Web.Billing
                                                     var senderDate = new Date(sender._selectedDate);senderDate.setHours(0,0,0,0)
                                                     var nowDate =new Date();  nowDate.setHours(0,0,0,0);
                                                     if(senderDate < nowDate){
-                                                        NotifyMessage('You cannot select a day before today'); 
+                                                        alert('You cannot select a day before today'); 
                                                         sender._selectedDate=new Date();sender._textbox.set_Value(sender._selectedDate.format(sender._format));    }}";
 
             btnFilter.OnClientClick = "javascript:return beforePostBack();";
@@ -247,49 +247,27 @@ namespace IQCare.Web.Billing
         private void showErrorMessage(ref Exception ex)
         {
             this.isError = true;
-            //if (this.Debug)
-            //{
-            //    lblError.Text = ex.Message + ex.StackTrace + ex.Source;
-            //}
-            //else
-            //{
-            //    lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team.  ";
-            //    this.isError = this.divError.Visible = true;
-            //    Exception lastError = ex;
-            //    lastError.Data.Add("Domain", "Price List");
-            //    try
-            //    {
-            //        //Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
-            //        //logger.LogError(ex);
-            //    }
-            //    catch
-            //    {
-
-            //    }
-            //}
-            //notifyPopupExtender.Hide();
-            CLogger.WriteLog(ELogLevel.ERROR, ex.ToString());
-            if (Session["PatientId"] == null || Convert.ToInt32(Session["PatientId"]) != 0)
+            if (this.Debug)
             {
-                this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'");
-                //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'</script>");
+                lblError.Text = ex.Message + ex.StackTrace + ex.Source;
             }
             else
             {
-                if (Session["TechnicalAreaId"] != null || Convert.ToInt16(Session["TechnicalAreaId"]) != 0)
+                lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team.  ";
+                this.isError = this.divError.Visible = true;
+                Exception lastError = ex;
+                lastError.Data.Add("Domain", "Price List");
+                try
                 {
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFacilityHome.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFacilityHome.aspx'</script>");
-
+                    //Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
+                    //logger.LogError(ex);
                 }
-                else
+                catch
                 {
 
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmLogin.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmLogin.aspx'</script>");
                 }
             }
-            ex = null;
+            notifyPopupExtender.Hide();
 
         }
         /// <summary>
@@ -311,7 +289,7 @@ namespace IQCare.Web.Billing
             //list.Add(new KeyValuePair<string, string>("Message", strMessage));
             //list.Add(new KeyValuePair<string, string>("Title", strTitle));
             //list.Add(new KeyValuePair<string, string>("errorFlag", errorFlag.ToString().ToLower()));
-            if (onOkScript != "" && errorFlag == true)
+            if (onOkScript != "")
             {
                 //list.Add(new KeyValuePair<string, string>("OkScript", onOkScript));
                 btnOkAction.OnClientClick = onOkScript;
@@ -426,7 +404,7 @@ namespace IQCare.Web.Billing
             {
 
                 AjaxControlToolkit.CalendarExtender control = e.Row.FindControl("calendarButtonExtender") as AjaxControlToolkit.CalendarExtender;
-                //if (control != null) AjaxControlToolkit.ScriptObjectBuilder.RegisterCssReferences(control);
+                if (control != null) AjaxControlToolkit.ScriptObjectBuilder.RegisterCssReferences(control);
 
                 SaleItem rowView = (SaleItem)e.Row.DataItem;
                 /*  if (rowView.SellingPrice.HasValue)
@@ -638,8 +616,7 @@ namespace IQCare.Web.Billing
                 IItemMaster objProgramlist = (IItemMaster)ObjectFactory.CreateInstance("BusinessProcess.Administration.BItemMaster, BusinessProcess.Administration");
                 DataTable theDT = objProgramlist.GetItemTypes;
                 DataView theDV = new DataView(theDT);
-                //theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Consumables' OR ItemName = 'Pharmaceuticals' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
-                theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
+                theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Consumables' OR ItemName = 'Pharmaceuticals' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
                 theDV.Sort = "ItemName Asc";
                 ddlItemType.DataTextField = "ItemName";
                 ddlItemType.DataValueField = "ItemTypeID";

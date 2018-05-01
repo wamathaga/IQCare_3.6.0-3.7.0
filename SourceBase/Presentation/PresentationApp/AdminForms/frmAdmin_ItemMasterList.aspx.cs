@@ -13,7 +13,7 @@ using Application.Common;
 
 namespace IQCare.Web.AdminForms
 {
-    public partial class frmAdmin_ItemMasterList : LogPage
+    public partial class frmAdmin_ItemMasterList : System.Web.UI.Page
     {
         #region variable declaration
         /// <summary>
@@ -329,10 +329,6 @@ namespace IQCare.Web.AdminForms
                 this.PopulateItemSubTypes(true);
                 labelItemMainType.Text = ddlMainItem.SelectedItem.Text;
                 labelItemTypeST.Text = ddlMainItem.SelectedItem.Text;
-                if (ddlMainItem.SelectedItem.Text == "Billables")
-                {
-                    buttonAddSubType.Enabled = false;
-                }
 
             }
         }
@@ -626,8 +622,7 @@ namespace IQCare.Web.AdminForms
             ddlMainItem.DataTextField = "ItemName";
             ddlMainItem.DataValueField = "ItemTypeID";
 
-            //dtItems.DefaultView.RowFilter = "DeleteFlag=0 And (ItemName ='Consumables' OR ItemName= 'Billables') ";
-            dtItems.DefaultView.RowFilter = "DeleteFlag=0 And (ItemName= 'Billables') ";
+            dtItems.DefaultView.RowFilter = "DeleteFlag=0 And (ItemName ='Consumables' OR ItemName= 'Billables') ";
             ddlMainItem.DataSource = dtItems.DefaultView;
             ddlMainItem.DataBind();
             ddlMainItem.Items.Insert(0, new ListItem("Select...", ""));

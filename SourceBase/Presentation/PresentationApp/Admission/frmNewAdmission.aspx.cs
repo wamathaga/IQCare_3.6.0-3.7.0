@@ -8,12 +8,11 @@ using Application.Common;
 using Application.Presentation;
 using Entities.Administration;
 using Interface.Administration;
-using Interface.Scheduler;
 using System.Web.UI.HtmlControls;
 
 namespace IQCare.Web.Admission
 {
-    public partial class frmNewAdmission : LogPage
+    public partial class frmNewAdmission : System.Web.UI.Page
     {
         /// <summary>
         /// The is error
@@ -181,36 +180,13 @@ namespace IQCare.Web.Admission
             this.AdmitPatient.PatientID = patientID;
             this.AdmitPatient.FacilityID = locationID;
             this.AdmitPatient.UserID = this.UserID;
+
             if (locationID == Convert.ToInt32(base.Session["AppLocationId"]))
             {
-                IContactCare CareManager = (IContactCare)ObjectFactory.CreateInstance("BusinessProcess.Scheduler.BContactCare,BusinessProcess.Scheduler");
-                DataSet theDSCEnd = CareManager.GetProgramStatus(patientID);
-                if (theDSCEnd.Tables[1].Rows.Count > 0)
-                {
-                    if (Convert.ToString(theDSCEnd.Tables[1].Rows[0]["CareEnded"]) == "1")
-                    {
-                        MsgBuilder theBuilder = new MsgBuilder();
-                        theBuilder.DataElements["MessageText"] = "This is Care-Ended Patient. Cannot admit in Ward";
-                        IQCareMsgBox.Show("#C1", theBuilder, this);
-                        Label lblError = new Label();
-                        lblError.Text = (Master.FindControl("lblError") as Label).Text;
-                        return;
-                    }
-                    else
-                    {
-                        this.AdmitPatient.Rebind();
-                        this.Button1_Click(this.Button1, EventArgs.Empty);
-                        this.AdmitPatient.EnableModelDialog(true);
-                        return;
-                    }
-                }
-                else
-                {
-                    this.AdmitPatient.Rebind();
-                    this.Button1_Click(this.Button1, EventArgs.Empty);
-                    this.AdmitPatient.EnableModelDialog(true);
-                    return;
-                }
+                this.AdmitPatient.Rebind();
+                this.Button1_Click(this.Button1, EventArgs.Empty);
+                this.AdmitPatient.EnableModelDialog(true);
+                return;
             }
             else
             {
@@ -244,7 +220,7 @@ namespace IQCare.Web.Admission
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void FindPatient_CancelFind(object sender, EventArgs e)
         {
-            //if (HFormName.Value == "") return; // comment on 20 Jan 2016 as cancel is not working when open new admission and click cancel.
+            if (HFormName.Value == "") return;
 
             string formName = HFormName.Value;
 

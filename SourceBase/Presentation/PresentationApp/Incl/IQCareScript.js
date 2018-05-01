@@ -713,6 +713,32 @@ function chkAlphaNumericString(TextID) {
         objtxt.focus();
     }
 }
+//////////////   For Field Level String Validation ////////////////////
+function IsMultiString(strString) {
+    var strValidChars = /^[ A-Za-z0-9_@.,#&+-]*$/;
+    var strChar;
+    var m;
+    var blnResult = true;
+    if (strString.length == 0) return false;
+    if ((m = strValidChars.exec(strString)) !== null) {
+//        if (m.index === strValidChars.lastIndex) {
+//            re.lastIndex++;
+//        }
+        blnResult = true;        
+    }
+    else
+        blnResult = false;
+ 
+    return blnResult;
+}
+
+function chkMultiString(TextID) {
+    var objtxt = document.getElementById(TextID);    
+    if (IsMultiString(objtxt.value) == false) {
+        objtxt.value = objtxt.value.toString().substr(0, objtxt.value.length - 1);
+        objtxt.focus();
+    }
+}
 
 function IsString(strString)
 //  check for valid numeric strings	
@@ -1368,7 +1394,8 @@ function isCheckValidDate(sysdate, frmdate, obj) // 2
         return true;
     }
     else {
-        alert("Invalid date\nCheck DateFormat or\nCheck Future Date");
+        //alert("Invalid date\nCheck DateFormat or\nCheck Future Date");
+        alert("Please enter a valid date. Date cannot be future date and format should be dd-MMM-yyyy.");
         objtxt.value = "";
         objtxt.focus();
         objtxt.select();
@@ -2525,4 +2552,91 @@ function fnUncheckallVitals(strcblcontrolId) {
     }
 }
 
+function CalculateBSA(txtWeight, txtHeight, txtBSA) {
+    var weight = document.getElementById(txtWeight).value;
+    var height = document.getElementById(txtHeight).value;
+
+    if (weight == "" || height == "") {
+        weight = 0;
+        height = 0;
+        document.getElementById(txtBSA).value = "";
+    }
+    else {
+        var BSA = Math.sqrt((height * weight) / 3600.0);
+        BSA = BSA.toFixed(2);
+        document.getElementById(txtBSA).value = BSA;
+    }
+}
+
+function CalculateDaysToNextAppointment(txtAppointmentDate, txtDays) {
+    var appointmentdate = new Date(Date.parse(document.getElementById(txtAppointmentDate).value));
+    var todayDate = new Date();
+
+    alert(appointmentdate);
+
+    var noOfDays = ((appointmentdate.getTime() - todayDate.getTime()) / 1000 * 60 * 60 * 24);
+
+    alert(noOfDays);
+
+    document.getElementById(txtDays).value = noOfDays;
+}
+
+function CalculateNextAppointment(txtAppointmentDate, txtDays) {
+    var todaydate = new Date();
+    var days = document.getElementById(txtDays).value;
+
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+
+    var appDate = new Date(todaydate.setTime(todaydate.getTime() + days * 86400000));
+
+    var dd = appDate.getDate();
+    var mm = month[appDate.getMonth()];
+    var y = appDate.getFullYear();
+
+    document.getElementById(txtAppointmentDate).value = dd + '-' + mm + '-' + y;
+}
+
+function CalculateDrugsPrescribed(txtMorning, txtMidday, txtEvening, txtNight, txtDuration, txtQtyPrescribed, valSyrup, valQtyUnitDisp) {
+    var morning = document.getElementById(txtMorning).value;
+    var midday = document.getElementById(txtMidday).value;
+    var evening = document.getElementById(txtEvening).value;
+    var night = document.getElementById(txtNight).value;
+    var duration = document.getElementById(txtDuration).value;
+
+    if (morning == "") morning = 0;
+    if (midday == "") midday = 0;
+    if (evening == "") evening = 0;
+    if (night == "") night = 0;
+
+    document.getElementById(txtMorning).value = morning;
+    document.getElementById(txtMidday).value = midday;
+    document.getElementById(txtEvening).value = evening;
+    document.getElementById(txtNight).value = night;
+
+    if ((morning + midday + evening + night) > 0 && duration != "") {
+        if (valSyrup == "1") {
+            var qty = ((1 * morning + 1 * midday + 1 * evening + 1 * night) * duration) / valQtyUnitDisp;
+            document.getElementById(txtQtyPrescribed).value = Math.ceil(qty);
+        }
+        else {
+            var qty = duration * (1 * morning + 1 * midday + 1 * evening + 1 * night);
+            document.getElementById(txtQtyPrescribed).value = qty;
+        }
+    }
+    else {
+        document.getElementById(txtQtyPrescribed).value = "";
+    }
+}
 

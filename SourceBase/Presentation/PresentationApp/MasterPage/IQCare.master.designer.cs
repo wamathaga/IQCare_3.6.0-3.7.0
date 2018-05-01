@@ -264,6 +264,15 @@ public partial class MasterPage_IQCare {
     protected global::System.Web.UI.WebControls.ContentPlaceHolder IQCareContentPlaceHolder;
     
     /// <summary>
+    /// pnlExtruder control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlExtruder;
+    
+    /// <summary>
     /// UserControlKNH_Extruder1 control.
     /// </summary>
     /// <remarks>

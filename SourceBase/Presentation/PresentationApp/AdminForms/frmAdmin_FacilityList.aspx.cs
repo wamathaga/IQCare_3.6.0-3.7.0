@@ -31,6 +31,9 @@ public partial class FacilityMaster_List : System.Web.UI.Page
         AuthenticationManager Authentication = new AuthenticationManager();
         IFacilitySetup FacilityMaster = (IFacilitySetup)ObjectFactory.CreateInstance("BusinessProcess.Administration.BFacility, BusinessProcess.Administration");
         theFacilityDS = FacilityMaster.GetFacilityList(Convert.ToInt32(Session["SystemId"]), ApplicationAccess.FacilitySetup, 0);
+        DataView theDV = new DataView(theFacilityDS.Tables[3]);
+        theDV.RowFilter = "FacilityID="+Session["AppLocationId"].ToString()+"";
+        Session["AppModule"] = theDV.ToTable();
         ViewState["FacilityDS"] = theFacilityDS;
         ViewState["grdDataSource"] = theFacilityDS.Tables[0];
         ViewState["SortDirection"] = "Asc";
@@ -123,6 +126,8 @@ public partial class FacilityMaster_List : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        
+
         if (Session["SystemId"] != "" && (object.Equals(Request.QueryString["BS"], null) == true || Request.QueryString["BS"].ToString() != "true"))
         {
             if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")

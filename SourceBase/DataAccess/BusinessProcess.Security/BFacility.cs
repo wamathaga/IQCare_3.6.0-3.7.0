@@ -103,6 +103,17 @@ namespace BusinessProcess.Security
             }
 
         }
+        public DataSet GetPluginModuleAndFeaturesForFacility(Int32 facilityID)
+        {
+            lock (this)
+            {
+                ClsObject FacilityManager = new ClsObject();
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@FacilityID", SqlDbType.Int, facilityID.ToString());
+                return (DataSet)FacilityManager.ReturnObject(ClsUtility.theParams, "sp_GetPluginModuleAndFeaturesForFacility", ClsDBUtility.ObjectEnum.DataSet);
+            }
+
+        }
 
 
     }

@@ -14,7 +14,7 @@ namespace BusinessProcess.Clinical
 {
    public class BFollowupEducation : ProcessBase, IFollowupEducation
     {
-       public int SaveFollowupEducation(int Id, int Ptn_pk, int CouncellingTypeId, int CouncellingTopicId, int Visit_pk, int LocationID, DateTime VisitDate, string Comments, string OtherDetail,int UserId, int DeleteFlag)  
+       public int SaveFollowupEducation(int Id, int Ptn_pk, int CouncellingTypeId, int CouncellingTopicId, int Visit_pk, int LocationID, string VisitDate, string Comments, string OtherDetail,int UserId, int DeleteFlag)  
        {
            ClsObject FollowupEducation = new ClsObject();
            int retval = 0;
@@ -33,7 +33,7 @@ namespace BusinessProcess.Clinical
                ClsUtility.AddParameters("@LocationID", SqlDbType.Int, LocationID.ToString());
                ClsUtility.AddParameters("@CouncellingTypeId", SqlDbType.Int, CouncellingTypeId.ToString());
                ClsUtility.AddParameters("@CouncellingTopicId", SqlDbType.Int, CouncellingTopicId.ToString());
-               ClsUtility.AddParameters("@VisitDate", SqlDbType.DateTime, VisitDate.ToString());
+               ClsUtility.AddParameters("@VisitDate", SqlDbType.VarChar, VisitDate.ToString());
                ClsUtility.AddParameters("@Comments", SqlDbType.VarChar, Comments.ToString());
                ClsUtility.AddParameters("@OtherDetail", SqlDbType.VarChar, OtherDetail.ToString());               
                ClsUtility.AddParameters("@UserId", SqlDbType.Int, UserId.ToString());

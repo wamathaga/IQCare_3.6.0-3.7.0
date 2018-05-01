@@ -11,7 +11,8 @@
             }
             function fnPageOpen(pageopen) {
                 if (pageopen == "Pharmacy") {
-                    window.open('../Pharmacy/frmPharmacyform.aspx?opento=ArtForm');
+                    //window.open('../Pharmacy/frmPharmacyform.aspx?opento=ArtForm');
+                    window.open('../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?opento=ArtForm');
                 }
                 else if (pageopen == "Labratory") {
                     window.open('../Laboratory/frm_Laboratory.aspx?opento=ArtForm');

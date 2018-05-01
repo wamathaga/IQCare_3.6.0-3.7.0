@@ -690,6 +690,38 @@ namespace IQCare.FormBuilder
             try
             {
                 DataTable theDT = ((DataTable)dgwConditionalField.DataSource).Copy();
+                IFieldDetail objConditional = (IFieldDetail)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BFieldDetails,BusinessProcess.FormBuilder");
+                DataSet theDS=objConditional.GetBusinessRule();
+                foreach (DataRow theDR in theDT.Rows)
+                {
+                    if (theDR["Predefined"].ToString() == "0")
+                    {
+                        DataView thetmpDV = new DataView(theDS.Tables[2]);
+                        thetmpDV.RowFilter = "FieldId="+theDR["FieldId"] +"";
+                        if (thetmpDV.ToTable().Rows.Count > 0)
+                        {
+                            MsgBuilder theBuilder = new MsgBuilder();
+                            theBuilder.DataElements["MessageText"] = "There is required Field that cannot be associated";
+                            IQCareWindowMsgBox.ShowWindow("#C1", theBuilder, this);
+                            return;
+                        }
+
+                    }
+                    else if (theDR["Predefined"].ToString() == "1")
+                    {
+                        DataView thetmpDV = new DataView(theDS.Tables[2]);
+                        thetmpDV.RowFilter = "FieldId=" + theDR["FieldId"] + "";
+                        if (thetmpDV.ToTable().Rows.Count > 0)
+                        {
+                            MsgBuilder theBuilder = new MsgBuilder();
+                            theBuilder.DataElements["MessageText"] = "There is required Field that cannot be associated";
+                            IQCareWindowMsgBox.ShowWindow("#C1", theBuilder, this);
+                            return;
+                        }
+                    }
+                }
+
+
                 DataView theDV;
                 if (theDT != null)
                 {

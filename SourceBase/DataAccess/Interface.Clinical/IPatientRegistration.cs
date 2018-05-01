@@ -22,7 +22,7 @@ namespace Interface.Clinical
         
         DataSet GetAllDropDowns();
         DataSet GetDuplicatePatientSearchResults(string lastname, string middlename, string firstname, string address, string phone);
-        DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollment, string gender, DateTime dob, string status, int ModuleId);
+        DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollmentType, string enrollment, string gender, string dob, string status, int ModuleId);
         DataSet GetEnrolment(string CountryID, string PossitionID, string SatelliteID, string PatientClinicID, string enrolmentid, int deleteflag);
         DataSet GetAge(DateTime dob, DateTime regdate);
         DataSet GetVisitDate_IELAB(int patientid, int LocationID);
@@ -82,6 +82,7 @@ namespace Interface.Clinical
             string lastname,
             string middlename,
             string firstname,
+            string enrollmentType,
             string enrollment,
             string gender,
             string status,
@@ -89,6 +90,7 @@ namespace Interface.Clinical
             DateTime? registrationDate,
             int ModuleId = 999,
             int MaxRecords = 100);
+       
         /// <summary>
         /// Gets the patient service lines.
         /// </summary>
@@ -96,8 +98,9 @@ namespace Interface.Clinical
         /// <param name="LocationID">The location identifier.</param>
         /// <returns></returns>
         DataTable GetPatientServiceLines(int PatientID, int LocationID);
-        
-         
+        DataTable GetPatientsOnWaitingList(int ListID, int ModuleID);
+        void ChangeWaitingListStatus(int WaitingListID, int RowStatus, int UserID);
+        DataTable GetIdentifierListByServiceName(string ServiceArea);
         
       }
 }

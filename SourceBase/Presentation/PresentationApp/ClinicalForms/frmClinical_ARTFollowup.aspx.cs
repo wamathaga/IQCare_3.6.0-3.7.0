@@ -32,9 +32,9 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
     DataSet theDS_ARTFU;
     DataTable theDTOIAIDsleft, theDTOIAIDsright, theDTMissedReason;
     int PatientID, ReasonID, LocationID, ARVSideEffectsNone, ARVSideEffectsNotDocumented, OIsAIDsIllnessNone, OIsAIDsIllnessNotDocumented, TBScreenNotDocumented, TBScreenPerformed, VisittypeFU = 2, visitPK = 0;
-    //DateTime ;
+    DateTime createDate;
     Boolean Save = false, Update = false;
-    string script, str, strCallback, strHeight,createDate;
+    string script, str, strCallback, strHeight;
     Hashtable htFollowupParameters;
     //Amitava Sinha
     int icount;
@@ -439,9 +439,8 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
             if (theDS1.Tables[0].Rows[0]["CreateDate"] != System.DBNull.Value)
             {
                 DateTime theCreateDate = Convert.ToDateTime(theDS1.Tables[0].Rows[0]["CreateDate"]);
-                this.createDate = theCreateDate.ToString("dd-MMM-yyyy");
-                //ViewState["createdate"] = Convert.ToDateTime(theDS1.Tables[0].Rows[0]["CreateDate"].ToString());
-                ViewState["createdate"] = createDate;
+                this.createDate = Convert.ToDateTime(theCreateDate.ToString(Session["AppDateFormat"].ToString()));
+                ViewState["createdate"] = Convert.ToDateTime(theDS1.Tables[0].Rows[0]["CreateDate"].ToString());
             }
 
             //CD4
@@ -1233,7 +1232,7 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
         else
         {
             string theUrl;
-            theUrl = string.Format("{0}", "frmPatient_Home.aspx");
+            theUrl = string.Format("{0}", "frmPatient_Home.aspx?Func=Delete");
             Response.Redirect(theUrl);
         }
 
@@ -1266,12 +1265,27 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
                     if (theDV.Count > 0)
                         theDT = theUtils.CreateTableFromDataView(theDV);
                 }
-                BindManager.BindCombo(ddlCounsellorSignature, theDT, "EmployeeName", "EmployeeId");
+                //BindManager.BindCombo(ddlCounsellorSignature, theDT, "EmployeeName", "EmployeeId"); Bug id 2707......
+                BindUserDropdown(ddlCounsellorSignature, string.Empty);
             }
         }
     }
 
     //Function to Bind DropDowns
+
+    private void BindUserDropdown(DropDownList DropDownID, String userId)
+    {
+        Dictionary<int, string> userList = new Dictionary<int, string>();
+        CustomFieldClinical.BindUserDropDown(DropDownID, out userList);
+        if (!string.IsNullOrEmpty(userId))
+        {
+            if (userList.ContainsKey(Convert.ToInt32(userId)))
+            {
+                DropDownID.SelectedValue = userId;
+                //SecurityPerTabSignature = userId;
+            }
+        }
+    }
     private void FillDropDowns()
     {
         this.PatientID = Convert.ToInt32(Session["PatientId"]);
@@ -1519,7 +1533,8 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
 
                             theDT = theUtils.CreateTableFromDataView(theDV);
                     }
-                    BindManager.BindCombo(ddlCounsellorSignature, theDT, "EmployeeName", "EmployeeId");
+                    //BindManager.BindCombo(ddlCounsellorSignature, theDT, "EmployeeName", "EmployeeId");
+                    BindUserDropdown(ddlCounsellorSignature,string.Empty);
                     theDV.Dispose();
                     theDT.Clear();
                 }
@@ -2157,7 +2172,7 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
         {
             //visitPK = Convert.ToInt32(ViewState["VisitID_add"]);
             locationID = Convert.ToInt32(Session["AppLocationId"]);
-            createDate = DateTime.Now.ToString("dd-MMM-yyyy");
+            createDate = Convert.ToDateTime(ViewState["CreateDate"]);
         }
         ////else if (Request.QueryString["name"] == "Edit")
         else if ((Convert.ToInt32(Session["PatientVisitId"]) > 0))
@@ -2166,7 +2181,7 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
             visitPK = Convert.ToInt32(Session["PatientVisitId"]);
             //locationID = Convert.ToInt32(Request.QueryString["locationid"]);
             locationID = Convert.ToInt32(Session["ServiceLocationId"]);
-            createDate = ViewState["createdate"].ToString();
+            createDate = Convert.ToDateTime(ViewState["createdate"]);
         }
         htFollowupParameters.Add("Visitdate", txtvisitDate.Value);
         htFollowupParameters.Add("txtpriorARVsFU", txtpriorARVsCD4.Text);
@@ -2288,7 +2303,7 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
         {
             IInitialEval IEAppManager;
             IEAppManager = (IInitialEval)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BInitialEval, BusinessProcess.Clinical");
-            DataSet theDSApp = IEAppManager.GetAppointment(Convert.ToInt32(Session["PatientId"]), locationID, txtappDate.Value, Convert.ToInt32(ddlAppReason.SelectedValue));
+            DataSet theDSApp = IEAppManager.GetAppointment(Convert.ToInt32(Session["PatientId"]), locationID, Convert.ToDateTime(txtappDate.Value), Convert.ToInt32(ddlAppReason.SelectedValue));
             if (Convert.ToInt32(theDSApp.Tables[0].Rows[0]["ExistFlag"]) == 1)
             {
                 if (theDSApp.Tables[1].Rows.Count > 0)
@@ -3238,7 +3253,10 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
         if (!IsPostBack)
         {
 
-
+            if (Request.QueryString["sts"] == "0")
+            {
+                Session["PatientVisitId"] = 0;
+            }
             if (Session["Paperless"].ToString() == "0")
             {
                 pnlPanelNotes.Visible = false;
@@ -3364,7 +3382,7 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
                 btndataquality.Enabled = false;
             }
             //Privilages for Care End
-            if (Session["CareEndFlag"].ToString() == "1")
+            if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
             {
                 btnsave.Enabled = true;
                 btndataquality.Enabled = true;
@@ -3660,8 +3678,6 @@ public partial class frmClinical_ARTFollowup : BasePage, ICallbackEventHandler
     private void SaveCancel()
     {
         int PatientID = Convert.ToInt32(Session["PatientId"]);
-
-
         //string strPatientID = ViewState["PtnID"].ToString();
         string script = "<script language = 'javascript' defer ='defer' id = 'confirm'>\n";
         script += "var ans;\n";

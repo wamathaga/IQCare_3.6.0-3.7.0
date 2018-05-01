@@ -144,8 +144,8 @@
                                                                 <Columns>
                                                                     <asp:BoundField HeaderText="Drug Name" DataField="DrugName" />
                                                                     <asp:BoundField HeaderText="Unit" DataField="Unit" HeaderStyle-Width="60px" />
-                                                                    <asp:BoundField HeaderText="Quantity" DataField="AvailQty" HeaderStyle-Width="60px" />
-                                                                    <asp:BoundField HeaderText="Reorder Level" DataField="MinStock" HeaderStyle-Width="90px" />
+                                                                    <asp:BoundField HeaderText="Quantity" DataField="AvailQty" HeaderStyle-Width="65px" />
+                                                                    <asp:BoundField HeaderText="Reorder Level" DataField="MinStock" HeaderStyle-Width="85px" />
                                                                 </Columns>
                                                             </asp:GridView>
                                                         </div>

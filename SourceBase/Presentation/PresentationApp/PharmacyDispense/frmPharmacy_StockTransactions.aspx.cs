@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacy_StockTransactions : LogPage
+    public partial class frmPharmacy_StockTransactions : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

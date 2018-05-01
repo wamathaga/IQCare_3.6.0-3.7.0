@@ -13,6 +13,15 @@ namespace IQCare.Web {
     public partial class frmFindAddCustom {
         
         /// <summary>
+        /// btnWaitingList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnWaitingList;
+        
+        /// <summary>
         /// FindPatient control.
         /// </summary>
         /// <remarks>
@@ -56,5 +65,14 @@ namespace IQCare.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField HModuleID;
+        
+        /// <summary>
+        /// sProgress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress sProgress;
     }
 }

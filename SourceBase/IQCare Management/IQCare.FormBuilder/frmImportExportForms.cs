@@ -293,94 +293,6 @@ namespace IQCare.FormBuilder
             }
         }
 
-        //private void btnImport_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        int iRes = 0;
-        //        bool isUpdate = false, isVersionUpdate = false;
-        //        if (txtFileName.Text.ToString() != "")
-        //        {
-        //            DataSet dsCollectDataToSave = new DataSet();
-        //            dsCollectDataToSave.ReadXml(txtFileName.Text.ToString());
-        //            IImportExportForms objImportFormDetails;
-        //            objImportFormDetails = (IImportExportForms)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BImportExportForms,BusinessProcess.FormBuilder");
-        //            if (ddlFormType.Text.ToString() == "" || ddlFormType.SelectedItem.ToString() == "Forms")
-        //            {
-        //                string strVerName = "";
-        //                if (dsCollectDataToSave.Tables.Count < 11)
-        //                {
-        //                    IQCareWindowMsgBox.ShowWindow("ImportFormsCheckVersion", this);
-        //                    return;
-
-        //                }
-        //                else if (dsCollectDataToSave.Tables.Count > 10)
-        //                {
-        //                    strVerName = dsCollectDataToSave.Tables[10].Rows[0]["AppVer"].ToString();
-        //                    if (GblIQCare.AppVersion.ToString() != strVerName)
-        //                    {
-        //                        IQCareWindowMsgBox.ShowWindow("ImportFormsCheckVersion", this);
-        //                        return;
-        //                    }
-
-        //                }
-        //                for (int i = 0; i < dsCollectDataToSave.Tables[0].Rows.Count; i++)
-        //                {
-        //                    DataSet DSExitingForm = objImportFormDetails.GetImportExportFormDetail(dsCollectDataToSave.Tables[0].Rows[i]["FeatureName"].ToString());
-
-        //                    if (DSExitingForm.Tables[0].Rows.Count > 0)
-        //                    {
-        //                        if (!CheckFormVersion(dsCollectDataToSave, DSExitingForm))
-        //                        {
-        //                            //mark true if same form found with no changes
-        //                            isUpdate = true;
-        //                            int result = DateTime.Compare(Convert.ToDateTime(DSExitingForm.Tables[15].Rows[0]["VersionDate"]), Convert.ToDateTime(dsCollectDataToSave.Tables[15].Rows[0]["VersionDate"]));
-        //                            if ((Convert.ToDecimal(dsCollectDataToSave.Tables[15].Rows[0]["VersionName"]) <= Convert.ToDecimal(DSExitingForm.Tables[15].Rows[0]["VersionName"])) && (result < 0))
-        //                            {
-        //                                //mark isVersionUpdate = true form with changes found to update version info
-        //                                isVersionUpdate = true;
-        //                                isUpdate = false;
-        //                                DialogResult msgconfirm = IQCareWindowMsgBox.ShowWindow(string.Format("There are field changes on the form.{0} The electronic form version will update upon saving.", Environment.NewLine), "*", "", this);
-        //                                if (msgconfirm == DialogResult.OK)
-        //                                    iRes = ImportExportDBUpdates(dsCollectDataToSave, isUpdate, isVersionUpdate, objImportFormDetails);
-        //                                else
-        //                                    return;
-        //                            }
-        //                            else
-        //                            {
-        //                                if (isUpdate)
-        //                                    iRes = ImportExportDBUpdates(dsCollectDataToSave, isUpdate, isVersionUpdate, objImportFormDetails);
-        //                            }
-        //                        }
-        //                    }
-        //                    else
-        //                        iRes = ImportExportDBUpdates(dsCollectDataToSave, isUpdate, isVersionUpdate, objImportFormDetails);
-        //                }
-                        
-        //            }
-        //            else
-        //                iRes = objImportFormDetails.ImportHomeForms(dsCollectDataToSave, GblIQCare.AppUserId, System.Convert.ToInt32(GblIQCare.AppCountryId));
-
-        //            if (iRes == 1)
-        //            {
-        //                IQCareWindowMsgBox.ShowWindow("ImportSuccess", this);
-        //                txtFileName.Text = "";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            IQCareWindowMsgBox.ShowWindow("BrowseFile", this);
-        //            txtFileName.Focus();
-        //        }
-        //    }
-        //    catch (Exception err)
-        //    {
-        //        MsgBuilder theBuilder = new MsgBuilder();
-        //        theBuilder.DataElements["MessageText"] = err.Message.ToString();
-        //        IQCareWindowMsgBox.ShowWindowConfirm("#C1", theBuilder, this);
-        //    }
-        //}
         private void btnImport_Click(object sender, EventArgs e)
         {
             try
@@ -391,15 +303,7 @@ namespace IQCare.FormBuilder
                 if (txtFileName.Text.ToString() != "")
                 {
                     DataSet dsCollectDataToSave = new DataSet();
-                    foreach (DataTable dataTable in dsCollectDataToSave.Tables)
-                        dataTable.BeginLoadData();
-
                     dsCollectDataToSave.ReadXml(txtFileName.Text.ToString());
-
-                    foreach (DataTable dataTable in dsCollectDataToSave.Tables)
-                        dataTable.EndLoadData();
-                    
-                    //dsCollectDataToSave.ReadXml(txtFileName.Text.ToString());
                     IImportExportForms objImportFormDetails;
                     objImportFormDetails = (IImportExportForms)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BImportExportForms,BusinessProcess.FormBuilder");
                     if (ddlFormType.Text.ToString() == "" || ddlFormType.SelectedItem.ToString() == "Forms")
@@ -460,7 +364,7 @@ namespace IQCare.FormBuilder
                                     iRes = ImportExportDBUpdates(dsCollectDataToSave, isUpdate, isVersionUpdate, objImportFormDetails);
                             }
                         }
-
+                        
                     }
                     else
                         iRes = objImportFormDetails.ImportHomeForms(dsCollectDataToSave, GblIQCare.AppUserId, System.Convert.ToInt32(GblIQCare.AppCountryId));
@@ -692,7 +596,7 @@ namespace IQCare.FormBuilder
             if (dsCollectDataToSave.Tables.Count < 0)
                 return -1;
 
-            
+
             IIQCareSystem objIIQCareSystem = (IIQCareSystem)ObjectFactory.CreateInstance("BusinessProcess.Security.BIQCareSystem,BusinessProcess.Security");
             int iRes = 0;
             decimal vernumber = Convert.ToDecimal(dsCollectDataToSave.Tables[15].Rows[0]["VersionName"]);
@@ -712,7 +616,7 @@ namespace IQCare.FormBuilder
             if (isUpdate && !isVersionUpdate)
             {
                 drfrmver["VersionName"] = vernumber.ToString();
-                
+
             }
             else if (!isUpdate && isVersionUpdate)
             {
@@ -730,20 +634,20 @@ namespace IQCare.FormBuilder
             {
                 //dtchng = objIIQCareSystem.SystemDate();
                 drfrmver["VersionDate"] = dtchng.ToString();
-                drfrmver["VersionName"] = vernumber.ToString();                
+                drfrmver["VersionName"] = vernumber.ToString();
                 dtTabchanges = clsCommon.ManageVersionTab();
                 dtSectionchanges = clsCommon.ManageVersionSection();
                 dtFieldChanges = clsCommon.ManageVersionField();
                 dtConFieldchanges = clsCommon.ManageVersionConField();
             }
             dtmstformversion.Rows.Add(drfrmver);
-            
+
             DSFormVerTables.Tables.Add(dtmstformversion);
             DSFormVerTables.Tables.Add(dtTabchanges);
             DSFormVerTables.Tables.Add(dtSectionchanges);
             DSFormVerTables.Tables.Add(dtFieldChanges);
             DSFormVerTables.Tables.Add(dtConFieldchanges);
-            iRes = objImportFormDetails.ImportForms(dsCollectDataToSave, GblIQCare.AppUserId, System.Convert.ToInt32(GblIQCare.AppCountryId), DSFormVerTables, GblIQCare.AppLocationId);
+            iRes = objImportFormDetails.ImportForms(dsCollectDataToSave, GblIQCare.AppUserId, System.Convert.ToInt32(GblIQCare.AppCountryId), DSFormVerTables,GblIQCare.AppLocationId);
             return iRes;
         }
 

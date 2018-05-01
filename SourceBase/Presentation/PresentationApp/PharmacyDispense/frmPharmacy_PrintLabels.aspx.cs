@@ -12,7 +12,7 @@ using System.Web.SessionState;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacy_PrintLabels :LogPage
+    public partial class frmPharmacy_PrintLabels : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

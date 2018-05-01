@@ -67,9 +67,27 @@ namespace IQCare.SCM
 
                 //}
                 FundEndDt = Convert.ToDateTime(dsProgramListByDonor.Tables[0].Select("Id = '" + GblIQCare.objHashtbl["ProgramID"] + "' and FundingEndDate=max(FundingEndDate)").SingleOrDefault().ItemArray[10]);
-                FundEndDt = Convert.ToDateTime(FundEndDt.Month + "-" + System.DateTime.DaysInMonth(FundEndDt.Year, FundEndDt.Month) + "-" + FundEndDt.Year);
+                try
+                {
+                    FundEndDt = DateTime.Parse(FundEndDt.Month.ToString() + "-" + System.DateTime.DaysInMonth(FundEndDt.Year, FundEndDt.Month).ToString() + "-" + FundEndDt.Year.ToString(),CultureInfo.InvariantCulture, DateTimeStyles.None);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+                
                 int month = Convert.ToInt32(dsProgramListByDonor.Tables[0].Select("Id = '" + GblIQCare.objHashtbl["ProgramID"] + "'  and FundingStartDate=min(FundingStartDate)").SingleOrDefault().ItemArray[4]);
-                ProgramStartDt = Convert.ToDateTime(month + "-" + System.DateTime.DaysInMonth(Convert.ToInt32(GblIQCare.objHashtbl["ProgramYear"]), month) + "-" + GblIQCare.objHashtbl["ProgramYear"]);
+                try
+                {
+                    ProgramStartDt = DateTime.Parse(month.ToString() + "-" + System.DateTime.DaysInMonth(Convert.ToInt32(GblIQCare.objHashtbl["ProgramYear"]), month).ToString() + "-" + GblIQCare.objHashtbl["ProgramYear"].ToString(), CultureInfo.InvariantCulture, DateTimeStyles.None);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+                
             }
 
             string CurrencyCode = theDSCurrencyXML.Tables[0].Select("Id = '" + GblIQCare.AppCountryId + "'").SingleOrDefault().ItemArray[1].ToString().Split('(').LastOrDefault().Replace(")", "");
@@ -157,7 +175,16 @@ namespace IQCare.SCM
                         lblLabelRequired.Text = "No funding available for the months in blue.";
                     }
                 }
-                ProgramStartDt = Convert.ToDateTime(dgwBudgetConfig.Rows[f].Cells[0].Value + "-" + System.DateTime.DaysInMonth(Convert.ToInt32(programYear), Convert.ToInt32(dgwBudgetConfig.Rows[f].Cells[0].Value)) + "-" + programYear);
+                try
+                {
+                    ProgramStartDt = DateTime.Parse(dgwBudgetConfig.Rows[f].Cells[0].Value.ToString() + "-" + System.DateTime.DaysInMonth(Convert.ToInt32(programYear), Convert.ToInt32(dgwBudgetConfig.Rows[f].Cells[0].Value)).ToString() + "-" + programYear.ToString(),CultureInfo.InvariantCulture, DateTimeStyles.None);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+                
 
                 if (ProgramStartDt > FundEndDt)
                 {

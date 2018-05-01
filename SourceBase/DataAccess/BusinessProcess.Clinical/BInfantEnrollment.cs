@@ -41,8 +41,8 @@ namespace BusinessProcess.Clinical
               return theRowAffected;
           }
       }
-      public int SaveExposedInfant(int Id, int Ptn_Pk, int ExposedInfantId, string FirstName, string LastName, DateTime DOB, string FeedingPractice3mos,
-          string CTX2mos, string HIVTestType, string HIVResult, string FinalStatus, DateTime? DeathDate, int UserID)
+      public int SaveExposedInfant(int Id, int Ptn_Pk, int ExposedInfantId, string FirstName, string LastName, string DOB, string FeedingPractice3mos,
+          string CTX2mos, string HIVTestType, string HIVResult, string FinalStatus, string DeathDate, int UserID)
       {
           int theRowAffected = 0;
           ClsObject VisitManager = new ClsObject();
@@ -60,7 +60,7 @@ namespace BusinessProcess.Clinical
               ClsUtility.AddParameters("@ExposedInfantId", SqlDbType.Int, ExposedInfantId.ToString());
               ClsUtility.AddParameters("@FirstName", SqlDbType.VarChar, FirstName.ToString());
               ClsUtility.AddParameters("@LastName", SqlDbType.VarChar, LastName.ToString());
-              ClsUtility.AddParameters("@DOB", SqlDbType.DateTime, DOB.ToString());
+              ClsUtility.AddParameters("@DOB", SqlDbType.VarChar, DOB.ToString());
               ClsUtility.AddParameters("@FeedingPractice3mos", SqlDbType.VarChar, FeedingPractice3mos.ToString());
               ClsUtility.AddParameters("@CTX2mos", SqlDbType.VarChar, CTX2mos.ToString());
               ClsUtility.AddParameters("@HIVResult", SqlDbType.VarChar, HIVResult.ToString());

@@ -60,6 +60,7 @@ namespace PresentationApp.ClinicalForms.UserControl
             //theDV.RowFilter = "CodeID=146";
             theDV.RowFilter = "CodeID=" + ((DataTable)theDVCodeID.ToTable()).Rows[0]["CodeID"].ToString();
             theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
+            theDT.DefaultView.ToTable(true, "Name");
             BindManager.BindCombo(ddlTreatmentplan, theDT, "Name", "ID");
             ddlTreatmentplan.Attributes.Add("OnChange", "getSelectedtableValue('divEligiblethrough','" + ddlTreatmentplan.ClientID + "','Start new treatment (naive patient)','DIVTreatmentplan');getSelectedtableValue('divARTchangecode','" + ddlTreatmentplan.ClientID + "','Change regimen','DIVTreatmentplan');getSelectedtableValue('divReasonforswitchto2ndlineregimen','" + ddlTreatmentplan.ClientID + "','Switch to second line','DIVTreatmentplan');getSelectedtableValue('divARTstopcode','" + ddlTreatmentplan.ClientID + "','Stop treatment','DIVTreatmentplan')");
             //ddlTreatmentplan.Attributes.Add("OnChange", "getSelectedtableValue('divEligiblethrough','" + ddlTreatmentplan.ClientID + "','Start ART','DIVTreatmentplan');getSelectedtableValue('divARTchangecode','" + ddlTreatmentplan.ClientID + "','Substitute regimen','DIVTreatmentplan');getSelectedtableValue('divReasonforswitchto2ndlineregimen','" + ddlTreatmentplan.ClientID + "','Switch to second lin','DIVTreatmentplan');getSelectedtableValue('divARTstopcode','" + ddlTreatmentplan.ClientID + "','Stop treatment','DIVTreatmentplan')");
@@ -114,9 +115,8 @@ namespace PresentationApp.ClinicalForms.UserControl
             else
             {
                 Hashtable HT = PharmacyHT();
-                
                 ExpressFormManager.SaveUpdateARVTherapy(HT);
-                IQCareUtils.Redirect("../Pharmacy/frmPharmacyform.aspx?opento=ArtForm&LastRegimenDispensed=True", "_blank", "toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes");
+                IQCareUtils.Redirect("../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?opento=ArtForm&LastRegimenDispensed=True", "_blank", "toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes");
             }
         }
 

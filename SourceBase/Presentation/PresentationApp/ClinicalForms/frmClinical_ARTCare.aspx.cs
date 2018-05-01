@@ -194,7 +194,7 @@ public partial class ClinicalForms_frmClinical_ARTCare : System.Web.UI.Page
                 DQ_Check.Enabled = false;
             }
             //Privilages for Care End
-            if (Convert.ToString(Session["CareEndFlag"]) == "1")
+            if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
             {
                 btn_save.Enabled = true;
                 DQ_Check.Enabled = true;

@@ -13,5 +13,6 @@ namespace Interface.Security
         DataSet GetFacilityStatsExposedInfants(int LocationId);
         DataSet GetFacilityData(DateTime RangeFrom, DateTime RangeTo, int LocationId);
         DataSet GetExportData(string theStr);
+        DataSet GetPluginModuleAndFeaturesForFacility(Int32 facilityID);
     }
 }

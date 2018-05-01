@@ -196,7 +196,7 @@
                                         <label runat="server" id="Label1">
                                             &nbsp;Date of allergy:</label>
                                         <input id="txtAllergyDate" onblur="DateFormat(this,this.value,event,false,'3')" onkeyup="DateFormat(this,this.value,event,false,'3')"
-                                            onfocus="javascript:vDateType='3'" maxlength="11" size="11" name="pharmOrderedbyDate"
+                                            onfocus="javascript:vDateType='3'" maxlength="11" size="11" name="AllergyDate"
                                             runat="server" />
                                         <img id="Img1" onclick="w_displayDatePicker('<%=txtAllergyDate.ClientID%>');" height="22"
                                             alt="Date Helper" hspace="5" src="../images/cal_icon.gif" width="22" border="0"

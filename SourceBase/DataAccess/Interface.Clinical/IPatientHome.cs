@@ -23,5 +23,7 @@ namespace Interface.Clinical
         DataSet IQTouchGetPatientDetails(int PatientId);
         DataSet GetLinkedForms_FormLinking(int ModuleID, int FeatureID);
         DataSet GetPatientLabHistory(int PatientId);
+        DataTable GetPatientWaitList(int PatientId);
+        void SavePatientWaitList(DataTable WaitingList, int ModuleID, int UserID, int PatientID);
       }
 }

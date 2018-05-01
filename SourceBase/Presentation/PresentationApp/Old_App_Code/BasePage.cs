@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Threading;
 using System.Globalization;
 using System.Text;
+using System.Web;
 
 public abstract class BasePage : System.Web.UI.Page
 {
@@ -39,5 +40,12 @@ public abstract class BasePage : System.Web.UI.Page
     //    Session["PatientVisitId"] = 0;
     //    Session["ServiceLocationId"] = 0;
     //}
-    
+    [System.Web.Services.WebMethod]
+    public static void SetPatientId_Session(string custid)
+    {
+        HttpContext.Current.Session["PatientVisitId"] = 0;
+        HttpContext.Current.Session["ServiceLocationId"] = 0;
+        HttpContext.Current.Session["LabId"] = 0;
+        HttpContext.Current.Session["LabOrderID"] = null;
+    }
 }

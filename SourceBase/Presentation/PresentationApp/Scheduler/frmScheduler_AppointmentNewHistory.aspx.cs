@@ -13,6 +13,7 @@ using Interface.Administration;
 using Interface.Clinical;   
 using Application.Presentation;
 using Application.Common;
+using System.Collections.Generic;
 
 public partial class frmScheduler_AppointmentNewHistory : System.Web.UI.Page
 {
@@ -50,7 +51,8 @@ public partial class frmScheduler_AppointmentNewHistory : System.Web.UI.Page
                     }
                     DataTable TheDT = (DataTable)theUtils.CreateTableFromDataView(TheDV);
 
-                    appBind.BindCombo(ddAppProvider, DT, "EmployeeName", "EmployeeId");
+                    //appBind.BindCombo(ddAppProvider, DT, "EmployeeName", "EmployeeId");
+                    BindUserDropdown(ddAppProvider, string.Empty);
                     appBind.BindCombo(ddAppPurpose, TheDT, "Name", "Id");
                     theDV.Dispose();
                     TheDV.Dispose();
@@ -95,6 +97,7 @@ public partial class frmScheduler_AppointmentNewHistory : System.Web.UI.Page
     //}
     #endregion
 
+    
     private void BindDropdownOrderBy(String EmployeeId)
     {
         
@@ -137,14 +140,28 @@ public partial class frmScheduler_AppointmentNewHistory : System.Web.UI.Page
                         theDT = theUtils.CreateTableFromDataView(theDV);
                 }
                    BindFunctions BindManager = new BindFunctions();
-                    BindManager.BindCombo(ddAppProvider, theDT, "EmployeeName", "EmployeeId");
+                    //BindManager.BindCombo(ddAppProvider, theDT, "EmployeeName", "EmployeeId");
+                   BindUserDropdown(ddAppProvider, string.Empty);
              
             
         }
         
 
     }
-    
+
+    private void BindUserDropdown(DropDownList DropDownID, String userId)
+    {
+        Dictionary<int, string> userList = new Dictionary<int, string>();
+        CustomFieldClinical.BindUserDropDown(DropDownID, out userList);
+        if (!string.IsNullOrEmpty(userId))
+        {
+            if (userList.ContainsKey(Convert.ToInt32(userId)))
+            {
+                DropDownID.SelectedValue = userId;
+                //SecurityPerTabSignature = userId;
+            }
+        }
+    }
     private Boolean checkEntriesShowMessages()
     {
         //*******Show a message to fill the essential details *******//

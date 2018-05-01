@@ -40,6 +40,15 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.DropDownList ddlTransactionType;
         
         /// <summary>
+        /// TransactionTypeRequiredValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator TransactionTypeRequiredValidator;
+        
+        /// <summary>
         /// Label9 control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace PresentationApp.PharmacyDispense {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTransactionDate;
+        
+        /// <summary>
+        /// RequiredFieldValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
         /// Label21 control.
@@ -85,6 +103,15 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.DropDownList ddlSourceStore;
         
         /// <summary>
+        /// sourceStoreRequiredValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator sourceStoreRequiredValidator;
+        
+        /// <summary>
         /// Label22 control.
         /// </summary>
         /// <remarks>
@@ -101,6 +128,15 @@ namespace PresentationApp.PharmacyDispense {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlDestinationStore;
+        
+        /// <summary>
+        /// destinationStoreRequiredValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator destinationStoreRequiredValidator;
         
         /// <summary>
         /// UpdateProgress2 control.

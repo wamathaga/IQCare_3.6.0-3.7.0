@@ -481,33 +481,6 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.DropDownList ddlTreatmentProg;
         
         /// <summary>
-        /// lblregimenCode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblregimenCode;
-        
-        /// <summary>
-        /// ddlRegimenCode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRegimenCode;
-        
-        /// <summary>
-        /// hdnregimenCode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnregimenCode;
-        
-        /// <summary>
         /// lblregimenLine control.
         /// </summary>
         /// <remarks>
@@ -524,15 +497,6 @@ namespace PresentationApp.PharmacyDispense {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlregimenLine;
-        
-        /// <summary>
-        /// hdnregimenLine control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnregimenLine;
         
         /// <summary>
         /// lblDispensingStoreLabel control.
@@ -553,6 +517,15 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.DropDownList ddlDispensingStore;
         
         /// <summary>
+        /// RequiredFieldValidatorDispenStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorDispenStore;
+        
+        /// <summary>
         /// Label17 control.
         /// </summary>
         /// <remarks>
@@ -569,6 +542,15 @@ namespace PresentationApp.PharmacyDispense {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPrescribedBy;
+        
+        /// <summary>
+        /// RequiredFieldValidatorPresBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorPresBy;
         
         /// <summary>
         /// Label18 control.
@@ -589,13 +571,13 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.TextBox txtprescriptionDate;
         
         /// <summary>
-        /// dtpSpan control.
+        /// RequiredFieldValidator2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dtpSpan;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
         /// lblDispensedBy control.
@@ -616,6 +598,15 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.DropDownList ddlDispensedBy;
         
         /// <summary>
+        /// RequiredFieldValidatorDispBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorDispBy;
+        
+        /// <summary>
         /// lblDispenseDate control.
         /// </summary>
         /// <remarks>
@@ -634,6 +625,15 @@ namespace PresentationApp.PharmacyDispense {
         protected global::System.Web.UI.WebControls.TextBox txtDispenseDate;
         
         /// <summary>
+        /// RequiredFieldValidatorDateDispensed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidatorDateDispensed;
+        
+        /// <summary>
         /// Label30 control.
         /// </summary>
         /// <remarks>
@@ -650,33 +650,6 @@ namespace PresentationApp.PharmacyDispense {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDrug;
-        
-        /// <summary>
-        /// divwidth control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel divwidth;
-        
-        /// <summary>
-        /// chkAvailDrugs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkAvailDrugs;
-        
-        /// <summary>
-        /// btnPriorPrescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPriorPrescription;
         
         /// <summary>
         /// AutoCompleteExtender1 control.

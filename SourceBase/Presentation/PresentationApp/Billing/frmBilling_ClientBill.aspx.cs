@@ -17,7 +17,7 @@ using Interface.SCM;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBilling_ClientBill : LogPage
+    public partial class frmBilling_ClientBill : System.Web.UI.Page
     {
         /// <summary>
         /// The display flag
@@ -145,7 +145,7 @@ namespace IQCare.Web.Billing
         protected void Page_PreRender(object sender, EventArgs e)
         {
             this.SetStyle();
-            //divError.Visible = isError;
+            divError.Visible = isError;
         }
 
 
@@ -194,7 +194,6 @@ namespace IQCare.Web.Billing
             //facilityLevel2.Style.Add("display", "none");
             HtmlGenericControl level2Navigation = (Master.FindControl("level2Navigation") as HtmlGenericControl);
             if (level2Navigation != null) level2Navigation.Style.Add("display", "none");
-            
         }
 
         /// <summary>
@@ -299,7 +298,7 @@ namespace IQCare.Web.Billing
                     if (!isValidEntry)
                     {
                        // IQCareMsgBox.Show("Some information is missing", "!", "", this);
-                        ScriptManager.RegisterStartupScript(this, typeof(Page), UniqueID, "NotifyMessage('Some information is missing')", true);
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), UniqueID, "alert('Some information is missing')", true);
 
                         return;
                     }
@@ -883,13 +882,8 @@ namespace IQCare.Web.Billing
             {
                 consumableItemTypeID = Convert.ToInt32(System.Web.HttpContext.Current.Session["ConsumableTypeID"].ToString());
             }
-            int? SCMFlag = null;
-            if (System.Web.HttpContext.Current.Session["SCMModule"] != null)
-            {
-                SCMFlag = 1;
-            }
             // int.TryParse(System.Web.HttpContext.Current.Session["ConsumableTypeID"].ToString(), out consumableItemTypeID);
-            DataTable dataTable = _iMGR.FindItems(prefixText, null, consumableItemTypeID, DateTime.Now, true, SCMFlag);
+            DataTable dataTable = _iMGR.FindItems(prefixText, null, consumableItemTypeID, DateTime.Now, true);
             string custItem = string.Empty;
             foreach (DataRow theRow in dataTable.Rows)//.Select("ItemTypeName <> 'Consumables'"))
             {
@@ -1191,7 +1185,7 @@ namespace IQCare.Web.Billing
             lblNoticeInfo.Font.Bold = true;
             imgNotice.ImageUrl = (errorFlag) ? "~/images/mb_hand.gif" : "~/images/mb_information.gif";
             btnOkAction.OnClientClick = "";
-            if (onOkScript != "" && errorFlag == true)
+            if (onOkScript != "")
             {
                 btnOkAction.OnClientClick = onOkScript;
             }
@@ -1267,10 +1261,8 @@ namespace IQCare.Web.Billing
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void buttonGenerateBill_PreRender(object sender, EventArgs e)
         {
-
-            this.displayFlag = this.UnBilledItems.Rows.Count > 0 ? "inline-table" : "none";
+            this.displayFlag = this.UnBilledItems.Rows.Count > 0 ? "" : "none";
             this.buttonGenerateBill.Attributes.Add("style", "display:" + displayFlag);
-            this.buttonGenerateBill.Attributes.Add("style", "text-align:left");
         }
 
         /// <summary>
@@ -1347,47 +1339,24 @@ namespace IQCare.Web.Billing
             this.isError = true;
             if (this.Debug)
             {
-                //lblError.Text = ex.Message + ex.StackTrace + ex.Source;
+                lblError.Text = ex.Message + ex.StackTrace + ex.Source;
             }
             else
             {
-                //lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team.  " + ex.Message;
-                //this.isError = this.divError.Visible = true;
-                //Exception lastError = ex;
-                //lastError.Data.Add("Domain", "Patient Consumeable Issueance Form");
-                //try
-                //{
-                //    Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
-                //    logger.LogError(ex);
-                //}
-                //catch
-                //{
-
-                //}
-            }
-            CLogger.WriteLog(ELogLevel.ERROR, ex.ToString());
-            if (Session["PatientId"] == null || Convert.ToInt32(Session["PatientId"]) != 0)
-            {
-                this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'");
-                //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'</script>");
-            }
-            else
-            {
-                if (Session["TechnicalAreaId"] != null || Convert.ToInt16(Session["TechnicalAreaId"]) != 0)
+                lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team.  " + ex.Message;
+                this.isError = this.divError.Visible = true;
+                Exception lastError = ex;
+                lastError.Data.Add("Domain", "Patient Consumeable Issueance Form");
+                try
                 {
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFacilityHome.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFacilityHome.aspx'</script>");
-
+                    Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
+                    logger.LogError(ex);
                 }
-                else
+                catch
                 {
 
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmLogin.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmLogin.aspx'</script>");
                 }
             }
-            ex = null;
-
         }
 
         /// <summary>

@@ -570,7 +570,12 @@ public partial class frmClinical_HIVCareARTCardEncounter : System.Web.UI.Page
                 }
             }
         }
-
+        //Privilages for Care End
+        if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
+        {
+            btnSave.Enabled = true;
+            btnDataQualityCheck.Enabled = true;
+        }
         IQCareUtils iQCareUtils = new IQCareUtils();
         BindFunctions bindFunctions = new BindFunctions();       
 
@@ -2901,7 +2906,7 @@ public partial class frmClinical_HIVCareARTCardEncounter : System.Web.UI.Page
         else
         {
             string theUrl;
-            theUrl = string.Format("{0}", "frmPatient_Home.aspx");
+            theUrl = string.Format("{0}", "frmPatient_Home.aspx?Func=Delete");
             Response.Redirect(theUrl);
         }
       

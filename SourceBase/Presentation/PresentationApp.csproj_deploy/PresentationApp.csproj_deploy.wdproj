@@ -10,15 +10,19 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.30319</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{17E2BAF5-BEFD-4D84-B0A7-4572AC7DC23D}</ProjectGuid>
+    <ProjectGuid>{EB84B0D0-822E-46B2-BC83-037934917A54}</ProjectGuid>
     <SourceWebPhysicalPath>..\PresentationApp</SourceWebPhysicalPath>
     <SourceWebProject>{E33ABCF3-B47E-4760-9B94-1A62926947D5}|PresentationApp\PresentationApp.csproj</SourceWebProject>
     <SourceWebVirtualPath>/PresentationApp.csproj</SourceWebVirtualPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

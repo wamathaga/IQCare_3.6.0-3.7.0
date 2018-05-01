@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacy_StockSummary : LogPage
+    public partial class frmPharmacy_StockSummary : System.Web.UI.Page
     {
         BindFunctions theBindManager = new BindFunctions();
 
@@ -124,22 +124,20 @@ namespace PresentationApp.PharmacyDispense
             {
                 if (Convert.ToInt32(ddlStore.SelectedValue) != 0)
                 {
-                    if (FieldValidation())
-                    {
 
-                        Session["theStocks"] = GetItems(Convert.ToInt32(ddlStore.SelectedValue), Convert.ToInt32(hdCustID.Value), Convert.ToDateTime(dtFrom.Text), Convert.ToDateTime(dtTo.Text));
 
-                        DataSet stockSummary = (DataSet)Session["theStocks"];
+                    Session["theStocks"] = GetItems(Convert.ToInt32(ddlStore.SelectedValue), Convert.ToInt32(hdCustID.Value), Convert.ToDateTime(dtFrom.Text), Convert.ToDateTime(dtTo.Text));
 
-                        DataView theDV = new DataView(stockSummary.Tables[1]);
-                        if (hdCustID.Value != "0")
-                            theDV.RowFilter = "ItemId = " + hdCustID.Value;
-                        //DataTable theDT = theDV.ToTable();
+                    DataSet stockSummary = (DataSet)Session["theStocks"];
 
-                        populateGrid(theDV.ToTable());
-                        //grdStockSummary.DataSource = theDV.ToTable();
-                        //grdStockSummary.DataBind();
-                    }
+                    DataView theDV = new DataView(stockSummary.Tables[1]);
+                    if (hdCustID.Value != "0")
+                        theDV.RowFilter = "ItemId = " + hdCustID.Value;
+                    //DataTable theDT = theDV.ToTable();
+
+                    populateGrid(theDV.ToTable());
+                    //grdStockSummary.DataSource = theDV.ToTable();
+                    //grdStockSummary.DataBind();
 
                 }
                 else
@@ -166,41 +164,8 @@ namespace PresentationApp.PharmacyDispense
             Session["populateGrid"] = theDT;
         }
 
-        private Boolean FieldValidation()
-        {
-            //Store Validation
-            if (ddlStore.SelectedValue == "0")
-            {
-                MsgBuilder theBuilder = new MsgBuilder();
-                theBuilder.DataElements["MessageText"] =  "Store is not selected";
-                IQCareMsgBox.Show("#C1", theBuilder, this);
-                Label lblError = new Label();
-                lblError.Text = (Master.FindControl("lblError") as Label).Text;
-                return false;
-            }
-            if (dtTo.Text != "")
-            {
-                TimeSpan difference = Convert.ToDateTime(dtTo.Text) - Convert.ToDateTime(Application["AppCurrentDate"]);
-                double days = difference.TotalDays;
-                if (days > 0)
-                {
-                    MsgBuilder theBuilder = new MsgBuilder();
-                    theBuilder.DataElements["MessageText"] = "To Date cannot be greater than todays date";
-                    IQCareMsgBox.Show("#C1", theBuilder, this);
-                    dtTo.Focus();
-                    return false;
-                }
-            }
-            IQCareMsgBox.HideMessage(this);
-            return true;
-        }
-
         protected void Button4_Click(object sender, EventArgs e)
         {
-            if (FieldValidation() == false)
-            {
-                return;
-            }
             Session["theStocks"] = GetItems(Convert.ToInt32(ddlStore.SelectedValue), Convert.ToInt32(hdCustID.Value), Convert.ToDateTime(dtFrom.Text), Convert.ToDateTime(dtTo.Text));
             DataSet stockSummary = (DataSet)Session["theStocks"];
             DataView theDV = new DataView(stockSummary.Tables[1]);
@@ -215,7 +180,6 @@ namespace PresentationApp.PharmacyDispense
 
         protected void grdStockSummary_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-
             
             int storeid = Convert.ToInt32(ddlStore.SelectedValue.ToString());
             int index = Convert.ToInt32(e.CommandArgument.ToString());
@@ -264,23 +228,22 @@ namespace PresentationApp.PharmacyDispense
                 }
                 foreach (GridViewRow row in grdStockSummary.Rows)
                 {
-                    
-                        row.BackColor = Color.White;
-                        foreach (TableCell cell in row.Cells)
+                    row.BackColor = Color.White;
+                    foreach (TableCell cell in row.Cells)
+                    {
+                        if (row.RowIndex % 2 == 0)
                         {
-                            if (row.RowIndex % 2 == 0)
-                            {
-                                //cell.BackColor = grdStockSummary.AlternatingRowStyle.BackColor;
-                                cell.BackColor = ColorTranslator.FromHtml("#CCCCFF");
-                            }
-                            else
-                            {
-                                cell.BackColor = grdStockSummary.RowStyle.BackColor;
-                            }
-                            cell.CssClass = "textmode";
+                            //cell.BackColor = grdStockSummary.AlternatingRowStyle.BackColor;
+                            cell.BackColor = ColorTranslator.FromHtml("#CCCCFF");
                         }
+                        else
+                        {
+                            cell.BackColor = grdStockSummary.RowStyle.BackColor;
+                        }
+                        cell.CssClass = "textmode";
+                    }
                 }
-                grdStockSummary.Columns[8].Visible = false;
+
                 grdStockSummary.RenderControl(hw);
 
                 //style to format numbers to string
@@ -297,6 +260,10 @@ namespace PresentationApp.PharmacyDispense
             /* Verifies that the control is rendered */
         }
 
-       
+        
+
+
+
+        
     }
 }

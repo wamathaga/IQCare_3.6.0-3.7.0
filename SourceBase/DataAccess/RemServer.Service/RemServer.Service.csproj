@@ -85,10 +85,6 @@
       <Project>{22462AF4-C366-4401-88EF-285EA96EE3FA}</Project>
       <Name>Application.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BusinessProcess.Clinical\BusinessProcess.Clinical.csproj">
-      <Project>{3A0E522E-2794-4044-B6BD-89F880485C6B}</Project>
-      <Name>BusinessProcess.Clinical</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataAccess.Base\DataAccess.Base.csproj">
       <Project>{254BD540-00D8-46A2-9D35-39E8920B5750}</Project>
       <Name>DataAccess.Base</Name>

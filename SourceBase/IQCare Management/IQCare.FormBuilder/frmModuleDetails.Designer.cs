@@ -44,11 +44,11 @@
             this.cmbFieldType = new System.Windows.Forms.ComboBox();
             this.btnSumit = new System.Windows.Forms.Button();
             this.pnlModuleName = new System.Windows.Forms.Panel();
+            this.btnservicebusinessrules = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.chkHivCareTrmt = new System.Windows.Forms.CheckBox();
             this.lblModuleName = new System.Windows.Forms.Label();
             this.txtModuleName = new System.Windows.Forms.TextBox();
-            this.btnservicebusinessrules = new System.Windows.Forms.Button();
             this.pnlModuleDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwFieldDetails)).BeginInit();
             this.pnlFieldDetails.SuspendLayout();
@@ -93,6 +93,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Enabled = false;
             this.btnSave.Location = new System.Drawing.Point(243, 477);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(141, 21);
@@ -220,6 +221,17 @@
             this.pnlModuleName.TabIndex = 4;
             this.pnlModuleName.Tag = "";
             // 
+            // btnservicebusinessrules
+            // 
+            this.btnservicebusinessrules.Location = new System.Drawing.Point(601, 13);
+            this.btnservicebusinessrules.Name = "btnservicebusinessrules";
+            this.btnservicebusinessrules.Size = new System.Drawing.Size(177, 23);
+            this.btnservicebusinessrules.TabIndex = 4;
+            this.btnservicebusinessrules.Tag = "btnH25WFlexi";
+            this.btnservicebusinessrules.Text = "Service Area Business Rules";
+            this.btnservicebusinessrules.UseVisualStyleBackColor = true;
+            this.btnservicebusinessrules.Click += new System.EventHandler(this.btnservicebusinessrules_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -261,17 +273,6 @@
             this.txtModuleName.TabIndex = 1;
             this.txtModuleName.Tag = "txtTextBox";
             this.txtModuleName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtModuleName_KeyPress);
-            // 
-            // btnservicebusinessrules
-            // 
-            this.btnservicebusinessrules.Location = new System.Drawing.Point(601, 13);
-            this.btnservicebusinessrules.Name = "btnservicebusinessrules";
-            this.btnservicebusinessrules.Size = new System.Drawing.Size(177, 23);
-            this.btnservicebusinessrules.TabIndex = 4;
-            this.btnservicebusinessrules.Tag = "btnH25WFlexi";
-            this.btnservicebusinessrules.Text = "Service Area Business Rules";
-            this.btnservicebusinessrules.UseVisualStyleBackColor = true;
-            this.btnservicebusinessrules.Click += new System.EventHandler(this.btnservicebusinessrules_Click);
             // 
             // frmModuleDetails
             // 

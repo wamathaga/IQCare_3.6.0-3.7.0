@@ -40,6 +40,8 @@ public partial class frmAdmin_LabTestBoundary : System.Web.UI.Page
 
         ddDefault.Items.Add("No");
         ddDefault.Items.Add("Yes");
+        ddldetect.Items.Add("No");
+        ddldetect.Items.Add("Yes");
     }
 
     //private DataSet fillDataSet()
@@ -129,6 +131,14 @@ public partial class frmAdmin_LabTestBoundary : System.Web.UI.Page
         grdSearchResult.Columns.Add(theCol7);
         grdSearchResult.Columns[7].Visible = false;
 
+        BoundField theCol8 = new BoundField();
+        theCol8.HeaderText = "Undetectable";
+        theCol8.DataField = "undetectable";
+        theCol8.ItemStyle.CssClass = "textstyle";
+        theCol8.ReadOnly = true;
+        theCol8.SortExpression = "undetectable";
+        grdSearchResult.Columns.Add(theCol8);
+        grdSearchResult.Columns[8].Visible = true;
 
         //grdSearchResult.DataSource = ((DataSet)ViewState["MstDS"]).Tables[1];
         grdSearchResult.DataBind();
@@ -295,6 +305,16 @@ public partial class frmAdmin_LabTestBoundary : System.Web.UI.Page
                     ddDefault.SelectedIndex = 1;
                     ViewState["Default"] = "Yes";
                 }
+                if (theDR["undetectable"].ToString() == "No")
+                {
+                    ddldetect.SelectedIndex = 0;
+                    
+                }
+                else
+                {
+                    ddldetect.SelectedIndex = 1;
+                    
+                }
                 break;
             }
             i++;
@@ -353,7 +373,7 @@ public partial class frmAdmin_LabTestBoundary : System.Web.UI.Page
         //pr_Admin_SaveLabUnitLinks_Constella
         if (Validation() == true)
         {
-            int defUnit = 0;
+            int defUnit = 0, detectable = 0;
             string OldID;
 
             ILabMst LabManager;
@@ -418,11 +438,21 @@ public partial class frmAdmin_LabTestBoundary : System.Web.UI.Page
                                 theDR["DefaultUnit"] = "Yes";
                                 defUnit = 1;
                             }
+                            if ((ddldetect.SelectedIndex == 0) & (theDS.Tables[1].Rows.Count >= 0))
+                            {
+                                theDR["undetectable"] = "No";
+                                detectable = 0;
+                            }
+                            else
+                            {
+                                theDR["undetectable"] = "Yes";
+                                detectable = 1;
+                            }
 
 
                             DataTable theDT2 = LabManager.SaveLabUnitLinks(Convert.ToInt32(ViewState["SelID"]),
                             Convert.ToInt32(theDS.Tables[1].Rows[0][0]), Convert.ToDecimal(txtLower.Text), Convert.ToDecimal(txtUpper.Text),
-                            Convert.ToInt32(ddUnit.SelectedValue), defUnit);
+                            Convert.ToInt32(ddUnit.SelectedValue), defUnit, detectable);
                             break;
                         }
                     }
@@ -452,12 +482,21 @@ public partial class frmAdmin_LabTestBoundary : System.Web.UI.Page
                     theDR["DefaultUnit"] = "Yes";
                     defUnit = 1;
                 }
-                
+                if ((ddldetect.SelectedIndex == 0) & (theDS.Tables[1].Rows.Count >= 0))
+                {
+                    theDR["undetectable"] = "No";
+                    detectable = 0;
+                }
+                else
+                {
+                    theDR["undetectable"] = "Yes";
+                    detectable = 1;
+                }
                 theDS.Tables[1].Rows.Add(theDR);
 
                 DataTable theDT2 = LabManager.SaveLabUnitLinks(99999,
                             Convert.ToInt32(theDS.Tables[1].Rows[0][0]), Convert.ToDecimal(txtLower.Text), Convert.ToDecimal(txtUpper.Text),
-                            Convert.ToInt32(ddUnit.SelectedValue), defUnit);
+                            Convert.ToInt32(ddUnit.SelectedValue), defUnit, detectable);
             }
             //--again get saved values from database)
             

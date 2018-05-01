@@ -168,13 +168,15 @@ public partial class AdminForms_frmAdmin_PMTCT_CustomItems : System.Web.UI.Page
                 theChildRoot = new TreeNode();
                 theChildRoot.Text = theUniDR["ListName"].ToString();
                 theChildRoot.Target = "";
-                if ((theUniDR["FeatureID"].ToString() != "0") && (Authentication.HasFeatureRight(Convert.ToInt32(theUniDR["FeatureID"].ToString()), theDTUserRight) == false) && Convert.ToInt32(Session["AppUserId"]) > 1)
+                //if ((theUniDR["FeatureID"].ToString() != "0") && (ModuleExists(Convert.ToInt32(theUniDR["ModuleId"].ToString()),theDTUserRight) == false) && (Authentication.HasFeatureRight(Convert.ToInt32(theUniDR["FeatureID"].ToString()), theDTUserRight) == false) && Convert.ToInt32(Session["AppUserId"]) > 1)
+                if ((theUniDR["FeatureID"].ToString() != "0") && (ModuleExists(Convert.ToInt32(theUniDR["ModuleId"].ToString()), Convert.ToInt32(theUniDR["FeatureID"].ToString()), theDTUserRight) == false) && Convert.ToInt32(Session["AppUserId"]) > 1)
                 {
                     theChildRoot.ImageUrl = "~/Images/lock.jpg";
                     theChildRoot.ImageToolTip = "You are Not Authorized to Access this Functionality";
                     theChildRoot.SelectAction = TreeNodeSelectAction.None;
                 }
-                else if (Authentication.HasFeatureRight(Convert.ToString(theUniDR["ListName"].ToString()), 0, theDTUserRight) == false && Convert.ToInt32(Session["AppUserId"]) > 1)
+                //else if ((theUniDR["FeatureID"].ToString() == "0") && Authentication.HasFeatureRight(Convert.ToString(theUniDR["ListName"].ToString()), 0, theDTUserRight) == false && Convert.ToInt32(Session["AppUserId"]) > 1)
+                else if ((theUniDR["FeatureID"].ToString() == "0") && (ModuleExists(Convert.ToInt32(theUniDR["ModuleId"].ToString()), Convert.ToString(theUniDR["ListName"].ToString()), theDTUserRight) == false) && Convert.ToInt32(Session["AppUserId"]) > 1)
                 {
                     theChildRoot.ImageUrl = "~/Images/lock.jpg";
                     theChildRoot.ImageToolTip = "You are Not Authorized to Access this Functionality";
@@ -315,6 +317,39 @@ public partial class AdminForms_frmAdmin_PMTCT_CustomItems : System.Web.UI.Page
             #endregion
         }
     }
+   
+    private Boolean ModuleExists(int ModuleId, int FeatureID,  DataTable theDT)
+    {       AuthenticationManager Authentication = new AuthenticationManager();
+            Boolean Module = true;
+            DataView theDVModule = new DataView(theDT);
+            theDVModule.RowFilter = "ModuleId = " + ModuleId + "";
+            if (theDVModule.ToTable().Rows.Count > 0)
+            {
+                if (Authentication.HasFeatureRight(FeatureID, theDVModule.ToTable()) == false)
+                    Module = false;
+            }
+            else { Module = false; } 
+
+            return Module;
+    }
+
+    private Boolean ModuleExists(int ModuleId, string FeatureName, DataTable theDT)
+    {
+        AuthenticationManager Authentication = new AuthenticationManager();
+        Boolean Module = true;
+        DataView theDVModule = new DataView(theDT);
+        theDVModule.RowFilter = "ModuleId = " + ModuleId + "";
+        if (theDVModule.ToTable().Rows.Count > 0)
+        {
+            if (Authentication.HasFeatureRight(FeatureName, ModuleId, theDVModule.ToTable()) == false)
+                Module = false;
+        }
+        else { Module = false; } 
+        return Module;
+    }
+
+
+    
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         Response.Redirect("../frmFacilityHome.aspx");

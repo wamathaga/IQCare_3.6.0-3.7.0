@@ -54,7 +54,9 @@ public partial class frmLogin : BasePage
         Session.Add("CustomfrmLab", "");
         Session.Add("AppUserCustomList", "");
         Session.Add("SCMModule", null);
-        
+        Session.Add("FactilityID",0);
+        Session.Add("PlugInMenuLoaded", "false");
+        Session.Add("Billing", "false");
         ////////////////////////////////////////
         
         lblDate.Text = "";
@@ -299,12 +301,16 @@ public partial class frmLogin : BasePage
        
         try
         {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "screenSize", "getScreenSize();", true);
             Ajax.Utility.RegisterTypeForAjax(typeof(frmLogin));
             if (Page.IsPostBack != true)
             {
                 Thread theThread = new Thread(new ParameterizedThreadStart(IQCareUtils.GenerateCache));
                 theThread.Start(false);
                 Init_Form();
+
+                if (ConfigurationManager.AppSettings["TestingBuildDate"] != null)
+                    lblTestRelDate.Text = "Testing build release date: " + ConfigurationManager.AppSettings["TestingBuildDate"].ToString();
             }
 
         }
@@ -447,21 +453,29 @@ public partial class frmLogin : BasePage
                 Session["SystemId"] = theDT.Rows[0]["SystemId"].ToString();
                 Session["AppCurrency"] = theDT.Rows[0]["Currency"].ToString();
                 Session["AppUserEmployeeId"] = theDS.Tables[0].Rows[0]["EmployeeId"].ToString();
-                
+                Session["FacilityID"] = theDT.Rows[0]["FacilityID"].ToString();
                 //Session["AppSystemId"] = theDT.Rows[0]["SystemId"].ToString();
+                Session["Billing"] = theDT.Rows[0]["Billing"].ToString();
+                //Session["Records"] = theDT.Rows[0]["Records"].ToString();
+                Session["Wards"] = theDT.Rows[0]["Wards"].ToString();
 
                 #region "ModuleId"
                 Session["AppModule"] = theDS.Tables[3];
-                DataView theSCMDV = new DataView(theDS.Tables[3]);
-                theSCMDV.RowFilter = "ModuleId=201";
-                if (theSCMDV.Count > 0)
-                    Session["SCMModule"] = theSCMDV[0]["ModuleName"];
+                //DataView theSCMDV = new DataView(theDS.Tables[3]);
+                //theSCMDV.RowFilter = "ModuleId=201";
+                if (theDS.Tables[2].Rows[0]["PMSCM"].ToString()=="1")
+                    Session["SCMModule"] = "PMSCM";
                 #endregion
                 IQWebUtils theIQUtils = new IQWebUtils();
                 //theIQUtils.CreateSessionObject(Session.SessionID); 
                 Session["Paperless"] = theDT.Rows[0]["Paperless"].ToString();
                 Session["Program"] = "";
                 LoginManager = null;
+
+                //john screen size
+                Session["browserWidth"] = ScreenWidth.Value;
+                Session["browserHeight"] = ScreenHeight.Value;
+                ///////////
 
                 /*
                  * Commented by Gaurav & Suggested by Joseph 

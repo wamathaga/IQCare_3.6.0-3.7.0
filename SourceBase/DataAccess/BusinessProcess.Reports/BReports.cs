@@ -9,6 +9,7 @@ using DataAccess.Common;
 using DataAccess.Entity;
 using Application.Common;
 using Interface.Reports;
+using System.Xml;
 
 
 namespace BusinessProcess.Reports
@@ -109,7 +110,7 @@ namespace BusinessProcess.Reports
         /// <param name="StartDate"></param>
         /// <param name="EndDate"></param>
         /// <returns></returns>
-        public DataSet GetDrugARVPickup(Int32 PatientID, DateTime StartDate, DateTime EndDate, string SatelliteID, string CountryID, string PosID, int LocationID)
+        public DataSet GetDrugARVPickup(Int32 PatientID, string StartDate, string EndDate, string SatelliteID, string CountryID, string PosID, int LocationID)
         {
             lock (this)
             {
@@ -119,8 +120,8 @@ namespace BusinessProcess.Reports
                     ClsUtility.Init_Hashtable();
                     ClsObject ReportManager = new ClsObject();
                     ClsUtility.AddParameters("@PatientID", SqlDbType.Int, PatientID.ToString());
-                    ClsUtility.AddParameters("@StartDate", SqlDbType.DateTime, StartDate.ToString());
-                    ClsUtility.AddParameters("@EndDate", SqlDbType.DateTime, EndDate.ToString());
+                    ClsUtility.AddParameters("@StartDate", SqlDbType.VarChar, StartDate.ToString());
+                    ClsUtility.AddParameters("@EndDate", SqlDbType.VarChar, EndDate.ToString());
                     ClsUtility.AddParameters("@LocationID", SqlDbType.Int, LocationID.ToString());
                     ClsUtility.AddParameters("@SatelliteId", SqlDbType.VarChar, SatelliteID);
                     ClsUtility.AddParameters("@CountryId", SqlDbType.VarChar, CountryID);
@@ -610,7 +611,7 @@ namespace BusinessProcess.Reports
         }
 
 
-        public DataSet GetLosttoFollowupPatientReport(int @LocationID)
+        public DataSet GetLosttoFollowupPatientReport(int @LocationID,string SystemId)
         {
             lock (this)
             {
@@ -621,7 +622,7 @@ namespace BusinessProcess.Reports
                     ClsObject ReportManager = new ClsObject();
                     ClsUtility.AddParameters("@LocationID", SqlDbType.Int, LocationID.ToString());
                     ClsUtility.AddParameters("@password", SqlDbType.VarChar, ApplicationAccess.DBSecurity.ToString());
-
+                    ClsUtility.AddParameters("@SystemId", SqlDbType.VarChar, SystemId.ToString());
                     return (DataSet)ReportManager.ReturnObject(ClsUtility.theParams, "pr_Reports_LosttoFollowupPatientReport_Constella", ClsDBUtility.ObjectEnum.DataSet);
                 }
                 catch (Exception ex)
@@ -1664,7 +1665,7 @@ namespace BusinessProcess.Reports
                 return (DataSet)theQB.ReturnObject(ClsUtility.theParams, "pr_General_SQL_Parse", ClsDBUtility.ObjectEnum.DataSet);
             }
         }
-
+         
 
         /// <summary>
         /// get blue cart info by ptnpk
@@ -1816,6 +1817,109 @@ namespace BusinessProcess.Reports
         }
 
         #endregion
+        #region "Billing Module"
+        SqlDbType GetSqlDBTypeFromstring(string paramType)
+        {
+            SqlDbType dbtype;
+            switch (paramType.ToLower())
+            {
+                case "nvarchar":
+                case "varchar":
+                case "string":
+                case "text":
+                    dbtype = SqlDbType.VarChar;
+                    break;
+                case "int":
+                case "int32":
+                case "int64":
+                case "int16":
+                case "whole number":
+                    dbtype = SqlDbType.Int;
+                    break;
+                case "datetime":
+                case "datetime2":
+                case "date":
+                    dbtype = SqlDbType.DateTime;
+                    break;
+                case "decimal":
+                case "numeric":
+                case "float":
+                case "decimal number":
+                    dbtype = SqlDbType.Decimal;
+                    break;
+                default:
+                    dbtype = SqlDbType.VarChar;
+                    break;
 
+            }
+            return dbtype;
+        }
+        /// <summary>
+        /// Returns the query result.
+        /// </summary>
+        /// <param name="theQuery">The query.</param>
+        /// <param name="paramTable">The parameter table.</param>
+        /// <returns></returns>
+        public DataSet ReturnQueryResult(string theQuery, string paramTable)
+        {
+            lock (this)
+            {
+                ClsObject theQB = new ClsObject();
+                ClsUtility.Init_Hashtable();
+
+                System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+                xml.LoadXml(paramTable);
+                XmlElement documentElement = xml.DocumentElement;
+                XmlNodeList x = documentElement.SelectNodes("//parameter");//xml.SelectNodes("parameters");
+                XmlNodeList x1 = xml.SelectNodes("parameter");
+
+                foreach (XmlNode node in x)
+                {
+                    string pName = node["name"].InnerXml;
+                    string pValue = node["value"].InnerXml;
+                    string pType = node["type"].InnerXml;                    
+                    SqlDbType sqlDBType = GetSqlDBTypeFromstring(pType);                   
+                    ClsUtility.AddParameters(pName, sqlDBType, pValue);
+                }
+              
+                return theQB.ReturnObject(ClsUtility.theParams, theQuery, ClsDBUtility.ObjectEnum.DataSet) as DataSet;
+                
+            }
+        }
+        public DataTable GetQueryBuilderReportParameters(string Report_ID)
+        {
+            // string queryText = "";
+            ClsObject theQB = new ClsObject();
+            ClsUtility.Init_Hashtable();
+            ClsUtility.AddParameters("@Report_ID", SqlDbType.Int, Report_ID.ToString());
+            DataTable dataTable = (DataTable)theQB.ReturnObject(ClsUtility.theParams,
+            @"Select P.ParameterName, P.ParameterDataType As DataType From dbo.MST_QueryBuilderParameters P Where P.ReportID= @Report_ID",
+            ClsDBUtility.ObjectEnum.DataTable);
+            //  queryText = dataRow[0].ToString();
+
+            return dataTable;
+
+        }
+        public DataTable GetQueryBuilderReportQuery(string Report_ID)
+        {
+            // string queryText = "";
+            ClsObject theQB = new ClsObject();
+            ClsUtility.Init_Hashtable();
+            ClsUtility.AddParameters("@Report_ID", SqlDbType.Int, Report_ID.ToString());
+            DataTable dataTable = (DataTable)theQB.ReturnObject(ClsUtility.theParams,
+            @"Select	Min(ReportQuery) ReportQuery,
+		ReportName,
+		Count(P.ParameterName) As HasParameters
+From dbo.mst_QueryBuilderReports R
+Left Outer Join dbo.MST_QueryBuilderParameters P
+	On R.ReportId = P.ReportID And R.ReportId = @Report_ID
+Where R.ReportId = @Report_ID
+Group By R.ReportName",
+            ClsDBUtility.ObjectEnum.DataTable);            
+
+            return dataTable;
+
+        }
+        #endregion
     }
 }

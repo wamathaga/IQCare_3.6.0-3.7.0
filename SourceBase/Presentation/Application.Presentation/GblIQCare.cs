@@ -25,8 +25,8 @@ using Application.Presentation;
         public static DateTime dtmAppVersion;
 
         #region "Application Paramete>rs"
-        public static string AppVersion = "3.6.0 Patch1";
-        public static string ReleaseDate = "20-Mar-2015";
+        public static string AppVersion = "3.7.1";
+        public static string ReleaseDate = "12-Jun-2015";
         #endregion
 
         #region "Public Variables"
@@ -38,6 +38,7 @@ using Application.Presentation;
         public static string AppUserName;
         public static string AppUName;
         public static int EnrollFlag;
+        public static int IdentifierFlag;
         public static DataTable dtUserRight;
         public static int SystemId;
         public static string AppCountryId;
@@ -54,6 +55,7 @@ using Application.Presentation;
         public static DataTable dtModules;
         public static DataSet dsTreeView;
         public static string PatientInstructions;
+        public static DataTable dtFacility;
 
         /// <summary>
         /// This class is applicable for Businessrule Screen
@@ -247,6 +249,10 @@ using Application.Presentation;
         public static string weburl()
         {
             return (System.Configuration.ConfigurationSettings.AppSettings["webfindaddpatientUrl"]);
+        }
+        public static string IQCareHelpweburl()
+        {
+            return (System.Configuration.ConfigurationSettings.AppSettings["IQCareHelpPath"]);
         }
         public static string PresentationImagePath()
         {

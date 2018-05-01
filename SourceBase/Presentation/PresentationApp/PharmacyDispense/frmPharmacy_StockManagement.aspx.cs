@@ -13,7 +13,7 @@ using System.Text;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacy_StockManagement : LogPage
+    public partial class frmPharmacy_StockManagement : System.Web.UI.Page
     {
         BindFunctions theBindManager = new BindFunctions();
         IDrug stockMgtManager;
@@ -253,47 +253,7 @@ namespace PresentationApp.PharmacyDispense
 
             
         }
-        private Boolean FieldValidation()
-        {
-            if (ddlTransactionType.SelectedValue == "0")
-            {
-                MsgBuilder theBuilder = new MsgBuilder();
-                EventArgs e = new EventArgs();
-                theBuilder.DataElements["Control"] = "Transaction Type";
-                IQCareMsgBox.Show("BlankDropDown", theBuilder, this);
-                ddlTransactionType.Focus();
-                return false;
-            }
-            else if (txtTransactionDate.Text == "")
-            {
-                MsgBuilder theBuilder = new MsgBuilder();
-                EventArgs e = new EventArgs();
-                theBuilder.DataElements["Control"] = "Transaction Date";
-                IQCareMsgBox.Show("BlankTextBox", theBuilder, this);
-                txtTransactionDate.Focus();
-                return false;
-            }
-            else if (ddlSourceStore.SelectedValue == "0")
-            {
-                MsgBuilder theBuilder = new MsgBuilder();
-                EventArgs e = new EventArgs();
-                theBuilder.DataElements["Control"] = "Source Store";
-                IQCareMsgBox.Show("BlankDropDown", theBuilder, this);
-                ddlSourceStore.Focus();
-                return false;
-            }
-            else if (ddlDestinationStore.SelectedValue == "0" && ddlTransactionType.SelectedItem.Text == "Receive")
-            {
-                MsgBuilder theBuilder = new MsgBuilder();
-                EventArgs e = new EventArgs();
-                theBuilder.DataElements["Control"] = "Destination Store";
-                IQCareMsgBox.Show("BlankDropDown", theBuilder, this);
-                ddlDestinationStore.Focus();
-                return false;
-            }
-            IQCareMsgBox.HideMessage(this);
-            return true;
-        }
+
         protected string ShowTextBox()
         {
             if (ddlTransactionType.SelectedItem.Text == "Opening Stock")
@@ -314,7 +274,7 @@ namespace PresentationApp.PharmacyDispense
         {
             DataView theDV = new DataView((DataTable)Session["theStocks"]);
 
-            if (hdCustID.Value != "")
+            if (hdCustID.Value != "0")
             {
                 if (ddlTransactionType.SelectedItem.Text == "Opening Stock")
                 {
@@ -323,7 +283,6 @@ namespace PresentationApp.PharmacyDispense
                 }
                 else
                 {
-
                     string[] details = hdCustID.Value.Split(',');
                     theDV.RowFilter = "Drug_Pk = " + details[0].ToString() + " and BatchNo = '" + details[1].ToString() + "'";
                 }
@@ -347,7 +306,7 @@ namespace PresentationApp.PharmacyDispense
             dt.Columns.Add(new DataColumn("Quantity", typeof(string)));
             dt.Columns.Add(new DataColumn("Comments", typeof(string)));
             dt.Columns.Add(new DataColumn("BatchID", typeof(int)));
-            dt.Columns.Add(new DataColumn("PurchaseUnitPrice", typeof(double)));
+            dt.Columns.Add(new DataColumn("PurchaseUnitPrice", typeof(int)));
             dt.Columns.Add(new DataColumn("QtyPerPurchaseUnit", typeof(int)));
             
             DataRow dr;
@@ -436,13 +395,13 @@ namespace PresentationApp.PharmacyDispense
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "DuplicateRecord", "NotifyMessage('Record already added to grid.');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "DuplicateRecord", "alert('Record already added to grid.');", true);
                     //Page.ClientScript.RegisterStartupScript(this.GetType(), "DuplicateRecord", "alert('Record already added.');", true);
                 }
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "OpeningStockExist", "NotifyMessage('Opening stock for " + SelectedDrug["DrugName"].ToString() + " exists.');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "OpeningStockExist", "alert('Opening stock for " + SelectedDrug["DrugName"].ToString() + " exists.');", true);
             }
             
 
@@ -473,7 +432,7 @@ namespace PresentationApp.PharmacyDispense
         {
             try
             {
-                if (FieldValidation())
+                if (Page.IsValid)
                 {
                     if (ddlTransactionType.SelectedItem.Text == "Receive")
                     {
@@ -584,8 +543,7 @@ namespace PresentationApp.PharmacyDispense
 
 
                         int issue = objMasterlist.SaveGoodreceivedNotes_Web(dtGRNmaster, dtGRNItem, 2);
-                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "alertInterStoreTransfer", "alert('Saved Successfully.');", true);
-                        IQCareMsgBox.NotifyAction("Saved successfully.", "Stock Management", false, this, "");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "alertInterStoreTransfer", "alert('Saved Successfully.');", true);
                         clearFields();
                         //btnSubmit.Enabled = false;
                     }
@@ -619,8 +577,7 @@ namespace PresentationApp.PharmacyDispense
                         }
                         IPurchase objStock = (IPurchase)ObjectFactory.CreateInstance("BusinessProcess.SCM.BPurchase,BusinessProcess.SCM");
                         int ret = objStock.SaveUpdateStockAdjustmentWeb(dtAdjustStocks, Convert.ToInt32(Session["AppLocationId"].ToString()), Convert.ToInt32(ddlSourceStore.SelectedValue), txtTransactionDate.Text, Convert.ToInt32(Session["AppUserID"].ToString()), Convert.ToInt32(Session["AppUserID"].ToString()), 1, Convert.ToInt32(Session["AppUserID"].ToString()));
-                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "alertAdjustment", "alert('Saved Successfully.');", true);
-                        IQCareMsgBox.NotifyAction("Saved successfully.", "Stock Management", false, this, "");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "alertAdjustment", "alert('Saved Successfully.');", true);
                         //btnSubmit.Enabled = false;
                         clearFields();
                     }
@@ -641,23 +598,11 @@ namespace PresentationApp.PharmacyDispense
                             //TextBox txtComments = (TextBox)gvRow.FindControl("txtComments");
                             //Label lblPurchaseUnitPrice = (Label)gvRow.FindControl("lblPurchaseUnitPrice");
                             //Label lblQtyPerPurchaseUnit = (Label)gvRow.FindControl("lblQtyPerPurchaseUnit");
-                            if (txtExpiryDate.Text != "")
-                            {
-                                TimeSpan difference = Convert.ToDateTime(txtExpiryDate.Text) - Convert.ToDateTime(Application["AppCurrentDate"]);
-                                double days = difference.TotalDays;
-                                if (days <= 0)
-                                {
-                                    MsgBuilder theBuilder = new MsgBuilder();
-                                    theBuilder.DataElements["MessageText"] = "Expiry Date must be greater than todays date";
-                                    IQCareMsgBox.Show("#C1", theBuilder, this);
-                                    txtExpiryDate.Focus();
-                                    return;
-                                }
-                            }
+
                             drOS = dtOpeningStocks.NewRow();
                             drOS["ItemID"] = DrugID;
                             drOS["BatchNo"] = txtBatchNo.Text;
-                            drOS["ExpiryDate"] = Convert.ToDateTime(txtExpiryDate.Text).ToString("dd-MMM-yyyy");
+                            drOS["ExpiryDate"] = txtExpiryDate.Text;
                             drOS["StoreID"] = ddlSourceStore.SelectedValue;
                             drOS["Quantity"] = txtQty.Text;
                             //drOS["Comments"] = txtComments.Text;
@@ -666,8 +611,7 @@ namespace PresentationApp.PharmacyDispense
                         }
                         IPurchase objStock = (IPurchase)ObjectFactory.CreateInstance("BusinessProcess.SCM.BPurchase,BusinessProcess.SCM");
                         int ret = objStock.SaveUpdateOpeningStockWeb(dtOpeningStocks, Convert.ToInt32(Session["AppUserID"].ToString()), txtTransactionDate.Text);
-                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "alertOpeningStock", "alert('Saved Successfully.');", true);
-                        IQCareMsgBox.NotifyAction("Saved successfully.", "Stock Management", false, this, "");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "alertOpeningStock", "alert('Saved Successfully.');", true);
                         //btnSubmit.Enabled = false;
                         clearFields();
                     }
@@ -694,7 +638,7 @@ namespace PresentationApp.PharmacyDispense
             DataTable dtOrdermaster = new DataTable();
             dtOrdermaster.Columns.Add("IsPO", typeof(int));
             dtOrdermaster.Columns.Add("POID", typeof(int));
-            dtOrdermaster.Columns.Add("OrderDate", typeof(string));
+            dtOrdermaster.Columns.Add("OrderDate", typeof(DateTime));
             dtOrdermaster.Columns.Add("SupplierID", typeof(int));
             dtOrdermaster.Columns.Add("SrcStore", typeof(int));
             dtOrdermaster.Columns.Add("DestStore", typeof(int));
@@ -716,7 +660,7 @@ namespace PresentationApp.PharmacyDispense
             dtOrderItem.Columns.Add("totPrice", typeof(int));
             dtOrderItem.Columns.Add("BatchID", typeof(int));
             dtOrderItem.Columns.Add("AvaliableQty", typeof(int));
-            dtOrderItem.Columns.Add("ExpiryDate", typeof(string));
+            dtOrderItem.Columns.Add("ExpiryDate", typeof(DateTime));
             dtOrderItem.Columns.Add("UnitQuantity", typeof(int));
             //dtOrderItem.Columns.Add("Delete", typeof(String));
             // dtOrderItem.Columns.Add("IsFunded", typeof(int));
@@ -730,12 +674,12 @@ namespace PresentationApp.PharmacyDispense
             dtGRNmaster.Columns.Add("POID", typeof(int));
             dtGRNmaster.Columns.Add("GRNId", typeof(int));
             dtGRNmaster.Columns.Add("LocationID", typeof(int));
-            dtGRNmaster.Columns.Add("OrderDate", typeof(string));
+            dtGRNmaster.Columns.Add("OrderDate", typeof(DateTime));
             dtGRNmaster.Columns.Add("SupplierID", typeof(int));
             dtGRNmaster.Columns.Add("SourceStoreID", typeof(int));
             dtGRNmaster.Columns.Add("DestinStoreID", typeof(int));
             dtGRNmaster.Columns.Add("UserID", typeof(int));
-            dtGRNmaster.Columns.Add("RecievedDate", typeof(string));
+            dtGRNmaster.Columns.Add("RecievedDate", typeof(DateTime));
             dtGRNmaster.Columns.Add("OrderNo", typeof(String));
             dtGRNmaster.Columns.Add("Freight", typeof(decimal));
             dtGRNmaster.Columns.Add("Tax", typeof(decimal));
@@ -759,7 +703,7 @@ namespace PresentationApp.PharmacyDispense
             dtGRNItem.Columns.Add("Margin", typeof(decimal));
             dtGRNItem.Columns.Add("SellingPrice", typeof(decimal));
             dtGRNItem.Columns.Add("SellingPricePerDispense", typeof(decimal));
-            dtGRNItem.Columns.Add("ExpiryDate", typeof(string));
+            dtGRNItem.Columns.Add("ExpiryDate", typeof(DateTime));
             dtGRNItem.Columns.Add("UserID", typeof(int));
             dtGRNItem.Columns.Add("POId", typeof(int));
             dtGRNItem.Columns.Add("SourceStoreID", typeof(int));
@@ -777,7 +721,7 @@ namespace PresentationApp.PharmacyDispense
             DataTable dtAdjStock = new DataTable();
             dtAdjStock.Columns.Add("ItemID", typeof(int));
             dtAdjStock.Columns.Add("BatchID", typeof(int));
-            dtAdjStock.Columns.Add("ExpiryDate", typeof(string));
+            dtAdjStock.Columns.Add("ExpiryDate", typeof(DateTime));
             dtAdjStock.Columns.Add("StoreID", typeof(int));
             dtAdjStock.Columns.Add("AdjQty", typeof(int));
             dtAdjStock.Columns.Add("Comments", typeof(string));
@@ -789,7 +733,7 @@ namespace PresentationApp.PharmacyDispense
             DataTable dtOS = new DataTable();
             dtOS.Columns.Add("ItemID", typeof(int));
             dtOS.Columns.Add("BatchNo", typeof(string));
-            dtOS.Columns.Add("ExpiryDate", typeof(string));
+            dtOS.Columns.Add("ExpiryDate", typeof(DateTime));
             dtOS.Columns.Add("StoreID", typeof(int));
             dtOS.Columns.Add("Quantity", typeof(int));
             dtOS.Columns.Add("Comments", typeof(string));
@@ -803,14 +747,14 @@ namespace PresentationApp.PharmacyDispense
             grdStockMngt.DataBind();
             ddlSourceStore.SelectedIndex = 0;
             
-            //if (ddlTransactionType.SelectedItem.Text != "Receive")
-            //{
-            //    destinationStoreRequiredValidator.Enabled = false;
-            //}
-            //else
-            //{
-            //    destinationStoreRequiredValidator.Enabled = true;
-            //}
+            if (ddlTransactionType.SelectedItem.Text != "Receive")
+            {
+                destinationStoreRequiredValidator.Enabled = false;
+            }
+            else
+            {
+                destinationStoreRequiredValidator.Enabled = true;
+            }
         }
 
         protected void grnDetails()

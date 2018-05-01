@@ -430,7 +430,7 @@ using System.Web;
                         }
                     
                     IHomePageConfiguration objTechArea = (IHomePageConfiguration)ObjectFactory.CreateInstance("BusinessProcess.FormBuilder.BHomePageConfiguration,BusinessProcess.FormBuilder");
-                    int iSave = (int)objTechArea.SaveHomePageIndicator(dsSaveIndicatorQuery, Flag);
+                    int iSave = (int)objTechArea.SaveHomePageIndicator(dsSaveIndicatorQuery, Flag, GblIQCare.AppLocationId);
                     btnCancel_Click(sender, e);
                  
             }

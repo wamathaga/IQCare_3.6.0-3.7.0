@@ -20,7 +20,7 @@ namespace Interface.Clinical
         DataSet GetClinicalDate(int patientID, int visittype);
         DataSet GetARTStatus(int patientID);
         DataSet GetPregnantStatus(int patientID, string VisitDate);
-        DataSet GetAppointment(int patientID, int locationID, string AppDate, int AppReason);
+        DataSet GetAppointment(int patientID, int locationID, DateTime AppDate, int AppReason);
         
     }
 }

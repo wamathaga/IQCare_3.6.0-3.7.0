@@ -34,24 +34,21 @@
             padding: 2px 4px;
         }
     </style>
-    <div class="container-fluid">
-        <h5 class="forms" align="left" style="margin-top: 10px">
-            Price List</h5>
+    <div>
+        <h2 class="forms" align="left" style="margin-top:10px">
+            Price List</h2>
         <asp:UpdatePanel runat="server" ID="divFilterComponent" UpdateMode="Conditional">
             <ContentTemplate>
                 <asp:Panel ID="panelFilter" runat="server" DefaultButton="btnFilter">
-                    <table width="100%" border="0" class="table-condensed">
+                    <table cellspacing="6" cellpadding="0" width="100%" border="0" class="form pad5 center">
                         <tbody>
                             <tr>
-                                <td style="text-align: left; margin-left: 3px;">
-                                    <asp:Button ID="btnPrint" runat="server" Text="Print Price List" 
-                                       OnClick="btnPrint_Click" CssClass="btn btn-primary" Height="30px"
-                                        Width="105%" Style="display: block; text-align: left; margin-bottom: -22px" />
-                                    <label class="glyphicon glyphicon-print" style="margin-left: 91%; margin-right: 2%;
-                                        vertical-align: sub; color: #fff;  margin-bottom: 10px">
-                                    </label>
+                                <td style="text-align: left; margin-left: 3px;" >
+                                    <asp:Button ID="btnPrint" runat="server" Text="Print Price List" Width="120px" Style="display: block;
+                                        margin-bottom: 5px" OnClick="btnPrint_Click" />
                                     <ajaxToolkit:ConfirmButtonExtender ID="cbePrint" runat="server" DisplayModalPopupID="mpePrintPriceList"
-                                        TargetControlID="btnPrint"></ajaxToolkit:ConfirmButtonExtender>
+                                        TargetControlID="btnPrint">
+                                    </ajaxToolkit:ConfirmButtonExtender>
                                     <ajaxToolkit:ModalPopupExtender ID="mpePrintPriceList" runat="server" PopupControlID="pnlPopup"
                                         TargetControlID="btnPrint" OkControlID="btnYes" CancelControlID="btnNo" BackgroundCssClass="modalBackground">
                                     </ajaxToolkit:ModalPopupExtender>
@@ -67,39 +64,41 @@
                                         </div>
                                         <div style="min-height: 30px; line-height: 20px; text-align: center; font-weight: bold;">
                                             Effective Date:&nbsp;&nbsp;
-                                            <asp:TextBox ID="textPriceListDate" runat="server" Text="" MaxLength="11" Width="80px"></asp:TextBox>
+                                            <asp:TextBox ID="textPriceListDate" runat="server" Text="" MaxLength="11" Width="70px"></asp:TextBox>
                                             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="textPriceListDate"
                                                 ErrorMessage="*" Display="None" ValidationExpression="^(0?[1-9]|[12][0-9]|3[01])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(19|20)\d\d$"></asp:RegularExpressionValidator><br />
                                             <ajaxToolkit:CalendarExtender ID="calendarButtonExtender" runat="server" TargetControlID="textPriceListDate"
                                                 Format="dd-MMM-yyyy" />
                                             <ajaxToolkit:MaskedEditExtender ID="MaskedEditExtender3" runat="server" TargetControlID="textPriceListDate"
                                                 Enabled="True" UserDateFormat="DayMonthYear" CultureDateFormat="dd-MMM-yyyy"
-                                                ClearMaskOnLostFocus="False" CultureName="en-GB" Mask="99-LLL-9999"></ajaxToolkit:MaskedEditExtender>
+                                                ClearMaskOnLostFocus="False" CultureName="en-GB" Mask="99-LLL-9999">
+                                            </ajaxToolkit:MaskedEditExtender>
                                         </div>
                                         <div style="min-height: 30px; line-height: 20px; text-align: center; font-weight: bold;">
                                             Do you want to proceed?
                                         </div>
-                                        <div style="padding: 5px;" align="right">
-                                            <asp:Button ID="btnYes" runat="server" Text="OK" />
-                                            <asp:Button ID="btnNo" runat="server" Text="Cancel" Style="padding-left: 5px;" /></div>
+                                        <div style="padding: 3px;" align="right">
+                                            <asp:Button ID="btnYes" runat="server" Text="OK"  /><asp:Button
+                                                ID="btnNo" runat="server" Text="Cancel"  /></div>
                                     </asp:Panel>
                                 </td>
-                                <td style="text-align: left; margin-left: 3px; width: 80px;">
-                                    Item Type:
+                                <td style="text-align: left; margin-left: 3px;width: 80px;">
+                                    Item Type: 
                                 </td>
                                 <td style="text-align: left; white-space: nowrap">
                                     <asp:DropDownList ID="ddlItemType" runat="server" AutoPostBack="false">
                                     </asp:DropDownList>
                                 </td>
                                 <td style="text-align: left; margin-left: 3px; width: 80px;">
-                                    Item Name:
+                                   Item Name:
                                 </td>
                                 <td>
                                     <asp:TextBox ID="textSearchText" runat="server" MaxLength="25" Width="200px"></asp:TextBox>
                                     <ajaxToolkit:FilteredTextBoxExtender ID="fteSearchText" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters,Custom"
-                                        TargetControlID="textSearchText" ValidChars="-/\* "></ajaxToolkit:FilteredTextBoxExtender>
+                                        TargetControlID="textSearchText" ValidChars="-/\* ">
+                                    </ajaxToolkit:FilteredTextBoxExtender>
                                 </td>
-                                <td style="text-align: left; margin-left: 3px; width: 250px;">
+                                <td style="text-align: left; margin-left: 3px;width: 250px;">
                                     Show priced only
                                     <asp:RadioButtonList ID="rblOption" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
                                         <asp:ListItem Selected="True" Value="No">No </asp:ListItem>
@@ -107,11 +106,8 @@
                                     </asp:RadioButtonList>
                                 </td>
                                 <td style="text-align: left; white-space: nowrap">
-                                    <asp:Button ID="btnFilter" runat="server" Text="View" OnClick="btnFilter_Click"
-                                        CausesValidation="false"  CssClass="btn btn-success" Height="30px" Width="90%" Style="text-align: left;" />
-                                    <label class="glyphicon glyphicon-eye-open" style="margin-left: -28%; margin-right: 2%;
-                                        vertical-align: sub; color: #fff;">
-                                    </label>
+                                    <asp:Button ID="btnFilter" runat="server" Text="View" Width="80px" OnClick="btnFilter_Click"
+                                        CausesValidation="false" />
                                 </td>
                             </tr>
                         </tbody>
@@ -219,7 +215,8 @@
                                                                                 Format="dd-MMM-yyyy" OnClientDateSelectionChanged="disable_past_dates" />
                                                                             <ajaxToolkit:MaskedEditExtender ID="MaskedEditExtender3" runat="server" TargetControlID="textPriceDate"
                                                                                 Enabled="True" UserDateFormat="DayMonthYear" CultureDateFormat="dd-MMM-yyyy"
-                                                                                ClearMaskOnLostFocus="False" CultureName="en-GB" Mask="99-LLL-9999"></ajaxToolkit:MaskedEditExtender>
+                                                                                ClearMaskOnLostFocus="False" CultureName="en-GB" Mask="99-LLL-9999">
+                                                                            </ajaxToolkit:MaskedEditExtender>
                                                                         </div>
                                                                         <asp:HiddenField ID="hdVersionStamp" runat="server" Value="" />
                                                                         <asp:HiddenField ID="HFlag" runat="server" Value="" />
@@ -251,23 +248,17 @@
                                         <div class="bottom" style="text-align: center">
                                             <br />
                                             <div id="divAction" style="white-space: nowrap; text-align: center;">
-                                                <asp:Button ID="buttonSave" runat="server" Text="Save" OnClick="buttonSave_Click"
-                                                    CausesValidation="false" CssClass="btn btn-primary" Height="30px" Width="8%"
-                                                    Style="text-align: left;" />
-                                                <label class="glyphicon glyphicon-floppy-disk" style="margin-left: -3%; margin-right: 2%;
-                                                    vertical-align: sub; color: #fff;">
-                                                </label>
-                                                <asp:Button ID="btnClose" runat="server" Text="Close" CssClass="btn btn-primary"
-                                                    Height="30px" Width="8%" Style="text-align: left;" />
-                                                <label class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; margin-right: 2%;
-                                                    vertical-align: sub; color: #fff;">
-                                                </label>
-                                            </div>
+                                                <asp:Button ID="buttonSave" runat="server" Text="Save" Width="80px" OnClick="buttonSave_Click"
+                                                    CausesValidation="false" />
+                                                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                                <asp:Button ID="btnClose" runat="server" Text="Close"  Width="80px" /></div>
                                             <br />
+                                            
                                             <asp:Repeater ID="rptPager" runat="server" Visible="False">
                                                 <ItemTemplate>
                                                     <asp:LinkButton ID="lnkPage" runat="server" Text='<%#Eval("Text") %>' CommandArgument='<%# Eval("Value") %>'
                                                         Enabled='<%# Eval("Enabled") %>' OnClick="Page_Changed"></asp:LinkButton>
+                                                       
                                                 </ItemTemplate>
                                             </asp:Repeater>
                                         </div>
@@ -321,17 +312,9 @@
                     </table>
                     <div style="background-color: #FFFFFF; border-top: solid 1px #808080; width: 100%;
                         text-align: center; padding-top: 5px; padding-bottom: 5px">
-                        <asp:Button ID="btnOkAction" runat="server" Text="Close" OnClick="btnOkAction_Click"
-                            CssClass="btn btn-primary" Height="30px" Width="20%" Style="text-align: left;" />
-                        <label class="glyphicon glyphicon-circle-arrow-right" style="margin-left: -5%; margin-right: 2%;
-                            vertical-align: sub; color: #fff;">
-                        </label>
-                        <asp:Button ID="btnExit" runat="server" Text="Close" CssClass="btn btn-primary" Height="30px"
-                            Width="20%" Style="text-align: left; display: none" />
-                        <label class="glyphicon glyphicon-circle-arrow-right" style="margin-left: -5%; margin-right: 2%;
-                            vertical-align: sub; color: #fff;">
-                        </label>
-                    </div>
+                        <asp:Button ID="btnOkAction" runat="server" Text="Close" Width="120px" Style="border: solid 1px #808080;"
+                            OnClick="btnOkAction_Click" />&nbsp;&nbsp;&nbsp;<asp:Button ID="btnExit" runat="server"
+                                Text="Close" Width="80px" Style="border: solid 1px #808080; display: none" /></div>
                 </asp:Panel>
                 <ajaxToolkit:ModalPopupExtender ID="notifyPopupExtender" runat="server" TargetControlID="btn"
                     PopupControlID="pnNotify" BackgroundCssClass="modalBackground" DropShadow="True"

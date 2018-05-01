@@ -19,6 +19,7 @@ using AjaxControlToolkit;
 using System.Web.Script.Serialization;
 using Interface.Security;
 using Interface.Clinical;
+using System.Linq;
 
 //Third party Libs
 using Telerik.Web.UI;
@@ -40,7 +41,7 @@ namespace PresentationApp.Laboratory
             if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
             {
                 IQCareMsgBox.Show("SessionExpired", this);
-                Response.Redirect("~/frmlogin.aspx",true);
+                Response.Redirect("~/frmlogin.aspx", true);
             }
             if (Request.QueryString["opento"] == "ArtForm")
             {
@@ -54,8 +55,6 @@ namespace PresentationApp.Laboratory
             (Master.FindControl("levelTwoNavigationUserControl1").FindControl("lblformname") as Label).Text = "Laboratory";
             txtlaborderedbydate.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
             txtlaborderedbydate.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3')");
-            txtrepordtedbydate.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
-            txtrepordtedbydate.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3')");
             txtLabtobeDone.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
             txtLabtobeDone.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3')");
             PutCustomControl();
@@ -79,15 +78,15 @@ namespace PresentationApp.Laboratory
                 BindControls();
                 BindLabTestGrid();
                 BindLabOrderDetails();
-                
+
             }
-            
+
             if (Request.QueryString["name"] == "Delete")
             {
                 btnsave.Text = "Delete";
             }
             int PID = Convert.ToInt32(Session["PatientId"]);
-            
+
             FillOldCustomData(PID);
 
         }
@@ -116,15 +115,15 @@ namespace PresentationApp.Laboratory
         {
             //if ((Session["LabOrderStatus"].ToString() == "") || (Session["LabOrderStatus"].ToString() == "Not Specified"))
             //{
-                trReported.Visible = false;
-           // }
+            trReported.Visible = false;
+            // }
 
         }
         [System.Web.Script.Services.ScriptMethod()]
         [System.Web.Services.WebMethod(EnableSession = true)]
         public static AutoCompleteBoxData GetLabsNames(object context)
         {
-            string searchString = ((Dictionary<string, object>)context)["Text"].ToString();            
+            string searchString = ((Dictionary<string, object>)context)["Text"].ToString();
             DataTable data = GetDataTable("LabTestID", "", searchString);
             List<AutoCompleteBoxItemData> result = new List<AutoCompleteBoxItemData>();
 
@@ -163,16 +162,34 @@ namespace PresentationApp.Laboratory
                             theDT = theUtils.CreateTableFromDataView(theDV);
                     }
 
+                    /* Bugid 2707
                     theBindManager.BindCombo(ddlaborderedbyname, theDT, "EmployeeName", "EmployeeId");
                     theBindManager.BindCombo(ddlreportedby, theDT, "EmployeeName", "EmployeeId");
+                    */
+                    BindUserDropdown(ddlaborderedbyname, string.Empty);
+                    BindUserDropdown(ddlreportedby, string.Empty);
                     theDV.Dispose();
                     theDT.Clear();
                 }
 
             }
-            
 
 
+
+        }
+
+        private void BindUserDropdown(DropDownList DropDownID, String userId)
+        {
+            Dictionary<int, string> userList = new Dictionary<int, string>();
+            CustomFieldClinical.BindUserDropDown(DropDownID, out userList);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                if (userList.ContainsKey(Convert.ToInt32(userId)))
+                {
+                    DropDownID.SelectedValue = userId;
+                    //SecurityPerTabSignature = userId;
+                }
+            }
         }
         private void BindDropdownOrderBy(String EmployeeId)
         {
@@ -193,8 +210,10 @@ namespace PresentationApp.Laboratory
                         if (theDV.Count > 0)
                             theDT = theUtils.CreateTableFromDataView(theDV);
                     }
+                    /* Bugid 2707
                     BindManager.BindCombo(ddlaborderedbyname, theDT, "EmployeeName", "EmployeeId");
-                    
+                    */
+                    BindUserDropdown(ddlaborderedbyname, string.Empty);
                 }
 
             }
@@ -219,13 +238,16 @@ namespace PresentationApp.Laboratory
                         if (theDV.Count > 0)
                             theDT = theUtils.CreateTableFromDataView(theDV);
                     }
+                    /* Bugid 2707
                     BindManager.BindCombo(ddlaborderedbyname, theDT, "EmployeeName", "EmployeeId");
-
+                    */
+                    BindUserDropdown(ddlaborderedbyname, string.Empty);
                 }
 
             }
 
         }
+
         protected void BtnAddDrugClick(object sender, EventArgs e)
         {
             string labIdstr = SelectedLabTest();
@@ -251,7 +273,7 @@ namespace PresentationApp.Laboratory
 
         protected string SelectedLabTest()
         {
-            
+
             var collectionnew = rcbPreSelectedLabTest.CheckedItems;
             string labIdstr = "";
             string commastr = "";
@@ -373,7 +395,7 @@ namespace PresentationApp.Laboratory
                     ddlreportedby.SelectedValue = dt.Rows[0]["ReportedbyName"].ToString();
                     if (dt.Rows[0]["ReportedbyDate"] != DBNull.Value)
                     {
-                        txtrepordtedbydate.Text = String.Format("{0:dd-MMM-yyyy}", Convert.ToDateTime(dt.Rows[0]["ReportedbyDate"]));                        
+                        txtrepordtedbydate.Text = String.Format("{0:dd-MMM-yyyy}", Convert.ToDateTime(dt.Rows[0]["ReportedbyDate"]));
                     }
                 }
 
@@ -427,9 +449,9 @@ namespace PresentationApp.Laboratory
             //            txtlaborderedbydate.Focus();
             //            return false;
             //        }
-                
+
             //}
-            
+
             //if (Session["Paperless"].ToString() == "0")
             //{
             //    if (txtlabReportedbyDate.Text.ToString() == "")
@@ -451,7 +473,7 @@ namespace PresentationApp.Laboratory
             //        }
             //    }
             //}
-            if ((Session["LabOrderStatus"].ToString() == "")  || (Session["LabOrderStatus"].ToString() == "Not Specified"))
+            if ((Session["LabOrderStatus"].ToString() == "") || (Session["LabOrderStatus"].ToString() == "Not Specified"))
             {
 
             }
@@ -496,10 +518,15 @@ namespace PresentationApp.Laboratory
                     return false;
                 }
             }
-            
 
+            if (RadGridLabTest.MasterTableView.Items.Count <= 0) {
+                IQCareMsgBox.ShowforUpdatePanel("IQTouchSubTestID", this);
+                AutoselectLabTest.Focus();
+                return false;
+            }
             return true;
         }
+
         protected void BindMasterData()
         {
             //Lab test id
@@ -546,111 +573,136 @@ namespace PresentationApp.Laboratory
                 ViewState["tblLabtestID"] = table;
                 radGridArvMutation.DataSource = table;
                 radGridArvMutation.DataBind();
+                //Bug Id=170,171
+                string[] preLab = hdnTestAddTestID.Value.Split(',');
+                preLab = preLab.Where(s => s != id).ToArray();
+                hdnTestAddTestID.Value = string.Join(",",preLab);
+                string[] selectLab = hiddTestAddTestID.Value.Split(',');
+                selectLab = selectLab.Where(s => s != id).ToArray();
+                hiddTestAddTestID.Value = string.Join(",",selectLab);
+                //Bug End
             }
         }
+
+       
+
         private bool gridhasvalues(RadGrid radGridLabResult)
         {
             if (Session["LabOrderID"] != null)
             {
-                DataTable dtGenXpert = new DataTable();                
+                DataTable dtGenXpert = new DataTable();
                 //For GenXpert
-                List<BIQTouchLabFields> listArv = new List<BIQTouchLabFields>();                
+                List<BIQTouchLabFields> listArv = new List<BIQTouchLabFields>();
                 dtGenXpert = CreateDtGenXpertTable();
 
                 foreach (GridDataItem item in radGridLabResult.Items)
                 {
                     Label lblLabSubTestId = (Label)item.FindControl("lblLabSubTestId");
                     Label lblLabSubTestName = (Label)item.FindControl("lblLabTestName");
-
+                    Label lblundetectable = (Label)item.FindControl("lblundetectable");
                     Label lblControlType = (Label)item.FindControl("lblControlType");
                     RadioButtonList btnradRadioButtonList = (RadioButtonList)item.FindControl("btnRadRadiolist");
                     Telerik.Web.UI.RadNumericTextBox txtRadValue = (Telerik.Web.UI.RadNumericTextBox)item.FindControl("txtRadValue");
                     Telerik.Web.UI.RadTextBox txtAlphaRadValue = (Telerik.Web.UI.RadTextBox)item.FindControl("txtAlphaRadValue");
                     CheckBoxList chkBoxList = (CheckBoxList)item.FindControl("chkBoxList");
-                    DropDownList ddlList = (DropDownList)item.FindControl("ddlList");
+                    Telerik.Web.UI.RadComboBox ddlList = (RadComboBox)item.FindControl("ddlList");
 
                     string strResuts = "0";
 
-                    if (lblControlType.Text == "Radio")
+                    if (lblundetectable.Text == "1")
                     {
-                        if (btnradRadioButtonList.SelectedValue != "")
+                        if (ddlList.SelectedValue.ToString() != "0")
                         {
-                            return true;
-                        }
-                    }
-                    else if (lblControlType.Text == "Combo Box")
-                    {
-
-                        if (ddlList.SelectedValue.ToString() != "")
-                        {
+                            //if((ddlList.SelectedValue.ToString() != "9999") && (txtRadValue.Text !=""))
                             return true;
                         }
 
-                    }
-                    else if (lblControlType.Text == "Check box")
-                    {
 
-                        if (chkBoxList.SelectedValue.ToString() != "")
-                        {
-                            return true;
-                        }
+
                     }
-                    else if (lblControlType.Text == "GridView")
+                    else
                     {
-                        if (lblLabSubTestName.Text.ToUpper().Equals("ARV MUTATIONS"))
+                        if (lblControlType.Text == "Radio")
                         {
-                            listArv = ArvMutationData(lblLabSubTestId.Text.ToString());
-                            if (listArv.Count > 0)
+                            if (btnradRadioButtonList.SelectedValue != "")
                             {
+                                return true;
+                            }
+                        }
+                        else if (lblControlType.Text == "Combo Box")
+                        {
+
+                            if (ddlList.SelectedValue.ToString() != "")
+                            {
+                                return true;
+                            }
+
+                        }
+                        else if (lblControlType.Text == "Check box")
+                        {
+
+                            if (chkBoxList.SelectedValue.ToString() != "")
+                            {
+                                return true;
+                            }
+                        }
+                        else if (lblControlType.Text == "GridView")
+                        {
+                            if (lblLabSubTestName.Text.ToUpper().Equals("ARV MUTATIONS"))
+                            {
+                                listArv = ArvMutationData(lblLabSubTestId.Text.ToString());
+                                if (listArv.Count > 0)
+                                {
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                DataRow dR = dtGenXpert.NewRow();
+                                RadGrid radSubGridItems = (RadGrid)item.FindControl("RadGridArvMutation");
+                                GridFooterItem radSubFooterItems = (GridFooterItem)radSubGridItems.MasterTableView.GetItems(GridItemType.Footer)[0];
+                                Telerik.Web.UI.RadComboBox rcbFooterArvType = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterArvType");
+                                Telerik.Web.UI.RadComboBox rcbFooterMutation = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterMutation");
+                                Telerik.Web.UI.RadComboBox rcbFooterCulture = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterCulture");
+                                dR["LabId"] = Convert.ToInt32(Session["LabOrderID"].ToString());
+                                if (rcbFooterArvType.SelectedValue != "")
+                                {
+                                    dR["ABFID"] = Convert.ToInt32(rcbFooterArvType.SelectedValue);
+                                    dR["ABFText"] = rcbFooterArvType.SelectedItem.Text;
+                                }
+                                if (rcbFooterMutation.SelectedValue != "")
+                                {
+                                    dR["GeneXpertID"] = Convert.ToInt32(rcbFooterMutation.SelectedValue);
+                                    dR["GeneXpertText"] = rcbFooterMutation.SelectedItem.Text;
+                                }
+                                if (rcbFooterCulture.SelectedValue != "")
+                                {
+                                    dR["CultSens"] = Convert.ToInt32(rcbFooterCulture.SelectedValue);
+                                    dR["CultSensText"] = rcbFooterCulture.SelectedItem.Text;
+                                }
+                                dR["ParameterID"] = Convert.ToInt32(lblLabSubTestId.Text);
+                                dtGenXpert.Rows.Add(dR);
                                 return true;
                             }
                         }
                         else
                         {
-                            DataRow dR = dtGenXpert.NewRow();
-                            RadGrid radSubGridItems = (RadGrid)item.FindControl("RadGridArvMutation");
-                            GridFooterItem radSubFooterItems = (GridFooterItem)radSubGridItems.MasterTableView.GetItems(GridItemType.Footer)[0];
-                            Telerik.Web.UI.RadComboBox rcbFooterArvType = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterArvType");
-                            Telerik.Web.UI.RadComboBox rcbFooterMutation = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterMutation");
-                            Telerik.Web.UI.RadComboBox rcbFooterCulture = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterCulture");
-                            dR["LabId"] = Convert.ToInt32(Session["LabOrderID"].ToString());
-                            if (rcbFooterArvType.SelectedValue != "")
-                            {
-                                dR["ABFID"] = Convert.ToInt32(rcbFooterArvType.SelectedValue);
-                                dR["ABFText"] = rcbFooterArvType.SelectedItem.Text;
-                            }
-                            if (rcbFooterMutation.SelectedValue != "")
-                            {
-                                dR["GeneXpertID"] = Convert.ToInt32(rcbFooterMutation.SelectedValue);
-                                dR["GeneXpertText"] = rcbFooterMutation.SelectedItem.Text;
-                            }
-                            if (rcbFooterCulture.SelectedValue != "")
-                            {
-                                dR["CultSens"] = Convert.ToInt32(rcbFooterCulture.SelectedValue);
-                                dR["CultSensText"] = rcbFooterCulture.SelectedItem.Text;
-                            }
-                            dR["ParameterID"] = Convert.ToInt32(lblLabSubTestId.Text);
-                            dtGenXpert.Rows.Add(dR);
-                            return true;
-                        }
-                    }
-                    else
-                    {
 
-                        if (txtRadValue.Text != "0" && txtRadValue.Text != "")
-                        {
-                            strResuts = txtRadValue.Text.ToString();
-                            return true;
-                        }
-                        else if (txtAlphaRadValue.Text != "")
-                        {
-                            strResuts = txtAlphaRadValue.Text.ToString();
-                            return true;
+                            if (txtRadValue.Text != "0" && txtRadValue.Text != "")
+                            {
+                                strResuts = txtRadValue.Text.ToString();
+                                return true;
+                            }
+                            else if (txtAlphaRadValue.Text != "")
+                            {
+                                strResuts = txtAlphaRadValue.Text.ToString();
+                                return true;
+                            }
                         }
                     }
 
                 }
-                
+
             }
             return false;
 
@@ -665,7 +717,7 @@ namespace PresentationApp.Laboratory
                     detsGrid.Visible = !e.Item.Expanded;
 
                     if (!e.Item.Expanded)
-                    {                       
+                    {
                         if ((Convert.ToInt32(Session["LabOrderID"].ToString()) > 0) && (gridhasvalues(detsGrid) == false))
                             detsGrid.Rebind();
                     }
@@ -675,7 +727,7 @@ namespace PresentationApp.Laboratory
 
         }
 
-        
+
 
         protected void RadGridLabTest_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
         {
@@ -729,11 +781,11 @@ namespace PresentationApp.Laboratory
             }
             else
             {
-                string theUrl = string.Format("{0}", "../ClinicalForms/frmPatient_Home.aspx");                
+                string theUrl = string.Format("{0}", "../ClinicalForms/frmPatient_Home.aspx");
                 Response.Redirect(theUrl);
 
             }
-            
+
         }
         DateTime DateGiven(string dateVal)
         {
@@ -753,9 +805,9 @@ namespace PresentationApp.Laboratory
             script += "ans=window.confirm('Laboratory Form saved successfully. Do you want to close?');\n";
             script += "if (ans==true)\n";
             script += "{\n";
-            
+
             script += "window.location.href='../ClinicalForms/frmPatient_History.aspx';\n";
-           
+
             script += "}\n";
             script += "else \n";
             script += "{\n";
@@ -787,9 +839,9 @@ namespace PresentationApp.Laboratory
                 objLabFields.UserId = Convert.ToInt32(Session["AppUserId"].ToString());
                 objLabFields.OrderedByName = Convert.ToInt32(ddlaborderedbyname.SelectedValue.ToString());
                 objLabFields.OrderedByDate = Convert.ToDateTime(theUtils.MakeDate(txtlaborderedbydate.Text));
-                
+
                 objLabFields.LabTestID = 0;
-                objLabFields.ReportedByDate = DateGiven(txtrepordtedbydate.Text);               
+                objLabFields.ReportedByDate = DateGiven(txtrepordtedbydate.Text);
                 objLabFields.ReportedByName = Convert.ToInt32(ddlreportedby.SelectedValue);
                 objLabFields.TestResults = "";
                 objLabFields.TestResultId = 0;
@@ -803,17 +855,17 @@ namespace PresentationApp.Laboratory
                 {
                     objLabFields.PreClinicLabDate = DateGiven("");
                 }
-                if(Session["LabOrderID"] !=null)
+                if (Session["LabOrderID"] != null)
                 {
                     objLabFields.LabOrderId = Convert.ToInt32(Session["LabOrderID"].ToString());
                     objLabFields.IntFlag = 2;
                     //For GenXpert
-                    
+
                     if (ViewState["TblGenXpert"] == null)
                     {
                         dtGenXpert = CreateDtGenXpertTable();
                     }
-                    
+
                     foreach (GridNestedViewItem nestedView in RadGridLabTest.MasterTableView.GetItems(GridItemType.NestedView))
                     {
                         RadGrid radGridLabResult = (RadGrid)nestedView.FindControl("RadGridLabResult");
@@ -830,85 +882,99 @@ namespace PresentationApp.Laboratory
                             Telerik.Web.UI.RadNumericTextBox txtRadValue = (Telerik.Web.UI.RadNumericTextBox)item.FindControl("txtRadValue");
                             Telerik.Web.UI.RadTextBox txtAlphaRadValue = (Telerik.Web.UI.RadTextBox)item.FindControl("txtAlphaRadValue");
                             CheckBoxList chkBoxList = (CheckBoxList)item.FindControl("chkBoxList");
-                            DropDownList ddlList = (DropDownList)item.FindControl("ddlList");
+                            RadComboBox ddlList = (RadComboBox)item.FindControl("ddlList");
                             BIQTouchLabFields objLabFields1 = new BIQTouchLabFields();
-                            string strResuts = "0";
+                            //string strResuts = "0"; commented by Jayant 30-03-2015
+                            string strResuts = "";
                             int intRestutID = 0;
-                            if (lblControlType.Text == "Radio")
-                            {
-                                if (btnradRadioButtonList.SelectedValue != "")
-                                {
-                                    entryFlag = true;
-                                    intRestutID = Convert.ToInt32(btnradRadioButtonList.SelectedValue.ToString());
-                                }
-                            }
-                            else if (lblControlType.Text == "Combo Box")
-                            {
-
-                                if (ddlList.SelectedValue.ToString() != "")
-                                {
-                                    entryFlag = true;
-                                    intRestutID = Convert.ToInt32(ddlList.SelectedValue.ToString());
-                                    //objLabFields1.TestResultId = Convert.ToInt32(ddlList.SelectedValue.ToString());
-                                }
-
-                            }
-                            else if (lblControlType.Text == "Check box")
-                            {
-
-                                if (chkBoxList.SelectedValue.ToString() != "")
-                                {
-                                    entryFlag = true;
-                                    intRestutID = Convert.ToInt32(chkBoxList.SelectedValue.ToString());
-                                    //objLabFields1.TestResultId = Convert.ToInt32(chkBoxList.SelectedValue.ToString());
-                                }
-                            }
-                            else if (lblControlType.Text == "GridView")
-                            {
-                                if (lblLabSubTestName.Text.ToUpper().Equals("ARV MUTATIONS"))
-                                {
-                                    listArv = ArvMutationData(lblLabSubTestId.Text.ToString());// Code Here
-                                    entryFlag = true;
-                                }
-                                else
-                                {
-                                    DataRow dR = dtGenXpert.NewRow();
-                                    RadGrid radSubGridItems = (RadGrid)item.FindControl("RadGridArvMutation");
-                                    GridFooterItem radSubFooterItems = (GridFooterItem)radSubGridItems.MasterTableView.GetItems(GridItemType.Footer)[0];
-                                    Telerik.Web.UI.RadComboBox rcbFooterArvType = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterArvType");
-                                    Telerik.Web.UI.RadComboBox rcbFooterMutation = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterMutation");
-                                    Telerik.Web.UI.RadComboBox rcbFooterCulture = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterCulture");
-                                    dR["LabId"] = Convert.ToInt32(Session["LabOrderID"].ToString());
-                                    if (rcbFooterArvType.SelectedValue != "")
-                                    {
-                                        dR["ABFID"] = Convert.ToInt32(rcbFooterArvType.SelectedValue);
-                                        dR["ABFText"] = rcbFooterArvType.SelectedItem.Text;
-                                    }
-                                    if (rcbFooterMutation.SelectedValue != "")
-                                    {
-                                        dR["GeneXpertID"] = Convert.ToInt32(rcbFooterMutation.SelectedValue);
-                                        dR["GeneXpertText"] = rcbFooterMutation.SelectedItem.Text;
-                                    }
-                                    if (rcbFooterCulture.SelectedValue != "")
-                                    {
-                                        dR["CultSens"] = Convert.ToInt32(rcbFooterCulture.SelectedValue);
-                                        dR["CultSensText"] = rcbFooterCulture.SelectedItem.Text;
-                                    }
-                                    dR["ParameterID"] = Convert.ToInt32(lblLabSubTestId.Text);
-                                    dtGenXpert.Rows.Add(dR);
-                                    ViewState["TblGenXpert"] = dtGenXpert;
-                                }
-                            }
-                            else
+                            Label lblundetectable = (Label)item.FindControl("lblundetectable");
+                            if (lblundetectable.Text == "1")
                             {
                                 entryFlag = true;
+                                intRestutID = Convert.ToInt32(ddlList.SelectedValue.ToString());
                                 if (txtRadValue.Text != "0" && txtRadValue.Text != "")
                                 {
                                     strResuts = txtRadValue.Text.ToString();
                                 }
-                                else if (txtAlphaRadValue.Text != "")
+                            }
+                            else
+                            {
+                                if (lblControlType.Text == "Radio")
                                 {
-                                    strResuts = txtAlphaRadValue.Text.ToString();
+                                    if (btnradRadioButtonList.SelectedValue != "")
+                                    {
+                                        entryFlag = true;
+                                        intRestutID = Convert.ToInt32(btnradRadioButtonList.SelectedValue.ToString());
+                                    }
+                                }
+                                else if (lblControlType.Text == "Combo Box")
+                                {
+
+                                    if (ddlList.SelectedValue.ToString() != "")
+                                    {
+                                        entryFlag = true;
+                                        intRestutID = Convert.ToInt32(ddlList.SelectedValue.ToString());
+                                        //objLabFields1.TestResultId = Convert.ToInt32(ddlList.SelectedValue.ToString());
+                                    }
+
+                                }
+                                else if (lblControlType.Text == "Check box")
+                                {
+
+                                    if (chkBoxList.SelectedValue.ToString() != "")
+                                    {
+                                        entryFlag = true;
+                                        intRestutID = Convert.ToInt32(chkBoxList.SelectedValue.ToString());
+                                        //objLabFields1.TestResultId = Convert.ToInt32(chkBoxList.SelectedValue.ToString());
+                                    }
+                                }
+                                else if (lblControlType.Text == "GridView")
+                                {
+                                    if (lblLabSubTestName.Text.ToUpper().Equals("ARV MUTATIONS"))
+                                    {
+                                        listArv = ArvMutationData(lblLabSubTestId.Text.ToString());// Code Here
+                                        entryFlag = true;
+                                    }
+                                    else
+                                    {
+                                        DataRow dR = dtGenXpert.NewRow();
+                                        RadGrid radSubGridItems = (RadGrid)item.FindControl("RadGridArvMutation");
+                                        GridFooterItem radSubFooterItems = (GridFooterItem)radSubGridItems.MasterTableView.GetItems(GridItemType.Footer)[0];
+                                        Telerik.Web.UI.RadComboBox rcbFooterArvType = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterArvType");
+                                        Telerik.Web.UI.RadComboBox rcbFooterMutation = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterMutation");
+                                        Telerik.Web.UI.RadComboBox rcbFooterCulture = (Telerik.Web.UI.RadComboBox)radSubFooterItems.FindControl("rcbFooterCulture");
+                                        dR["LabId"] = Convert.ToInt32(Session["LabOrderID"].ToString());
+                                        if (rcbFooterArvType.SelectedValue != "")
+                                        {
+                                            dR["ABFID"] = Convert.ToInt32(rcbFooterArvType.SelectedValue);
+                                            dR["ABFText"] = rcbFooterArvType.SelectedItem.Text;
+                                        }
+                                        if (rcbFooterMutation.SelectedValue != "")
+                                        {
+                                            dR["GeneXpertID"] = Convert.ToInt32(rcbFooterMutation.SelectedValue);
+                                            dR["GeneXpertText"] = rcbFooterMutation.SelectedItem.Text;
+                                        }
+                                        if (rcbFooterCulture.SelectedValue != "")
+                                        {
+                                            dR["CultSens"] = Convert.ToInt32(rcbFooterCulture.SelectedValue);
+                                            dR["CultSensText"] = rcbFooterCulture.SelectedItem.Text;
+                                        }
+                                        dR["ParameterID"] = Convert.ToInt32(lblLabSubTestId.Text);
+                                        dtGenXpert.Rows.Add(dR);
+                                        ViewState["TblGenXpert"] = dtGenXpert;
+                                    }
+                                }
+                                else
+                                {
+                                    entryFlag = true;
+                                    if (txtRadValue.Text != "")
+                                    {
+                                        strResuts = txtRadValue.Text.ToString();
+                                    }
+                                    else if (txtAlphaRadValue.Text != "")
+                                    {
+                                        strResuts = txtAlphaRadValue.Text.ToString();
+                                    }
                                 }
                             }
                             objLabFields1.TestResults = strResuts;
@@ -919,7 +985,7 @@ namespace PresentationApp.Laboratory
                             objLabFields1.LocationId = Convert.ToInt32(Session["AppLocationId"].ToString());
                             objLabFields1.UserId = Convert.ToInt32(Session["AppUserId"].ToString());
                             objLabFields1.OrderedByName = Convert.ToInt32(ddlaborderedbyname.SelectedValue.ToString());
-                            objLabFields1.OrderedByDate = Convert.ToDateTime(theUtils.MakeDate(txtlaborderedbydate.Text));                            
+                            objLabFields1.OrderedByDate = Convert.ToDateTime(theUtils.MakeDate(txtlaborderedbydate.Text));
                             objLabFields1.IntFlag = 3;
                             objLabFields1.LabTestID = 0;
                             objLabFields1.SubTestID = Convert.ToInt32(lblLabSubTestId.Text.ToString());
@@ -933,6 +999,7 @@ namespace PresentationApp.Laboratory
                             {
                                 list.Add(objLabFields1);
                             }
+
                         }
                     }
                 }
@@ -983,7 +1050,7 @@ namespace PresentationApp.Laboratory
                 int result = theILabManager.IQTouchSaveLabOrderTests(objLabFields, list, listArv, dtGenXpert, theCustomDataDT);
                 if (result > 0)
                 {
-                    
+
 
                     if (Request.QueryString["opento"] == "ArtForm")
                     {
@@ -991,13 +1058,13 @@ namespace PresentationApp.Laboratory
                         {
                             Session["PatientVisitId"] = Session["ArtEncounterPatientVisitId"];
                         }
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "goBack", "Close();", true);                        
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "goBack", "Close();", true);
                         return;
                     }
                     SaveCancel();
-                   
 
-                }                
+
+                }
 
             }
             catch (Exception ex)
@@ -1006,7 +1073,7 @@ namespace PresentationApp.Laboratory
             }
             finally
             {
-               
+
             }
         }
 
@@ -1029,7 +1096,7 @@ namespace PresentationApp.Laboratory
         protected List<BIQTouchLabFields> ArvMutationData(string subtestID)
         {
             List<BIQTouchLabFields> listArv = new List<BIQTouchLabFields>();
-           
+
             if (ViewState["TblArvMutation"] != null)
             {
                 DataTable dt = (DataTable)ViewState["TblArvMutation"];
@@ -1043,7 +1110,7 @@ namespace PresentationApp.Laboratory
                     obj1.MutationID = Convert.ToInt32(dr["ArvMutationID"].ToString());
                     obj1.OtherMutation = dr["ArvMutationOther"].ToString();
                     obj1.ArvTypeID = Convert.ToInt32(dr["ArvTypeID"].ToString());
-                    
+
                     if (GetSubTestIDDeleteFlag(subtestID) == "Y")
                     {
                         obj1.Flag = "X";  // Removing Parameter ID from arvMutation Table when user deleting testID from parent grid
@@ -1136,14 +1203,14 @@ namespace PresentationApp.Laboratory
 
 
         }
-        protected void BindDropdownist(DropDownList rbList, string labSubTestID)
+        protected void BindDropdownist(RadComboBox rbList, string labSubTestID)
         {
             DataTable dt = GetDataTable("QRY_CHILDRB", labSubTestID, 0);
             rbList.DataSource = dt;
             rbList.DataTextField = "Result";
             rbList.DataValueField = "ResultID";
             rbList.DataBind();
-            rbList.Items.Insert(0, new ListItem("Select", ""));
+            //rbList.Items.Insert(0, new ListItem("Select", ""));
 
         }
         protected void BindCheckBoxList(CheckBoxList rbList, string labSubTestID)
@@ -1182,7 +1249,7 @@ namespace PresentationApp.Laboratory
 
         protected DataTable GetGenXpertGrid(string flag, int TestId)
         {
-            
+
             BIQTouchLabFields objLabFields = new BIQTouchLabFields();
             objLabFields.Flag = flag;
             if (Session["LabOrderID"] != null)
@@ -1234,6 +1301,7 @@ namespace PresentationApp.Laboratory
                 Label lblLabSubTestId = (Label)item.FindControl("lblLabSubTestId");
                 Label lblLabSubTestName = (Label)item.FindControl("lblLabTestName");
                 Label lblControlType = (Label)item.FindControl("lblControlType");
+                Label lblundetectable = (Label)item.FindControl("lblundetectable");
                 Label lblUnitName = (Label)item.FindControl("lblUnitName");
                 Label lblMinBoundaryVal = (Label)item.FindControl("lblMinBoundaryVal");
                 Label lblMaxBoundaryVal = (Label)item.FindControl("lblMaxBoundaryVal");
@@ -1245,7 +1313,7 @@ namespace PresentationApp.Laboratory
                 Telerik.Web.UI.RadTextBox txtAlphaRadValue = (Telerik.Web.UI.RadTextBox)item.FindControl("txtAlphaRadValue");
                 Label lblresult = (Label)item.FindControl("lblTestResults");
                 CheckBoxList chkBoxList = (CheckBoxList)item.FindControl("chkBoxList");
-                DropDownList ddlList = (DropDownList)item.FindControl("ddlList");
+                Telerik.Web.UI.RadComboBox ddlList = (RadComboBox)item.FindControl("ddlList");
                 RadGrid radGridArvMutation = (RadGrid)item.FindControl("RadGridArvMutation");
 
 
@@ -1256,113 +1324,137 @@ namespace PresentationApp.Laboratory
                 chkBoxList.Visible = false;
                 ddlList.Visible = false;
                 radGridArvMutation.Visible = false;
-                if (lblControlType.Text == "Radio")
+                if (lblundetectable.Text == "1")
                 {
-                    BindRadioButtonList(btnradRadioButtonList, lblLabSubTestId.Text);
+                    //BindDropdownist(ddlList, lblLabSubTestId.Text);
+                    ddlList.Items.Clear();
+                    ddlList.Items.Add(new RadComboBoxItem("Select", "0"));
+                    ddlList.Items.Add(new RadComboBoxItem("Detectable", "9999"));
+                    ddlList.Items.Add(new RadComboBoxItem("Undetectable", "9998"));
+
+                    //ddlList.SelectedIndexChanged += new RadComboBoxSelectedIndexChangedEventHandler(ddllist_SelectedIndexChanged);
                     if (Convert.ToInt32(lblTestResultId.Text.ToString()) > 0)
                     {
-                        btnradRadioButtonList.SelectedValue = lblTestResultId.Text;
-                    }
-
-                    btnradRadioButtonList.Visible = true;
-
-                }
-                else if (lblControlType.Text == "Combo Box")
-                {
-                    BindDropdownist(ddlList, lblLabSubTestId.Text);
-                    if (Convert.ToInt32(lblTestResultId.Text.ToString()) > 0)
-                    {
-                        ddlList.SelectedValue = lblTestResultId.Text;
+                        int index = ddlList.FindItemIndexByValue(lblTestResultId.Text);
+                        ddlList.SelectedIndex = index;
+                        //ddlList.Selected = lblTestResultId.Text;
+                        if (lblTestResultId.Text == "9999")
+                        {
+                            txtRadValue.Text = lblresult.Text;
+                            txtRadValue.Visible = true;
+                            lblUnitName.Visible = true;
+                        }
                     }
 
                     ddlList.Visible = true;
-                }
-                else if (lblControlType.Text == "Check box")
-                {
-                    BindCheckBoxList(chkBoxList, lblLabSubTestId.Text);
-                    if (Convert.ToInt32(lblTestResultId.Text.ToString()) > 0)
-                    {
-                        chkBoxList.SelectedValue = lblTestResultId.Text;
-                    }
-                    chkBoxList.Visible = true;
-                }
-                else if (lblControlType.Text == "GridView")
-                {
-                    radGridArvMutation.Visible = true;
-                    //if (lblLabSubTestId.Text.ToString() == "17" || lblLabSubTestId.Text.ToString() == "18" || lblLabSubTestId.Text.ToString() == "19" || lblLabSubTestId.Text.ToString() == "131")
-                    //{
-                    if (lblLabSubTestName.Text.ToString().ToUpper().Contains("SPUTUM AFB") || lblLabSubTestName.Text.ToString().ToUpper().Equals("GENEXPERT"))
-                    {
 
-                        txthdnfield.Value = lblLabSubTestName.Text;
-                        radGridArvMutation.Columns[0].HeaderText = "ABF";
-                        radGridArvMutation.Columns[1].HeaderText = "GeneXpert";
-                        radGridArvMutation.Columns[3].Visible = false;
-                        radGridArvMutation.Columns[4].Visible = false;
-                        DataTable dt = GetGenXpertGrid("GENXPERT", Convert.ToInt32(lblLabSubTestId.Text));
-                        if (dt.Rows.Count > 0)
-                        {
-                            //ViewState["TblArvMutation"] = dt;
-                            radGridArvMutation.DataSource = dt;
-                            radGridArvMutation.DataBind();
-                        }
-                        else
-                        {
-                            radGridArvMutation.DataSource = new Object[0];
-                            radGridArvMutation.DataBind();
-                        }
-                    }
-                    else if(lblLabSubTestName.Text.ToUpper().Equals("ARV MUTATIONS"))
-                    {
-                        txthdnfield.Value = lblLabSubTestName.Text;
-                        radGridArvMutation.Columns[2].Visible = false;
-                        //BindArvType
-                        DataTable dt = GetArvMutationGrid("MUTATION_GRID");
-                        if (dt.Rows.Count > 0)
-                        {
-                            ViewState["TblArvMutation"] = dt;
-                            radGridArvMutation.DataSource = dt;
-                            radGridArvMutation.DataBind();
-                        }
-                        else
-                        {
-                            radGridArvMutation.DataSource = new Object[0];
-                            radGridArvMutation.DataBind();
-                        }
-                        // Bind GridView RadGridArvMutation
-                    }
-                    radGridArvMutation.ItemDataBound += new GridItemEventHandler(RadGridArvMutation_ItemDataBound);
-                    radGridArvMutation.ItemCommand += new GridCommandEventHandler(RadGridArvMutation_ItemCommand);
-                    radGridArvMutation.DeleteCommand += new GridCommandEventHandler(RadGridArvMutation_DeleteCommand);
-                }
-                else if (lblControlType.Text == "Single line text box")
-                {
-                    lblUnitName.Visible = true;
-                    txtAlphaRadValue.Visible = true;
-                }
-                else if (lblControlType.Text == "Int Text Box")
-                {
-                    lblUnitName.Visible = true;
-                    txtRadValue.Visible = true;
-                    if (Convert.ToDouble(lblMinBoundaryVal.Text.ToString()) == 0 && Convert.ToDouble(lblMaxBoundaryVal.Text.ToString()) == 0)
-                    {
-                        txtRadValue.MinValue = 0;
-                        txtRadValue.MaxValue = 99999;
-                    }
-                    else
-                    {
-
-                        txtRadValue.MinValue = Convert.ToDouble(lblMinBoundaryVal.Text.ToString());
-                        txtRadValue.MaxValue = Convert.ToDouble(lblMaxBoundaryVal.Text.ToString());
-                    }
-                    txtRadValue.Text = "";
-                    txtRadValue.Text = lblresult.Text;
                 }
                 else
                 {
-                    lblUnitName.Visible = true;
-                    txtAlphaRadValue.Visible = true;                    
 
+                    if (lblControlType.Text == "Radio")
+                    {
+                        BindRadioButtonList(btnradRadioButtonList, lblLabSubTestId.Text);
+                        if (Convert.ToInt32(lblTestResultId.Text.ToString()) > 0)
+                        {
+                            btnradRadioButtonList.SelectedValue = lblTestResultId.Text;
+                        }
+
+                        btnradRadioButtonList.Visible = true;
+
+                    }
+                    else if (lblControlType.Text == "Combo Box")
+                    {
+                        BindDropdownist(ddlList, lblLabSubTestId.Text);
+                        if (Convert.ToInt32(lblTestResultId.Text.ToString()) > 0)
+                        {
+                            ddlList.SelectedValue = lblTestResultId.Text;
+                        }
+
+                        ddlList.Visible = true;
+                    }
+                    else if (lblControlType.Text == "Check box")
+                    {
+                        BindCheckBoxList(chkBoxList, lblLabSubTestId.Text);
+                        if (Convert.ToInt32(lblTestResultId.Text.ToString()) > 0)
+                        {
+                            chkBoxList.SelectedValue = lblTestResultId.Text;
+                        }
+                        chkBoxList.Visible = true;
+                    }
+                    else if (lblControlType.Text == "GridView")
+                    {
+                        radGridArvMutation.Visible = true;
+                        //if (lblLabSubTestId.Text.ToString() == "17" || lblLabSubTestId.Text.ToString() == "18" || lblLabSubTestId.Text.ToString() == "19" || lblLabSubTestId.Text.ToString() == "131")
+                        //{
+                        if (lblLabSubTestName.Text.ToString().ToUpper().Contains("SPUTUM AFB") || lblLabSubTestName.Text.ToString().ToUpper().Equals("GENEXPERT"))
+                        {
+
+                            txthdnfield.Value = lblLabSubTestName.Text;
+                            radGridArvMutation.Columns[0].HeaderText = "ABF";
+                            radGridArvMutation.Columns[1].HeaderText = "GeneXpert";
+                            radGridArvMutation.Columns[3].Visible = false;
+                            radGridArvMutation.Columns[4].Visible = false;
+                            DataTable dt = GetGenXpertGrid("GENXPERT", Convert.ToInt32(lblLabSubTestId.Text));
+                            if (dt.Rows.Count > 0)
+                            {
+                                //ViewState["TblArvMutation"] = dt;
+                                radGridArvMutation.DataSource = dt;
+                                radGridArvMutation.DataBind();
+                            }
+                            else
+                            {
+                                radGridArvMutation.DataSource = new Object[0];
+                                radGridArvMutation.DataBind();
+                            }
+                        }
+                        else if (lblLabSubTestName.Text.ToUpper().Equals("ARV MUTATIONS"))
+                        {
+                            txthdnfield.Value = lblLabSubTestName.Text;
+                            radGridArvMutation.Columns[2].Visible = false;
+                            //BindArvType
+                            DataTable dt = GetArvMutationGrid("MUTATION_GRID");
+                            if (dt.Rows.Count > 0)
+                            {
+                                ViewState["TblArvMutation"] = dt;
+                                radGridArvMutation.DataSource = dt;
+                                radGridArvMutation.DataBind();
+                            }
+                            else
+                            {
+                                radGridArvMutation.DataSource = new Object[0];
+                                radGridArvMutation.DataBind();
+                            }
+                            // Bind GridView RadGridArvMutation
+                        }
+                        radGridArvMutation.ItemDataBound += new GridItemEventHandler(RadGridArvMutation_ItemDataBound);
+                        radGridArvMutation.ItemCommand += new GridCommandEventHandler(RadGridArvMutation_ItemCommand);
+                        radGridArvMutation.DeleteCommand += new GridCommandEventHandler(RadGridArvMutation_DeleteCommand);
+                    }
+                    else if (lblControlType.Text == "Single line text box")
+                    {
+                        lblUnitName.Visible = true;
+                        txtAlphaRadValue.Visible = true;
+                    }
+                    else
+                    {
+                        lblUnitName.Visible = true;
+                        txtRadValue.Visible = true;
+                        if (Convert.ToDouble(lblMinBoundaryVal.Text.ToString()) == 0 && Convert.ToDouble(lblMaxBoundaryVal.Text.ToString()) == 0)
+                        {
+                            txtRadValue.MinValue = 0;
+                            txtRadValue.MaxValue = 99999;
+                        }
+                        else
+                        {
+                            txtRadValue.Attributes.Add("OnBlur", "isBetween('" + txtRadValue.ClientID + "', '" + lblLabSubTestName.Text + "', '" + lblMinBoundaryVal.Text.ToString() + "', '" + lblMaxBoundaryVal.Text.ToString() + "')");
+                            //txtRadValue.MinValue = Convert.ToDouble(lblMinBoundaryVal.Text.ToString());
+                            //txtRadValue.MaxValue = Convert.ToDouble(lblMaxBoundaryVal.Text.ToString());
+                        }
+                        txtRadValue.Text = "";
+                        txtRadValue.Text = lblresult.Text;
+
+                    }
                 }
             }
 
@@ -1674,6 +1766,64 @@ namespace PresentationApp.Laboratory
             //    rcbFooterArvType.SelectedIndexChanged += new RadComboBoxSelectedIndexChangedEventHandler(rcbFooterArvType_SelectedIndexChanged);
             //}
         }
+        protected void ddllist_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            RadComboBox ddl = (RadComboBox)sender;
+            GridTableCell item = (GridTableCell)ddl.Parent;
+            Label lblundetectable = (Label)item.FindControl("lblundetectable");
+            if (lblundetectable.Text == "1")
+            {
+
+                Label lblLabSubTestId = (Label)item.FindControl("lblLabSubTestId");
+                Label lblLabSubTestName = (Label)item.FindControl("lblLabTestName");
+                Label lblControlType = (Label)item.FindControl("lblControlType");
+
+                Label lblUnitName = (Label)item.FindControl("lblUnitName");
+                Label lblMinBoundaryVal = (Label)item.FindControl("lblMinBoundaryVal");
+                Label lblMaxBoundaryVal = (Label)item.FindControl("lblMaxBoundaryVal");
+                Label lblTestResultId = (Label)item.FindControl("lblTestResultId");
+
+                Telerik.Web.UI.RadNumericTextBox txtRadValue = (Telerik.Web.UI.RadNumericTextBox)item.FindControl("txtRadValue");
+                Telerik.Web.UI.RadTextBox txtAlphaRadValue = (Telerik.Web.UI.RadTextBox)item.FindControl("txtAlphaRadValue");
+                Label lblresult = (Label)item.FindControl("lblTestResults");
+                if (ddl.SelectedValue == "9999")
+                {
+                    lblUnitName.Visible = true;
+                    txtRadValue.Visible = true;
+                    if (Convert.ToDouble(lblMinBoundaryVal.Text.ToString()) == 0 && Convert.ToDouble(lblMaxBoundaryVal.Text.ToString()) == 0)
+                    {
+                        txtRadValue.MinValue = 0;
+                        txtRadValue.MaxValue = 99999;
+                    }
+                    else
+                    {
+                        txtRadValue.Attributes.Add("OnBlur", "isBetween('" + txtRadValue.ClientID + "', '" + lblLabSubTestName.Text + "', '" + lblMinBoundaryVal.Text.ToString() + "', '" + lblMaxBoundaryVal.Text.ToString() + "')");
+                        //txtRadValue.MinValue = Convert.ToDouble(lblMinBoundaryVal.Text.ToString());
+                        //txtRadValue.MaxValue = Convert.ToDouble(lblMaxBoundaryVal.Text.ToString());
+                    }
+                    txtRadValue.Text = "";
+                    txtRadValue.Text = lblresult.Text;
+                }
+                else
+                {
+                    lblUnitName.Visible = false;
+                    txtRadValue.Visible = false;
+                    if (Convert.ToDouble(lblMinBoundaryVal.Text.ToString()) == 0 && Convert.ToDouble(lblMaxBoundaryVal.Text.ToString()) == 0)
+                    {
+                        txtRadValue.MinValue = 0;
+                        txtRadValue.MaxValue = 99999;
+                    }
+                    else
+                    {
+                        txtRadValue.Attributes.Add("OnBlur", "isBetween('" + txtRadValue.ClientID + "', '" + lblLabSubTestName.Text + "', '" + lblMinBoundaryVal.Text.ToString() + "', '" + lblMaxBoundaryVal.Text.ToString() + "')");
+                        //txtRadValue.MinValue = Convert.ToDouble(lblMinBoundaryVal.Text.ToString());
+                        //txtRadValue.MaxValue = Convert.ToDouble(lblMaxBoundaryVal.Text.ToString());
+                    }
+                    txtRadValue.Text = "";
+                    txtRadValue.Text = lblresult.Text;
+                }
+            }
+        }
 
         protected void rcbFooterArvType_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
@@ -1813,7 +1963,7 @@ namespace PresentationApp.Laboratory
             else
             {
                 string theUrl;
-                theUrl = string.Format("../ClinicalForms/frmPatient_Home.aspx");
+                theUrl = string.Format("../ClinicalForms/frmPatient_Home.aspx?Func=Delete");
                 Response.Redirect(theUrl);
 
             }

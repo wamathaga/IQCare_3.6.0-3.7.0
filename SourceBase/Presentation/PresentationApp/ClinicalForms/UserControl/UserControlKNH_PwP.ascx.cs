@@ -27,7 +27,8 @@ namespace PresentationApp.ClinicalForms.UserControl
         protected void Page_Load(object sender, EventArgs e)
         {
             //UrethraDischarge = VaginalDischarge = genitalUlceration = TCA = "";
-            startTime = String.Format("{0:yyyy-MM-dd hh:mm:ss}", DateTime.Now);
+            //startTime = String.Format("{0:yyyy-MM-dd hh:mm:ss}", DateTime.Now);
+            startTime = String.Format("{0:dd-MMM-yyyy HH:mm:ss}", DateTime.Now);
 
             PwPManager = (IKNHStaticForms)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BKNHStaticForms, BusinessProcess.Clinical");
             if (!IsPostBack)

@@ -68,7 +68,7 @@ public partial class frmAdmin_LinkMaster : BasePage
                 lblto.Text = "Village:";
                 FillDropDownsWV();
             }
-            else if (lblHeader.Text == "Counselling Type-Counselling Topic")
+            else if (lblHeader.Text == "CouncellingTypeTopic")
             {
                 lblfrom.Text = "Counselling Type:";
                 lblto.Text = "Counselling Topic:";

@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace PresentationApp
 {
-    public partial class PatientSummary : LogPage
+    public partial class PatientSummary : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

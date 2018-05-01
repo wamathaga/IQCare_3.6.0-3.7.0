@@ -550,8 +550,8 @@ namespace BusinessProcess.SCM
                     ClsUtility.Init_Hashtable();
                     ClsUtility.AddParameters("@DonorId", SqlDbType.Int, dtProgramDonorLnk.Rows[i]["DonorId"].ToString());
                     ClsUtility.AddParameters("@ProgramId", SqlDbType.Int, dtProgramDonorLnk.Rows[i]["ProgramId"].ToString());
-                    ClsUtility.AddParameters("@FundingStartDate", SqlDbType.DateTime, dtProgramDonorLnk.Rows[i]["FundingStartDate"].ToString());
-                    ClsUtility.AddParameters("@FundingEndDate", SqlDbType.DateTime, dtProgramDonorLnk.Rows[i]["FundingEndDate"].ToString());
+                    ClsUtility.AddParameters("@FundingStartDate", SqlDbType.VarChar, dtProgramDonorLnk.Rows[i]["FundingStartDate"].ToString());
+                    ClsUtility.AddParameters("@FundingEndDate", SqlDbType.VarChar, dtProgramDonorLnk.Rows[i]["FundingEndDate"].ToString());
                     ClsUtility.AddParameters("@UserId", SqlDbType.Int, UserID.ToString());
                     if (Rec == 1)
                         ClsUtility.AddParameters("@Delete", SqlDbType.Int, "1");
@@ -631,7 +631,7 @@ namespace BusinessProcess.SCM
                 ClsUtility.AddParameters("@DispensingUnitPrice", SqlDbType.Decimal, theHash["DispensingUnitPrice"].ToString());
                 ClsUtility.AddParameters("@DispensingMargin", SqlDbType.Decimal, theHash["DispensingMargin"].ToString());
                 ClsUtility.AddParameters("@SellingPrice", SqlDbType.Decimal, theHash["SellingPrice"].ToString());
-                ClsUtility.AddParameters("@EffectiveDate", SqlDbType.DateTime, theHash["EffectiveDate"].ToString());
+                ClsUtility.AddParameters("@EffectiveDate", SqlDbType.VarChar, theHash["EffectiveDate"].ToString());
                 ClsUtility.AddParameters("@Status", SqlDbType.Int, theHash["Status"].ToString());
                 ClsUtility.AddParameters("@MinStock", SqlDbType.Int, theHash["MinQty"].ToString());
                 ClsUtility.AddParameters("@MaxStock", SqlDbType.Int, theHash["MaxQty"].ToString());
@@ -1406,6 +1406,59 @@ namespace BusinessProcess.SCM
         //    }
 
         //}
+        public DataTable GetBillables()
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsObject ItemType = new ClsObject();
+                return
+                    (DataTable)
+                    ItemType.ReturnObject(ClsUtility.theParams, "[pr_SCM_GetBillables]",
+                                          ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
+        public DataTable GetBillingGroups()
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsObject ItemType = new ClsObject();
+                return
+                    (DataTable)
+                    ItemType.ReturnObject(ClsUtility.theParams, "[pr_SCM_GetBillingGroups]",
+                                          ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
+
+        public DataTable GetBillingGroupItems(int billableID)
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@BillingTypeID", SqlDbType.Int, billableID.ToString());
+                ClsObject ItemType = new ClsObject();
+
+                return
+                    (DataTable)
+                    ItemType.ReturnObject(ClsUtility.theParams, "[pr_SCM_GetBillingGroupItems]",
+                                          ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
+        public DataTable GetBillablesItems(int DecodeID)
+        {
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@DecodeID", SqlDbType.Int, DecodeID.ToString());
+                ClsObject ItemType = new ClsObject();
+
+                return
+                    (DataTable)
+                    ItemType.ReturnObject(ClsUtility.theParams, "[pr_SCM_GetBillablesItems]",
+                                          ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
 
 
     }

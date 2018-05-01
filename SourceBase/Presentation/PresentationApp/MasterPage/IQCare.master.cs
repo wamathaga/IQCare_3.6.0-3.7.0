@@ -23,6 +23,18 @@ public partial class MasterPage_IQCare : System.Web.UI.MasterPage
             Response.Redirect("~/frmlogin.aspx",true);
         }
     }
+    /// <summary>
+    /// Gets the page script manager.
+    
+    /// The page script manager.
+    /// </value>
+    public ScriptManager PageScriptManager
+    {
+        get
+        {
+            return this.masterScriptManager;
+        }
+    }
     public int SessionLengthMinutes
     {
         get { return Convert.ToInt32(ConfigurationManager.AppSettings["SessionTimeOut"]); }
@@ -77,12 +89,15 @@ public partial class MasterPage_IQCare : System.Web.UI.MasterPage
             if (int.Parse(Session["PatientID"].ToString()) > 0)
             {
                 //VY added 2014-10-14 for changing level one navigation Menu depending on whether patient has been selected or not
-                MenuItem facilityHome = (levelOneNavigationUserControl1.FindControl("mainMenu") as Menu).FindItem("Facility Home");
-                facilityHome.Text = "Find/Add Patient";
-                facilityHome.NavigateUrl = String.Format("~/frmFindAddCustom.aspx?srvNm={0}&mod={1}", Session["TechnicalAreaName"], Session["TechnicalAreaId"]);
-                MenuItem facilityStats = (levelOneNavigationUserControl1.FindControl("mainMenu") as Menu).FindItem("Facility Statistics");
-                facilityStats.Text = "Select Service";
-                facilityStats.NavigateUrl = "~/frmFacilityHome.aspx";
+                if (Session["TechnicalAreaId"] != null)
+                {
+                    MenuItem facilityHome = (levelOneNavigationUserControl1.FindControl("mainMenu") as Menu).FindItem("Facility Home");
+                    facilityHome.Text = "Find/Add Patient";
+                    facilityHome.NavigateUrl = String.Format("~/frmFindAddCustom.aspx?srvNm={0}&mod={1}", Session["TechnicalAreaName"], Session["TechnicalAreaId"]);
+                    MenuItem facilityStats = (levelOneNavigationUserControl1.FindControl("mainMenu") as Menu).FindItem("Facility Statistics");
+                    facilityStats.Text = "Select Service";
+                    facilityStats.NavigateUrl = "~/frmFacilityHome.aspx";
+                }
                 if (pageName.Equals("frmFamilyInformation.aspx"))
                 {
                     (levelTwoNavigationUserControl1.FindControl("PanelPatiInfo") as Panel).Visible = false;

@@ -23,8 +23,12 @@ namespace Interface.SCM
         int SaveDisposeItems(int StoreId, int LocationId, DateTime AsofDate, int UserId, DataTable theDT);
         DataSet GetStockforAdjustment(int StoreId, string AdjustmentDate);
         DataTable GetDuplicateBatchOpenStock(string batchname, DateTime ExpiryDate);
-
-
-     
+        DataSet GetOpenStockWeb();
+        int SavePurchaseOrderWeb(DataTable DtMasterPO, DataTable dtPOItems, bool isUpdate);
+        int SaveUpdateStockAdjustmentWeb(DataTable theDTAdjustStock, int LocationId, int StoreId,
+                                            string AdjustmentDate, int AdjustmentPreparedBy, int AdjustmentAuthorisedBy,
+                                            int Updatestock, int UserID);
+        int SaveGoodreceivedNotes_Web(DataTable DtMasterGRN, DataTable dtGRNItems, int IsPOorIST);
+        int SaveUpdateOpeningStockWeb(DataTable theDTOPStock, Int32 UserID, string TransactionDate);
     }
 }

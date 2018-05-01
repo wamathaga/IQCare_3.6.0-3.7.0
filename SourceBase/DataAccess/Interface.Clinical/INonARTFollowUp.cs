@@ -12,7 +12,7 @@ namespace Interface.Clinical
     {
         DataSet GetPatientNonARTFollowUp(int PatientID);
         DataSet GetExistVisitNonARTFollowUp(int PatientID);
-        DataSet SaveNonARTFollowUp(int PatientID, int PharmacyID, int LocationID, int VisitID, DataSet theDS, DataTable theDT, Hashtable theHT, string OrderedByDate, string DispensedByDate, Boolean Signature, int EmployeeID, int UserID, Boolean flag, Boolean theHIVAssocDisease, int DataQualityFlag, DataTable theCustomFieldData);
+        DataSet SaveNonARTFollowUp(int PatientID, int PharmacyID, int LocationID, int VisitID, DataSet theDS, DataTable theDT, Hashtable theHT, DateTime OrderedByDate, DateTime DispensedByDate, Boolean Signature, int EmployeeID, int UserID, Boolean flag, Boolean theHIVAssocDisease, int DataQualityFlag, DataTable theCustomFieldData);
         DataSet GetPatientExsistNonARTFollowUp(int PatientID, int VisitID);
         DataSet GetExistNonARTFollowUpDrugDetails(int PharmacyID);
         DataSet GetNonARTBoundaryValues();

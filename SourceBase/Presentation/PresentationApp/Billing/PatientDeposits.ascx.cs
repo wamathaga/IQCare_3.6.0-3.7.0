@@ -315,7 +315,7 @@ namespace IQCare.Web.Billing
             try
             {
                 decimal amount = 0.0M;
-                amount = Convert.ToDecimal(textAmount.Text.Trim() == "" ? "0.0" : textAmount.Text.Trim());
+                amount = Convert.ToDecimal(textAmount.Text.Trim());
                 if (amount > 0.0M)
                 {
                     DataTable dt = this.BillingManager.ExecuteDepositTransaction(this.PatientID, this.LocationID, this.UserID, amount, DepositTransactionType.MakeDeposit);             

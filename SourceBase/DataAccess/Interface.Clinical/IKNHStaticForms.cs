@@ -35,5 +35,6 @@ namespace Interface.Clinical
         DataSet GetPatientDrugHistory(int ptn_pk);
         DataSet GetZScoreValues(int Ptn_pk, string gender, string height);
         DataSet GetAdultFollowUpFormAutoPopulatingData(int ptn_pk);
+        DataSet GetAlerts(int PatientId);
     }
 }

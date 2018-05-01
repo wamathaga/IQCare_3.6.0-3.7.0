@@ -278,6 +278,22 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
                     IQCareMsgBox.Show("AgeMonthRange", theMsg, this);
                     return false;
                 }
+
+            }
+
+            if (ddlrelationtype.SelectedValue == "3" || ddlrelationtype.SelectedValue == "5")
+            {
+                if (txtAgeYear.Text != "")
+                {
+                    Decimal AgeinYear = Math.Round(Convert.ToDecimal(Session["PatientAge"]), 0);
+                    if (AgeinYear <= Convert.ToDecimal(txtAgeYear.Text))
+                    {
+                        ScriptManager.RegisterStartupScript(this, GetType(), "PatientAge", "alert('Child/GrandChild Age cannot be more than Parent/GrandParent Age');", true);
+                        //IQCareMsgBox.Show("PatientAge", this);
+                        txtAgeYear.Focus();
+                        return false;
+                    }
+                }
             }
         }
         // Comment By deepak
@@ -1057,15 +1073,20 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
     }
     protected void btnFind(object sender, EventArgs e)
     {
-        string theUrl = string.Format("../frmFindAddPatient.aspx?FormName=FamilyInfo");
-        if (Session["SaveFlag"] != null)
+        try
         {
-            if (Session["SaveFlag"].ToString() == "Edit")
+            string theUrl = string.Format("../frmFindAddPatient.aspx?FormName=FamilyInfo");
+            if (Session["SaveFlag"] != null)
             {
-                Session["SaveFlag"] = "Add";
+                if (Session["SaveFlag"].ToString() == "Edit")
+                {
+                    Session["SaveFlag"] = "Add";
+                }
             }
+            Response.Redirect(theUrl, false);
         }
-        Response.Redirect(theUrl);
+        catch (Exception ex)
+        { }
     }
     protected void btnBack_Click(object sender, EventArgs e)
     {

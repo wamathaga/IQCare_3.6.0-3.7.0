@@ -16,7 +16,7 @@ namespace Interface.Clinical
         DataSet GetFollowUpARTupdate(int patientid, int visitpk, int locationID);
         DataSet GetARTFollowUPVisitDate(int patientid);
         DataSet GetAllDropDownsART(int patientid);
-        int Save_Update_FollowUP(int patientID, int VisitID, int LocationID, Hashtable ht, DataSet theDS_ARTFU, int VisitIE, int rdoARVSideEffectsNone, int rdoARVSideEffectsNotDocumented, int rdoOIsAIDsIllnessNone, int rdoOIsAIDsIllnessNotDocumented, int userID, Boolean Save, Boolean Update, string createDate, int DataQualityFlag, DataTable theCustomFieldData);
+        int Save_Update_FollowUP(int patientID, int VisitID, int LocationID, Hashtable ht, DataSet theDS_ARTFU, int VisitIE, int rdoARVSideEffectsNone, int rdoARVSideEffectsNotDocumented, int rdoOIsAIDsIllnessNone, int rdoOIsAIDsIllnessNotDocumented, int userID, Boolean Save, Boolean Update, DateTime createDate, int DataQualityFlag, DataTable theCustomFieldData);
         DataSet GetClinicalDate(int patientID, int visittype);
         int DeleteARTForms(string FormName, int OrderNo, int PatientId, int userID);
     }

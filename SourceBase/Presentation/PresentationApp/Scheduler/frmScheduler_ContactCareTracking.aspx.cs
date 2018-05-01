@@ -487,12 +487,26 @@ public partial class Scheduler_frmScheduler_ContactCareTracking : BasePage
             if (theDV.Count > 0)
             {
                 //ddinterviewer.DataSource = null;
-                theBindManager.BindCombo(ddinterviewer, theDT, "EmployeeName", "EmployeeId");
+                //theBindManager.BindCombo(ddinterviewer, theDT, "EmployeeName", "EmployeeId"); Bug Id 384
+                BindUserDropdown(ddinterviewer, string.Empty);
                 theDV.Dispose();
             }
             //theDT.Clear();
         }
 
+    }
+    private void BindUserDropdown(DropDownList DropDownID, String userId)
+    {
+        Dictionary<int, string> userList = new Dictionary<int, string>();
+        CustomFieldClinical.BindUserDropDown(DropDownID, out userList);
+        if (!string.IsNullOrEmpty(userId))
+        {
+            if (userList.ContainsKey(Convert.ToInt32(userId)))
+            {
+                DropDownID.SelectedValue = userId;
+                //SecurityPerTabSignature = userId;
+            }
+        }
     }
     protected void btnsave_ServerClick1(object sender, EventArgs e)
     {

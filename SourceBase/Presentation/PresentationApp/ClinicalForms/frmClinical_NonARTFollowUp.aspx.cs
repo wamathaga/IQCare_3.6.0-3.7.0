@@ -16,6 +16,7 @@ using Application.Common;
 using Application.Presentation;
 using Interface.Security;
 using Interface.Administration;
+using System.Collections.Generic;
 #endregion
 public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandler
 {
@@ -26,13 +27,13 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     // Description       : Non-ART Follow-Up
     //
     /////////////////////////////////////////////////////////////////////
-    
+
     #region "Variable Declaration"
     public DataTable theDrugTable, OtherDrugs, theExixtDrugDT, DT1, theDTHivAssoConditionleft, theDTHivAssoConditionright;
     public DataSet theDS1 = new DataSet();
 
     DataSet theDS;
-    DataSet theExistDS,theExistDS2, theExistVisitDS;
+    DataSet theExistDS, theExistDS2, theExistVisitDS;
     DataSet theExistDS1;
     INonARTFollowUp NonARTManager;
     Hashtable theHT;
@@ -41,10 +42,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     int OrderType = 221;
     string theOrderByName, theDispensedByName, str, strCallback, strHeight;
     Boolean theHIVAssocDisease;
-    int thepregnant = 9 ,theWHOStage = 99999,theWABStage = 99999, thephysHeight = 99999 , thePain = 99999, theVisitPk = 0;
-    Decimal thephysTemp = 99999, thephysRR = 99999 , thephysHR = 99999 , thephysBPDiastolic = 99999 , thephysBPSystolic = 99999 , thephysWeight = 99999;
-    DateTime  theNextAppDate,  theCreateDate, theCurrentDate;
-    string theTestResultDate, theVisitDate, theLMP, theOrderedByDate, theDispensedByDate;
+    int thepregnant = 9, theWHOStage = 99999, theWABStage = 99999, thephysHeight = 99999, thePain = 99999, theVisitPk = 0;
+    Decimal thephysTemp = 99999, thephysRR = 99999, thephysHR = 99999, thephysBPDiastolic = 99999, thephysBPSystolic = 99999, thephysWeight = 99999;
+    DateTime theLMP, theOrderedByDate, theDispensedByDate, theVisitDate, theNextAppDate, theTestResultDate, theCreateDate, theCurrentDate;
     //Amitava Sinha
     int icount;
     StringBuilder sbParameter;
@@ -57,7 +57,6 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
     #region Validation Functions
     private Boolean TransferValidation(int PId)
-
     {
         IPatientTransfer IPTransferMgr;
         IPTransferMgr = (IPatientTransfer)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientTransfer, BusinessProcess.Clinical");
@@ -76,7 +75,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             }
         }
         ////else if (Request.QueryString["name"] == "Edit")
-        else if ((Convert.ToInt32(Session["PatientVisitId"]))>1)
+        else if ((Convert.ToInt32(Session["PatientVisitId"])) > 1)
         {
             //int visitPK = Convert.ToInt32(Request.QueryString["visitid"]);
             int visitPK = Convert.ToInt32(Session["PatientVisitId"]);
@@ -121,7 +120,6 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     }
     private Boolean FieldValidationPaperless()
     {
-        DateTime theVisitDateFV;
         //int PatientId = Convert.ToInt32(Request.QueryString["PatientId"]);
         int PatientId = Convert.ToInt32(Session["PatientVisitId"]);
         AuthenticationManager auth = new AuthenticationManager();
@@ -152,18 +150,18 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
         else if (txtvisitDate.Text != "")
         {
-            theVisitDateFV = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
+            theVisitDate = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
 
             if (Session["IEVisitDate"] != null)
             {
                 DateTime theIEVisitDate = Convert.ToDateTime(Session["IEVisitDate"].ToString());
-                if (theIEVisitDate > theVisitDateFV)
+                if (theIEVisitDate > theVisitDate)
                 {
                     IQCareMsgBox.Show("CompareIEVisitDate", this);
                     txtvisitDate.Focus();
                     return false;
                 }
-                else if (theVisitDateFV > theCurrentDate)
+                else if (theVisitDate > theCurrentDate)
                 {
                     IQCareMsgBox.Show("NonARTVisitDate", this);
                     txtvisitDate.Focus();
@@ -175,8 +173,8 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         {
             if (txtLMP.Value != "")
             {
-                DateTime theLMPFV = Convert.ToDateTime(theUtils.MakeDate(txtLMP.Value));
-                if (theLMPFV > theCurrentDate)
+                theLMP = Convert.ToDateTime(theUtils.MakeDate(txtLMP.Value));
+                if (theLMP > theCurrentDate)
                 {
                     IQCareMsgBox.Show("NonARTLMPDate", this);
                     txtvisitDate.Focus();
@@ -188,9 +186,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
         if (txtSpecifyDate.Value != "")
         {
-            theVisitDateFV = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
+            theVisitDate = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
             theNextAppDate = Convert.ToDateTime(theUtils.MakeDate(txtSpecifyDate.Value));
-            if (theNextAppDate <= theVisitDateFV)                ///theCurrentDate)
+            if (theNextAppDate <= theVisitDate)                ///theCurrentDate)
             {
                 IQCareMsgBox.Show("NonARTNextAppDate", this);
                 txtSpecifyDate.Focus();
@@ -249,32 +247,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             }
             else
             {
-                
-                    if (ddlPharmReportedbyName.SelectedIndex == 0)
-                    {
-                        MsgBuilder theMsg = new MsgBuilder();
-                        theMsg.DataElements["Control"] = "Dispensed By";
-                        IQCareMsgBox.Show("BlankDropDown", theMsg, this);
-                        return false;
-                    }
-                    if (dateconstraint)
-                    {
-                        if (txtpharmReportedbyDate.Value == "")
-                        {
-                            MsgBuilder theMsg = new MsgBuilder();
-                            theMsg.DataElements["Control"] = "DispensedByDate";
-                            IQCareMsgBox.Show("BlankTextBox", theMsg, this);
-                            return false;
-                        }
-                    }
-                
 
-            }
-
-        }
-        else
-        {
-            
                 if (ddlPharmReportedbyName.SelectedIndex == 0)
                 {
                     MsgBuilder theMsg = new MsgBuilder();
@@ -292,7 +265,32 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                         return false;
                     }
                 }
-           
+
+
+            }
+
+        }
+        else
+        {
+
+            if (ddlPharmReportedbyName.SelectedIndex == 0)
+            {
+                MsgBuilder theMsg = new MsgBuilder();
+                theMsg.DataElements["Control"] = "Dispensed By";
+                IQCareMsgBox.Show("BlankDropDown", theMsg, this);
+                return false;
+            }
+            if (dateconstraint)
+            {
+                if (txtpharmReportedbyDate.Value == "")
+                {
+                    MsgBuilder theMsg = new MsgBuilder();
+                    theMsg.DataElements["Control"] = "DispensedByDate";
+                    IQCareMsgBox.Show("BlankTextBox", theMsg, this);
+                    return false;
+                }
+            }
+
 
         }
         //Order By Section
@@ -416,7 +414,6 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     }
     private Boolean FieldValidation()
     {
-        DateTime theVisitDateFV;
         //int PatientId = Convert.ToInt32(Request.QueryString["PatientId"]);
         AuthenticationManager auth = new AuthenticationManager();
         bool dateconstraint = auth.CheckDateConstriant(Convert.ToInt32(Session["AppLocationId"]));
@@ -447,18 +444,18 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
         else if (txtvisitDate.Text != "")
         {
-            theVisitDateFV = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
-            
+            theVisitDate = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
+
             if (Session["IEVisitDate"] != null)
             {
                 DateTime theIEVisitDate = Convert.ToDateTime(Session["IEVisitDate"].ToString());
-                if (theIEVisitDate > theVisitDateFV)
+                if (theIEVisitDate > theVisitDate)
                 {
                     IQCareMsgBox.Show("CompareIEVisitDate", this);
                     txtvisitDate.Focus();
                     return false;
                 }
-                else if (theVisitDateFV > theCurrentDate)
+                else if (theVisitDate > theCurrentDate)
                 {
                     IQCareMsgBox.Show("NonARTVisitDate", this);
                     txtvisitDate.Focus();
@@ -470,8 +467,8 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         {
             if (txtLMP.Value != "")
             {
-                DateTime theLMPFV = Convert.ToDateTime(theUtils.MakeDate(txtLMP.Value));
-                if (theLMPFV > theCurrentDate)
+                theLMP = Convert.ToDateTime(theUtils.MakeDate(txtLMP.Value));
+                if (theLMP > theCurrentDate)
                 {
                     IQCareMsgBox.Show("NonARTLMPDate", this);
                     txtvisitDate.Focus();
@@ -485,9 +482,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         {
             if (txtSpecifyDate.Value != "")
             {
-                theVisitDateFV = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
+                theVisitDate = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
                 theNextAppDate = Convert.ToDateTime(theUtils.MakeDate(txtSpecifyDate.Value));
-                if (theNextAppDate <= theVisitDateFV)                ///theCurrentDate)
+                if (theNextAppDate <= theVisitDate)                ///theCurrentDate)
                 {
                     IQCareMsgBox.Show("NonARTNextAppDate", this);
                     txtSpecifyDate.Focus();
@@ -525,7 +522,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
         if (lstpharmSulfaTMXDose.SelectedIndex == 0)// && ((DataTable)Session["SaveOIDrug"]).Rows.Count == 0)
         {
-            if (lstpharmFluconazoleDose.SelectedIndex == 0 && theDrugCount == 0 )
+            if (lstpharmFluconazoleDose.SelectedIndex == 0 && theDrugCount == 0)
             {
                 if (ddlPharmReportedbyName.SelectedIndex != 0)
                 {
@@ -567,7 +564,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                         }
                     }
                 }
-               
+
             }
 
         }
@@ -593,7 +590,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     }
                 }
             }
-            
+
         }
         //Order By Section
         if (lstpharmSulfaTMXDose.SelectedIndex == 0)// && ((DataTable)Session["SaveOIDrug"]).Rows.Count == 0)
@@ -660,64 +657,63 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     return false;
                 }
             }
-        
-        
+
+
         }
 
         //
-            if (ddlPharmSignature.SelectedIndex == 3)
+        if (ddlPharmSignature.SelectedIndex == 3)
+        {
+            if (ddlCounselerName.SelectedIndex == 0)
             {
-                if (ddlCounselerName.SelectedIndex == 0)
+                MsgBuilder theMsg = new MsgBuilder();
+                theMsg.DataElements["Control"] = "Counselor Name";
+                IQCareMsgBox.Show("BlankDropDown", theMsg, this);
+                return false;
+            }
+        }
+        if (dateconstraint)
+        {
+            if (txtpharmOrderedbyDate.Value != "")
+            {
+                if (Convert.ToDateTime(Application["AppCurrentDate"]) < Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value)))
                 {
-                    MsgBuilder theMsg = new MsgBuilder();
-                    theMsg.DataElements["Control"] = "Counselor Name";
-                    IQCareMsgBox.Show("BlankDropDown", theMsg, this);
+                    IQCareMsgBox.Show("NonARTOrderbyDate", this);
+                    return false;
+                }
+
+                else
+                {
+                    if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value)))
+                    {
+                        IQCareMsgBox.Show("OrderredVisitDate", this);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        if (dateconstraint)
+        {
+            if (txtpharmReportedbyDate.Value != "")
+            {
+                if (Convert.ToDateTime(Application["AppCurrentDate"]) < Convert.ToDateTime(theUtils.MakeDate(txtpharmReportedbyDate.Value)))
+                {
+                    IQCareMsgBox.Show("NonARTDispensedbyDate", this);
+                    return false;
+                }
+                else if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(txtpharmReportedbyDate.Value))
+                {
+                    IQCareMsgBox.Show("DispensedVisitDate", this);
                     return false;
                 }
             }
-            if (dateconstraint)
-            {
-                if (txtpharmOrderedbyDate.Value != "")
-                {
-                    if (Convert.ToDateTime(Application["AppCurrentDate"]) < Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value)))
-                    {
-                        IQCareMsgBox.Show("NonARTOrderbyDate", this);
-                        return false;
-                    }
-
-                    else
-                    {
-                        if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value)))
-                        {
-                            IQCareMsgBox.Show("OrderredVisitDate", this);
-                            return false;
-                        }
-                    }
-                }
-            }
-
-            if (dateconstraint)
-            {
-                if (txtpharmReportedbyDate.Value != "")
-                {
-                    if (Convert.ToDateTime(Application["AppCurrentDate"]) < Convert.ToDateTime(theUtils.MakeDate(txtpharmReportedbyDate.Value)))
-                    {
-                        IQCareMsgBox.Show("NonARTDispensedbyDate", this);
-                        return false;
-                    }
-                    else if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(txtpharmReportedbyDate.Value))
-                    {
-                        IQCareMsgBox.Show("DispensedVisitDate", this);
-                        return false;
-                    }
-                }
-            }
+        }
         return true;
     }
 
     private Boolean DQFieldValidation1()
     {
-        DateTime theVisitDateFV, theOrderedByDateFV, theDispensedByDateFV;
         AuthenticationManager auth = new AuthenticationManager();
         bool dateconstraint = auth.CheckDateConstriant(Convert.ToInt32(Session["AppLocationId"]));
         int PatientId = Convert.ToInt32(Session["PatientId"]);
@@ -725,23 +721,23 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         {
             return false;
         }
-  
+
         IQCareSecurity = (IIQCareSystem)ObjectFactory.CreateInstance("BusinessProcess.Security.BIQCareSystem, BusinessProcess.Security");
         theCurrentDate = (DateTime)IQCareSecurity.SystemDate();
         IQCareUtils theUtils = new IQCareUtils();
         if (txtvisitDate.Text != "")
         {
-            theVisitDateFV = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
+            theVisitDate = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
             if (Session["IEVisitDate"] != null)
             {
                 DateTime theIEVisitDate = Convert.ToDateTime(Session["IEVisitDate"].ToString());
-                if (theIEVisitDate > theVisitDateFV)
+                if (theIEVisitDate > theVisitDate)
                 {
                     IQCareMsgBox.Show("CompareIEVisitDate", this);
                     txtvisitDate.Focus();
                     return false;
                 }
-                else if (theVisitDateFV > theCurrentDate)
+                else if (theVisitDate > theCurrentDate)
                 {
                     IQCareMsgBox.Show("NonARTVisitDate", this);
                     txtvisitDate.Focus();
@@ -749,68 +745,65 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 }
             }
         }
-        
-            if (txtLMP.Value != "")
-            {
-                DateTime theLMPFV = Convert.ToDateTime(theUtils.MakeDate(txtLMP.Value));
-                if (theLMPFV > theCurrentDate)
-                {
-                    IQCareMsgBox.Show("NonARTLMPDate", this);
-                    txtvisitDate.Focus();
-                    return false;
-                }
 
-           
+        if (txtLMP.Value != "")
+        {
+            theLMP = Convert.ToDateTime(theUtils.MakeDate(txtLMP.Value));
+            if (theLMP > theCurrentDate)
+            {
+                IQCareMsgBox.Show("NonARTLMPDate", this);
+                txtvisitDate.Focus();
+                return false;
+            }
+
+
         }
-        
-            if (txtSpecifyDate.Value != "")
+
+        if (txtSpecifyDate.Value != "")
+        {
+            theVisitDate = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
+            theNextAppDate = Convert.ToDateTime(theUtils.MakeDate(txtSpecifyDate.Value));
+            if (theNextAppDate <= theVisitDate)                ///theCurrentDate)
             {
-                theVisitDateFV = Convert.ToDateTime(theUtils.MakeDate(txtvisitDate.Text));
-                theNextAppDate = Convert.ToDateTime(theUtils.MakeDate(txtSpecifyDate.Value));
-                if (theNextAppDate <= theVisitDateFV)                ///theCurrentDate)
-                {
-                    IQCareMsgBox.Show("NonARTNextAppDate", this);
-                    txtSpecifyDate.Focus();
-                    return false;
-                }
-            
+                IQCareMsgBox.Show("NonARTNextAppDate", this);
+                txtSpecifyDate.Focus();
+                return false;
+            }
+
         }
-        
-            if ((txtvisitDate.Text != "") && (txtpharmOrderedbyDate.Value != ""))
-            {
-                if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(txtpharmOrderedbyDate.Value))
-                {
-                    IQCareMsgBox.Show("OrderredVisitDate", this);
-                    return false;
-                }
-            }
-        
-       
-            if (txtpharmReportedbyDate.Value != "")
-            {
-                if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(txtpharmReportedbyDate.Value))
-                {
-                    IQCareMsgBox.Show("DispensedVisitDate", this);
-                    return false;
-                }
-            }
 
-            if (txtpharmOrderedbyDate.Value != "")
+        if ((txtvisitDate.Text != "") && (txtpharmOrderedbyDate.Value != ""))
+        {
+            if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(txtpharmOrderedbyDate.Value))
             {
-                theOrderedByDateFV = Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value));
+                IQCareMsgBox.Show("OrderredVisitDate", this);
+                return false;
+            }
+        }
 
 
-                if (txtpharmReportedbyDate.Value != "")
-                {
-                    theDispensedByDateFV = Convert.ToDateTime(theUtils.MakeDate(txtpharmReportedbyDate.Value));
-                    if (theOrderedByDateFV > theDispensedByDateFV)
-                    {
-                        IQCareMsgBox.Show("NonARTDateCompare", this);
-                        return false;
-                    }
-                }
+        if (txtpharmReportedbyDate.Value != "")
+        {
+            if (Convert.ToDateTime(txtvisitDate.Text) > Convert.ToDateTime(txtpharmReportedbyDate.Value))
+            {
+                IQCareMsgBox.Show("DispensedVisitDate", this);
+                return false;
             }
-       
+        }
+
+        if (txtpharmOrderedbyDate.Value != "")
+            theOrderedByDate = Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value));
+
+        if (txtpharmReportedbyDate.Value != "")
+        {
+            theDispensedByDate = Convert.ToDateTime(theUtils.MakeDate(txtpharmReportedbyDate.Value));
+            if (theOrderedByDate > theDispensedByDate)
+            {
+                IQCareMsgBox.Show("NonARTDateCompare", this);
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -864,7 +857,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theBuilder.DataElements["Control"] = "-WAB Stage";
             strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
             strmsg = strmsg + "\\n";
-     
+
         }
 
         if (ddlphysWHOStage.SelectedValue == "0")
@@ -877,7 +870,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theBuilder.DataElements["Control"] = "-WHO Stage";
             strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
             strmsg = strmsg + "\\n";
-          
+
         }
         if (rdoHIVassocNone.Checked == false && rdoHIVassociate.Checked == false && PrevHIVassocNotDocumented.Checked == false)
         {
@@ -894,7 +887,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
 
         if (chkAssessment.SelectedValue == "" && rdoartAssessmentID.Checked == false && rdoartAssessmentID2.Checked == false)
-        { 
+        {
             string scriptAssessment = "<script language = 'javascript' defer ='defer' id = 'Assessment_Val'>\n";
             scriptAssessment += "To_Change_Color('AssessmentVal');\n";
             scriptAssessment += "To_Change_Color('ARTAssessmentVal');\n";
@@ -905,7 +898,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             strmsg += IQCareMsgBox.GetMessage("BlankList", theBuilder, this);
             strmsg = strmsg + "\\n";
         }
-     
+
         if (Session["SaveOIDrug"] != null)
         {
             if (((DataTable)Session["SaveOIDrug"]).Rows.Count != 0)
@@ -965,19 +958,19 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
                     strmsg = strmsg + "\\n";
                 }
-                
-                    if (txtpharmOrderedbyDate.Value == "")
-                    {
-                        string scriptOrderbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorOrderbyDate'>\n";
-                        scriptOrderbyDate += "To_Change_Color('OrderedByDate');\n";
-                        scriptOrderbyDate += "</script>\n";
-                        RegisterStartupScript("ColorOrderbyDate", scriptOrderbyDate);
-                        MsgBuilder theBuilder = new MsgBuilder();
-                        theBuilder.DataElements["Control"] = "-Dispensed By Date";
-                        strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
-                        strmsg = strmsg + "\\n";
-                    }
-               
+
+                if (txtpharmOrderedbyDate.Value == "")
+                {
+                    string scriptOrderbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorOrderbyDate'>\n";
+                    scriptOrderbyDate += "To_Change_Color('OrderedByDate');\n";
+                    scriptOrderbyDate += "</script>\n";
+                    RegisterStartupScript("ColorOrderbyDate", scriptOrderbyDate);
+                    MsgBuilder theBuilder = new MsgBuilder();
+                    theBuilder.DataElements["Control"] = "-Dispensed By Date";
+                    strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
+                    strmsg = strmsg + "\\n";
+                }
+
             }
 
         }
@@ -994,21 +987,21 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
                 strmsg = strmsg + "\\n";
             }
-            
-                if (txtpharmOrderedbyDate.Value == "")
-                {
-                    string scriptOrderbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorOrderbyDate'>\n";
-                    scriptOrderbyDate += "To_Change_Color('OrderedByDate');\n";
-                    scriptOrderbyDate += "</script>\n";
-                    RegisterStartupScript("ColorOrderbyDate", scriptOrderbyDate);
-                    MsgBuilder theBuilder = new MsgBuilder();
-                    theBuilder.DataElements["Control"] = "-Order By Date";
-                    strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
-                    strmsg = strmsg + "\\n";
-                }
-           
+
+            if (txtpharmOrderedbyDate.Value == "")
+            {
+                string scriptOrderbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorOrderbyDate'>\n";
+                scriptOrderbyDate += "To_Change_Color('OrderedByDate');\n";
+                scriptOrderbyDate += "</script>\n";
+                RegisterStartupScript("ColorOrderbyDate", scriptOrderbyDate);
+                MsgBuilder theBuilder = new MsgBuilder();
+                theBuilder.DataElements["Control"] = "-Order By Date";
+                strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
+                strmsg = strmsg + "\\n";
+            }
+
         }
-            
+
         //Dispense part
         if (lstpharmSulfaTMXDose.SelectedIndex == 0)// && ((DataTable)Session["SaveOIDrug"]).Rows.Count == 0)
         {
@@ -1025,19 +1018,19 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
                     strmsg = strmsg + "\\n";
                 }
-                
-                    if (txtpharmReportedbyDate.Value != "")
-                    {
-                        string scriptOI = "<script language = 'javascript' defer ='defer' id = 'ColorOI'>\n";
-                        scriptOI += "To_Change_Color('OI');\n";
-                        scriptOI += "</script>\n";
-                        RegisterStartupScript("ColorOI", scriptOI);
-                        MsgBuilder theBuilder = new MsgBuilder();
-                        theBuilder.DataElements["Control"] = "-Pharmacy";
-                        strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
-                        strmsg = strmsg + "\\n";
-                    }
-                
+
+                if (txtpharmReportedbyDate.Value != "")
+                {
+                    string scriptOI = "<script language = 'javascript' defer ='defer' id = 'ColorOI'>\n";
+                    scriptOI += "To_Change_Color('OI');\n";
+                    scriptOI += "</script>\n";
+                    RegisterStartupScript("ColorOI", scriptOI);
+                    MsgBuilder theBuilder = new MsgBuilder();
+                    theBuilder.DataElements["Control"] = "-Pharmacy";
+                    strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
+                    strmsg = strmsg + "\\n";
+                }
+
             }
             else
             {
@@ -1052,19 +1045,19 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
                     strmsg = strmsg + "\\n";
                 }
-                
-                    if (txtpharmReportedbyDate.Value == "")
-                    {
-                        string scriptDispensedbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorDispensedbyDate'>\n";
-                        scriptDispensedbyDate += "To_Change_Color('DispensedByDate');\n";
-                        scriptDispensedbyDate += "</script>\n";
-                        RegisterStartupScript("ColorDispensedbyDate", scriptDispensedbyDate);
-                        MsgBuilder theBuilder = new MsgBuilder();
-                        theBuilder.DataElements["Control"] = "-Dispensed By Date";
-                        strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
-                        strmsg = strmsg + "\\n";
-                    }
-                
+
+                if (txtpharmReportedbyDate.Value == "")
+                {
+                    string scriptDispensedbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorDispensedbyDate'>\n";
+                    scriptDispensedbyDate += "To_Change_Color('DispensedByDate');\n";
+                    scriptDispensedbyDate += "</script>\n";
+                    RegisterStartupScript("ColorDispensedbyDate", scriptDispensedbyDate);
+                    MsgBuilder theBuilder = new MsgBuilder();
+                    theBuilder.DataElements["Control"] = "-Dispensed By Date";
+                    strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
+                    strmsg = strmsg + "\\n";
+                }
+
             }
 
         }
@@ -1081,36 +1074,36 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
                 strmsg = strmsg + "\\n";
             }
-            
-                if (txtpharmReportedbyDate.Value == "")
-                {
-                    string scriptDispensedbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorDispensedbyDate'>\n";
-                    scriptDispensedbyDate += "To_Change_Color('DispensedByDate');\n";
-                    scriptDispensedbyDate += "</script>\n";
-                    RegisterStartupScript("ColorDispensedbyDate", scriptDispensedbyDate);
-                    MsgBuilder theBuilder = new MsgBuilder();
-                    theBuilder.DataElements["Control"] = "-Dispensed By Date";
-                    strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
-                    strmsg = strmsg + "\\n";
-                }
-           
+
+            if (txtpharmReportedbyDate.Value == "")
+            {
+                string scriptDispensedbyDate = "<script language = 'javascript' defer ='defer' id = 'ColorDispensedbyDate'>\n";
+                scriptDispensedbyDate += "To_Change_Color('DispensedByDate');\n";
+                scriptDispensedbyDate += "</script>\n";
+                RegisterStartupScript("ColorDispensedbyDate", scriptDispensedbyDate);
+                MsgBuilder theBuilder = new MsgBuilder();
+                theBuilder.DataElements["Control"] = "-Dispensed By Date";
+                strmsg += IQCareMsgBox.GetMessage("BlankTextBox", theBuilder, this);
+                strmsg = strmsg + "\\n";
+            }
+
         }
 
-//Signature part
-            if (ddlPharmSignature.SelectedIndex == 3)
+        //Signature part
+        if (ddlPharmSignature.SelectedIndex == 3)
+        {
+            if (ddlCounselerName.SelectedIndex == 0)
             {
-                if (ddlCounselerName.SelectedIndex == 0)
-                {
-                    string scriptCounSig = "<script language = 'javascript' defer ='defer' id = 'ColorCounslorSignature'>\n";
-                    scriptCounSig += "To_Change_Color('CounSign');\n";
-                    scriptCounSig += "</script>\n";
-                    RegisterStartupScript("ColorCounslorSignature", scriptCounSig);
-                    MsgBuilder theBuilder = new MsgBuilder();
-                    theBuilder.DataElements["Control"] = "-Counselor Name";
-                    strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
-                    strmsg = strmsg + "\\n";
-                }
+                string scriptCounSig = "<script language = 'javascript' defer ='defer' id = 'ColorCounslorSignature'>\n";
+                scriptCounSig += "To_Change_Color('CounSign');\n";
+                scriptCounSig += "</script>\n";
+                RegisterStartupScript("ColorCounslorSignature", scriptCounSig);
+                MsgBuilder theBuilder = new MsgBuilder();
+                theBuilder.DataElements["Control"] = "-Counselor Name";
+                strmsg += IQCareMsgBox.GetMessage("BlankDropDown", theBuilder, this);
+                strmsg = strmsg + "\\n";
             }
+        }
 
         return strmsg;
     }
@@ -1118,17 +1111,16 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     /************* Check Enter Visit Date with Exist all Non-ART Visit Dates ***********/
     private Boolean CheckNonARTVisitDates()
     {
-        DateTime theVisitDateFV;
         if (txtvisitDate.Text != Session["VDate"].ToString())
         {
-            theVisitDateFV = Convert.ToDateTime(txtvisitDate.Text.ToString());
+            theVisitDate = Convert.ToDateTime(txtvisitDate.Text.ToString());
             if (Session["ExistNonARTVisits"] != null)
             {
                 DataTable theNonARTVisitDT = (DataTable)Session["ExistNonARTVisits"];
                 for (int i = 0; i < theNonARTVisitDT.Rows.Count; i++)
                 {
 
-                    if (theVisitDateFV == Convert.ToDateTime(theNonARTVisitDT.Rows[i]["VisitDate"].ToString()))
+                    if (theVisitDate == Convert.ToDateTime(theNonARTVisitDT.Rows[i]["VisitDate"].ToString()))
                     {
                         IQCareMsgBox.Show("ClinicalRecordExist", this);
                         return false;
@@ -1171,31 +1163,31 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             RegisterStartupScript("confirm", script);
         }
     }
- 
+
     private void NonARTFollowUpParameters()
     {
-       
+
         theHT = new Hashtable();
         IQCareUtils theUtils = new IQCareUtils();
 
         if (txtvisitDate.Text == "")
         {
-            theVisitDate = "01-Jan-1900";
+            theVisitDate = Convert.ToDateTime(theUtils.MakeDate("01-01-1900"));
         }
         else
         {
-            theVisitDate = txtvisitDate.Text;
+            theVisitDate = Convert.ToDateTime(txtvisitDate.Text);
         }
 
         /************** LastCD4 ***************/
 
         if (txtTestResultsDate.Value == "")
         {
-            theTestResultDate = "01-Jan-1900";
+            theTestResultDate = Convert.ToDateTime(theUtils.MakeDate("01-01-1900"));
         }
         else
         {
-            theTestResultDate = txtTestResultsDate.Value;
+            theTestResultDate = Convert.ToDateTime(txtTestResultsDate.Value);
         }
 
         //if (rdopregnantYes.Checked == true)
@@ -1212,11 +1204,11 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
         if (txtLMP.Value == "")
         {
-            theLMP = "01-Jan-1900";
+            theLMP = Convert.ToDateTime(theUtils.MakeDate("01-01-1900"));
         }
         else
         {
-            theLMP = txtLMP.Value;
+            theLMP = Convert.ToDateTime(txtLMP.Value);
         }
 
         /************ Physical Exam Data ***************/
@@ -1335,9 +1327,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
         //Appointment Dates and Reason as per BusinessRules
         theHT.Add("OrderType", OrderType);
-        theHT.Add("VisitDate", theVisitDate);
+        theHT.Add("VisitDate", theVisitDate.ToString("dd-MMM-yyyy"));
         theHT.Add("VisitType", VisitType);
-        theHT.Add("LastCD4", theTestResultDate);
+        theHT.Add("LastCD4", theTestResultDate.ToString("dd-MMM-yyyy"));
         //theHT.Add("Pregnant", thepregnant);
         theHT.Add("Delivered", Delivered);
         if (Delivered == 1)
@@ -1366,7 +1358,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 theHT.Add("EDDDate", "");
             }
         }
-        theHT.Add("LMP", theLMP);
+        theHT.Add("LMP", theLMP.ToString("dd-MMM-yyyy"));
         theHT.Add("physTemp", thephysTemp);
         theHT.Add("physRR", thephysRR);
         theHT.Add("physHR", thephysHR);
@@ -1398,7 +1390,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         {
             IInitialEval IEAppManager;
             IEAppManager = (IInitialEval)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BInitialEval, BusinessProcess.Clinical");
-            DataSet theDSApp = IEAppManager.GetAppointment(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["AppLocationId"]), txtSpecifyDate.Value, Convert.ToInt32(ddlAppReason.SelectedValue));
+            DataSet theDSApp = IEAppManager.GetAppointment(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["AppLocationId"]), Convert.ToDateTime(txtSpecifyDate.Value), Convert.ToInt32(ddlAppReason.SelectedValue));
             if (Convert.ToInt32(theDSApp.Tables[0].Rows[0]["ExistFlag"]) == 1)
             {
                 if (theDSApp.Tables[1].Rows.Count > 0)
@@ -1421,7 +1413,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         theHT.Add("AppDate", txtSpecifyDate.Value);
         theHT.Add("AppReason", ddlAppReason.SelectedValue);
         theHT.Add("OrderBy", theOrderByName);
-        theHT.Add("Signatureid", theOrderByName); 
+        theHT.Add("Signatureid", theOrderByName);
         theHT.Add("DispensedBy", theDispensedByName);
         theHT.Add("UserID", Convert.ToInt32(Session["AppUserId"].ToString()));
         if (Convert.ToString(Session["VDate"]) == txtvisitDate.Text)
@@ -1431,16 +1423,16 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         else { theHT.Add("Flag", 0); }
 
 
-      /*if (Session["theSaveDS"] == null)
-        {
-            theHT.Add("CreateDate", theCreateDate);
-        }
-        else
-        {
-            DataSet theViewDS1 = (DataSet)Session["theSaveDS"];
-            theHT.Add("CreateDate", Convert.ToDateTime(theViewDS1.Tables[2].Rows[0][0]));
-        }
-     */
+        /*if (Session["theSaveDS"] == null)
+          {
+              theHT.Add("CreateDate", theCreateDate);
+          }
+          else
+          {
+              DataSet theViewDS1 = (DataSet)Session["theSaveDS"];
+              theHT.Add("CreateDate", Convert.ToDateTime(theViewDS1.Tables[2].Rows[0][0]));
+          }
+       */
     }
 
     /********Table Creation **********/
@@ -1459,7 +1451,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         INonARTFollowUp NonARTManager;
         try
         {
-           
+
             //if (Request.QueryString["PatientId"] != null)
             if (Session["PatientId"] != null)
             {
@@ -1489,7 +1481,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                         theDR["DrugId"] = theDR["DrugId"].ToString() + "9999";
                 }
                 //-------------------------------------------- ENDS------------------------------------------------
-        
+
                 theExistVisitDS = (DataSet)NonARTManager.GetExistVisitNonARTFollowUp(PatientID);
                 ViewState["Pregnant"] = true;
                 if (theDS.Tables[2].Rows.Count != 0)
@@ -1508,492 +1500,438 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 {
                     txtLMP.Value = string.Format("{0:dd-MMM-yyyy}", theDS.Tables[24].Rows[0]["LMP"]);
                 }
-                
+
                 FillDropDownList(theDS);
-               
-                    //if (Request.QueryString["name"] == "Edit" || Request.QueryString["name"] == "Delete")
-                    if ((Convert.ToInt32(Session["PatientVisitId"])) > 1 || Request.QueryString["name"] == "Delete")
+
+                if (Request.QueryString["sts"] == "0")
+                {
+                    Session["PatientVisitId"] = 0;
+                }
+
+                //if (Request.QueryString["name"] == "Edit" || Request.QueryString["name"] == "Delete")
+                if ((Convert.ToInt32(Session["PatientVisitId"])) > 1 || Request.QueryString["name"] == "Delete")
+                {
+                    IPatientHome IPatienthome;
+                    IPatienthome = (IPatientHome)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientHome, BusinessProcess.Clinical");
+                    DataTable theDT = IPatienthome.GetPharmacyID(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["PatientVisitId"]));
+                    Session["PharmaID"] = theDT.Rows[0]["PtnPharmacyID"].ToString();
+                    theVisitPk = Convert.ToInt32(Session["PatientVisitId"]);
+                    int PharmacyID = Convert.ToInt32(Session["PharmaID"]);
+                    if (PharmacyID != 0)
                     {
-                        IPatientHome IPatienthome;
-                        IPatienthome = (IPatientHome)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientHome, BusinessProcess.Clinical");
-                        DataTable theDT = IPatienthome.GetPharmacyID(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["PatientVisitId"]));
-                        Session["PharmaID"] = theDT.Rows[0]["PtnPharmacyID"].ToString();
-                        theVisitPk = Convert.ToInt32(Session["PatientVisitId"]);
-                        int PharmacyID = Convert.ToInt32(Session["PharmaID"]);
-                        if (PharmacyID != 0)
+                        theDS1 = (DataSet)NonARTManager.GetExistPharmacyDetail(PharmacyID);
+                        //--- Rupesh 03-Jan-08 starts ---
+                        foreach (DataRow theDR in theDS1.Tables[0].Rows)
                         {
-                            theDS1 = (DataSet)NonARTManager.GetExistPharmacyDetail(PharmacyID);
-                            //--- Rupesh 03-Jan-08 starts ---
-                            foreach (DataRow theDR in theDS1.Tables[0].Rows)
-                            {
-                         
-                                if (Convert.ToInt32(theDR["GenericId"]) == 0) // its drug
-                                    theDR["drug_pk"] = theDR["drug_pk"].ToString() + "8888";
-                                else //---- its 1 (generic)
-                                    theDR["GenericId"] = theDR["GenericId"].ToString() + "9999";
 
-                            }
-                            //--- Rupesh 03-Jan-08 ends ---
-                            theExistDS2 = NonARTManager.GetExistNonARTFollowUpDrugDetails(PharmacyID);
-                            //--- Rupesh 03-Jan-08 starts ---
-                            foreach (DataRow theDR in theExistDS2.Tables[0].Rows)
-                            {
-           
-                                if (Convert.ToInt32(theDR["GenericID"]) == 0) // its drug
-                                    theDR["Drug_Pk"] = theDR["Drug_Pk"].ToString() + "8888";
-                                else //---- its 1 (generic)
-                                    theDR["GenericID"] = theDR["GenericID"].ToString() + "9999";
+                            if (Convert.ToInt32(theDR["GenericId"]) == 0) // its drug
+                                theDR["drug_pk"] = theDR["drug_pk"].ToString() + "8888";
+                            else //---- its 1 (generic)
+                                theDR["GenericId"] = theDR["GenericId"].ToString() + "9999";
 
-                            }
-                            //Jayant - 09 - May - 2008 - start
-                            if (theExistDS2.Tables[0].Rows.Count != 0)
-                            {
-                                /********************** NonART FollowUp Drug Details **********************/
+                        }
+                        //--- Rupesh 03-Jan-08 ends ---
+                        theExistDS2 = NonARTManager.GetExistNonARTFollowUpDrugDetails(PharmacyID);
+                        //--- Rupesh 03-Jan-08 starts ---
+                        foreach (DataRow theDR in theExistDS2.Tables[0].Rows)
+                        {
 
-                                for (int i = 0; i < theExistDS2.Tables[0].Rows.Count; i++)
+                            if (Convert.ToInt32(theDR["GenericID"]) == 0) // its drug
+                                theDR["Drug_Pk"] = theDR["Drug_Pk"].ToString() + "8888";
+                            else //---- its 1 (generic)
+                                theDR["GenericID"] = theDR["GenericID"].ToString() + "9999";
+
+                        }
+                        //Jayant - 09 - May - 2008 - start
+                        if (theExistDS2.Tables[0].Rows.Count != 0)
+                        {
+                            /********************** NonART FollowUp Drug Details **********************/
+
+                            for (int i = 0; i < theExistDS2.Tables[0].Rows.Count; i++)
+                            {
+                                if (Convert.ToInt32(theExistDS2.Tables[0].Rows[i]["GenericID"].ToString()) == 2779999)
                                 {
-                                    if (Convert.ToInt32(theExistDS2.Tables[0].Rows[i]["GenericID"].ToString()) == 2779999)
+                                    if (theExistDS2.Tables[0].Rows[i]["StrengthID"].ToString() != null)
                                     {
-                                        if (theExistDS2.Tables[0].Rows[i]["StrengthID"].ToString() != null)
-                                        {
-                                            lstpharmSulfaTMXDose.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["StrengthID"]);
-                                            lstpharmSulfaTMXFreq.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["FrequencyID"]);
+                                        lstpharmSulfaTMXDose.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["StrengthID"]);
+                                        lstpharmSulfaTMXFreq.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["FrequencyID"]);
 
-                                            txtpharmSulfaTMXDuration.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["Duration"]);
-                                            txtpharmSulfaTMXQty.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["OrderedQuantity"]);
-                                            txtpharmSulfaTMXDispensed.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["DispensedQuantity"]);
-                                        }
+                                        txtpharmSulfaTMXDuration.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["Duration"]);
+                                        txtpharmSulfaTMXQty.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["OrderedQuantity"]);
+                                        txtpharmSulfaTMXDispensed.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["DispensedQuantity"]);
                                     }
+                                }
 
-                                    if (Convert.ToInt32(theExistDS2.Tables[0].Rows[i]["GenericID"].ToString()) == 1239999)
+                                if (Convert.ToInt32(theExistDS2.Tables[0].Rows[i]["GenericID"].ToString()) == 1239999)
+                                {
+                                    if (theExistDS2.Tables[0].Rows[i]["StrengthID"].ToString() != null)
                                     {
-                                        if (theExistDS2.Tables[0].Rows[i]["StrengthID"].ToString() != null)
-                                        {
-                                            lstpharmFluconazoleDose.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["StrengthID"]);
-                                            lstpharmFluconazoleFreq.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["FrequencyID"]);
-                                            txtpharmFluconazoleDuration.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["Duration"]);
-                                            txtpharmFluconazoleQty.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["OrderedQuantity"]);
-                                            txtpharmFluconazoleDispensed.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["DispensedQuantity"]);
-                                        }
+                                        lstpharmFluconazoleDose.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["StrengthID"]);
+                                        lstpharmFluconazoleFreq.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["FrequencyID"]);
+                                        txtpharmFluconazoleDuration.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["Duration"]);
+                                        txtpharmFluconazoleQty.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["OrderedQuantity"]);
+                                        txtpharmFluconazoleDispensed.Value = Convert.ToString(theExistDS2.Tables[0].Rows[i]["DispensedQuantity"]);
                                     }
                                 }
                             }
-                            
-                            theExistDS1 = NonARTManager.GetExistNonARTFollowUpDetails(PharmacyID, theVisitPk, PatientID);
-                            if (theExistDS1.Tables[0].Rows.Count != 0)
+                        }
+
+                        theExistDS1 = NonARTManager.GetExistNonARTFollowUpDetails(PharmacyID, theVisitPk, PatientID);
+                        if (theExistDS1.Tables[0].Rows.Count != 0)
+                        {
+                            if (Convert.ToInt32(theExistDS1.Tables[0].Rows[0]["Signature"].ToString()) == 0)
                             {
-                                if (Convert.ToInt32(theExistDS1.Tables[0].Rows[0]["Signature"].ToString()) == 0)
-                                {
-                                    ddlPharmSignature.Value = "1";
-                                }
-                                else if (Convert.ToInt32(theExistDS1.Tables[0].Rows[0]["EmployeeID"].ToString()) != 0)
-                                {
-                                    ddlPharmSignature.Value = "3";
-                                    ddlCounselerName.SelectedValue = theExistDS1.Tables[0].Rows[0]["EmployeeID"].ToString();
-                                    string script = "<script language = 'javascript' defer ='defer' id = 'CounsellarName'>\n";
-                                    script += "show('Adherance_counsellor_signature');\n";
-                                    script += "</script>\n";
-                                    RegisterStartupScript("CounsellarName", script);
-                                    ddlCounselerName.Visible = true;
-                                }
-                                else
-                                {
-                                    ddlPharmSignature.Value = "2";
-                                }
-//
+                                ddlPharmSignature.Value = "1";
+                            }
+                            else if (Convert.ToInt32(theExistDS1.Tables[0].Rows[0]["EmployeeID"].ToString()) != 0)
+                            {
+                                ddlPharmSignature.Value = "3";
+                                ddlCounselerName.SelectedValue = theExistDS1.Tables[0].Rows[0]["EmployeeID"].ToString();
+                                string script = "<script language = 'javascript' defer ='defer' id = 'CounsellarName'>\n";
+                                script += "show('Adherance_counsellor_signature');\n";
+                                script += "</script>\n";
+                                RegisterStartupScript("CounsellarName", script);
+                                ddlCounselerName.Visible = true;
+                            }
+                            else
+                            {
+                                ddlPharmSignature.Value = "2";
+                            }
+                            //
+                            BindDropdownOrderBy(theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString());
+                            ddlPharmOrderedbyName.SelectedValue = theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString();
+
+                            if (theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString() == "")
+                            {
+                                ddlPharmOrderedbyName.SelectedValue = "";
+                            }
+                            else
+                            {
                                 BindDropdownOrderBy(theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString());
                                 ddlPharmOrderedbyName.SelectedValue = theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString();
-                         
-                                if (theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString() == "")
-                                {
-                                    ddlPharmOrderedbyName.SelectedValue = "";
-                                }
-                                else
-                                {
-                                    BindDropdownOrderBy(theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString());
-                                    ddlPharmOrderedbyName.SelectedValue = theExistDS1.Tables[0].Rows[0]["OrderedBy"].ToString();
-                                }
-                                
-                                if (theExistDS1.Tables[0].Rows[0]["OrderedByDate"].ToString() == "")
-                                {
-                                    txtpharmOrderedbyDate.Value = "";
-                                }
-                                else
-                                {
-                                    DateTime thepharmOrderByDate = Convert.ToDateTime(theExistDS1.Tables[0].Rows[0]["OrderedByDate"].ToString());
-                                    txtpharmOrderedbyDate.Value = thepharmOrderByDate.ToString(Session["AppDateFormat"].ToString());
-                                }
-                                     //txtpharmOrderedbyDate.Value = theOrderedByDate.ToString(Session["AppDateFormat"].ToString());
-                                     BindDropdownReportedBy(theExistDS1.Tables[0].Rows[0]["DispensedBy"].ToString());
-                                     ddlPharmReportedbyName.SelectedValue = theExistDS1.Tables[0].Rows[0]["DispensedBy"].ToString(); 
-                                                          
-                                if (theExistDS1.Tables[0].Rows[0]["DispensedByDate"].ToString() == "")
-                                {
-                                    txtpharmReportedbyDate.Value = "";
-                                }
-                                else
-                                {
-                                    DateTime thepharmReportedByDate = Convert.ToDateTime(theExistDS1.Tables[0].Rows[0]["DispensedByDate"].ToString());
-                                    txtpharmReportedbyDate.Value = thepharmReportedByDate.ToString(Session["AppDateFormat"].ToString());
-                                }
                             }
 
-                        }
-                        
-
-
-                        theExistDS = NonARTManager.GetPatientExsistNonARTFollowUp(PatientID, theVisitPk);
-                        //--- Rupesh 03-Jan-08 ends ---
-
-                        if (theExistDS.Tables[0].Rows.Count != 0)
-                        {
-                            if (theExistDS.Tables[0].Rows[0]["VisitDate"] != System.DBNull.Value)
+                            if (theExistDS1.Tables[0].Rows[0]["OrderedByDate"].ToString() == "")
                             {
-                                DateTime theTmpDt1 = Convert.ToDateTime(theExistDS.Tables[0].Rows[0]["VisitDate"]);
-                                this.txtvisitDate.Text = theTmpDt1.ToString(Session["AppDateFormat"].ToString());
-                                Session["VDate"] = txtvisitDate.Text;
+                                txtpharmOrderedbyDate.Value = "";
                             }
+                            else
+                            {
+                                DateTime thepharmOrderByDate = Convert.ToDateTime(theExistDS1.Tables[0].Rows[0]["OrderedByDate"].ToString());
+                                txtpharmOrderedbyDate.Value = thepharmOrderByDate.ToString(Session["AppDateFormat"].ToString());
+                            }
+                            //txtpharmOrderedbyDate.Value = theOrderedByDate.ToString(Session["AppDateFormat"].ToString());
+                            BindDropdownReportedBy(theExistDS1.Tables[0].Rows[0]["DispensedBy"].ToString());
+                            ddlPharmReportedbyName.SelectedValue = theExistDS1.Tables[0].Rows[0]["DispensedBy"].ToString();
 
+                            if (theExistDS1.Tables[0].Rows[0]["DispensedByDate"].ToString() == "")
+                            {
+                                txtpharmReportedbyDate.Value = "";
+                            }
+                            else
+                            {
+                                DateTime thepharmReportedByDate = Convert.ToDateTime(theExistDS1.Tables[0].Rows[0]["DispensedByDate"].ToString());
+                                txtpharmReportedbyDate.Value = thepharmReportedByDate.ToString(Session["AppDateFormat"].ToString());
+                            }
                         }
 
-                        if (theExistDS.Tables[1].Rows.Count != 0)
+                    }
+
+
+
+                    theExistDS = NonARTManager.GetPatientExsistNonARTFollowUp(PatientID, theVisitPk);
+                    //--- Rupesh 03-Jan-08 ends ---
+
+                    if (theExistDS.Tables[0].Rows.Count != 0)
+                    {
+                        if (theExistDS.Tables[0].Rows[0]["VisitDate"] != System.DBNull.Value)
                         {
-                            if (theExistDS.Tables[1].Rows[0]["Pregnant"] != System.DBNull.Value)
-                            {
-                                if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Pregnant"].ToString()) == 1)
-                                {
-                                    this.rdopregnantYes.Checked = true;
-                                    if (theExistDS.Tables[1].Rows[0]["EDD"] != System.DBNull.Value)
-                                    {
-                                        DateTime theTmpDt3 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["EDD"]);
-                                        this.txtEDDDate.Value = theTmpDt3.ToString(Session["AppDateFormat"].ToString());
-                                    }
-                                    string script = "";
-                                    script = "<script language = 'javascript' defer ='defer' id = 'pregnantyes'>\n";
-                                    script += "show('rdopregnantyesno');\n";
-                                    script += "hide('spdelivery');\n";
-                                    script += "show('spanEDD');\n";
-                                    script += "</script>\n";
-                                    RegisterStartupScript("pregnantyes", script);
-                                    ViewState["Pregstatus"] = "1";
-                                }
-                                else if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Pregnant"].ToString()) == 0)
-                                {
-                                    this.rdopregnantNo.Checked = true;
-                                    string script = "";
-                                    script = "<script language = 'javascript' defer ='defer' id = 'pregnantno'>\n";
-                                    script += "show('rdopregnantyesno');\n";
-                                    script += "hide('spdelivery');\n";
-                                    script += "</script>\n";
-                                    RegisterStartupScript("pregnantno", script);
-                                    ViewState["Pregstatus"] = "2";
-                                }
-                            }
+                            DateTime theTmpDt1 = Convert.ToDateTime(theExistDS.Tables[0].Rows[0]["VisitDate"]);
+                            this.txtvisitDate.Text = theTmpDt1.ToString(Session["AppDateFormat"].ToString());
+                            Session["VDate"] = txtvisitDate.Text;
+                        }
 
-                            if (theExistDS.Tables[1].Rows[0]["Delivered"] != System.DBNull.Value)
-                            {
-                                if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Delivered"]) == 0)
-                                {
-                                    this.rdoDeliveredNo.Checked = true;
-                                    if (theExistDS.Tables[1].Rows[0]["EDD"] != System.DBNull.Value)
-                                    {
-                                        DateTime theTmpDt3 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["EDD"]);
-                                        this.txtEDDDate.Value = theTmpDt3.ToString(Session["AppDateFormat"].ToString());
-                                    }
-                                    string script = "";
-                                    script = "<script language = 'javascript' defer ='defer' id = 'deliverno'>\n";
-                                    script += "hide('rdopregnantyesno');\n";
-                                    script += "show('spdelivery');\n";
-                                    script += "show('spanEDD');\n";
-                                    script += "</script>\n";
-                                    RegisterStartupScript("deliverno", script);
-                                    ViewState["Pregstatus"] = "3";
-                                }
+                    }
 
-                                else if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Delivered"]) == 1)
-                                {
-                                    this.rdoDeliveredYes.Checked = true;
-                                    if (theExistDS.Tables[1].Rows[0]["DateofDelivery"] != System.DBNull.Value)
-                                    {
-                                        DateTime theTmpDt3 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["DateofDelivery"]);
-                                        this.txtDeliDate.Value = theTmpDt3.ToString(Session["AppDateFormat"].ToString());
-                                    }
-                                    string script = "";
-                                    script = "<script language = 'javascript' defer ='defer' id = 'deliveryes'>\n";
-                                    script += "hide('rdopregnantyesno');\n";
-                                    script += "show('spdelivery');\n";
-                                    script += "show('spanDelDate');\n";
-                                    script += "hide('spanEDD');\n";
-                                    script += "</script>\n";
-                                    RegisterStartupScript("deliveryes", script);
-                                    ViewState["Pregstatus"] = "4";
-                                    
-                                }
-                            }
-                            if (theExistDS.Tables[1].Rows[0]["CreateDate"] != System.DBNull.Value)
+                    if (theExistDS.Tables[1].Rows.Count != 0)
+                    {
+                        if (theExistDS.Tables[1].Rows[0]["Pregnant"] != System.DBNull.Value)
+                        {
+                            if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Pregnant"].ToString()) == 1)
                             {
-                                theCreateDate = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["CreateDate"]);
-                            }
-
-                            if (theExistDS.Tables[1].Rows[0]["LMP"] != System.DBNull.Value)
-                            {
-                                DateTime theTmpDt2 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["LMP"]);
-                                if (theTmpDt2 != Convert.ToDateTime(theUtils.MakeDate("01-01-1900")))
+                                this.rdopregnantYes.Checked = true;
+                                if (theExistDS.Tables[1].Rows[0]["EDD"] != System.DBNull.Value)
                                 {
-                                    this.txtLMP.Value = theTmpDt2.ToString(Session["AppDateFormat"].ToString());
+                                    DateTime theTmpDt3 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["EDD"]);
+                                    this.txtEDDDate.Value = theTmpDt3.ToString(Session["AppDateFormat"].ToString());
                                 }
+                                string script = "";
+                                script = "<script language = 'javascript' defer ='defer' id = 'pregnantyes'>\n";
+                                script += "show('rdopregnantyesno');\n";
+                                script += "hide('spdelivery');\n";
+                                script += "show('spanEDD');\n";
+                                script += "</script>\n";
+                                RegisterStartupScript("pregnantyes", script);
+                                ViewState["Pregstatus"] = "1";
+                            }
+                            else if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Pregnant"].ToString()) == 0)
+                            {
+                                this.rdopregnantNo.Checked = true;
+                                string script = "";
+                                script = "<script language = 'javascript' defer ='defer' id = 'pregnantno'>\n";
+                                script += "show('rdopregnantyesno');\n";
+                                script += "hide('spdelivery');\n";
+                                script += "</script>\n";
+                                RegisterStartupScript("pregnantno", script);
+                                ViewState["Pregstatus"] = "2";
                             }
                         }
-                        if (theExistDS.Tables[2].Rows.Count != 0)
+
+                        if (theExistDS.Tables[1].Rows[0]["Delivered"] != System.DBNull.Value)
                         {
-
-                            /*************** Physical Exam and Detail Patient Vitals Part[Table: dtl_PatientVitals]**************/
-                            if (theExistDS.Tables[2].Rows[0]["Temp"] != System.DBNull.Value)
+                            if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Delivered"]) == 0)
                             {
-                                this.txtphysTemp.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["Temp"]).ToString();
-                            }
-                            if (theExistDS.Tables[2].Rows[0]["RR"] != System.DBNull.Value)
-                            {
-                                this.txtphysRR.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["RR"]).ToString();
-                            }
-                            if (theExistDS.Tables[2].Rows[0]["HR"] != System.DBNull.Value)
-                            {
-                                this.txtphysHR.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["HR"]).ToString();
-                            }
-                            if (theExistDS.Tables[2].Rows[0]["BPDiastolic"] != System.DBNull.Value)
-                            {
-                                this.txtphysBPDiastolic.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["BPDiastolic"]).ToString();
-                            }
-                            if (theExistDS.Tables[2].Rows[0]["BPSystolic"] != System.DBNull.Value)
-                            {
-                                this.txtphysBPSystolic.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["BPSystolic"]).ToString();
-                            }
-                            if (theExistDS.Tables[2].Rows[0]["Height"] != System.DBNull.Value)
-                            {
-                                this.txtphysHeight.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["Height"]).ToString();
-                            }
-                            if (theExistDS.Tables[2].Rows[0]["Weight"] != System.DBNull.Value)
-                            {
-                                this.txtphysWeight.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["Weight"]).ToString();
+                                this.rdoDeliveredNo.Checked = true;
+                                if (theExistDS.Tables[1].Rows[0]["EDD"] != System.DBNull.Value)
+                                {
+                                    DateTime theTmpDt3 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["EDD"]);
+                                    this.txtEDDDate.Value = theTmpDt3.ToString(Session["AppDateFormat"].ToString());
+                                }
+                                string script = "";
+                                script = "<script language = 'javascript' defer ='defer' id = 'deliverno'>\n";
+                                script += "hide('rdopregnantyesno');\n";
+                                script += "show('spdelivery');\n";
+                                script += "show('spanEDD');\n";
+                                script += "</script>\n";
+                                RegisterStartupScript("deliverno", script);
+                                ViewState["Pregstatus"] = "3";
                             }
 
-                            if (((theExistDS.Tables[2].Rows[0]["Weight"].ToString() != "") && (theExistDS.Tables[2].Rows[0]["Weight"] != System.DBNull.Value)) && ((theExistDS.Tables[2].Rows[0]["Height"].ToString() != "") && (theExistDS.Tables[2].Rows[0]["Height"] != System.DBNull.Value)))
+                            else if (Convert.ToInt32(theExistDS.Tables[1].Rows[0]["Delivered"]) == 1)
                             {
-                                decimal anotherWeight = Convert.ToDecimal(theExistDS.Tables[2].Rows[0]["Weight"].ToString());
-                                decimal anotherHeight = Convert.ToDecimal(theExistDS.Tables[2].Rows[0]["Height"].ToString());
+                                this.rdoDeliveredYes.Checked = true;
+                                if (theExistDS.Tables[1].Rows[0]["DateofDelivery"] != System.DBNull.Value)
+                                {
+                                    DateTime theTmpDt3 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["DateofDelivery"]);
+                                    this.txtDeliDate.Value = theTmpDt3.ToString(Session["AppDateFormat"].ToString());
+                                }
+                                string script = "";
+                                script = "<script language = 'javascript' defer ='defer' id = 'deliveryes'>\n";
+                                script += "hide('rdopregnantyesno');\n";
+                                script += "show('spdelivery');\n";
+                                script += "show('spanDelDate');\n";
+                                script += "hide('spanEDD');\n";
+                                script += "</script>\n";
+                                RegisterStartupScript("deliveryes", script);
+                                ViewState["Pregstatus"] = "4";
+
+                            }
+                        }
+                        if (theExistDS.Tables[1].Rows[0]["CreateDate"] != System.DBNull.Value)
+                        {
+                            theCreateDate = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["CreateDate"]);
+                        }
+
+                        if (theExistDS.Tables[1].Rows[0]["LMP"] != System.DBNull.Value)
+                        {
+                            DateTime theTmpDt2 = Convert.ToDateTime(theExistDS.Tables[1].Rows[0]["LMP"]);
+                            if (theTmpDt2 != Convert.ToDateTime(theUtils.MakeDate("01-01-1900")))
+                            {
+                                this.txtLMP.Value = theTmpDt2.ToString(Session["AppDateFormat"].ToString());
+                            }
+                        }
+                    }
+                    if (theExistDS.Tables[2].Rows.Count != 0)
+                    {
+
+                        /*************** Physical Exam and Detail Patient Vitals Part[Table: dtl_PatientVitals]**************/
+                        if (theExistDS.Tables[2].Rows[0]["Temp"] != System.DBNull.Value)
+                        {
+                            this.txtphysTemp.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["Temp"]).ToString();
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["RR"] != System.DBNull.Value)
+                        {
+                            this.txtphysRR.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["RR"]).ToString();
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["HR"] != System.DBNull.Value)
+                        {
+                            this.txtphysHR.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["HR"]).ToString();
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["BPDiastolic"] != System.DBNull.Value)
+                        {
+                            this.txtphysBPDiastolic.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["BPDiastolic"]).ToString();
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["BPSystolic"] != System.DBNull.Value)
+                        {
+                            this.txtphysBPSystolic.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["BPSystolic"]).ToString();
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["Height"] != System.DBNull.Value)
+                        {
+                            this.txtphysHeight.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["Height"]).ToString();
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["Weight"] != System.DBNull.Value)
+                        {
+                            this.txtphysWeight.Text = Convert.ToInt32(theExistDS.Tables[2].Rows[0]["Weight"]).ToString();
+                        }
+
+                        if (((theExistDS.Tables[2].Rows[0]["Weight"].ToString() != "") && (theExistDS.Tables[2].Rows[0]["Weight"] != System.DBNull.Value)) && ((theExistDS.Tables[2].Rows[0]["Height"].ToString() != "") && (theExistDS.Tables[2].Rows[0]["Height"] != System.DBNull.Value)))
+                        {
+                            decimal anotherWeight = Convert.ToDecimal(theExistDS.Tables[2].Rows[0]["Weight"].ToString());
+                            decimal anotherHeight = Convert.ToDecimal(theExistDS.Tables[2].Rows[0]["Height"].ToString());
+                            //decimal anotherBMI = anotherWeight / ((anotherHeight / 100) * (anotherHeight / 100));
+                            //anotherBMI = Math.Round(anotherBMI, 2);
+                            //txtanotherbmi.Value = Convert.ToString(anotherBMI);
+                            if (anotherHeight > 0)
+                            {
                                 decimal anotherBMI = anotherWeight / ((anotherHeight / 100) * (anotherHeight / 100));
                                 anotherBMI = Math.Round(anotherBMI, 2);
                                 txtanotherbmi.Value = Convert.ToString(anotherBMI);
                             }
-                            if (theExistDS.Tables[2].Rows[0]["Pain"] != System.DBNull.Value)
-                            {
-                                this.ddlPain.Value = theExistDS.Tables[2].Rows[0]["Pain"].ToString();
-                            }
+                        }
+                        if (theExistDS.Tables[2].Rows[0]["Pain"] != System.DBNull.Value)
+                        {
+                            this.ddlPain.Value = theExistDS.Tables[2].Rows[0]["Pain"].ToString();
+                        }
+                    }
+
+                    if (theExistDS.Tables[3].Rows.Count != 0)
+                    {
+
+                        /***************** Assessment Details Table: dtl_PatientStage ********************/
+                        if (theExistDS.Tables[3].Rows[0]["WABStage"] != System.DBNull.Value)
+                        {
+                            this.ddlphysWABStage.SelectedValue = theExistDS.Tables[3].Rows[0]["WABStage"].ToString();
+                        }
+                        if (theExistDS.Tables[3].Rows[0]["WHOStage"] != System.DBNull.Value)
+                        {
+                            this.ddlphysWHOStage.SelectedValue = theExistDS.Tables[3].Rows[0]["WHOStage"].ToString();
+                        }
+                    }
+
+                    if (theExistDS.Tables[4].Rows.Count != 0)
+                    {
+                        /***************** Appointment Reason Deatils Table:dtl_PatientAppointment ******************/
+                        if (theExistDS.Tables[4].Rows[0]["AppReason"] != System.DBNull.Value)
+                        {
+                            this.ddlAppReason.SelectedValue = theExistDS.Tables[4].Rows[0]["AppReason"].ToString();
+                        }
+                        if (theExistDS.Tables[8].Rows[0]["No_of_Days"] != System.DBNull.Value)
+                        {
+                            lstappPeriod.Value = theExistDS.Tables[8].Rows[0]["No_of_Days"].ToString();
                         }
 
-                        if (theExistDS.Tables[3].Rows.Count != 0)
+                        if (theExistDS.Tables[4].Rows[0]["Appdate"] != System.DBNull.Value)
                         {
+                            DateTime theDate = Convert.ToDateTime(theExistDS.Tables[4].Rows[0]["Appdate"]);
+                            txtSpecifyDate.Value = theDate.ToString(Session["AppDateFormat"].ToString());
+                            if (this.txtSpecifyDate.Value == "01-Jan-1900")
+                            {
+                                this.txtSpecifyDate.Value = "";
+                                lstappPeriod.SelectedIndex = 0;
+                            }
 
-                            /***************** Assessment Details Table: dtl_PatientStage ********************/
-                            if (theExistDS.Tables[3].Rows[0]["WABStage"] != System.DBNull.Value)
-                            {
-                                this.ddlphysWABStage.SelectedValue = theExistDS.Tables[3].Rows[0]["WABStage"].ToString();
-                            }
-                            if (theExistDS.Tables[3].Rows[0]["WHOStage"] != System.DBNull.Value)
-                            {
-                                this.ddlphysWHOStage.SelectedValue = theExistDS.Tables[3].Rows[0]["WHOStage"].ToString();
-                            }
                         }
+                    }
 
-                        if (theExistDS.Tables[4].Rows.Count != 0)
+
+
+                    /**************** Presenting Complaints Details******************/
+
+                    if (theExistDS.Tables[5].Rows.Count > 0)
+                    {
+                        if (theExistDS.Tables[5].Rows[0]["SymptomID"] != System.DBNull.Value)
                         {
-                            /***************** Appointment Reason Deatils Table:dtl_PatientAppointment ******************/
-                            if (theExistDS.Tables[4].Rows[0]["AppReason"] != System.DBNull.Value)
+                            for (int i = 0; i < theExistDS.Tables[5].Rows.Count; i++)
                             {
-                                this.ddlAppReason.SelectedValue = theExistDS.Tables[4].Rows[0]["AppReason"].ToString();
-                            }
-                            if (theExistDS.Tables[8].Rows[0]["No_of_Days"] != System.DBNull.Value)
-                            {
-                                lstappPeriod.Value = theExistDS.Tables[8].Rows[0]["No_of_Days"].ToString();
-                            }
-                            
-                            if (theExistDS.Tables[4].Rows[0]["Appdate"] != System.DBNull.Value)
-                            {
-                                DateTime theDate = Convert.ToDateTime(theExistDS.Tables[4].Rows[0]["Appdate"]);
-                                txtSpecifyDate.Value = theDate.ToString(Session["AppDateFormat"].ToString());
-                                if (this.txtSpecifyDate.Value == "01-Jan-1900")
+                                for (int j = 0; j < cblPresentingComplaints.Items.Count; j++)
                                 {
-                                    this.txtSpecifyDate.Value = "";
-                                    lstappPeriod.SelectedIndex = 0;
-                                }
-                                
-                            }
-                        }
-
-                    
-
-                        /**************** Presenting Complaints Details******************/
-
-                        if (theExistDS.Tables[5].Rows.Count > 0)
-                        {
-                            if (theExistDS.Tables[5].Rows[0]["SymptomID"] != System.DBNull.Value)
-                            {
-                                for (int i = 0; i < theExistDS.Tables[5].Rows.Count; i++)
-                                {
-                                    for (int j = 0; j < cblPresentingComplaints.Items.Count; j++)
+                                    if (cblPresentingComplaints.Items[j].Value == theExistDS.Tables[5].Rows[i]["SymptomID"].ToString())
                                     {
-                                        if (cblPresentingComplaints.Items[j].Value == theExistDS.Tables[5].Rows[i]["SymptomID"].ToString())
-                                        {
-                                            cblPresentingComplaints.Items[j].Selected = true;
-                                            chkpresentingComplaintsNone.Checked = false;
-                                            string script = "";
-                                            script = "<script language = 'javascript' defer ='defer' id = 'presentingComplaints'>\n";
-                                            script += "document.getElementById('" + chkpresentingComplaintsNonehidden.ClientID + "').click();\n";
-                                            script += "</script>\n";
-                                            RegisterStartupScript("presentingComplaints", script);
-                                        }
+                                        cblPresentingComplaints.Items[j].Selected = true;
+                                        chkpresentingComplaintsNone.Checked = false;
+                                        string script = "";
+                                        script = "<script language = 'javascript' defer ='defer' id = 'presentingComplaints'>\n";
+                                        script += "document.getElementById('" + chkpresentingComplaintsNonehidden.ClientID + "').click();\n";
+                                        script += "</script>\n";
+                                        RegisterStartupScript("presentingComplaints", script);
                                     }
                                 }
                             }
                         }
+                    }
 
 
-                        if (theExistDS.Tables[6].Rows.Count != 0)
+                    if (theExistDS.Tables[6].Rows.Count != 0)
+                    {
+                        /************************  grdHivAssoConditionleft Details ***********************/
+                        for (int i = 0; i < theExistDS.Tables[6].Rows.Count; i++)
                         {
-                            /************************  grdHivAssoConditionleft Details ***********************/
-                            for (int i = 0; i < theExistDS.Tables[6].Rows.Count; i++)
+                            if (theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString() == "99")
                             {
-                                if (theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString() == "99")
+                                rdoHIVassocNone.Checked = true;
+                            }
+                            else if (theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString() == "98")
+                            {
+                                PrevHIVassocNotDocumented.Checked = true;
+                            }
+
+                            foreach (HtmlTableRow r in tblOIsAIDsleft.Rows)
+                            {
+                                foreach (HtmlTableCell c in r.Cells)
                                 {
-                                    rdoHIVassocNone.Checked = true;
-                                }
-                                else if (theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString() == "98")
-                                {
-                                    PrevHIVassocNotDocumented.Checked = true;
-                                }
-                                
-                                foreach (HtmlTableRow r in tblOIsAIDsleft.Rows)
-                                {
-                                    foreach (HtmlTableCell c in r.Cells)
+                                    foreach (Control ct in c.Controls)
                                     {
-                                        foreach (Control ct in c.Controls)
+                                        if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputCheckBox))
                                         {
-                                            if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputCheckBox))
+                                            foreach (DataRow dr in theDTHivAssoConditionleft.Rows)
                                             {
-                                                foreach (DataRow dr in theDTHivAssoConditionleft.Rows)
+                                                if (((HtmlInputCheckBox)ct).Value == dr[1].ToString())
                                                 {
-                                                    if (((HtmlInputCheckBox)ct).Value == dr[1].ToString())
+                                                    if (dr[0].ToString() == theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString())
                                                     {
-                                                        if (dr[0].ToString() == theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString())
-                                                        {
-                                                            if (dr[1].ToString() == "Pulmonary TB")
-                                                            {
-                                                                rdoHIVassociate.Checked = true;
-                                                                ((HtmlInputCheckBox)ct).Checked = true;
-                                                                string script = "";
-                                                                script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID'>\n";
-                                                                script += "show('assocSelected');\n";
-                                                                script += "show('pultb');\n";
-                                                                script += "</script>\n";
-                                                                RegisterStartupScript("cblOIsAIDs_ID", script);
-                                                            }
-                                                            else
-                                                            {
-                                                                rdoHIVassociate.Checked = true;
-                                                                ((HtmlInputCheckBox)ct).Checked = true;
-                                                                string script = "";
-                                                                script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID'>\n";
-                                                                script += "show('assocSelected');\n";
-                                                                script += "</script>\n";
-                                                                RegisterStartupScript("cblOIsAIDs_ID", script);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            else if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputRadioButton))
-                                            {
-                                                foreach (DataRow dr in theDTHivAssoConditionleft.Rows)
-                                                {
-                                                    if (((HtmlInputRadioButton)ct).Value == dr[1].ToString())
-                                                    {
-                                                        if (dr[0].ToString() == theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString())
+                                                        if (dr[1].ToString() == "Pulmonary TB")
                                                         {
                                                             rdoHIVassociate.Checked = true;
-                                                            ((HtmlInputRadioButton)ct).Checked = true;
+                                                            ((HtmlInputCheckBox)ct).Checked = true;
                                                             string script = "";
-                                                            script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID1'>\n";
+                                                            script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID'>\n";
                                                             script += "show('assocSelected');\n";
                                                             script += "show('pultb');\n";
                                                             script += "</script>\n";
-                                                            RegisterStartupScript("cblOIsAIDs_ID1", script);
+                                                            RegisterStartupScript("cblOIsAIDs_ID", script);
                                                         }
-
-                                                    }
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            string OI_AIDsOther = "";
-                            for (int j = 0; j < theExistDS.Tables[6].Rows.Count; j++)
-                            {
-                                foreach (HtmlTableRow r in tblOIsAIDsright.Rows)
-                                {
-                                    foreach (HtmlTableCell c in r.Cells)
-                                    {
-                                        foreach (Control ct in c.Controls)
-                                        {
-                                            if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputCheckBox))
-                                            {
-                                                foreach (DataRow drright in theDTHivAssoConditionright.Rows)
-                                                {
-                                                    if (((HtmlInputCheckBox)ct).Value == drright[1].ToString())
-                                                    {
-                                                        if (drright[0].ToString() == theExistDS.Tables[6].Rows[j]["Disease_Pk"].ToString())
+                                                        else
                                                         {
-                                                            if (drright[1].ToString() == "Other")
-                                                            {
-                                                                OI_AIDsOther = theExistDS.Tables[6].Rows[j]["DiseaseDesc"].ToString();
-                                                                rdoHIVassociate.Checked = true;
-                                                                ((HtmlInputCheckBox)ct).Checked = true;
-                                                                string script = "";
-                                                                script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID2'>\n";
-                                                                script += "show('assocSelected');\n";
-                                                                script += "show('otherOIsAIDs');\n";
-                                                                script += "</script>\n";
-                                                                RegisterStartupScript("cblOIsAIDs_ID2", script);
-                                                            }
-                                                            else
-                                                            {
-                                                                rdoHIVassociate.Checked = true;
-                                                                ((HtmlInputCheckBox)ct).Checked = true;
-                                                                string script = "";
-                                                                script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID3'>\n";
-                                                                script += "show('assocSelected');\n";
-                                                                script += "</script>\n";
-                                                                RegisterStartupScript("cblOIsAIDs_ID3", script);
-
-                                                            }
+                                                            rdoHIVassociate.Checked = true;
+                                                            ((HtmlInputCheckBox)ct).Checked = true;
+                                                            string script = "";
+                                                            script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID'>\n";
+                                                            script += "show('assocSelected');\n";
+                                                            script += "</script>\n";
+                                                            RegisterStartupScript("cblOIsAIDs_ID", script);
                                                         }
                                                     }
                                                 }
-
                                             }
-                                            else if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputText))
+                                        }
+                                        else if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputRadioButton))
+                                        {
+                                            foreach (DataRow dr in theDTHivAssoConditionleft.Rows)
                                             {
-                                                if (OI_AIDsOther != "")
+                                                if (((HtmlInputRadioButton)ct).Value == dr[1].ToString())
                                                 {
-                                                    ((HtmlInputText)ct).Value = OI_AIDsOther;
-                                                    string script = "";
-                                                    script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID4'>\n";
-                                                    script += "show('assocSelected');\n";
-                                                    script += "show('otherOIsAIDs');\n";
-                                                    script += "</script>\n";
-                                                    RegisterStartupScript("cblOIsAIDs_ID4", script);
+                                                    if (dr[0].ToString() == theExistDS.Tables[6].Rows[i]["Disease_Pk"].ToString())
+                                                    {
+                                                        rdoHIVassociate.Checked = true;
+                                                        ((HtmlInputRadioButton)ct).Checked = true;
+                                                        string script = "";
+                                                        script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID1'>\n";
+                                                        script += "show('assocSelected');\n";
+                                                        script += "show('pultb');\n";
+                                                        script += "</script>\n";
+                                                        RegisterStartupScript("cblOIsAIDs_ID1", script);
+                                                    }
+
                                                 }
                                             }
 
@@ -2003,51 +1941,116 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                             }
                         }
 
-
-                        if (theExistDS.Tables[7].Rows.Count != 0)
+                        string OI_AIDsOther = "";
+                        for (int j = 0; j < theExistDS.Tables[6].Rows.Count; j++)
                         {
-                            /**********************  Assessment Details ***************************/
-
-                            for (int i = 0; i < theExistDS.Tables[7].Rows.Count; i++)
+                            foreach (HtmlTableRow r in tblOIsAIDsright.Rows)
                             {
-                                for (int j = 0; j < chkAssessment.Items.Count; j++)
+                                foreach (HtmlTableCell c in r.Cells)
                                 {
-                                    if (chkAssessment.Items[j].Value == theExistDS.Tables[7].Rows[i]["AssessmentID"].ToString())
+                                    foreach (Control ct in c.Controls)
                                     {
-                                        chkAssessment.Items[j].Selected = true;
-                                    }
+                                        if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputCheckBox))
+                                        {
+                                            foreach (DataRow drright in theDTHivAssoConditionright.Rows)
+                                            {
+                                                if (((HtmlInputCheckBox)ct).Value == drright[1].ToString())
+                                                {
+                                                    if (drright[0].ToString() == theExistDS.Tables[6].Rows[j]["Disease_Pk"].ToString())
+                                                    {
+                                                        if (drright[1].ToString() == "Other")
+                                                        {
+                                                            OI_AIDsOther = theExistDS.Tables[6].Rows[j]["DiseaseDesc"].ToString();
+                                                            rdoHIVassociate.Checked = true;
+                                                            ((HtmlInputCheckBox)ct).Checked = true;
+                                                            string script = "";
+                                                            script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID2'>\n";
+                                                            script += "show('assocSelected');\n";
+                                                            script += "show('otherOIsAIDs');\n";
+                                                            script += "</script>\n";
+                                                            RegisterStartupScript("cblOIsAIDs_ID2", script);
+                                                        }
+                                                        else
+                                                        {
+                                                            rdoHIVassociate.Checked = true;
+                                                            ((HtmlInputCheckBox)ct).Checked = true;
+                                                            string script = "";
+                                                            script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID3'>\n";
+                                                            script += "show('assocSelected');\n";
+                                                            script += "</script>\n";
+                                                            RegisterStartupScript("cblOIsAIDs_ID3", script);
 
-                                    if (Convert.ToInt32(theExistDS.Tables[7].Rows[i]["AssessmentID"].ToString()) == 12)
-                                    {
-                                        this.rdoartAssessmentID.Checked = true;
-                                    }
-                                    else
-                                    {
-                                        this.rdoartAssessmentID.Checked = false;
-                                    }
+                                                        }
+                                                    }
+                                                }
+                                            }
 
-                                    if (Convert.ToInt32(theExistDS.Tables[7].Rows[i]["AssessmentID"].ToString()) == 13)
-                                    {
-                                        this.rdoartAssessmentID2.Checked = true;
-                                    }
-                                    else
-                                    {
-                                        this.rdoartAssessmentID2.Checked = false;
+                                        }
+                                        else if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputText))
+                                        {
+                                            if (OI_AIDsOther != "")
+                                            {
+                                                ((HtmlInputText)ct).Value = OI_AIDsOther;
+                                                string script = "";
+                                                script = "<script language = 'javascript' defer ='defer' id = 'cblOIsAIDs_ID4'>\n";
+                                                script += "show('assocSelected');\n";
+                                                script += "show('otherOIsAIDs');\n";
+                                                script += "</script>\n";
+                                                RegisterStartupScript("cblOIsAIDs_ID4", script);
+                                            }
+                                        }
+
                                     }
                                 }
                             }
-
                         }
-                        if (theExistDS.Tables[9].Rows.Count > 0)
+                    }
+
+
+                    if (theExistDS.Tables[7].Rows.Count != 0)
+                    {
+                        /**********************  Assessment Details ***************************/
+
+                        for (int i = 0; i < theExistDS.Tables[7].Rows.Count; i++)
                         {
-                            txtClinicalNotes.Text = Convert.ToString(theExistDS.Tables[9].Rows[0]["ClinicalNotes"]);
+                            for (int j = 0; j < chkAssessment.Items.Count; j++)
+                            {
+                                if (chkAssessment.Items[j].Value == theExistDS.Tables[7].Rows[i]["AssessmentID"].ToString())
+                                {
+                                    chkAssessment.Items[j].Selected = true;
+                                }
+
+                                if (Convert.ToInt32(theExistDS.Tables[7].Rows[i]["AssessmentID"].ToString()) == 12)
+                                {
+                                    this.rdoartAssessmentID.Checked = true;
+                                }
+                                else
+                                {
+                                    this.rdoartAssessmentID.Checked = false;
+                                }
+
+                                if (Convert.ToInt32(theExistDS.Tables[7].Rows[i]["AssessmentID"].ToString()) == 13)
+                                {
+                                    this.rdoartAssessmentID2.Checked = true;
+                                }
+                                else
+                                {
+                                    this.rdoartAssessmentID2.Checked = false;
+                                }
+                            }
                         }
 
-                        #region "20-jun-07 - 1"
-                        //lstappPeriod.Value = theExistDS.Tables[8].Rows[0]["No_of_Days"].ToString();
-                        #endregion
+                    }
+                    if (theExistDS.Tables[9].Rows.Count > 0)
+                    {
+                        txtClinicalNotes.Text = Convert.ToString(theExistDS.Tables[9].Rows[0]["ClinicalNotes"]);
+                    }
 
-                     /*   if (theExistDS1.Tables[1].Rows.Count != 0)
+                    #region "20-jun-07 - 1"
+                    //lstappPeriod.Value = theExistDS.Tables[8].Rows[0]["No_of_Days"].ToString();
+                    #endregion
+
+                    /*   if (theExistDS1.Tables[1].Rows.Count != 0)
                         {
                             if (theExistDS1.Tables[1].Rows[0]["DataQuality"] != System.DBNull.Value && Convert.ToInt32(theExistDS1.Tables[1].Rows[0]["DataQuality"]) == 1)
                             {
@@ -2056,64 +2059,64 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                             }
                         }*/
 
-                        //TB Symptoms
-                        if (theExistDS.Tables[5].Rows.Count > 0)
+                    //TB Symptoms
+                    if (theExistDS.Tables[5].Rows.Count > 0)
+                    {
+                        if (theExistDS.Tables[5].Rows[0]["SymptomID"] != System.DBNull.Value)
                         {
-                            if (theExistDS.Tables[5].Rows[0]["SymptomID"] != System.DBNull.Value)
+                            for (int i = 0; i < theExistDS.Tables[5].Rows.Count; i++)
                             {
-                                for (int i = 0; i < theExistDS.Tables[5].Rows.Count; i++)
+                                for (int j = 0; j < cblTBScreen.Items.Count; j++)
                                 {
-                                    for (int j = 0; j < cblTBScreen.Items.Count; j++)
+                                    if (cblTBScreen.Items[j].Value == theExistDS.Tables[5].Rows[i]["SymptomID"].ToString())
                                     {
-                                        if (cblTBScreen.Items[j].Value == theExistDS.Tables[5].Rows[i]["SymptomID"].ToString())
-                                        {
-                                            cblTBScreen.Items[j].Selected = true;
-                                            rdoPerformed.Checked = true;
-                                            string script = "";
-                                            script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms'>\n";
-                                            script += "show('TBSymptom');\n";
-                                            script += "</script>\n";
-                                            RegisterStartupScript("TBSymptoms", script);
-                                        }
-                                    }
-                                    if (theExistDS.Tables[5].Rows[i]["SymptomID"].ToString() == "70")
-                                    {
+                                        cblTBScreen.Items[j].Selected = true;
                                         rdoPerformed.Checked = true;
                                         string script = "";
-                                        script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms1'>\n";
+                                        script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms'>\n";
                                         script += "show('TBSymptom');\n";
                                         script += "</script>\n";
-                                        RegisterStartupScript("TBSymptoms1", script);
+                                        RegisterStartupScript("TBSymptoms", script);
                                     }
-                                    else if (theExistDS.Tables[5].Rows[i]["SymptomID"].ToString() == "71")
-                                    {
-                                        rdoNotDocumented.Checked = true;
-                                        string script = "";
-                                        script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms2'>\n";
-                                        script += "hide('TBSymptom');\n";
-                                        script += "</script>\n";
-                                        RegisterStartupScript("TBSymptoms2", script);
-                                    }
-                                    //else if (theExistDS.Tables[5].Rows[i]["SymptomID"].ToString() == "78")
-                                    //{
-                                    //    rdoTBNone.Checked = true;
-                                    //    string script = "";
-                                    //    script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms3'>\n";
-                                    //    script += "hide('TBSymptom');\n";
-                                    //    script += "</script>\n";
-                                    //    RegisterStartupScript("TBSymptoms3", script);
-                                    //}
-
                                 }
+                                if (theExistDS.Tables[5].Rows[i]["SymptomID"].ToString() == "70")
+                                {
+                                    rdoPerformed.Checked = true;
+                                    string script = "";
+                                    script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms1'>\n";
+                                    script += "show('TBSymptom');\n";
+                                    script += "</script>\n";
+                                    RegisterStartupScript("TBSymptoms1", script);
+                                }
+                                else if (theExistDS.Tables[5].Rows[i]["SymptomID"].ToString() == "71")
+                                {
+                                    rdoNotDocumented.Checked = true;
+                                    string script = "";
+                                    script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms2'>\n";
+                                    script += "hide('TBSymptom');\n";
+                                    script += "</script>\n";
+                                    RegisterStartupScript("TBSymptoms2", script);
+                                }
+                                //else if (theExistDS.Tables[5].Rows[i]["SymptomID"].ToString() == "78")
+                                //{
+                                //    rdoTBNone.Checked = true;
+                                //    string script = "";
+                                //    script = "<script language = 'javascript' defer ='defer' id = 'TBSymptoms3'>\n";
+                                //    script += "hide('TBSymptom');\n";
+                                //    script += "</script>\n";
+                                //    RegisterStartupScript("TBSymptoms3", script);
+                                //}
+
                             }
-                            
                         }
-                        
+
                     }
-                
+
+                }
+
             }
         }
-        catch 
+        catch
         {
             throw;
         }
@@ -2126,353 +2129,94 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     /******* Function To Fill All DropDownList ********/
     private void FillDropDownList(DataSet theDS)
     {
-            INonARTFollowUp NonARTFollowUpManager;
-            NonARTFollowUpManager = (INonARTFollowUp)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BNonARTFollowUp, BusinessProcess.Clinical");
-            BindFunctions theBindMgr = new BindFunctions();
-            IQCareUtils theUtils = new IQCareUtils();
-            DataTable theDT = new DataTable();
-            DataSet theDSXML = new DataSet();
-            theDSXML.ReadXml(MapPath("..\\XMLFiles\\AllMasters.con"));
-            //if (Request.QueryString["name"] == "Add")
-            if (Convert.ToInt32(Session["PatientVisitId"]) < 1)
+        INonARTFollowUp NonARTFollowUpManager;
+        NonARTFollowUpManager = (INonARTFollowUp)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BNonARTFollowUp, BusinessProcess.Clinical");
+        BindFunctions theBindMgr = new BindFunctions();
+        IQCareUtils theUtils = new IQCareUtils();
+        DataTable theDT = new DataTable();
+        DataSet theDSXML = new DataSet();
+        theDSXML.ReadXml(MapPath("..\\XMLFiles\\AllMasters.con"));
+        //if (Request.QueryString["name"] == "Add")
+        if (Convert.ToInt32(Session["PatientVisitId"]) < 1)
+        {
+            DataTable theDTComplaints = new DataTable();
+            DataView theDVComplaints = new DataView(theDSXML.Tables["Mst_Symptom"]);
+            theDVComplaints.RowFilter = "DeleteFlag='0' and CategoryID='4'";
+            if (theDVComplaints.Table != null)
             {
-                DataTable theDTComplaints = new DataTable();
-                DataView theDVComplaints = new DataView(theDSXML.Tables["Mst_Symptom"]);
-                theDVComplaints.RowFilter = "DeleteFlag='0' and CategoryID='4'";
-                if (theDVComplaints.Table != null)
-                {
-                    theDTComplaints = (DataTable)theUtils.CreateTableFromDataView(theDVComplaints);
-                    theBindMgr.BindCheckedList(cblPresentingComplaints, theDTComplaints, "Name", "ID");
-                    theDVComplaints.Dispose();
-                    theDTComplaints.Clear();
-                }
-
-                DataTable theDTTBScreening = new DataTable();
-                DataView theDVTBScreening = new DataView(theDSXML.Tables["Mst_Symptom"]);
-                theDVTBScreening.RowFilter = "DeleteFlag='0' and CategoryID='14' and ID NOT IN('70', '71')";
-                if (theDVTBScreening.Table != null)
-                {
-                    theDTTBScreening = (DataTable)theUtils.CreateTableFromDataView(theDVTBScreening);
-                    theBindMgr.BindCheckedList(cblTBScreen, theDTTBScreening, "Name", "ID");
-                    theDVTBScreening.Dispose();
-                    theDTTBScreening.Clear();
-                }
-                if (theDSXML.Tables["Mst_Employee"] != null)
-                {
-                    DataView theDVOrder = new DataView(theDSXML.Tables["Mst_Employee"]);
-                    theDVOrder.RowFilter = "DeleteFlag=0";
-                    if (theDVOrder.Table != null)
-                    {
-                        theDT = (DataTable)theUtils.CreateTableFromDataView(theDVOrder);
-                        if (Convert.ToInt32(Session["AppUserEmployeeId"]) > 0)
-                        {
-                            theDVOrder = new DataView(theDT);
-                            theDVOrder.RowFilter = "EmployeeId =" + Session["AppUserEmployeeId"].ToString();
-                            if (theDVOrder.Count > 0)
-                                theDT = theUtils.CreateTableFromDataView(theDVOrder);
-                        }
-                        theBindMgr.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId");
-                        theBindMgr.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId");
-                        theBindMgr.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
-                        theDVOrder.Dispose();
-                        theDT.Clear();
-                    }
-                }
-                DataView theDVAppReason = new DataView(theDSXML.Tables["Mst_Decode"]);
-                theDVAppReason.RowFilter = "DeleteFlag=0 and codeId=26";
-                DataTable theDTAppReason = new DataTable();
-                if (theDVAppReason.Table != null)
-                {
-                    theDTAppReason = (DataTable)theUtils.CreateTableFromDataView(theDVAppReason);
-                    theBindMgr.BindCombo(ddlAppReason, theDTAppReason, "Name", "ID");
-                    theDVAppReason.Dispose();
-                    theDTAppReason.Clear();
-                }
-
-                DataView theDVAssessment = new DataView(theDSXML.Tables["Mst_Assessment"]);
-                theDVAssessment.RowFilter = "DeleteFlag='0' and AssessmentCategoryId='2'";
-                DataTable theDTAssessment = new DataTable();
-                if (theDVAssessment.Table != null)
-                {
-                    theDTAssessment = theUtils.CreateTableFromDataView(theDVAssessment);
-                    theBindMgr.BindCheckedList(chkAssessment, theDTAssessment, "AssessmentName", "AssessmentID");
-                    theDVAssessment.Dispose();
-                    theDTAssessment.Clear();
-                }
-
-                DataView theDVHivAssoConditionleft = new DataView();
-                //DataTable theDTHivAssoConditionleft = new DataTable();
-                theDVHivAssoConditionleft = new DataView(theDS.Tables[10]);
-                theDVHivAssoConditionleft.RowFilter = "DeleteFlag=0";
-                if (theDVHivAssoConditionleft.Table != null)
-                {
-                    theDTHivAssoConditionleft = theUtils.CreateTableFromDataView(theDVHivAssoConditionleft);
-                    for (int i = 0; i < theDTHivAssoConditionleft.Rows.Count; i++)
-                    {
-                        HtmlTableRow r = new HtmlTableRow();
-                        if ((i != 1) && (i != 2))
-                        {
-                            HtmlTableCell c = new HtmlTableCell();
-                            HtmlInputCheckBox chkOIsDsleft = new HtmlInputCheckBox();
-                            chkOIsDsleft.ID = Convert.ToString(rcol_left);
-                            chkOIsDsleft.Value = theDTHivAssoConditionleft.Rows[i][1].ToString();
-                            c.Controls.Add(chkOIsDsleft);
-                            c.Controls.Add(new LiteralControl(chkOIsDsleft.Value));
-                            r.Cells.Add(c);
-                            if (chkOIsDsleft.Value == "Pulmonary TB")
-                            {
-                                chkOIsDsleft.Attributes.Add("onclick", "toggle('pultb');");
-                            }
-                            rcol_left++;
-                        }
-                        if (i == 0)
-                        {
-                            HtmlTableCell d = new HtmlTableCell();
-                            d.Controls.Add(new LiteralControl("<div id='pultb' style='display:none'>"));
-                            HtmlInputRadioButton rdopultbsmplus = new HtmlInputRadioButton();
-                            rdopultbsmplus.ID = Convert.ToString(11);
-                            rdopultbsmplus.Value = theDTHivAssoConditionleft.Rows[1][1].ToString();
-                            rdopultbsmplus.Attributes.Add("onfocus", "up(this);");
-                            rdopultbsmplus.Attributes.Add("onclick", "down(this);");
-                            d.Controls.Add(rdopultbsmplus);
-                            d.Controls.Add(new LiteralControl(rdopultbsmplus.Value));
-
-                            d.Controls.Add(new LiteralControl("</br>"));
-
-                            HtmlInputRadioButton rdopultbsminus = new HtmlInputRadioButton();
-                            rdopultbsminus.ID = Convert.ToString(12);
-                            rdopultbsminus.Value = theDTHivAssoConditionleft.Rows[2][1].ToString();
-                            rdopultbsminus.Attributes.Add("onfocus", "up(this);");
-                            rdopultbsminus.Attributes.Add("onclick", "down(this);");
-                            d.Controls.Add(rdopultbsminus);
-                            d.Controls.Add(new LiteralControl(rdopultbsminus.Value));
-                            d.Controls.Add(new LiteralControl("</div>"));
-                            r.Cells.Add(d);
-                        }
-                        tblOIsAIDsleft.Rows.Add(r);
-                    }
-                }
-
-                DataView theDVHivAssoConditionright = new DataView();
-                theDVHivAssoConditionright = new DataView(theDS.Tables[11]);
-                theDVHivAssoConditionright.RowFilter = "DeleteFlag=0";
-                //DataTable theDTHivAssoConditionright= new DataTable();
-                if (theDVHivAssoConditionright.Table != null)
-                {
-                    theDTHivAssoConditionright = theUtils.CreateTableFromDataView(theDVHivAssoConditionright);
-                    for (int i = 0; i < theDTHivAssoConditionright.Rows.Count; i++)
-                    {
-                        HtmlTableRow trright = new HtmlTableRow();
-                        HtmlTableCell tc2_0 = new HtmlTableCell();
-                        HtmlInputCheckBox chkOIsDsright = new HtmlInputCheckBox();
-                        chkOIsDsright.ID = Convert.ToString("right" + rcol_right);
-                        chkOIsDsright.Value = theDTHivAssoConditionright.Rows[i][1].ToString();
-                        tc2_0.Controls.Add(chkOIsDsright);
-                        tc2_0.Controls.Add(new LiteralControl(chkOIsDsright.Value));
-                        trright.Cells.Add(tc2_0);
-
-                        if (chkOIsDsright.Value == "Other")
-                        {
-                            HtmlTableCell tc2_1 = new HtmlTableCell();
-                            //tc2_1.Controls.Add(new LiteralControl("<LABEL style='font-weight:bold' for='otherOIsAIDs'>"));
-                            tc2_1.Controls.Add(new LiteralControl("<SPAN id='otherOIsAIDs' style='DISPLAY:none'>Specify: "));
-                            HtmlInputText HTextOIsAIDsillness = new HtmlInputText();
-                            HTextOIsAIDsillness.ID = "txtotherOIsAIDsillness";
-                            HTextOIsAIDsillness.Size = 10;
-                            tc2_1.Controls.Add(HTextOIsAIDsillness);
-                            tc2_1.Controls.Add(new LiteralControl(HTextOIsAIDsillness.Value));
-                            tc2_1.Controls.Add(new LiteralControl("</SPAN>"));
-                            trright.Cells.Add(tc2_1);
-                            chkOIsDsright.Attributes.Add("onclick", "toggle('otherOIsAIDs');");
-                        }
-                        rcol_right++;
-                        tblOIsAIDsright.Rows.Add(trright);
-                    }
-                }
-
-                int WHOStage = 0;
-
-                if (theDS.Tables[20].Rows.Count > 0)
-                if (theDS.Tables[20].Rows[0]["WHOStage"] != System.DBNull.Value) 
-                {
-                    WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"]);
-                }
-                int WhoStageSRNO = 0;
-                DataView theDV = new DataView(theDSXML.Tables["mst_Decode"]);
-                theDV.RowFilter = "Id=" + WHOStage.ToString();
-                if (theDV.Count > 0)
-                {
-                    if (theDV[0]["SRNO"] != System.DBNull.Value)
-                    {
-                        WhoStageSRNO = Convert.ToInt32(theDV[0]["SRNO"]);
-                    }
-                }
-                theDV = null;
-
-                theDV = new DataView(theDSXML.Tables["mst_Decode"]);
-                theDV.RowFilter = "DeleteFlag=0 and CodeID=22 and SystemId = 1 and SRNO>=" + WhoStageSRNO.ToString();
-                if (theDV.Table != null)
-                {
-                    theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
-                    theBindMgr.BindCombo(ddlphysWHOStage, theDT, "Name", "ID");
-                }
-                //////if (theDS.Tables[20].Rows.Count > 0)
-                //////{
-                //////    string strWHOState = theDS.Tables[20].Rows[0]["WHOStage"].ToString();
-                //////    int WHOStage = 0;
-                //////    if (strWHOState == "")
-                //////    {
-                //////        WHOStage = 0;
-                //////    }
-                //////    else
-                //////    {
-                //////        WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"].ToString());
-                //////    }
-                //////    if (WHOStage == 87 || WHOStage == 0)
-                //////    {
-                //////        ddlphysWHOStage.Items.Add("Select");
-                //////        ddlphysWHOStage.Items.Add("I");
-                //////        ddlphysWHOStage.Items.Add("II");
-                //////        ddlphysWHOStage.Items.Add("III");
-                //////        ddlphysWHOStage.Items.Add("IV");
-                //////        ddlphysWHOStage.Items[0].Value = "0";
-                //////        ddlphysWHOStage.Items[1].Value = "87";
-                //////        ddlphysWHOStage.Items[2].Value = "88";
-                //////        ddlphysWHOStage.Items[3].Value = "89";
-                //////        ddlphysWHOStage.Items[4].Value = "90";
-                //////    }
-                //////    else if (WHOStage == 88)
-                //////    {
-                //////        ddlphysWHOStage.Items.Add("Select");
-                //////        ddlphysWHOStage.Items.Add("II");
-                //////        ddlphysWHOStage.Items.Add("III");
-                //////        ddlphysWHOStage.Items.Add("IV");
-                //////        ddlphysWHOStage.Items[0].Value = "0";
-                //////        ddlphysWHOStage.Items[1].Value = "88";
-                //////        ddlphysWHOStage.Items[2].Value = "89";
-                //////        ddlphysWHOStage.Items[3].Value = "90";
-                //////    }
-                //////    else if (WHOStage == 89)
-                //////    {
-                //////        ddlphysWHOStage.Items.Add("Select");
-                //////        ddlphysWHOStage.Items.Add("III");
-                //////        ddlphysWHOStage.Items.Add("IV");
-                //////        ddlphysWHOStage.Items[0].Value = "0";
-                //////        ddlphysWHOStage.Items[1].Value = "89";
-                //////        ddlphysWHOStage.Items[2].Value = "90";
-                //////    }
-                //////    else if (WHOStage == 90)
-                //////    {
-                //////        ddlphysWHOStage.Items.Add("Select");
-                //////        ddlphysWHOStage.Items.Add("IV");
-                //////        ddlphysWHOStage.Items[0].Value = "0";
-                //////        ddlphysWHOStage.Items[1].Value = "90";
-                //////    }
-
-                //////}
-                //////else
-                //////{
-                //////    ddlphysWHOStage.Items.Add("Select");
-                //////    ddlphysWHOStage.Items.Add("I");
-                //////    ddlphysWHOStage.Items.Add("II");
-                //////    ddlphysWHOStage.Items.Add("III");
-                //////    ddlphysWHOStage.Items.Add("IV");
-                //////    ddlphysWHOStage.Items[0].Value = "0";
-                //////    ddlphysWHOStage.Items[1].Value = "87";
-                //////    ddlphysWHOStage.Items[2].Value = "88";
-                //////    ddlphysWHOStage.Items[3].Value = "89";
-                //////    ddlphysWHOStage.Items[4].Value = "90";
-                //////}
+                theDTComplaints = (DataTable)theUtils.CreateTableFromDataView(theDVComplaints);
+                theBindMgr.BindCheckedList(cblPresentingComplaints, theDTComplaints, "Name", "ID");
+                theDVComplaints.Dispose();
+                theDTComplaints.Clear();
             }
-            //else if (Request.QueryString["name"] == "Edit" || Request.QueryString["name"] == "Delete")
-            else if ((Convert.ToInt32(Session["PatientVisitId"])) > 1 || Request.QueryString["name"] == "Delete")
+
+            DataTable theDTTBScreening = new DataTable();
+            DataView theDVTBScreening = new DataView(theDSXML.Tables["Mst_Symptom"]);
+            theDVTBScreening.RowFilter = "DeleteFlag='0' and CategoryID='14' and ID NOT IN('70', '71')";
+            if (theDVTBScreening.Table != null)
             {
-                DataView theDVComplaints = new DataView(theDSXML.Tables["Mst_Symptom"]);
-                theDVComplaints.RowFilter = "CategoryID=4";
-                DataTable theDTComplaints = new DataTable();
-                if (theDVComplaints.Table != null)
-                {
-                    theDTComplaints = (DataTable)theUtils.CreateTableFromDataView(theDVComplaints);
-                    theBindMgr.BindCheckedList(cblPresentingComplaints, theDTComplaints, "Name", "ID");
-                }
-
-                DataTable theDTTBScreening = new DataTable();
-                DataView theDVTBScreening = new DataView(theDSXML.Tables["Mst_Symptom"]);
-                theDVTBScreening.RowFilter = "CategoryID='14' and ID NOT IN('70', '71')";
-                if (theDVTBScreening.Table != null)
-                {
-                    theDTTBScreening = (DataTable)theUtils.CreateTableFromDataView(theDVTBScreening);
-                    theBindMgr.BindCheckedList(cblTBScreen, theDTTBScreening, "Name", "ID");
-                    theDVTBScreening.Dispose();
-                    theDTTBScreening.Clear();
-                }
-                
-
-                /**********/
-                //if (theDSXML.Tables["Mst_Employee"] != null)
-                //{
-                //    DataView theDVOrder = new DataView(theDSXML.Tables["Mst_Employee"]);
-                //    if (theDVOrder.Table != null)
-                //    {
-                //        theDT = (DataTable)theUtils.CreateTableFromDataView(theDVOrder);
-                //        if (Convert.ToInt32(Session["AppUserEmployeeId"]) > 0)
-                //        {
-                //            theDVOrder = new DataView(theDT);
-                //            theDVOrder.RowFilter = "EmployeeId =" + Session["AppUserEmployeeId"].ToString();
-                //            if (theDVOrder.Count > 0)
-                //                theDT = theUtils.CreateTableFromDataView(theDVOrder);
-                //        }
-                //        theBindMgr.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId");
-                //        theBindMgr.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId");
-                //        theBindMgr.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
-                //        theDVOrder.Dispose();
-                //        theDT.Clear();
-                //    }
-                //}
-
+                theDTTBScreening = (DataTable)theUtils.CreateTableFromDataView(theDVTBScreening);
+                theBindMgr.BindCheckedList(cblTBScreen, theDTTBScreening, "Name", "ID");
+                theDVTBScreening.Dispose();
+                theDTTBScreening.Clear();
+            }
+            if (theDSXML.Tables["Mst_Employee"] != null)
+            {
                 DataView theDVOrder = new DataView(theDSXML.Tables["Mst_Employee"]);
+                theDVOrder.RowFilter = "DeleteFlag=0";
                 if (theDVOrder.Table != null)
                 {
-                    theDT = theUtils.CreateTableFromDataView(theDVOrder);
+                    theDT = (DataTable)theUtils.CreateTableFromDataView(theDVOrder);
+                    if (Convert.ToInt32(Session["AppUserEmployeeId"]) > 0)
+                    {
+                        theDVOrder = new DataView(theDT);
+                        theDVOrder.RowFilter = "EmployeeId =" + Session["AppUserEmployeeId"].ToString();
+                        if (theDVOrder.Count > 0)
+                            theDT = theUtils.CreateTableFromDataView(theDVOrder);
+                    }
+                    /* Bug ID 2707
                     theBindMgr.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId");
                     theBindMgr.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId");
-                    theBindMgr.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
+                    theBindMgr.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");*/
+
+                    BindUserDropdown(ddlPharmOrderedbyName, string.Empty);
+                    BindUserDropdown(ddlPharmReportedbyName, string.Empty);
+                    BindUserDropdown(ddlCounselerName, string.Empty);
                     theDVOrder.Dispose();
                     theDT.Clear();
                 }
-                /********/
-               
-                DataView theDVAssessment = new DataView(theDSXML.Tables["Mst_Assessment"]);
-                theDVAssessment.RowFilter = "AssessmentCategoryId=2";
-                DataTable theDTAssessment = new DataTable();
-                if (theDVAssessment.Table != null)
-                {
-                    theDTAssessment = theUtils.CreateTableFromDataView(theDVAssessment);
-                    if (theDVAssessment.Count > 0)
-                    {
-                        theBindMgr.BindCheckedList(chkAssessment, theDTAssessment, "AssessmentName", "AssessmentID");
-                    }
-                }
-                /**********/
-                DataView theDVAppReason = new DataView(theDSXML.Tables["Mst_Decode"]);
-                theDVAppReason.RowFilter = "codeId=26";
-                DataTable theDTAppReason = new DataTable();
-                if (theDVAppReason.Table != null)
-                {
+            }
+            DataView theDVAppReason = new DataView(theDSXML.Tables["Mst_Decode"]);
+            theDVAppReason.RowFilter = "DeleteFlag=0 and codeId=26";
+            DataTable theDTAppReason = new DataTable();
+            if (theDVAppReason.Table != null)
+            {
+                theDTAppReason = (DataTable)theUtils.CreateTableFromDataView(theDVAppReason);
+                theBindMgr.BindCombo(ddlAppReason, theDTAppReason, "Name", "ID");
+                theDVAppReason.Dispose();
+                theDTAppReason.Clear();
+            }
 
-                    if (theDVAppReason.Count > 0)
-                    {
-                        theDTAppReason = theUtils.CreateTableFromDataView(theDVAppReason);
-                        theBindMgr.BindCombo(ddlAppReason, theDTAppReason, "Name", "ID");
-                    }
-                }
+            DataView theDVAssessment = new DataView(theDSXML.Tables["Mst_Assessment"]);
+            theDVAssessment.RowFilter = "DeleteFlag='0' and AssessmentCategoryId='2'";
+            DataTable theDTAssessment = new DataTable();
+            if (theDVAssessment.Table != null)
+            {
+                theDTAssessment = theUtils.CreateTableFromDataView(theDVAssessment);
+                theBindMgr.BindCheckedList(chkAssessment, theDTAssessment, "AssessmentName", "AssessmentID");
+                theDVAssessment.Dispose();
+                theDTAssessment.Clear();
+            }
 
-                ///********************* Function To Fill OI and AIDs Defining Illness ********************////
-                ///Left
-                theDTHivAssoConditionleft = theDS.Tables[10];
+            DataView theDVHivAssoConditionleft = new DataView();
+            //DataTable theDTHivAssoConditionleft = new DataTable();
+            theDVHivAssoConditionleft = new DataView(theDS.Tables[10]);
+            theDVHivAssoConditionleft.RowFilter = "DeleteFlag=0";
+            if (theDVHivAssoConditionleft.Table != null)
+            {
+                theDTHivAssoConditionleft = theUtils.CreateTableFromDataView(theDVHivAssoConditionleft);
                 for (int i = 0; i < theDTHivAssoConditionleft.Rows.Count; i++)
                 {
-
                     HtmlTableRow r = new HtmlTableRow();
                     if ((i != 1) && (i != 2))
                     {
@@ -2494,14 +2238,20 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                         HtmlTableCell d = new HtmlTableCell();
                         d.Controls.Add(new LiteralControl("<div id='pultb' style='display:none'>"));
                         HtmlInputRadioButton rdopultbsmplus = new HtmlInputRadioButton();
-                        rdopultbsmplus.ID = Convert.ToString(11); ;
+                        rdopultbsmplus.ID = Convert.ToString(11);
                         rdopultbsmplus.Value = theDTHivAssoConditionleft.Rows[1][1].ToString();
+                        rdopultbsmplus.Attributes.Add("onfocus", "up(this);");
+                        rdopultbsmplus.Attributes.Add("onclick", "down(this);");
                         d.Controls.Add(rdopultbsmplus);
                         d.Controls.Add(new LiteralControl(rdopultbsmplus.Value));
+
                         d.Controls.Add(new LiteralControl("</br>"));
+
                         HtmlInputRadioButton rdopultbsminus = new HtmlInputRadioButton();
-                        rdopultbsminus.ID = Convert.ToString(12); ;
+                        rdopultbsminus.ID = Convert.ToString(12);
                         rdopultbsminus.Value = theDTHivAssoConditionleft.Rows[2][1].ToString();
+                        rdopultbsminus.Attributes.Add("onfocus", "up(this);");
+                        rdopultbsminus.Attributes.Add("onclick", "down(this);");
                         d.Controls.Add(rdopultbsminus);
                         d.Controls.Add(new LiteralControl(rdopultbsminus.Value));
                         d.Controls.Add(new LiteralControl("</div>"));
@@ -2509,9 +2259,15 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     }
                     tblOIsAIDsleft.Rows.Add(r);
                 }
+            }
 
-                //Coding for Saving HIV Associated Conditions - right
-                theDTHivAssoConditionright = theDS.Tables[11];
+            DataView theDVHivAssoConditionright = new DataView();
+            theDVHivAssoConditionright = new DataView(theDS.Tables[11]);
+            theDVHivAssoConditionright.RowFilter = "DeleteFlag=0";
+            //DataTable theDTHivAssoConditionright= new DataTable();
+            if (theDVHivAssoConditionright.Table != null)
+            {
+                theDTHivAssoConditionright = theUtils.CreateTableFromDataView(theDVHivAssoConditionright);
                 for (int i = 0; i < theDTHivAssoConditionright.Rows.Count; i++)
                 {
                     HtmlTableRow trright = new HtmlTableRow();
@@ -2540,94 +2296,352 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     rcol_right++;
                     tblOIsAIDsright.Rows.Add(trright);
                 }
-
-                int WHOStage = 0;
-                if (theDS.Tables[20].Rows.Count > 0)
-                    WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"]);
-
-                int WhoStageSRNO = 0;
-                DataView theDV = new DataView(theDSXML.Tables["mst_Decode"]);
-                theDV.RowFilter = "Id=" + WHOStage.ToString();
-                if (theDV.Count > 0)
-                {
-                    if (theDV[0]["SRNO"] != System.DBNull.Value)
-                    {
-                        WhoStageSRNO = Convert.ToInt32(theDV[0]["SRNO"]);
-                    }
-                }
-                theDV = null;
-
-                theDV = new DataView(theDSXML.Tables["mst_Decode"]);
-                theDV.RowFilter = "DeleteFlag=0 and CodeID=22 and SystemId = 1 and SRNO>=" + WhoStageSRNO.ToString();
-                if (theDV.Table != null)
-                {
-                    theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
-                    theBindMgr.BindCombo(ddlphysWHOStage, theDT, "Name", "ID");
-                }
-
-                //////////ddlphysWHOStage.Items.Add("Select");
-                //////////ddlphysWHOStage.Items.Add("I");
-                //////////ddlphysWHOStage.Items.Add("II");
-                //////////ddlphysWHOStage.Items.Add("III");
-                //////////ddlphysWHOStage.Items.Add("IV");
-                //////////ddlphysWHOStage.Items[0].Value = "0";
-                //////////ddlphysWHOStage.Items[1].Value = "87";
-                //////////ddlphysWHOStage.Items[2].Value = "88";
-                //////////ddlphysWHOStage.Items[3].Value = "89";
-                //////////ddlphysWHOStage.Items[4].Value = "90";
-
-                //////////if (theDS.Tables[20].Rows[0]["WHOStage"] != System.DBNull.Value)
-                //////////{
-                //////////    int WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"]);
-                //////////    ddlphysWHOStage.Items.Clear();
-                //////////    if (WHOStage == 87 || WHOStage == 0)
-                //////////    {
-                //////////        ddlphysWHOStage.Items.Add("Select");
-                //////////        ddlphysWHOStage.Items.Add("I");
-                //////////        ddlphysWHOStage.Items.Add("II");
-                //////////        ddlphysWHOStage.Items.Add("III");
-                //////////        ddlphysWHOStage.Items.Add("IV");
-                //////////        ddlphysWHOStage.Items[0].Value = "0";
-                //////////        ddlphysWHOStage.Items[1].Value = "87";
-                //////////        ddlphysWHOStage.Items[2].Value = "88";
-                //////////        ddlphysWHOStage.Items[3].Value = "89";
-                //////////        ddlphysWHOStage.Items[4].Value = "90";
-                //////////    }
-                //////////    if (WHOStage == 88)
-                //////////    {
-                        
-                //////////        ddlphysWHOStage.Items.Add("Select");
-                //////////        ddlphysWHOStage.Items.Add("II");
-                //////////        ddlphysWHOStage.Items.Add("III");
-                //////////        ddlphysWHOStage.Items.Add("IV");
-                //////////        ddlphysWHOStage.Items[0].Value = "0";
-                //////////        ddlphysWHOStage.Items[1].Value = "88";
-                //////////        ddlphysWHOStage.Items[2].Value = "89";
-                //////////        ddlphysWHOStage.Items[3].Value = "90";
-                //////////    }
-                //////////    else if (WHOStage == 89)
-                //////////    {
-                        
-                //////////        ddlphysWHOStage.Items.Add("Select");
-                //////////        ddlphysWHOStage.Items.Add("III");
-                //////////        ddlphysWHOStage.Items.Add("IV");
-                //////////        ddlphysWHOStage.Items[0].Value = "0";
-                //////////        ddlphysWHOStage.Items[1].Value = "89";
-                //////////        ddlphysWHOStage.Items[2].Value = "90";
-                //////////    }
-                //////////    else if (WHOStage == 90)
-                //////////    {
-                        
-                //////////        ddlphysWHOStage.Items.Add("Select");
-                //////////        ddlphysWHOStage.Items.Add("IV");
-                //////////        ddlphysWHOStage.Items[0].Value = "0";
-                //////////        ddlphysWHOStage.Items[1].Value = "90";
-                //////////    }
-
-                //////////}
             }
-    }  
-   
+
+            int WHOStage = 0;
+
+            if (theDS.Tables[20].Rows.Count > 0)
+                if (theDS.Tables[20].Rows[0]["WHOStage"] != System.DBNull.Value)
+                {
+                    WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"]);
+                }
+            int WhoStageSRNO = 0;
+            DataView theDV = new DataView(theDSXML.Tables["mst_Decode"]);
+            theDV.RowFilter = "Id=" + WHOStage.ToString();
+            if (theDV.Count > 0)
+            {
+                if (theDV[0]["SRNO"] != System.DBNull.Value)
+                {
+                    WhoStageSRNO = Convert.ToInt32(theDV[0]["SRNO"]);
+                }
+            }
+            theDV = null;
+
+            theDV = new DataView(theDSXML.Tables["mst_Decode"]);
+            theDV.RowFilter = "DeleteFlag=0 and CodeID=22 and SystemId = 1 and SRNO>=" + WhoStageSRNO.ToString();
+            if (theDV.Table != null)
+            {
+                theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
+                theBindMgr.BindCombo(ddlphysWHOStage, theDT, "Name", "ID");
+            }
+            //////if (theDS.Tables[20].Rows.Count > 0)
+            //////{
+            //////    string strWHOState = theDS.Tables[20].Rows[0]["WHOStage"].ToString();
+            //////    int WHOStage = 0;
+            //////    if (strWHOState == "")
+            //////    {
+            //////        WHOStage = 0;
+            //////    }
+            //////    else
+            //////    {
+            //////        WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"].ToString());
+            //////    }
+            //////    if (WHOStage == 87 || WHOStage == 0)
+            //////    {
+            //////        ddlphysWHOStage.Items.Add("Select");
+            //////        ddlphysWHOStage.Items.Add("I");
+            //////        ddlphysWHOStage.Items.Add("II");
+            //////        ddlphysWHOStage.Items.Add("III");
+            //////        ddlphysWHOStage.Items.Add("IV");
+            //////        ddlphysWHOStage.Items[0].Value = "0";
+            //////        ddlphysWHOStage.Items[1].Value = "87";
+            //////        ddlphysWHOStage.Items[2].Value = "88";
+            //////        ddlphysWHOStage.Items[3].Value = "89";
+            //////        ddlphysWHOStage.Items[4].Value = "90";
+            //////    }
+            //////    else if (WHOStage == 88)
+            //////    {
+            //////        ddlphysWHOStage.Items.Add("Select");
+            //////        ddlphysWHOStage.Items.Add("II");
+            //////        ddlphysWHOStage.Items.Add("III");
+            //////        ddlphysWHOStage.Items.Add("IV");
+            //////        ddlphysWHOStage.Items[0].Value = "0";
+            //////        ddlphysWHOStage.Items[1].Value = "88";
+            //////        ddlphysWHOStage.Items[2].Value = "89";
+            //////        ddlphysWHOStage.Items[3].Value = "90";
+            //////    }
+            //////    else if (WHOStage == 89)
+            //////    {
+            //////        ddlphysWHOStage.Items.Add("Select");
+            //////        ddlphysWHOStage.Items.Add("III");
+            //////        ddlphysWHOStage.Items.Add("IV");
+            //////        ddlphysWHOStage.Items[0].Value = "0";
+            //////        ddlphysWHOStage.Items[1].Value = "89";
+            //////        ddlphysWHOStage.Items[2].Value = "90";
+            //////    }
+            //////    else if (WHOStage == 90)
+            //////    {
+            //////        ddlphysWHOStage.Items.Add("Select");
+            //////        ddlphysWHOStage.Items.Add("IV");
+            //////        ddlphysWHOStage.Items[0].Value = "0";
+            //////        ddlphysWHOStage.Items[1].Value = "90";
+            //////    }
+
+            //////}
+            //////else
+            //////{
+            //////    ddlphysWHOStage.Items.Add("Select");
+            //////    ddlphysWHOStage.Items.Add("I");
+            //////    ddlphysWHOStage.Items.Add("II");
+            //////    ddlphysWHOStage.Items.Add("III");
+            //////    ddlphysWHOStage.Items.Add("IV");
+            //////    ddlphysWHOStage.Items[0].Value = "0";
+            //////    ddlphysWHOStage.Items[1].Value = "87";
+            //////    ddlphysWHOStage.Items[2].Value = "88";
+            //////    ddlphysWHOStage.Items[3].Value = "89";
+            //////    ddlphysWHOStage.Items[4].Value = "90";
+            //////}
+        }
+        //else if (Request.QueryString["name"] == "Edit" || Request.QueryString["name"] == "Delete")
+        else if ((Convert.ToInt32(Session["PatientVisitId"])) > 1 || Request.QueryString["name"] == "Delete")
+        {
+            DataView theDVComplaints = new DataView(theDSXML.Tables["Mst_Symptom"]);
+            theDVComplaints.RowFilter = "CategoryID=4";
+            DataTable theDTComplaints = new DataTable();
+            if (theDVComplaints.Table != null)
+            {
+                theDTComplaints = (DataTable)theUtils.CreateTableFromDataView(theDVComplaints);
+                theBindMgr.BindCheckedList(cblPresentingComplaints, theDTComplaints, "Name", "ID");
+            }
+
+            DataTable theDTTBScreening = new DataTable();
+            DataView theDVTBScreening = new DataView(theDSXML.Tables["Mst_Symptom"]);
+            theDVTBScreening.RowFilter = "CategoryID='14' and ID NOT IN('70', '71')";
+            if (theDVTBScreening.Table != null)
+            {
+                theDTTBScreening = (DataTable)theUtils.CreateTableFromDataView(theDVTBScreening);
+                theBindMgr.BindCheckedList(cblTBScreen, theDTTBScreening, "Name", "ID");
+                theDVTBScreening.Dispose();
+                theDTTBScreening.Clear();
+            }
+
+
+            /**********/
+            //if (theDSXML.Tables["Mst_Employee"] != null)
+            //{
+            //    DataView theDVOrder = new DataView(theDSXML.Tables["Mst_Employee"]);
+            //    if (theDVOrder.Table != null)
+            //    {
+            //        theDT = (DataTable)theUtils.CreateTableFromDataView(theDVOrder);
+            //        if (Convert.ToInt32(Session["AppUserEmployeeId"]) > 0)
+            //        {
+            //            theDVOrder = new DataView(theDT);
+            //            theDVOrder.RowFilter = "EmployeeId =" + Session["AppUserEmployeeId"].ToString();
+            //            if (theDVOrder.Count > 0)
+            //                theDT = theUtils.CreateTableFromDataView(theDVOrder);
+            //        }
+            //        theBindMgr.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId");
+            //        theBindMgr.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId");
+            //        theBindMgr.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
+            //        theDVOrder.Dispose();
+            //        theDT.Clear();
+            //    }
+            //}
+
+            DataView theDVOrder = new DataView(theDSXML.Tables["Mst_Employee"]);
+            if (theDVOrder.Table != null)
+            {
+                theDT = theUtils.CreateTableFromDataView(theDVOrder);
+                /* Bug ID 2707.....
+                theBindMgr.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId");
+                theBindMgr.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId");
+                theBindMgr.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
+                */
+                BindUserDropdown(ddlPharmOrderedbyName, string.Empty);
+                BindUserDropdown(ddlPharmReportedbyName, string.Empty);
+                BindUserDropdown(ddlCounselerName, string.Empty);
+
+                theDVOrder.Dispose();
+                theDT.Clear();
+            }
+            /********/
+
+            DataView theDVAssessment = new DataView(theDSXML.Tables["Mst_Assessment"]);
+            theDVAssessment.RowFilter = "AssessmentCategoryId=2";
+            DataTable theDTAssessment = new DataTable();
+            if (theDVAssessment.Table != null)
+            {
+                theDTAssessment = theUtils.CreateTableFromDataView(theDVAssessment);
+                if (theDVAssessment.Count > 0)
+                {
+                    theBindMgr.BindCheckedList(chkAssessment, theDTAssessment, "AssessmentName", "AssessmentID");
+                }
+            }
+            /**********/
+            DataView theDVAppReason = new DataView(theDSXML.Tables["Mst_Decode"]);
+            theDVAppReason.RowFilter = "codeId=26";
+            DataTable theDTAppReason = new DataTable();
+            if (theDVAppReason.Table != null)
+            {
+
+                if (theDVAppReason.Count > 0)
+                {
+                    theDTAppReason = theUtils.CreateTableFromDataView(theDVAppReason);
+                    theBindMgr.BindCombo(ddlAppReason, theDTAppReason, "Name", "ID");
+                }
+            }
+
+            ///********************* Function To Fill OI and AIDs Defining Illness ********************////
+            ///Left
+            theDTHivAssoConditionleft = theDS.Tables[10];
+            for (int i = 0; i < theDTHivAssoConditionleft.Rows.Count; i++)
+            {
+
+                HtmlTableRow r = new HtmlTableRow();
+                if ((i != 1) && (i != 2))
+                {
+                    HtmlTableCell c = new HtmlTableCell();
+                    HtmlInputCheckBox chkOIsDsleft = new HtmlInputCheckBox();
+                    chkOIsDsleft.ID = Convert.ToString(rcol_left);
+                    chkOIsDsleft.Value = theDTHivAssoConditionleft.Rows[i][1].ToString();
+                    c.Controls.Add(chkOIsDsleft);
+                    c.Controls.Add(new LiteralControl(chkOIsDsleft.Value));
+                    r.Cells.Add(c);
+                    if (chkOIsDsleft.Value == "Pulmonary TB")
+                    {
+                        chkOIsDsleft.Attributes.Add("onclick", "toggle('pultb');");
+                    }
+                    rcol_left++;
+                }
+                if (i == 0)
+                {
+                    HtmlTableCell d = new HtmlTableCell();
+                    d.Controls.Add(new LiteralControl("<div id='pultb' style='display:none'>"));
+                    HtmlInputRadioButton rdopultbsmplus = new HtmlInputRadioButton();
+                    rdopultbsmplus.ID = Convert.ToString(11); ;
+                    rdopultbsmplus.Value = theDTHivAssoConditionleft.Rows[1][1].ToString();
+                    d.Controls.Add(rdopultbsmplus);
+                    d.Controls.Add(new LiteralControl(rdopultbsmplus.Value));
+                    d.Controls.Add(new LiteralControl("</br>"));
+                    HtmlInputRadioButton rdopultbsminus = new HtmlInputRadioButton();
+                    rdopultbsminus.ID = Convert.ToString(12); ;
+                    rdopultbsminus.Value = theDTHivAssoConditionleft.Rows[2][1].ToString();
+                    d.Controls.Add(rdopultbsminus);
+                    d.Controls.Add(new LiteralControl(rdopultbsminus.Value));
+                    d.Controls.Add(new LiteralControl("</div>"));
+                    r.Cells.Add(d);
+                }
+                tblOIsAIDsleft.Rows.Add(r);
+            }
+
+            //Coding for Saving HIV Associated Conditions - right
+            theDTHivAssoConditionright = theDS.Tables[11];
+            for (int i = 0; i < theDTHivAssoConditionright.Rows.Count; i++)
+            {
+                HtmlTableRow trright = new HtmlTableRow();
+                HtmlTableCell tc2_0 = new HtmlTableCell();
+                HtmlInputCheckBox chkOIsDsright = new HtmlInputCheckBox();
+                chkOIsDsright.ID = Convert.ToString("right" + rcol_right);
+                chkOIsDsright.Value = theDTHivAssoConditionright.Rows[i][1].ToString();
+                tc2_0.Controls.Add(chkOIsDsright);
+                tc2_0.Controls.Add(new LiteralControl(chkOIsDsright.Value));
+                trright.Cells.Add(tc2_0);
+
+                if (chkOIsDsright.Value == "Other")
+                {
+                    HtmlTableCell tc2_1 = new HtmlTableCell();
+                    //tc2_1.Controls.Add(new LiteralControl("<LABEL style='font-weight:bold' for='otherOIsAIDs'>"));
+                    tc2_1.Controls.Add(new LiteralControl("<SPAN id='otherOIsAIDs' style='DISPLAY:none'>Specify: "));
+                    HtmlInputText HTextOIsAIDsillness = new HtmlInputText();
+                    HTextOIsAIDsillness.ID = "txtotherOIsAIDsillness";
+                    HTextOIsAIDsillness.Size = 10;
+                    tc2_1.Controls.Add(HTextOIsAIDsillness);
+                    tc2_1.Controls.Add(new LiteralControl(HTextOIsAIDsillness.Value));
+                    tc2_1.Controls.Add(new LiteralControl("</SPAN>"));
+                    trright.Cells.Add(tc2_1);
+                    chkOIsDsright.Attributes.Add("onclick", "toggle('otherOIsAIDs');");
+                }
+                rcol_right++;
+                tblOIsAIDsright.Rows.Add(trright);
+            }
+
+            int WHOStage = 0;
+            if (theDS.Tables[20].Rows.Count > 0)
+                WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"]);
+
+            int WhoStageSRNO = 0;
+            DataView theDV = new DataView(theDSXML.Tables["mst_Decode"]);
+            theDV.RowFilter = "Id=" + WHOStage.ToString();
+            if (theDV.Count > 0)
+            {
+                if (theDV[0]["SRNO"] != System.DBNull.Value)
+                {
+                    WhoStageSRNO = Convert.ToInt32(theDV[0]["SRNO"]);
+                }
+            }
+            theDV = null;
+
+            theDV = new DataView(theDSXML.Tables["mst_Decode"]);
+            theDV.RowFilter = "DeleteFlag=0 and CodeID=22 and SystemId = 1 and SRNO>=" + WhoStageSRNO.ToString();
+            if (theDV.Table != null)
+            {
+                theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
+                theBindMgr.BindCombo(ddlphysWHOStage, theDT, "Name", "ID");
+            }
+
+            //////////ddlphysWHOStage.Items.Add("Select");
+            //////////ddlphysWHOStage.Items.Add("I");
+            //////////ddlphysWHOStage.Items.Add("II");
+            //////////ddlphysWHOStage.Items.Add("III");
+            //////////ddlphysWHOStage.Items.Add("IV");
+            //////////ddlphysWHOStage.Items[0].Value = "0";
+            //////////ddlphysWHOStage.Items[1].Value = "87";
+            //////////ddlphysWHOStage.Items[2].Value = "88";
+            //////////ddlphysWHOStage.Items[3].Value = "89";
+            //////////ddlphysWHOStage.Items[4].Value = "90";
+
+            //////////if (theDS.Tables[20].Rows[0]["WHOStage"] != System.DBNull.Value)
+            //////////{
+            //////////    int WHOStage = Convert.ToInt32(theDS.Tables[20].Rows[0]["WHOStage"]);
+            //////////    ddlphysWHOStage.Items.Clear();
+            //////////    if (WHOStage == 87 || WHOStage == 0)
+            //////////    {
+            //////////        ddlphysWHOStage.Items.Add("Select");
+            //////////        ddlphysWHOStage.Items.Add("I");
+            //////////        ddlphysWHOStage.Items.Add("II");
+            //////////        ddlphysWHOStage.Items.Add("III");
+            //////////        ddlphysWHOStage.Items.Add("IV");
+            //////////        ddlphysWHOStage.Items[0].Value = "0";
+            //////////        ddlphysWHOStage.Items[1].Value = "87";
+            //////////        ddlphysWHOStage.Items[2].Value = "88";
+            //////////        ddlphysWHOStage.Items[3].Value = "89";
+            //////////        ddlphysWHOStage.Items[4].Value = "90";
+            //////////    }
+            //////////    if (WHOStage == 88)
+            //////////    {
+
+            //////////        ddlphysWHOStage.Items.Add("Select");
+            //////////        ddlphysWHOStage.Items.Add("II");
+            //////////        ddlphysWHOStage.Items.Add("III");
+            //////////        ddlphysWHOStage.Items.Add("IV");
+            //////////        ddlphysWHOStage.Items[0].Value = "0";
+            //////////        ddlphysWHOStage.Items[1].Value = "88";
+            //////////        ddlphysWHOStage.Items[2].Value = "89";
+            //////////        ddlphysWHOStage.Items[3].Value = "90";
+            //////////    }
+            //////////    else if (WHOStage == 89)
+            //////////    {
+
+            //////////        ddlphysWHOStage.Items.Add("Select");
+            //////////        ddlphysWHOStage.Items.Add("III");
+            //////////        ddlphysWHOStage.Items.Add("IV");
+            //////////        ddlphysWHOStage.Items[0].Value = "0";
+            //////////        ddlphysWHOStage.Items[1].Value = "89";
+            //////////        ddlphysWHOStage.Items[2].Value = "90";
+            //////////    }
+            //////////    else if (WHOStage == 90)
+            //////////    {
+
+            //////////        ddlphysWHOStage.Items.Add("Select");
+            //////////        ddlphysWHOStage.Items.Add("IV");
+            //////////        ddlphysWHOStage.Items[0].Value = "0";
+            //////////        ddlphysWHOStage.Items[1].Value = "90";
+            //////////    }
+
+            //////////}
+        }
+    }
+
     /************** Boundary Values  ***************/
     private void AddFieldAttributes()
     {
@@ -2655,20 +2669,20 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
         NonARTManager = (INonARTFollowUp)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BNonARTFollowUp, BusinessProcess.Clinical");
         DataSet theBoundryValueDS = (DataSet)NonARTManager.GetNonARTBoundaryValues();
-        
+
         if (theBoundryValueDS.Tables.Count != 0)
         {
             if (theBoundryValueDS.Tables[3].Rows.Count != 0)
             {
                 DataView theDV = new DataView(theBoundryValueDS.Tables[3]);
-                
+
                 theDV.RowFilter = "SubTestId = 40";
                 if (theDV.Count != 0)
                 {
                     txtphysTemp.Attributes.Add("onkeyup", "chkDecimal('" + txtphysTemp.ClientID + "'); AddBoundary('" + txtphysTemp.ClientID + "','" + Convert.ToInt32(theDV[0]["MinBoundaryValue"]) + "','" + Convert.ToInt32(theDV[0]["MaxBoundaryValue"]) + "')");
                     txtphysTemp.Attributes.Add("onblur", "CheckValue('" + txtphysTemp.ClientID + "','" + Convert.ToInt32(theDV[0]["MinBoundaryValue"]) + "')");
                 }
-               /******************************************/
+                /******************************************/
 
                 txtphysRR.Attributes.Add("onkeyup", "chkInteger('" + txtphysRR.ClientID + "')");
                 txtphysRR.Attributes.Add("onBlur", "isBetween('" + txtphysRR.ClientID + "', '" + "RR" + "', '" + 4 + "', '" + 100 + "')");
@@ -2728,7 +2742,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         rdoHIVassocNone.Attributes.Add("onclick", "down(this); hide('pultb'); hide('assocSelected'); hide('otherOIsAIDs'); disableChkRdoListItems_left('ctl00_IQCareContentPlaceHolder_', '" + tblOIsAIDsleft.Rows.Count + "'); disableChkRdoListItems_right('ctl00_IQCareContentPlaceHolder_right', '" + tblOIsAIDsright.Rows.Count + "');");
         PrevHIVassocNotDocumented.Attributes.Add("onclick", "down(this); hide('pultb'); hide('assocSelected'); hide('otherOIsAIDs'); disableChkRdoListItems_left('ctl00_IQCareContentPlaceHolder_', '" + tblOIsAIDsleft.Rows.Count + "'); disableChkRdoListItems_right('ctl00_IQCareContentPlaceHolder_right', '" + tblOIsAIDsright.Rows.Count + "');");
         rdoPerformed.Attributes.Add("onclick", "toggle('TBSymptom'); down(this); disableChkboxList('" + cblTBScreen.ClientID + "', '" + cblTBScreen.Items.Count + "')");
-        rdoNotDocumented.Attributes.Add("onclick","hide('TBSymptom'); down(this); disableChkboxList('" + cblTBScreen.ClientID + "', '" + cblTBScreen.Items.Count + "')");
+        rdoNotDocumented.Attributes.Add("onclick", "hide('TBSymptom'); down(this); disableChkboxList('" + cblTBScreen.ClientID + "', '" + cblTBScreen.Items.Count + "')");
         //rdoTBNone.Attributes.Add("onclick", "hide('TBSymptom'); down(this); disableChkboxList('" + cblTBScreen.ClientID + "', '" + cblTBScreen.Items.Count + "')");
         //rdoARVSideEffectsNone.Attributes.Add("OnClick", "down(this);hide('sideEffectsSelected'); disableChkboxList('" + cblARVSideEffectleft.ClientID + "', '" + cblARVSideEffectleft.Items.Count + "')");
         //rdoARVSideEffectsNone.Attributes.Add("OnChange", "disableChkboxList('" + cblARVSideEffectright.ClientID + "', '" + cblARVSideEffectright.Items.Count + "')");
@@ -2751,7 +2765,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         txtSpecifyDate.Attributes.Add("OnBlur", "DateFormat(this,this.value,event,true,'3')");
         txtpharmOrderedbyDate.Attributes.Add("onBlur", "DateFormat(this,this.value,event,true,'3')");
         txtpharmReportedbyDate.Attributes.Add("OnBlur", "DateFormat(this,this.value,event,true,'3')");
-            
+
     }
 
     /************ Check For IE & Visit Date *********/
@@ -2767,7 +2781,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     Session["VisitType"] = theMasterDT.Rows[0]["VisitType"];
                     Session["IEVisitDate"] = theMasterDT.Rows[0]["VisitDate"];
                 }
-              
+
             }
         }
         else
@@ -2930,7 +2944,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             }
 
         }
-    
+
     }
 
     public DataSet NonARTDetails()
@@ -2953,7 +2967,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         decimal theDuration = 99999;
         decimal thePrescribedQty = 99999;
         decimal theDispensedQty = 99999;
-      
+
 
         /************* Coding for saving Presenting Complaints ************/
 
@@ -2971,7 +2985,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
         theDS.Tables.Add(theDTPresentComplaints);
 
-    
+
         /***********Code for Saving AssessmentID -dtl_PatientAssessment ***************/
 
         DataTable theDTAssessment = new DataTable();
@@ -3018,7 +3032,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         DataColumn theDTHIVAssoDiseaseLeft = new DataColumn("HIVAssoDiseasePresent");
         theDTHIVAssoDiseaseLeft.DataType = System.Type.GetType("System.Boolean");
         dtOI_AIDSleft.Columns.Add(theDTHIVAssoDiseaseLeft);
-        
+
         DataRow drOI_AIDSleft;
         string strOI_AIDSValue;
 
@@ -3046,7 +3060,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
         if (rdoHIVassocNone.Checked == false && PrevHIVassocNotDocumented.Checked == false)
         {
-            
+
             foreach (HtmlTableRow r in tblOIsAIDsleft.Rows)
             {
                 foreach (HtmlTableCell c in r.Cells)
@@ -3106,13 +3120,13 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                                 }
                             }
                         }
-                        
+
                     }
                 }
             }
             theDS.Tables.Add(dtOI_AIDSleft);
         }
-        
+
 
         /*************** Code for Saving OI and AIDs Defining Illness[Right]-//dtl_PatientDisease *******************/
 
@@ -3195,7 +3209,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         else
         {
             drOI_AIDSright = dtOI_AIDSright.NewRow();
-            drOI_AIDSright["OI_AIDS_ID2"] =  System.DBNull.Value;
+            drOI_AIDSright["OI_AIDS_ID2"] = System.DBNull.Value;
             drOI_AIDSright["OI_AIDS_Desc_other"] = System.DBNull.Value;
             drOI_AIDSright["HIVAssoDiseasePresent1"] = System.DBNull.Value;
             dtOI_AIDSright.Rows.Add(drOI_AIDSright);
@@ -3297,7 +3311,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theDT.Rows.Add(theDR);
         }
         theDS.Tables.Add(theDT);
-        
+
         DataTable theDTTBSymptoms = new DataTable();
         theDTTBSymptoms.Columns.Add("TBSymptomsID", System.Type.GetType("System.Int32"));
 
@@ -3344,7 +3358,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 {
                     if (ct.GetType() == typeof(System.Web.UI.HtmlControls.HtmlInputCheckBox))
                     {
-                        if (((HtmlInputCheckBox)ct).Value == "Pulmonary TB" && ((HtmlInputCheckBox)ct).Checked==true)
+                        if (((HtmlInputCheckBox)ct).Value == "Pulmonary TB" && ((HtmlInputCheckBox)ct).Checked == true)
                         {
                             string script = "";
                             script = "<script language = 'javascript' defer ='defer' id = 'OIsAIDs_ID'>\n";
@@ -3357,7 +3371,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             }
         }
 
-        
+
 
 
         //Right DIV Items
@@ -3387,18 +3401,18 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     private void SaveData()
     {
         //DataSet theDSNonARTFollowUp = new DataSet();
-        int PatientID, PharmacyID = 0, VisitID=0, EmployeeID = 0;
+        int PatientID, PharmacyID = 0, VisitID = 0, EmployeeID = 0;
         //Naveen-UpdateMode 1 for No update in Visit date and 2 for Update Visit date
-        
-        string theOrderedByDate, theReportedByDate;
-        
+
+        DateTime theOrderedByDate, theReportedByDate;
+
         Boolean theSave, flag = false;
-        
+
         NonARTFollowUpParameters();
         theDS = NonARTDetails();
         DataTable theDT = MakeDrugTable(PnlAddOtherMedication);
-       
-             
+
+
         IQCareUtils theUtils = new IQCareUtils();
         NonARTManager = (INonARTFollowUp)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BNonARTFollowUp, BusinessProcess.Clinical");
 
@@ -3406,9 +3420,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //{
 
         foreach (DataRow theDR in theDT.Rows)
-        { 
-            if(theDR["DrugId"].ToString().IndexOf("8888")>0)
-                theDR["DrugId"]=theDR["DrugId"].ToString().Substring(0,theDR["DrugId"].ToString().Length-4);
+        {
+            if (theDR["DrugId"].ToString().IndexOf("8888") > 0)
+                theDR["DrugId"] = theDR["DrugId"].ToString().Substring(0, theDR["DrugId"].ToString().Length - 4);
             if (theDR["GenericId"].ToString().IndexOf("9999") > 0)
                 theDR["GenericId"] = theDR["GenericId"].ToString().Substring(0, theDR["GenericId"].ToString().Length - 4);
         }
@@ -3416,21 +3430,21 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         /********** Selected Date **********/
         if (txtpharmOrderedbyDate.Value == "")
         {
-            theOrderedByDate = theUtils.MakeDate("01-Jan-1900");
+            theOrderedByDate = Convert.ToDateTime(theUtils.MakeDate("01-01-1900"));
         }
         else
         {
-            theOrderedByDate = txtpharmOrderedbyDate.Value;
+            theOrderedByDate = Convert.ToDateTime(theUtils.MakeDate(txtpharmOrderedbyDate.Value));
         }
 
 
         if (txtpharmReportedbyDate.Value == "")
         {
-            theReportedByDate = "01-Jan-1900";
+            theReportedByDate = Convert.ToDateTime(theUtils.MakeDate("01-01-1900"));
         }
         else
         {
-            theReportedByDate = txtpharmReportedbyDate.Value;
+            theReportedByDate = Convert.ToDateTime(theUtils.MakeDate(txtpharmReportedbyDate.Value));
         }
 
         if (ddlPharmSignature.SelectedIndex == 3)
@@ -3451,7 +3465,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         CustomFieldClinical theCustomManager = new CustomFieldClinical();
         DataTable theCustomDataDT;
         DataSet theDSNonARTFollowUp;
-        if (Convert.ToInt32(Session["PatientVisitId"])<1)
+        if (Convert.ToInt32(Session["PatientVisitId"]) < 1)
         {
             Session["Redirect"] = "0";
             theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Insert", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
@@ -3460,11 +3474,11 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(Convert.ToInt32(Session["PatientId"]), PharmacyID, Convert.ToInt32(Session["LocationId"]),
                 VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), false,
                 theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
-            if(theDSNonARTFollowUp.Tables[0].Rows.Count>0)
+            if (theDSNonARTFollowUp.Tables[0].Rows.Count > 0)
                 Session["PharmaId"] = theDSNonARTFollowUp.Tables[0].Rows[0][0];
-                Session["PatientVisitId"] = theDSNonARTFollowUp.Tables[1].Rows[0]["VisitId"];
-            
-          
+            Session["PatientVisitId"] = theDSNonARTFollowUp.Tables[1].Rows[0]["VisitId"];
+
+
         }
 
         else
@@ -3481,179 +3495,179 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 btnQualityCheck.CssClass = "greenbutton";
 
             }
-            
+
         }
 
         SaveCancel(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["PatientVisitId"]), Convert.ToInt32(Session["PharmaID"]));
-       
-      /*  string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
-        script += "document.getElementById('" + theBtn1.ClientID + "').click();\n";
-        script += "</script>\n";
-        RegisterStartupScript("aftersavefunction", script);  */          
-     
+
+        /*  string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
+          script += "document.getElementById('" + theBtn1.ClientID + "').click();\n";
+          script += "</script>\n";
+          RegisterStartupScript("aftersavefunction", script);  */
+
         //---------------------------------------------
 
 
 
-        
+
         ////////if (Request.QueryString["name"] == "Add")
-            ////////{
-            ////////    PatientID = Convert.ToInt32(Request.QueryString["PatientId"]);
-            ////////    theSave = false;
+        ////////{
+        ////////    PatientID = Convert.ToInt32(Request.QueryString["PatientId"]);
+        ////////    theSave = false;
 
-            ////////    DataSet theViewDS = new DataSet();
+        ////////    DataSet theViewDS = new DataSet();
 
-            ////////    if (Session["theSaveDS"] != null)
-            ////////    {
-            ////////        theViewDS = (DataSet)Session["theSaveDS"];
-            ////////    }
-            ////////    if ((Session["theSaveDS"] == null) || (theViewDS.Tables.Count == 0))
-            ////////    {
-            ////////        if (Convert.ToInt32(Session["VisitType"]) == 1)
-            ////////        {
-            ////////            //Custom Field Insertion
-            ////////            CustomFieldClinical theCustomManager = new CustomFieldClinical();
-            ////////            DataTable theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Insert", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
-            ////////            //Function for saving new Data
-                        
-            ////////            theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(PatientID, PharmacyID, Convert.ToInt32(Session["LocationId"]), VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), theSave, theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
-            ////////            Session["theSaveDS"] = theDSNonARTFollowUp;
-            ////////            Session["DataQualityFlag"] = 0;
-            ////////            if (theDSNonARTFollowUp.Tables[0].Rows[0][0].ToString() == "0")
-            ////////            {
-            ////////                ViewState["VisitID_add"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[0].Rows[0][0].ToString());
-            ////////                ViewState["VisitID_CC"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[0].Rows[0]["VisitID"].ToString());
-            ////////                //ViewState["Pharmacy_ID"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[0].Rows[0]["PharmacyID"].ToString());
-            ////////            }
-            ////////            //Amitava Sinha
-            ////////            else
-            ////////            {
-            ////////                ViewState["VisitID_add"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[1].Rows[0]["VisitID"].ToString());
-            ////////                ViewState["VisitID_CC"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[1].Rows[0]["VisitID"].ToString());
-            ////////               // ViewState["Pharmacy_ID"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[1].Rows[0]["PharmacyID"].ToString());
-            ////////            }
-                       
-            ////////            if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "1")
-            ////////            {
+        ////////    if (Session["theSaveDS"] != null)
+        ////////    {
+        ////////        theViewDS = (DataSet)Session["theSaveDS"];
+        ////////    }
+        ////////    if ((Session["theSaveDS"] == null) || (theViewDS.Tables.Count == 0))
+        ////////    {
+        ////////        if (Convert.ToInt32(Session["VisitType"]) == 1)
+        ////////        {
+        ////////            //Custom Field Insertion
+        ////////            CustomFieldClinical theCustomManager = new CustomFieldClinical();
+        ////////            DataTable theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Insert", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
+        ////////            //Function for saving new Data
+
+        ////////            theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(PatientID, PharmacyID, Convert.ToInt32(Session["LocationId"]), VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), theSave, theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
+        ////////            Session["theSaveDS"] = theDSNonARTFollowUp;
+        ////////            Session["DataQualityFlag"] = 0;
+        ////////            if (theDSNonARTFollowUp.Tables[0].Rows[0][0].ToString() == "0")
+        ////////            {
+        ////////                ViewState["VisitID_add"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[0].Rows[0][0].ToString());
+        ////////                ViewState["VisitID_CC"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[0].Rows[0]["VisitID"].ToString());
+        ////////                //ViewState["Pharmacy_ID"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[0].Rows[0]["PharmacyID"].ToString());
+        ////////            }
+        ////////            //Amitava Sinha
+        ////////            else
+        ////////            {
+        ////////                ViewState["VisitID_add"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[1].Rows[0]["VisitID"].ToString());
+        ////////                ViewState["VisitID_CC"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[1].Rows[0]["VisitID"].ToString());
+        ////////               // ViewState["Pharmacy_ID"] = Convert.ToInt32(theDSNonARTFollowUp.Tables[1].Rows[0]["PharmacyID"].ToString());
+        ////////            }
+
+        ////////            if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "1")
+        ////////            {
 
 
-            ////////                SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
-            ////////                btnQualityCheck.CssClass = "greenbutton";
-            ////////                return;
-            ////////            }
-            ////////            else if(Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "0")
-            ////////            {
-            ////////                //string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
-            ////////                //script += "document.getElementById('" + theBtn.ClientID + "').click();\n";
-            ////////                //script += "</script>\n";
-            ////////                //RegisterStartupScript("aftersavefunction", script);
-            ////////                SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
-            ////////                return;
-            ////////            }
-            ////////            //SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
-                        
-            ////////        }
-            ////////        else
-            ////////        {
-            ////////            IQCareMsgBox.Show("IECheckingForNonARTFollowUp", this);
-            ////////            return;
-            ////////        }
-            ////////    }
-            ////////    else
-            ////////    {
-              
-            ////////        if (theViewDS.Tables[0].Rows[0][0].ToString() == "0")
-            ////////        {
-            ////////            VisitID = Convert.ToInt32(ViewState["VisitID_CC"].ToString());
-            ////////         }
-            ////////        else
-            ////////        {
-            ////////            PharmacyID = Convert.ToInt32(theViewDS.Tables[0].Rows[0][0].ToString());
-            ////////            if (PharmacyID != 0)
-            ////////            {
-            ////////                VisitID = Convert.ToInt32(ViewState["VisitID_CC"].ToString());
-            ////////            }
-            ////////            else
-            ////////             {
-            ////////                VisitID = Convert.ToInt32(ViewState["VisitID_CC"].ToString());
-            ////////             }
-            ////////        }
-                    
-            ////////        theSave = true;
-            ////////        //CustomField 
-            ////////        CustomFieldClinical theCustomManager = new CustomFieldClinical();
-            ////////        DataTable theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Update", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
-            ////////        //Updating Existing Data
-                    
-            ////////        theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(PatientID, PharmacyID, Convert.ToInt32(Session["LocationId"]), VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), theSave, theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
-            ////////        Session["theSaveDS"] = theDSNonARTFollowUp;
-                    
-            ////////        //Amitava Sinha
-            ////////        ViewState["VisitID_add"] = VisitID;
-            ////////        //Not required this section 08-07-2009
-            ////////        //if (Session["ControlCreated"] != null)
-            ////////        //    UpdateCustomFieldsValues();
-            ////////        if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "1")
-            ////////        {
+        ////////                SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
+        ////////                btnQualityCheck.CssClass = "greenbutton";
+        ////////                return;
+        ////////            }
+        ////////            else if(Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "0")
+        ////////            {
+        ////////                //string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
+        ////////                //script += "document.getElementById('" + theBtn.ClientID + "').click();\n";
+        ////////                //script += "</script>\n";
+        ////////                //RegisterStartupScript("aftersavefunction", script);
+        ////////                SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
+        ////////                return;
+        ////////            }
+        ////////            //SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
 
-            ////////            //string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
-            ////////            //script += "document.getElementById('" + theBtn1.ClientID + "').click();\n";
-            ////////            //script += "</script>\n";
-            ////////            //RegisterStartupScript("aftersavefunction", script);
-            ////////            SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
-            ////////            btnQualityCheck.CssClass = "greenbutton";
-            ////////            return;
-            ////////        }
-            ////////        else if(Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "0")
-            ////////        {
-            ////////            //string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
-            ////////            //script += "document.getElementById('" + theBtn.ClientID + "').click();\n";
-            ////////            //script += "</script>\n";
-            ////////            //RegisterStartupScript("aftersavefunction", script);
-            ////////            SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
-            ////////            return;
-            ////////        }
-                    
-            ////////    }
+        ////////        }
+        ////////        else
+        ////////        {
+        ////////            IQCareMsgBox.Show("IECheckingForNonARTFollowUp", this);
+        ////////            return;
+        ////////        }
+        ////////    }
+        ////////    else
+        ////////    {
 
-            ////////}
-            ////////else if (Request.QueryString["name"] == "Edit")
-            ////////{
-            ////////    PatientID = Convert.ToInt32(Request.QueryString["PatientId"]);
-            ////////    PharmacyID = Convert.ToInt32(Request.QueryString["PharmacyID"]);
-            ////////    VisitID = Convert.ToInt32(Request.QueryString["visitid"]);
-            ////////    theSave = true;
-            ////////    //CustomField 
-            ////////    CustomFieldClinical theCustomManager = new CustomFieldClinical();
-            ////////    DataTable theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Update", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
-            ////////    //Updating Existing Data
-                
-            ////////    theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(PatientID, PharmacyID, Convert.ToInt32(Session["LocationId"]), VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), theSave, theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
-            ////////    Session["DataQualityFlag"] = 0;                
-            ////////    //Amitava Sinha
-            ////////    ViewState["VisitID_add"] = VisitID;
+        ////////        if (theViewDS.Tables[0].Rows[0][0].ToString() == "0")
+        ////////        {
+        ////////            VisitID = Convert.ToInt32(ViewState["VisitID_CC"].ToString());
+        ////////         }
+        ////////        else
+        ////////        {
+        ////////            PharmacyID = Convert.ToInt32(theViewDS.Tables[0].Rows[0][0].ToString());
+        ////////            if (PharmacyID != 0)
+        ////////            {
+        ////////                VisitID = Convert.ToInt32(ViewState["VisitID_CC"].ToString());
+        ////////            }
+        ////////            else
+        ////////             {
+        ////////                VisitID = Convert.ToInt32(ViewState["VisitID_CC"].ToString());
+        ////////             }
+        ////////        }
 
-               
-            ////////    if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "1")
-            ////////    {
+        ////////        theSave = true;
+        ////////        //CustomField 
+        ////////        CustomFieldClinical theCustomManager = new CustomFieldClinical();
+        ////////        DataTable theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Update", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
+        ////////        //Updating Existing Data
 
-            ////////        string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
-            ////////        script += "document.getElementById('" + theBtn1.ClientID + "').click();\n";
-            ////////        script += "</script>\n";
-            ////////        RegisterStartupScript("aftersavefunction", script);
-            ////////        btnQualityCheck.CssClass = "greenbutton";
-            ////////        return;
-            ////////    }
-            ////////    else if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "0")
-            ////////    {
-            ////////        string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
-            ////////        script += "document.getElementById('" + theBtn.ClientID + "').click();\n";
-            ////////        script += "</script>\n";
-            ////////        RegisterStartupScript("aftersavefunction", script);
+        ////////        theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(PatientID, PharmacyID, Convert.ToInt32(Session["LocationId"]), VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), theSave, theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
+        ////////        Session["theSaveDS"] = theDSNonARTFollowUp;
 
-            ////////    }
+        ////////        //Amitava Sinha
+        ////////        ViewState["VisitID_add"] = VisitID;
+        ////////        //Not required this section 08-07-2009
+        ////////        //if (Session["ControlCreated"] != null)
+        ////////        //    UpdateCustomFieldsValues();
+        ////////        if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "1")
+        ////////        {
 
-            ////////}
+        ////////            //string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
+        ////////            //script += "document.getElementById('" + theBtn1.ClientID + "').click();\n";
+        ////////            //script += "</script>\n";
+        ////////            //RegisterStartupScript("aftersavefunction", script);
+        ////////            SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
+        ////////            btnQualityCheck.CssClass = "greenbutton";
+        ////////            return;
+        ////////        }
+        ////////        else if(Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "0")
+        ////////        {
+        ////////            //string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
+        ////////            //script += "document.getElementById('" + theBtn.ClientID + "').click();\n";
+        ////////            //script += "</script>\n";
+        ////////            //RegisterStartupScript("aftersavefunction", script);
+        ////////            SaveCancel(Convert.ToInt32(Request.QueryString["PatientId"].ToString()), Convert.ToInt32(ViewState["VisitID_add"]), PharmacyID);
+        ////////            return;
+        ////////        }
+
+        ////////    }
+
+        ////////}
+        ////////else if (Request.QueryString["name"] == "Edit")
+        ////////{
+        ////////    PatientID = Convert.ToInt32(Request.QueryString["PatientId"]);
+        ////////    PharmacyID = Convert.ToInt32(Request.QueryString["PharmacyID"]);
+        ////////    VisitID = Convert.ToInt32(Request.QueryString["visitid"]);
+        ////////    theSave = true;
+        ////////    //CustomField 
+        ////////    CustomFieldClinical theCustomManager = new CustomFieldClinical();
+        ////////    DataTable theCustomDataDT = theCustomManager.GenerateInsertUpdateStatement(pnlCustomList, "Update", ApplicationAccess.NonARTFollowup, (DataSet)ViewState["CustomFieldsDS"]);
+        ////////    //Updating Existing Data
+
+        ////////    theDSNonARTFollowUp = (DataSet)NonARTManager.SaveNonARTFollowUp(PatientID, PharmacyID, Convert.ToInt32(Session["LocationId"]), VisitID, theDS, theDT, theHT, theOrderedByDate, theReportedByDate, flag, EmployeeID, Convert.ToInt32(Session["UserID"]), theSave, theHIVAssocDisease, Convert.ToInt32(Session["DataQualityFlag"]), theCustomDataDT);
+        ////////    Session["DataQualityFlag"] = 0;                
+        ////////    //Amitava Sinha
+        ////////    ViewState["VisitID_add"] = VisitID;
+
+
+        ////////    if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "1")
+        ////////    {
+
+        ////////        string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
+        ////////        script += "document.getElementById('" + theBtn1.ClientID + "').click();\n";
+        ////////        script += "</script>\n";
+        ////////        RegisterStartupScript("aftersavefunction", script);
+        ////////        btnQualityCheck.CssClass = "greenbutton";
+        ////////        return;
+        ////////    }
+        ////////    else if (Session["DataQualityFlag"] != null && Session["DataQualityFlag"].ToString() == "0")
+        ////////    {
+        ////////        string script = "<script language = 'javascript' defer ='defer' id = 'aftersavefunction'>\n";
+        ////////        script += "document.getElementById('" + theBtn.ClientID + "').click();\n";
+        ////////        script += "</script>\n";
+        ////////        RegisterStartupScript("aftersavefunction", script);
+
+        ////////    }
+
+        ////////}
 
         //}
 
@@ -3667,8 +3681,8 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //{
         //    NonARTManager = null;
         //}
-    
-    
+
+
     }
 
     /***************** Delete Record *****************/
@@ -3693,7 +3707,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         else
         {
             string theUrl;
-            theUrl = string.Format("{0}", "frmPatient_Home.aspx");
+            theUrl = string.Format("{0}", "frmPatient_Home.aspx?Func=Delete");
             Response.Redirect(theUrl);
 
         }
@@ -3738,7 +3752,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //Session.Remove("LocationId");
     }
 
-    #endregion 
+    #endregion
     # region "Amitava"
     // Create Custom Controls 
     // Creation Date : 16-Jan-2007 
@@ -3903,7 +3917,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //    Session["ControlCreated"] = "CC";
         //    pnlCustomList.Controls.Add(new LiteralControl("</TABLE>"));
 
-        
+
         catch (Exception err)
         {
             MsgBuilder theBuilder = new MsgBuilder();
@@ -3955,7 +3969,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     //            sqlstr += " VALUES(" + PatientID.ToString() + "," + Session["AppLocationID"] + "," + visitID + ",'" + visitdate + "'" + sbValues.ToString() + ")";
     //            ViewState["CustomFieldsData"] = 1;
     //        }
-            
+
     //        try
     //        {
     //            CustomFields = (ICustomFields)ObjectFactory.CreateInstance("BusinessProcess.Administration.BCustomFields, BusinessProcess.Administration");
@@ -4030,7 +4044,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     //        }
     //    }
     //}
-#endregion
+    #endregion
 
     //Amitava Sinha
     //Generating full DML Statement 
@@ -4129,7 +4143,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     //    }
     //}
 
-#endregion
+    #endregion
     //Amitava Sinha
     //Generate a string builder for Insert Query Values 
     //and Update Query Values 
@@ -4361,7 +4375,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
     //    }
     //}
 
-#endregion
+    #endregion
     //Amitava Sinha 
     //Populate Old Data in the Custom Field
     private void FillOldData(Int32 PatID)
@@ -4621,10 +4635,27 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     if (theDV.Count > 0)
                         theDT = theUtils.CreateTableFromDataView(theDV);
                 }
-                BindManager.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId");
+                //BindManager.BindCombo(ddlPharmOrderedbyName, theDT, "EmployeeName", "EmployeeId"); Bug id 2707...
+                BindUserDropdown(ddlPharmOrderedbyName, string.Empty);
+
             }
         }
     }
+
+    private void BindUserDropdown(DropDownList DropDownID, String userId)
+    {
+        Dictionary<int, string> userList = new Dictionary<int, string>();
+        CustomFieldClinical.BindUserDropDown(DropDownID, out userList);
+        if (!string.IsNullOrEmpty(userId))
+        {
+            if (userList.ContainsKey(Convert.ToInt32(userId)))
+            {
+                DropDownID.SelectedValue = userId;
+                //SecurityPerTabSignature = userId;
+            }
+        }
+    }
+
 
     private void BindDropdownReportedBy(String EmployeeId)
     {
@@ -4645,7 +4676,8 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     if (theDV.Count > 0)
                         theDT = theUtils.CreateTableFromDataView(theDV);
                 }
-                BindManager.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId");
+                //BindManager.BindCombo(ddlPharmReportedbyName, theDT, "EmployeeName", "EmployeeId"); Bug ID 2707
+                BindUserDropdown(ddlPharmReportedbyName, string.Empty);
             }
         }
     }
@@ -4666,11 +4698,12 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 {
                     theDV = new DataView(theDT);
                     theDV.RowFilter = "EmployeeId IN(" + Session["AppUserEmployeeId"].ToString() + "," + EmployeeId + ")";
-                    
+
                     if (theDV.Count > 0)
                         theDT = theUtils.CreateTableFromDataView(theDV);
                 }
-                  BindManager.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
+                //BindManager.BindCombo(ddlCounselerName, theDT, "EmployeeName", "EmployeeId");
+                BindUserDropdown(ddlCounselerName, string.Empty);
 
             }
         }
@@ -4694,8 +4727,11 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
         if (Session["DataQualityFlag"] == null || Session["DataQualityFlag"].ToString() == "")
         {
+            if (theDSCD4.Tables[6].Rows.Count > 0)
+            {
 
-            Session["DataQualityFlag"] = theDSCD4.Tables[6].Rows[0]["DataQuality"].ToString();
+                Session["DataQualityFlag"] = theDSCD4.Tables[6].Rows[0]["DataQuality"].ToString();
+            }
 
         }
         #endregion
@@ -4747,7 +4783,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //   if (ViewState["ControlCreated"] != null)
         FillOldData(Convert.ToInt32(Session["PatientId"]));
 
-      
+
         if (theDS1.Tables.Count == 0)
         {
             //IQCareMsgBox.Show("NoPharmacyRecordExists", this);--commented by Jayant 09-05-2007
@@ -4771,9 +4807,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             BindDropdownCounseler(theExistDS1.Tables[0].Rows[0]["EmployeeID"].ToString());
             ddlCounselerName.SelectedValue = theExistDS1.Tables[0].Rows[0]["EmployeeID"].ToString();
         }
-       // else {
-           // BindDropdown("");
-       // }
+        // else {
+        // BindDropdown("");
+        // }
     }
 
     private void LoadAdditionalDrugs(DataTable theDT, Panel thePanel)
@@ -4887,7 +4923,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
         DataView theDV;
         DataSet theDS = (DataSet)Session["MasterData"];
-      
+
         if (Generic == 0)
         {
             theDV = new DataView(theDS.Tables[0]);
@@ -4927,7 +4963,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         theSpace1.Text = "";
         thePnl.Controls.Add(theSpace1);
         ////////////////////
-        
+
         BindFunctions theBindMgr = new BindFunctions();
         DropDownList theUnit = new DropDownList();
         theUnit.ID = "theUnit" + DrugId;
@@ -5046,7 +5082,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         thePnlspace.Width = 880;
         thePnlspace.Controls.Clear();
         MstPanel.Controls.Add(thePnlspace);
- 
+
     }
     void DecimalText_Load(object sender, EventArgs e)
     {
@@ -5067,13 +5103,13 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         tbox.MaxLength = 8;
         tbox.Attributes.Add("onkeyup", "chkNumeric('" + tbox.ClientID + "'); AddBoundary('" + tbox.ClientID + "','0','99999999')");
         //--Jayant comment 23Jan08
-        
+
         //int DrugId = Convert.ToInt32(tbox.ID.Substring(7, tbox.ID.Length - 7));
         //DataView theDV = new DataView(((DataSet)Session["MasterData"]).Tables[18]);
         //if (Convert.ToDecimal(tbox.Text) == 0)                                               //if (Convert.ToInt32(tbox.Text) == 0)
         //{
         //    theDV.RowFilter = "GenericId= " + DrugId.ToString();
-            
+
         //    //tbox.Text = "";
         //}
         //else
@@ -5082,9 +5118,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //}
 
         //------
-      
+
         //------ Rupesh 19Dec07 starts----
-        
+
         /* earlier it was coming fron lnk_nonARVDrugGeneric now from lnk_druggeneric
         if (theDV.Count > 0)
         {
@@ -5100,7 +5136,8 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         if (theDV.Count > 0)
         {
             tbox.Attributes.Add("onkeyup", "chkNumeric('" + tbox.ClientID + "'); AddBoundary('" + tbox.ClientID + "','0','99999999')");
-        }*/ //coment ends Jayant 16Jan08
+        }*/
+        //coment ends Jayant 16Jan08
 
         //------ Rupesh 19Dec07 ends----
 
@@ -5119,7 +5156,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         theDT.Columns.Add("QtyPrescribed", System.Type.GetType("System.Int32"));
         theDT.Columns.Add("QtyDispensed", System.Type.GetType("System.Int32"));
         theDT.Columns.Add("Financed", System.Type.GetType("System.Int32"));
-       
+
         return theDT;
 
     }
@@ -5151,7 +5188,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theDT = (DataTable)Session["Data"];
         }
 
-        
+
         if (theContainer.ID == "PnlAddOtherMedication")
         {
             #region "Add Drugs"
@@ -5199,7 +5236,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                                         if (((TextBox)x).Text != "")
                                         {
                                             theDuration = Convert.ToDecimal(((TextBox)x).Text);
-                                           // theDuration = Convert.ToInt32(((TextBox)x).Text);
+                                            // theDuration = Convert.ToInt32(((TextBox)x).Text);
                                         }
                                     }
                                     if (x.ID.EndsWith(theDR["DrugId"].ToString()) && x.ID.StartsWith("drgQtyPrescribed"))
@@ -5268,10 +5305,10 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 }
             }
         }
-        #endregion
+            #endregion
         Session["SaveOIDrug"] = theDT;
         return theDT;
-    
+
     }
 
     /************* Fill Exist OI Drug Details ***************/
@@ -5396,66 +5433,66 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         if (Convert.ToInt32(Session["TechnicalAreaId"]) != 2)
         {
             btnSave.Enabled = false;
             btnQualityCheck.Enabled = false;
         }
-         Init_Form();
-         
-     
-         // txtvisitDate.Attributes.Add("onblur", "document.form(0).submit"); 
-         //RTyagi..19Feb.07
+        Init_Form();
+
+
+        // txtvisitDate.Attributes.Add("onblur", "document.form(0).submit"); 
+        //RTyagi..19Feb.07
         /***************** Check For User Rights ****************/
-            AuthenticationManager Authentiaction = new AuthenticationManager();
+        AuthenticationManager Authentiaction = new AuthenticationManager();
 
-            if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.Print, (DataTable)Session["UserRight"]) == false)
-            {
-                btnPrint.Enabled = false;
+        if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.Print, (DataTable)Session["UserRight"]) == false)
+        {
+            btnPrint.Enabled = false;
 
-            }
+        }
         //if (Request.QueryString["name"] == "Add")
         if (Convert.ToInt32(Session["PatientVisitId"]) < 1)
         {
-            
+
             if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.Add, (DataTable)Session["UserRight"]) == false)
             {
                 btnSave.Enabled = false;
                 btnQualityCheck.Enabled = false;
             }
         }
-           
-                //if (Request.QueryString["name"] == "Edit")
+
+        //if (Request.QueryString["name"] == "Edit")
         if ((Convert.ToInt32(Session["PatientVisitId"])) > 1)
+        {
+
+            if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.View, (DataTable)Session["UserRight"]) == false)
             {
-                
-                if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.View, (DataTable)Session["UserRight"]) == false)
-                {
-                    //int PatientID = Convert.ToInt32(Session["PatientId"]);
-                    string theUrl = "";
-                    theUrl = string.Format("{0}", "frmPatient_History.aspx");
-                    Response.Redirect(theUrl);
-                }
-                else if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.Update, (DataTable)Session["UserRight"]) == false)
-                {
-                    btnSave.Enabled = false;
-                    btnQualityCheck.Enabled = false;
-                }
-                if (Session["HIVPatientStatus"].ToString() == "1")
-                {
-                    btnSave.Enabled = false;
-                    btnQualityCheck.Enabled = false;
-                }
-                //Privilages for Care End
-                if (Session["CareEndFlag"].ToString() == "1")
-                {
-                    btnSave.Enabled = true;
-                    btnQualityCheck.Enabled = true;
-                }
+                //int PatientID = Convert.ToInt32(Session["PatientId"]);
+                string theUrl = "";
+                theUrl = string.Format("{0}", "frmPatient_History.aspx");
+                Response.Redirect(theUrl);
             }
-            
+            else if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.Update, (DataTable)Session["UserRight"]) == false)
+            {
+                btnSave.Enabled = false;
+                btnQualityCheck.Enabled = false;
+            }
+            if (Session["HIVPatientStatus"].ToString() == "1")
+            {
+                btnSave.Enabled = false;
+                btnQualityCheck.Enabled = false;
+            }
+            //Privilages for Care End
+            if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
+            {
+                btnSave.Enabled = true;
+                btnQualityCheck.Enabled = true;
+            }
+        }
+
         if (Request.QueryString["name"] == "Delete")
         {
             if (Authentiaction.HasFunctionRight(ApplicationAccess.NonARTFollowup, FunctionAccess.View, (DataTable)Session["UserRight"]) == false)
@@ -5472,8 +5509,8 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 btnQualityCheck.Visible = false;
             }
         }
-        
-     }
+
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -5481,19 +5518,20 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         Ajax.Utility.RegisterTypeForAjax(typeof(frmClinical_NonARTFollowUp));
 
         (Master.FindControl("levelOneNavigationUserControl1").FindControl("lblRoot") as Label).Text = "Clinical Forms >> ";
         (Master.FindControl("levelOneNavigationUserControl1").FindControl("lblheader") as Label).Text = "Non-ART Follow-Up";
         (Master.FindControl("levelTwoNavigationUserControl1").FindControl("lblformname") as Label).Text = "Non-ART Follow-Up";
-         Session["PtnRegCTC"] = "";
-         Session["CustomfrmDrug"] = "";
-         Session["CustomfrmLab"] = "";
+        Session["PtnRegCTC"] = "";
+        Session["CustomfrmDrug"] = "";
+        Session["CustomfrmLab"] = "";
+        
 
-         //if (Request.QueryString["sts"] != null)
-         if (Session["HIVPatientStatus"] != null)
+        //if (Request.QueryString["sts"] != null)
+        if (Session["HIVPatientStatus"] != null)
         {
             (Master.FindControl("levelTwoNavigationUserControl1").FindControl("lblpntStatus") as Label).Text = Session["HIVPatientStatus"].ToString();
             if (Session["HIVPatientStatus"].ToString() == "1")
@@ -5503,7 +5541,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             }
         }
 
-        
+
         txtvisitDate.Attributes.Add("OnBlur", "DateFormat(this,this.value,event,true,'3'), isCheckValidDate('" + Session["AppCurrentDate"] + "', '" + txtvisitDate.ClientID + "', '" + txtvisitDate.ClientID + "'), addDays(), SendCD4()");
         GetICallBackFunction();
         //Amitava Sinha
@@ -5515,7 +5553,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 Session["MasterData"] = theDS;
                 //Session["DataQualityFlag"] = theDS.Tables[16].Rows[0]["DataQuality"];
             }
-            
+
             if (theDS1 != null)
             {
                 if (theDS1.Tables.Count != 0)
@@ -5529,14 +5567,14 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 Session["ExistData"] = theExistVisitDS.Tables[0];
             }
 
-            if(theExistVisitDS != null)
+            if (theExistVisitDS != null)
             {
                 if (theExistVisitDS.Tables[1].Rows.Count != 0)
                 {
                     Session["ExistNonARTVisits"] = theExistVisitDS.Tables[1];
                 }
             }
-            
+
             MsgBuilder theBuilder = new MsgBuilder();
             CheckHideProperty();
             if (IsPostBack != true)
@@ -5571,7 +5609,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 {
                     Session["LocationId"] = Convert.ToInt32(Session["AppLocationId"]);
                 }
-                
+
                 string name = ddlCounselerName.SelectedValue;
                 //if (Request.QueryString["name"] == "Add")
                 if (Convert.ToInt32(Session["PatientVisitId"]) < 1)
@@ -5586,13 +5624,13 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     theBuilder.DataElements["FormName"] = "NonART FollowUp";
                     IQCareMsgBox.ShowConfirm("AddClinicalRecord", theBuilder, theBtn);
                 }
-                  
 
-                    
-                    //else if (Request.QueryString["name"] == "Edit")
-               if (((Convert.ToInt32(Session["PatientVisitId"])) > 1)|| (Request.QueryString["name"] == ""))
+
+
+                //else if (Request.QueryString["name"] == "Edit")
+                if (((Convert.ToInt32(Session["PatientVisitId"])) > 1) || (Request.QueryString["name"] == ""))
                 {
-                  
+
                     //Jayanta Kr. Das
                     (Master.FindControl("levelTwoNavigationUserControl1").FindControl("lblpntStatus") as Label).Text = Session["HIVPatientStatus"].ToString();
                     //Session["OtherDrugs"] = OtherDrugs; 
@@ -5622,16 +5660,16 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     //ViewState["VisitID_CC"] = Session["PatientVisitId"];
                     theBuilder.DataElements["FormName"] = "NonART FollowUp";
                     IQCareMsgBox.ShowConfirm("DeleteForm", theBuilder, btnSave);
-                  
+
                     btnSave.Text = "Delete";
                     btnQualityCheck.Visible = false;
                     LoadData();
-                 }
-               
+                }
+
             }
             else
             {
-               
+
                 #region "Other Drugs"
                 if ((DataTable)Application["OtherDrugs"] != null)
                 {
@@ -5655,7 +5693,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
 
                 if ((DataTable)Session["OtherDrugs"] != null)
                 {
-                    LoadAdditionalDrugs((DataTable)Session["OtherDrugs"], PnlAddOtherMedication); 
+                    LoadAdditionalDrugs((DataTable)Session["OtherDrugs"], PnlAddOtherMedication);
                 }
                 ShowOIAIDS();
                 ShowHideControls();
@@ -5673,7 +5711,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
         finally
         {
-            NonARTManager = null;  
+            NonARTManager = null;
         }
     }
 
@@ -5706,7 +5744,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 {
                     return;
                 }
-                theVisitDate = txtvisitDate.Text.ToString();
+                theVisitDate = Convert.ToDateTime(txtvisitDate.Text.ToString());
                 if (Session["Paperless"].ToString() == "1")
                 {
                     theDS = NonARTDetails();
@@ -5729,7 +5767,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                     }
                 }
                 SaveData();
-                
+
 
 
 
@@ -5783,9 +5821,9 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theMsg.DataElements["MessageText"] = err.Message.ToString();
             IQCareMsgBox.Show("#C1", theMsg, this);
         }
-        
+
     }
- 
+
     protected void btnBack_Click(object sender, EventArgs e)
     {
         int PatientId = Convert.ToInt32(Session["PatientId"]);
@@ -5801,71 +5839,71 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         {
             theUrl = string.Format("{0}", "frmPatient_History.aspx");
         }
-        else 
+        else
         {
             theUrl = string.Format("{0}", "frmClinical_DeleteForm.aspx");
         }
-        Response.Redirect(theUrl);    
+        Response.Redirect(theUrl);
     }
 
     protected void btnQualityCheck_Click(object sender, EventArgs e)
     {
         try
         {
-        Session["BtnCompClicked"] = "1"; 
-        theDS = NonARTDetails();
-        DataTable theDT = MakeDrugTable(PnlAddOtherMedication);
-       
-        string msg = DQFieldValidation();
-        if (msg.Length > 69)
-        {
-            MsgBuilder theBuilder1 = new MsgBuilder();
-            theBuilder1.DataElements["MessageText"] = msg;
-            IQCareMsgBox.Show("#C1", theBuilder1, this);
-            return;
-        }
-        else
-        {
-            Session["DataQualityFlag"] = "1";
-        }
-        if (DQFieldValidation1() == false)
-        {
-            return;
-        }
-        //Naveen- Update Message
-        SaveData();
-        //theVisitDate = Convert.ToDateTime(txtvisitDate.Text.ToString());
+            Session["BtnCompClicked"] = "1";
+            theDS = NonARTDetails();
+            DataTable theDT = MakeDrugTable(PnlAddOtherMedication);
 
-        //if (Request.QueryString["name"] == "Add")
-        //{
-        //    if (Session["ExistVisitDate"] != null && (Session["theSaveDS"] == null))
-        //    {
-        //        int PatientId = Convert.ToInt32(Request.QueryString["PatientId"]);
-        //        if (theVisitDate == Convert.ToDateTime(Session["ExistVisitDate"].ToString()))
-        //        {
-        //            /**********Check Later for Messages *************/
-        //            IQCareMsgBox.Show("ClinicalRecordExist", this);
-        //            return;
-        //        }
-        //        else
-        //        {
-        //            SaveData();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        SaveData();
-        //    }
-        //}
-        //else if (Request.QueryString["name"] == "Edit")
-        //{
-        //    /************** To Check Non-ART Other Visit Dates ******************/
-        //    if (CheckNonARTVisitDates() == false)
-        //    {
-        //        return;
-        //    }
-        //    SaveData();
-        //}
+            string msg = DQFieldValidation();
+            if (msg.Length > 69)
+            {
+                MsgBuilder theBuilder1 = new MsgBuilder();
+                theBuilder1.DataElements["MessageText"] = msg;
+                IQCareMsgBox.Show("#C1", theBuilder1, this);
+                return;
+            }
+            else
+            {
+                Session["DataQualityFlag"] = "1";
+            }
+            if (DQFieldValidation1() == false)
+            {
+                return;
+            }
+            //Naveen- Update Message
+            SaveData();
+            //theVisitDate = Convert.ToDateTime(txtvisitDate.Text.ToString());
+
+            //if (Request.QueryString["name"] == "Add")
+            //{
+            //    if (Session["ExistVisitDate"] != null && (Session["theSaveDS"] == null))
+            //    {
+            //        int PatientId = Convert.ToInt32(Request.QueryString["PatientId"]);
+            //        if (theVisitDate == Convert.ToDateTime(Session["ExistVisitDate"].ToString()))
+            //        {
+            //            /**********Check Later for Messages *************/
+            //            IQCareMsgBox.Show("ClinicalRecordExist", this);
+            //            return;
+            //        }
+            //        else
+            //        {
+            //            SaveData();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        SaveData();
+            //    }
+            //}
+            //else if (Request.QueryString["name"] == "Edit")
+            //{
+            //    /************** To Check Non-ART Other Visit Dates ******************/
+            //    if (CheckNonARTVisitDates() == false)
+            //    {
+            //        return;
+            //    }
+            //    SaveData();
+            //}
         }
         catch (Exception err)
         {
@@ -5873,7 +5911,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
             theMsg.DataElements["MessageText"] = err.Message.ToString();
             IQCareMsgBox.Show("#C1", theMsg, this);
         }
-   }
+    }
 
     protected void theBtn_Click(object sender, EventArgs e)
     {
@@ -5882,7 +5920,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         //if (Request.QueryString["name"] == "Add")
         //{
         //   theUrl = string.Format("{0}?PatientId={1}", "frmPatient_Home.aspx", PatientID);
-            
+
         //}
         //else if (Request.QueryString["name"] == "Edit")
         //{
@@ -5936,7 +5974,7 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         Session.Remove("LocationId");
         //Response.Redirect(theUrl);
     }
-    #endregion 
+    #endregion
 
     #region ICallbackEventHandler Members
     public string GetCallbackResult()
@@ -5971,10 +6009,12 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
                 theDSCallBack = CallBackmgrIE.GetPregnantStatus(Convert.ToInt32(Session["PatientId"]), eventArgument);
                 str += theDSCallBack.GetXml();
             }
-            else { theDSCallBack.Clear();
-                    str += theDSCallBack.GetXml();
+            else
+            {
+                theDSCallBack.Clear();
+                str += theDSCallBack.GetXml();
             }
-         }
+        }
         catch
         {
         }
@@ -5984,5 +6024,5 @@ public partial class frmClinical_NonARTFollowUp : BasePage, ICallbackEventHandle
         }
     }
     #endregion
- 
+
 }

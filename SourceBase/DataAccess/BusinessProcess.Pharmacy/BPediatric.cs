@@ -286,8 +286,12 @@ namespace BusinessProcess.Pharmacy
                     ClsUtility.AddParameters("@Drug_Pk", SqlDbType.Int, theDT.Rows[i]["DrugID"].ToString());
                     ClsUtility.AddParameters("@StrengthID", SqlDbType.Int, theDT.Rows[i]["Strengthid"].ToString());
                     //ClsUtility.AddParameters("@Dose", SqlDbType.Decimal, theDT.Rows[i]["Dose"].ToString());
-                    ClsUtility.AddParameters("@FrequencyID", SqlDbType.Int, theDT.Rows[i]["Frequencyid"].ToString());
-                    ClsUtility.AddParameters("@SingleDose", SqlDbType.Decimal, theDT.Rows[i]["Dose"].ToString());
+                    //ClsUtility.AddParameters("@FrequencyID", SqlDbType.Int, theDT.Rows[i]["Frequencyid"].ToString());
+                    //ClsUtility.AddParameters("@SingleDose", SqlDbType.Decimal, theDT.Rows[i]["Dose"].ToString());
+                    ClsUtility.AddParameters("@morning", SqlDbType.Decimal, theDT.Rows[i]["Morning"].ToString());
+                    ClsUtility.AddParameters("@noon", SqlDbType.Decimal, theDT.Rows[i]["Noon"].ToString());
+                    ClsUtility.AddParameters("@evening", SqlDbType.Decimal, theDT.Rows[i]["Evening"].ToString());
+                    ClsUtility.AddParameters("@night", SqlDbType.Decimal, theDT.Rows[i]["Night"].ToString()); 
                     ClsUtility.AddParameters("@Duration", SqlDbType.Decimal, theDT.Rows[i]["Duration"].ToString());
                     ClsUtility.AddParameters("@OrderedQuantity", SqlDbType.Decimal, theDT.Rows[i]["QtyPrescribed"].ToString());
                     if (theDT.Rows[i]["QtyDispensed"].ToString() == "")

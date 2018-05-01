@@ -10,7 +10,7 @@ using Application.Presentation;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBillingReportPage : LogPage
+    public partial class frmBillingReportPage : System.Web.UI.Page
     {
         /// <summary>
         /// The error flag
@@ -165,13 +165,11 @@ namespace IQCare.Web.Billing
 
         protected void btnGenerate_Click(object sender, EventArgs e)
         {
-            if (ddlReport.SelectedValue == "XX")
-            {
-                IQCareMsgBox.Show("BillingReport", this);
-                return;
-            }
+            if (ddlReport.SelectedValue == "XX") return;
+
             //string queryToExecute = ddlReport.SelectedValue;
             string queryToExecute;
+
             try
             {
 

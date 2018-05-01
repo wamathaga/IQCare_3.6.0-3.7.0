@@ -186,7 +186,7 @@ namespace BusinessProcess.FormBuilder
             return RowsEffected;
 
         }
-        public int SaveHomePageIndicator(DataSet dsSaveIndicatorQuery, string Flag)
+        public int SaveHomePageIndicator(DataSet dsSaveIndicatorQuery, string Flag, int FacilityId)
         {
             int iFeatureId;
             try
@@ -206,6 +206,7 @@ namespace BusinessProcess.FormBuilder
                 ClsUtility.AddParameters("@FeatureName", SqlDbType.VarChar, dsSaveIndicatorQuery.Tables[1].Rows[0]["FeatureName"].ToString());
                 ClsUtility.AddParameters("@DeleteFlag", SqlDbType.Int, "0");
                 ClsUtility.AddParameters("@SystemId", SqlDbType.Int, "0");
+                ClsUtility.AddParameters("@FacilityId", SqlDbType.Int, FacilityId.ToString());
                 ClsUtility.AddParameters("@UserID", SqlDbType.Int, dsSaveIndicatorQuery.Tables[1].Rows[0]["UserID"].ToString());
                 ClsUtility.AddParameters("@Published", SqlDbType.Int, dsSaveIndicatorQuery.Tables[1].Rows[0]["Published"].ToString());
                 ClsUtility.AddParameters("@ModuleId", SqlDbType.Int, dsSaveIndicatorQuery.Tables[1].Rows[0]["ModuleId"].ToString());

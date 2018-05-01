@@ -586,7 +586,7 @@ public partial class ClinicalForms_frmClinical_ARTHistory : System.Web.UI.Page
                 btncomplete.Enabled = false;
             }
             //Privilages for Care End
-            if (Convert.ToString(Session["CareEndFlag"]) == "1")
+            if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
             {
                 btnsave.Enabled = true;
                 btncomplete.Enabled = true;

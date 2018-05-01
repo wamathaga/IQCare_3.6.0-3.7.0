@@ -21,6 +21,24 @@ public partial class frmLogin {
     protected global::System.Web.UI.HtmlControls.HtmlForm signIn;
     
     /// <summary>
+    /// ScreenWidth control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField ScreenWidth;
+    
+    /// <summary>
+    /// ScreenHeight control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField ScreenHeight;
+    
+    /// <summary>
     /// lblUserName control.
     /// </summary>
     /// <remarks>
@@ -136,4 +154,13 @@ public partial class frmLogin {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label lblrelDate;
+    
+    /// <summary>
+    /// lblTestRelDate control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblTestRelDate;
 }

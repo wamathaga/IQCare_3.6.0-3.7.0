@@ -12,7 +12,7 @@ using Interface.Administration;
 namespace IQCare.Web.ClinicalForms
 {
    
-    public partial class frmPatientWaitingList : LogPage
+    public partial class frmPatientWaitingList : System.Web.UI.Page
     {
 
         protected void Page_Load(object sender, EventArgs e)
@@ -172,7 +172,6 @@ namespace IQCare.Web.ClinicalForms
            {
                ddWList.BorderColor = System.Drawing.Color.Black;
                ddWList.BackColor = System.Drawing.Color.White;
-               IQCareMsgBox.HideMessage(this);
            }
 
                  
@@ -208,7 +207,6 @@ namespace IQCare.Web.ClinicalForms
                     Session["dtWaitingList"] = theDT;
                     bindWaitingGrid();
                     btnSubmit.Enabled = true;
-                    IQCareMsgBox.HideMessage(this);
                 }
                 else
                 {

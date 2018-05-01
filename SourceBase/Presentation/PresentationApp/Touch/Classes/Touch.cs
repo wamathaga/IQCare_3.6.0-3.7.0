@@ -32,7 +32,7 @@ namespace Touch
             DOB = theUtil.MakeDate(DOB);
             dsPatient = PatientManager.GetPatientSearchResults(Convert.ToInt32(FacilityId), lastName.Replace("'", "''").ToString(), "",
                 firstName.Replace("'", "''").ToString(), identificationNo, "",
-                Convert.ToDateTime(DOB), "", Convert.ToInt32(theServiceDropDownList.SelectedValue), folderNo.ToString());
+                Convert.ToDateTime(DOB).ToString("dd-MMM-yyyy"), "", Convert.ToInt32(theServiceDropDownList.SelectedValue), folderNo.ToString());
 
             //if (TouchGlobals.D9Search)
             //{

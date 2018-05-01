@@ -20,7 +20,7 @@ namespace Interface.Administration
         /// <param name="PriceDate">The price date.</param>
         /// <param name="WithPriceOnly">The with price only.</param>
         /// <returns></returns>
-        DataTable FindItems(String filter, int? ItemTypeID = null, int? ExcludeItemTypeID = null, DateTime? PriceDate = null, bool? WithPriceOnly = true, int? SCMFlag = null);
+        DataTable FindItems(String filter, int? ItemTypeID = null, int? ExcludeItemTypeID = null, DateTime? PriceDate = null, bool? WithPriceOnly = true);
         /// <summary>
         /// Gets the get item types.
         /// </summary>

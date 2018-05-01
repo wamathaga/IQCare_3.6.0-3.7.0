@@ -13,43 +13,13 @@ using Application.Common;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacyDispense_FindPatient : LogPage
+    public partial class frmPharmacyDispense_FindPatient : System.Web.UI.Page
     {
         Interface.Pharmacy.IDrug PrescriptionManager;
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
-                PrescriptionManager = (Interface.Pharmacy.IDrug)ObjectFactory.CreateInstance("BusinessProcess.Pharmacy.BDrug, BusinessProcess.Pharmacy");
-                Init_Page();
-            }
-            catch (Exception ex)
-            {
-
-                CLogger.WriteLog(ELogLevel.ERROR, ex.ToString());
-                if (Session["PatientId"] == null || Convert.ToInt32(Session["PatientId"]) != 0)
-                {
-                    IQCareMsgBox.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, this, "window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'</script>");
-                }
-                else
-                {
-                    if (Session["TechnicalAreaId"] != null || Convert.ToInt16(Session["TechnicalAreaId"]) != 0)
-                    {
-                        IQCareMsgBox.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, this, "window.location.href='../frmFacilityHome.aspx';");
-                        //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFacilityHome.aspx'</script>");
-
-                    }
-                    else
-                    {
-
-                        IQCareMsgBox.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, this, "window.location.href='../frmLogin.aspx';");
-                        //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmLogin.aspx'</script>");
-                    }
-                }
-                ex = null;
-            }
-           
+            PrescriptionManager = (Interface.Pharmacy.IDrug)ObjectFactory.CreateInstance("BusinessProcess.Pharmacy.BDrug, BusinessProcess.Pharmacy");
+            Init_Page();
         }
 
         private void Init_Page()

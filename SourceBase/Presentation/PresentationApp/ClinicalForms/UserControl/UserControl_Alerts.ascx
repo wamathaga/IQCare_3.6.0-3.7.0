@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserControl_Alerts.ascx.cs" Inherits="PresentationApp.ClinicalForms.UserControl.UserControl_Alerts" %>
 
 <script language="javascript" type="text/javascript">
-    var AllergiesArray, ChronicArray, CD4, ViralLoad,UrgentLab;
+    var AllergiesArray, ChronicArray, CD4, ViralLoad;
 
     function myAllergies(allergies) {
         AllergiesArray = allergies.split(',');
@@ -19,9 +19,7 @@
         ViralLoad = viralLoadDate;
     }
 
-    function UrgentLabDueDate(urgentLabDate) {
-        UrgentLab = urgentLabDate;
-    }
+
     $(function () {
         var notifications = new $.ttwNotificationCenter({
             notificationList: {
@@ -52,11 +50,7 @@
         else {
             notifications.error('Viral Load Due Date : ' + ViralLoad + '', 'growl', 'allergies');
         }
-        if (typeof UrgentLab === 'undefined') {
-        }
-        else {
-            notifications.error('Urgent Laboratory for this Patient Dated : ' + UrgentLab + '', 'growl', 'allergies');
-        }
+
         if (typeof AllergiesArray === 'undefined') {
         }
         else {

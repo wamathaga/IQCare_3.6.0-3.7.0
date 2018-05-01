@@ -20,7 +20,7 @@ namespace Interface.Administration
         //int UpdateLabType(int LabTypeID, string LabTypeName, int UserID);
         DataSet GetLabTestList();
         DataSet GetSubTestDetails(int SubTestID);
-        DataTable SaveLabUnitLinks(int ID, int SubTestID, decimal MinBoundaryValue, decimal MaxBoundaryValue, int UnitID, int DefaultUnit);
+        DataTable SaveLabUnitLinks(int ID, int SubTestID, decimal MinBoundaryValue, decimal MaxBoundaryValue, int UnitID, int DefaultUnit, int Undetectable);
         DataTable ChangeDefaultUnit(int ID);
         DataTable CheckDefaultUnit(int ID);
         int SaveNewLabselectList(int testid, DataTable theDTselectList, int UserID);

@@ -7,11 +7,10 @@ using AjaxControlToolkit;
 using Application.Presentation;
 using Interface.Clinical;
 using Interface.SCM;
-using Application.Common;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBilling_PayBillByItems : LogPage
+    public partial class frmBilling_PayBillByItems : System.Web.UI.Page
     {
         bool isError = false;
 
@@ -672,42 +671,20 @@ namespace IQCare.Web.Billing
         void showErrorMessage(ref Exception ex)
         {
             this.isError = true;
-            //if (this.Debug)
-            //{
-            //    lblError.Text = ex.Message + ex.StackTrace + ex.Source;
-            //}
-            //else
-            //{
-            //    lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
-            //    this.isError = this.divError.Visible = true;
-            //    Exception lastError = ex;
-            //    lastError.Data.Add("Domain", "Patient Consumeable Issueance Form");
-            //    Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
-            //    logger.LogError(ex);
-
-            //}
-            CLogger.WriteLog(ELogLevel.ERROR, ex.ToString());
-            if (Session["PatientId"] == null || Convert.ToInt32(Session["PatientId"]) != 0)
+            if (this.Debug)
             {
-                this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'");
-                //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFindAddCustom.aspx?srvNm=" + Session["TechnicalAreaName"] + "&mod=0'</script>");
+                lblError.Text = ex.Message + ex.StackTrace + ex.Source;
             }
             else
             {
-                if (Session["TechnicalAreaId"] != null || Convert.ToInt16(Session["TechnicalAreaId"]) != 0)
-                {
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmFacilityHome.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmFacilityHome.aspx'</script>");
+                lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
+                this.isError = this.divError.Visible = true;
+                Exception lastError = ex;
+                lastError.Data.Add("Domain", "Patient Consumeable Issueance Form");
+                Application.Logger.EventLogger logger = new Application.Logger.EventLogger();
+                logger.LogError(ex);
 
-                }
-                else
-                {
-
-                    this.NotifyAction("Application has an issue, Please contact Administrator!", "Application Error", true, "window.location.href='../frmLogin.aspx';");
-                    //Response.Write("<script>alert('Application has an issue, Please contact Administrator!') ; window.location.href='../frmLogin.aspx'</script>");
-                }
             }
-            ex = null;
             
         }
 
@@ -788,7 +765,7 @@ namespace IQCare.Web.Billing
         /// <param name="strMessage">The string message.</param>
         /// <param name="strTitle">The string title.</param>
         /// <param name="errorFlag">if set to <c>true</c> [error flag].</param>
-        void NotifyAction(string strMessage, string strTitle, bool errorFlag, string onOkScript = "")
+        void NotifyAction(string strMessage, string strTitle, bool errorFlag)
         {
             // ConfirmModalPopupExtender.Hide();
             // this.mpe1.Hide();
@@ -796,12 +773,7 @@ namespace IQCare.Web.Billing
             lblNotice.Text = strTitle;
             lblNoticeInfo.ForeColor = (errorFlag) ? System.Drawing.Color.DarkRed : System.Drawing.Color.DarkGreen;
             lblNoticeInfo.Font.Bold = true;
-            imgNotice.ImageUrl = (errorFlag) ? "~/Common/images/mb_hand.gif" : "~/Common/images/mb_information.gif";
-            btnOkAction.OnClientClick = "";
-            if (onOkScript != "" && errorFlag == true)
-            {
-                btnOkAction.OnClientClick = onOkScript;
-            }
+            // imgNotice.ImageUrl = (errorFlag) ? "~/Common/images/mb_hand.gif" : "~/Common/images/mb_information.gif";
             this.notifyPopupExtender.Show();
         }
         /// <summary>

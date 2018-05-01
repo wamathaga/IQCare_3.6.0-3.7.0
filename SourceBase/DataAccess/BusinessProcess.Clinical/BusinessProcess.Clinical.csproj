@@ -44,10 +44,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataAccess.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DataAccess.Common\obj\Debug\DataAccess.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BAdultIE.cs" />
     <Compile Include="BAllergyInfo.cs" />
+    <Compile Include="BConsumable.cs" />
     <Compile Include="BContact.cs" />
     <Compile Include="BCustomForm.cs" />
     <Compile Include="BDeleteForm.cs" />
@@ -98,6 +95,10 @@
     <ProjectReference Include="..\DataAccess.Base\DataAccess.Base.csproj">
       <Project>{254BD540-00D8-46A2-9D35-39E8920B5750}</Project>
       <Name>DataAccess.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Common\DataAccess.Common.csproj">
+      <Project>{FA6D554F-BC52-454A-89D5-F8E576B3843E}</Project>
+      <Name>DataAccess.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccess.Entity\DataAccess.Entity.csproj">
       <Project>{B039AEFB-4059-4368-87BF-03545ACAB705}</Project>

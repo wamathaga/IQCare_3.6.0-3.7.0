@@ -9,7 +9,7 @@ using Application.Presentation;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmFindPatient : LogPage
+    public partial class frmFindPatient : System.Web.UI.Page
     {
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -81,7 +81,7 @@ namespace IQCare.Web.Billing
             }
             else
             {
-                string script = "NotifyMessage('This Patient belongs to a different Location. Please log-in with the patient\\'s location.'); return false;";
+                string script = "alert('This Patient belongs to a different Location. Please log-in with the patient\\'s location.'); return false;";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "FindPatientAlert", script, true);
             }
         }

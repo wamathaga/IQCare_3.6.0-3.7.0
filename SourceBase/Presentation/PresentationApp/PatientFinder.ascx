@@ -25,6 +25,17 @@
                             <tr>
                                 <td class="border pad5 whitebg" valign="top" width="280" align="left">
                                     <table width="100%" border="0">
+                                        <tr >
+                                            <td>
+                                                <label> 
+                                                    Identifier:</label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlIdentifier" runat="server" AutoPostBack="True" 
+                                                    onselectedindexchanged="ddlIdentifier_SelectedIndexChanged">
+                                                </asp:DropDownList>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td align="left" style="white-space: nowrap">
                                                 <label id="lblidentificationno" class="center" runat="server">
@@ -32,9 +43,9 @@
                                             </td>
                                             <td align="left">
                                                 <asp:TextBox ID="txtidentificationno" runat="server" MaxLength="20"></asp:TextBox>
-                                                <ajaxToolkit:FilteredTextBoxExtender ID="FTEID" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters,Custom"
-                                                    TargetControlID="txtidentificationno" ValidChars="-@*/ ">
-                                                </ajaxToolkit:FilteredTextBoxExtender>
+<%--                                                <ajaxToolkit:FilteredTextBoxExtender ID="FTEID" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters,Custom"
+                                                    TargetControlID="txtidentificationno" ValidChars="-@* ">
+                                                </ajaxToolkit:FilteredTextBoxExtender>--%>
                                             </td>
                                         </tr>
                                         <tr>
@@ -43,7 +54,7 @@
                                                     Facility/Satellite:</label>
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="ddFacility" runat="server">
+                                                <asp:DropDownList ID="ddFacility" runat="server" Width="200px">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>
@@ -59,7 +70,7 @@
                                         </tr>
                                          <tr >
                                             <td>
-                                                <label for="Careendedstatus">
+                                                <label for="Careendedstatus" id="lblCareendedstatus" runat="server">
                                                     Patient Status:</label>
                                             </td>
                                             <td>

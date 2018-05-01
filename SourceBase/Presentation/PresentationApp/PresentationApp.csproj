@@ -69,22 +69,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\External Dlls\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Application.BusinessProcess">
+    <Reference Include="Application.BusinessProcess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\Application.BusinessProcess.dll</HintPath>
     </Reference>
-    <Reference Include="Application.Common">
-      <HintPath>..\..\DataAccess\Application.Common\obj\Debug\Application.Common.dll</HintPath>
+    <Reference Include="Application.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\References\Application.Common.dll</HintPath>
     </Reference>
     <Reference Include="Application.Interface">
       <HintPath>..\..\..\References\Application.Interface.dll</HintPath>
     </Reference>
-    <Reference Include="Application.Presentation">
-      <HintPath>..\Application.Presentation\obj\Debug\Application.Presentation.dll</HintPath>
+    <Reference Include="Application.Logger">
+      <HintPath>..\..\..\References\Application.Logger.dll</HintPath>
     </Reference>
     <Reference Include="BusinessProcess.Administration">
       <HintPath>..\..\DataAccess\BusinessProcess.Administration\obj\Debug\BusinessProcess.Administration.dll</HintPath>
     </Reference>
-    <Reference Include="BusinessProcess.Clinical">
+    <Reference Include="BusinessProcess.Clinical, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\BusinessProcess.Clinical.dll</HintPath>
     </Reference>
     <Reference Include="BusinessProcess.Laboratory">
@@ -124,10 +127,19 @@
     <Reference Include="DataAccess.Reports">
       <HintPath>..\..\..\References\DataAccess.Reports.dll</HintPath>
     </Reference>
-    <Reference Include="Interface.Administration">
-      <HintPath>..\..\DataAccess\Interface.Administration\obj\Debug\Interface.Administration.dll</HintPath>
+    <Reference Include="Entities.Administration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\References\Entities.Administration.dll</HintPath>
     </Reference>
-    <Reference Include="Interface.Clinical">
+    <Reference Include="Entities.Billing">
+      <HintPath>..\..\..\References\Entities.Billing.dll</HintPath>
+    </Reference>
+    <Reference Include="Interface.Administration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\References\Interface.Administration.dll</HintPath>
+    </Reference>
+    <Reference Include="Interface.Clinical, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\Interface.Clinical.dll</HintPath>
     </Reference>
     <Reference Include="Interface.FormBuilder">
@@ -269,6 +281,13 @@
     </Compile>
     <Compile Include="AdminForms\frmadmin_adduser.aspx.designer.cs">
       <DependentUpon>frmadmin_adduser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminForms\frmAdmin_AdmissionWards.aspx.cs">
+      <DependentUpon>frmAdmin_AdmissionWards.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminForms\frmAdmin_AdmissionWards.aspx.designer.cs">
+      <DependentUpon>frmAdmin_AdmissionWards.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminForms\frmAdmin_AuditTrail.aspx.cs">
       <DependentUpon>frmAdmin_AuditTrail.aspx</DependentUpon>
@@ -451,6 +470,13 @@
     </Compile>
     <Compile Include="AdminForms\frmAdmin_IQCStageCustomPage.aspx.designer.cs">
       <DependentUpon>frmAdmin_IQCStageCustomPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminForms\frmAdmin_ItemMasterList.aspx.cs">
+      <DependentUpon>frmAdmin_ItemMasterList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminForms\frmAdmin_ItemMasterList.aspx.designer.cs">
+      <DependentUpon>frmAdmin_ItemMasterList.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminForms\frmAdmin_LaboratoryGroups.aspx.cs">
       <DependentUpon>frmAdmin_LaboratoryGroups.aspx</DependentUpon>
@@ -648,6 +674,153 @@
     <Compile Include="AdminForms\frmConfig_Customfields.aspx.designer.cs">
       <DependentUpon>frmConfig_Customfields.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admission\frmAdmissionHome.aspx.cs">
+      <DependentUpon>frmAdmissionHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admission\frmAdmissionHome.aspx.designer.cs">
+      <DependentUpon>frmAdmissionHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admission\frmNewAdmission.aspx.cs">
+      <DependentUpon>frmNewAdmission.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admission\frmNewAdmission.aspx.designer.cs">
+      <DependentUpon>frmNewAdmission.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admission\PatientWardAdmission.ascx.cs">
+      <DependentUpon>PatientWardAdmission.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admission\PatientWardAdmission.ascx.designer.cs">
+      <DependentUpon>PatientWardAdmission.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBillingAdmin_PaymentType.aspx.cs">
+      <DependentUpon>frmBillingAdmin_PaymentType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBillingAdmin_PaymentType.aspx.designer.cs">
+      <DependentUpon>frmBillingAdmin_PaymentType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBillingFindAddBill.aspx.cs">
+      <DependentUpon>frmBillingFindAddBill.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBillingFindAddBill.aspx.designer.cs">
+      <DependentUpon>frmBillingFindAddBill.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBillingReportPage.aspx.cs">
+      <DependentUpon>frmBillingReportPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBillingReportPage.aspx.designer.cs">
+      <DependentUpon>frmBillingReportPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_ClientBill.aspx.cs">
+      <DependentUpon>frmBilling_ClientBill.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_ClientBill.aspx.designer.cs">
+      <DependentUpon>frmBilling_ClientBill.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_PayBill.aspx.cs">
+      <DependentUpon>frmBilling_PayBill.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_PayBill.aspx.designer.cs">
+      <DependentUpon>frmBilling_PayBill.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_PayBillByItems.aspx.cs">
+      <DependentUpon>frmBilling_PayBillByItems.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_PayBillByItems.aspx.designer.cs">
+      <DependentUpon>frmBilling_PayBillByItems.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_PriceList.aspx.cs">
+      <DependentUpon>frmBilling_PriceList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_PriceList.aspx.designer.cs">
+      <DependentUpon>frmBilling_PriceList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_Reciept.aspx.cs">
+      <DependentUpon>frmBilling_Reciept.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_Reciept.aspx.designer.cs">
+      <DependentUpon>frmBilling_Reciept.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_Reports.aspx.cs">
+      <DependentUpon>frmBilling_Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_Reports.aspx.designer.cs">
+      <DependentUpon>frmBilling_Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmBilling_ReversalApproval.aspx.cs">
+      <DependentUpon>frmBilling_ReversalApproval.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmBilling_ReversalApproval.aspx.designer.cs">
+      <DependentUpon>frmBilling_ReversalApproval.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmCustomReportPrint.aspx.cs">
+      <DependentUpon>frmCustomReportPrint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmCustomReportPrint.aspx.designer.cs">
+      <DependentUpon>frmCustomReportPrint.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\frmFindPatient.aspx.cs">
+      <DependentUpon>frmFindPatient.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\frmFindPatient.aspx.designer.cs">
+      <DependentUpon>frmFindPatient.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\PatientDeposits.ascx.cs">
+      <DependentUpon>PatientDeposits.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\PatientDeposits.ascx.designer.cs">
+      <DependentUpon>PatientDeposits.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\PayBillCashAndDeposit.ascx.cs">
+      <DependentUpon>PayBillCashAndDeposit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\PayBillCashAndDeposit.ascx.designer.cs">
+      <DependentUpon>PayBillCashAndDeposit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\PayBillCorporate.ascx.cs">
+      <DependentUpon>PayBillCorporate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\PayBillCorporate.ascx.designer.cs">
+      <DependentUpon>PayBillCorporate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\PrintPriceList.aspx.cs">
+      <DependentUpon>PrintPriceList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\PrintPriceList.aspx.designer.cs">
+      <DependentUpon>PrintPriceList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\TestPage.aspx.cs">
+      <DependentUpon>TestPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\TestPage.aspx.designer.cs">
+      <DependentUpon>TestPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Billing\TransactionReversal.ascx.cs">
+      <DependentUpon>TransactionReversal.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Billing\TransactionReversal.ascx.designer.cs">
+      <DependentUpon>TransactionReversal.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ClinicalForms\ClinicalHeaderFooter.master.cs">
       <DependentUpon>ClinicalHeaderFooter.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -784,6 +957,20 @@
     </Compile>
     <Compile Include="ClinicalForms\frmFollowUpEducationCTC.aspx.designer.cs">
       <DependentUpon>frmFollowUpEducationCTC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClinicalForms\frmPatientConsumables.aspx.cs">
+      <DependentUpon>frmPatientConsumables.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClinicalForms\frmPatientConsumables.aspx.designer.cs">
+      <DependentUpon>frmPatientConsumables.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClinicalForms\frmPatientWaitingList.aspx.cs">
+      <DependentUpon>frmPatientWaitingList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClinicalForms\frmPatientWaitingList.aspx.designer.cs">
+      <DependentUpon>frmPatientWaitingList.aspx</DependentUpon>
     </Compile>
     <Compile Include="ClinicalForms\frmPatient_History.aspx.designer.cs">
       <DependentUpon>frmPatient_History.aspx</DependentUpon>
@@ -933,6 +1120,13 @@
     <Compile Include="ClinicalForms\UserControl\UserControlKNH_WorkPlanExtruder.ascx.designer.cs">
       <DependentUpon>UserControlKNH_WorkPlanExtruder.ascx</DependentUpon>
     </Compile>
+    <Compile Include="ClinicalForms\UserControl\UserControl_Alerts.ascx.cs">
+      <DependentUpon>UserControl_Alerts.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClinicalForms\UserControl\UserControl_Alerts.ascx.designer.cs">
+      <DependentUpon>UserControl_Alerts.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ClinicalForms\UserControl\UserControl_AllergyExtruder.ascx.cs">
       <DependentUpon>UserControl_AllergyExtruder.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -946,6 +1140,13 @@
     </Compile>
     <Compile Include="ClinicalForms\UserControl\UserControl_ARVHistoryExtruder.ascx.designer.cs">
       <DependentUpon>UserControl_ARVHistoryExtruder.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ClinicalForms\UserControl\UserControl_Loading.ascx.cs">
+      <DependentUpon>UserControl_Loading.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClinicalForms\UserControl\UserControl_Loading.ascx.designer.cs">
+      <DependentUpon>UserControl_Loading.ascx</DependentUpon>
     </Compile>
     <Compile Include="ClinicalForms\UserControl\UserControl_Nutrition.ascx.cs">
       <DependentUpon>UserControl_Nutrition.ascx</DependentUpon>
@@ -963,6 +1164,13 @@
     </Compile>
     <Compile Include="ClinicalForms\wucDebitNote.ascx.designer.cs">
       <DependentUpon>wucDebitNote.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="FacilityHeaderFooter.master.designer.cs">
       <DependentUpon>FacilityHeaderFooter.master</DependentUpon>
@@ -1035,6 +1243,13 @@
     </Compile>
     <Compile Include="frmSystemCache.aspx.designer.cs">
       <DependentUpon>frmSystemCache.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmWaitingList.aspx.cs">
+      <DependentUpon>frmWaitingList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmWaitingList.aspx.designer.cs">
+      <DependentUpon>frmWaitingList.aspx</DependentUpon>
     </Compile>
     <Compile Include="IQTools\frmIQToolsQuery.aspx.cs">
       <DependentUpon>frmIQToolsQuery.aspx</DependentUpon>
@@ -1382,6 +1597,89 @@
     <Compile Include="PatientIdentifiers.ascx.designer.cs">
       <DependentUpon>PatientIdentifiers.ascx</DependentUpon>
     </Compile>
+    <Compile Include="PatientSummary.aspx.cs">
+      <DependentUpon>PatientSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PatientSummary.aspx.designer.cs">
+      <DependentUpon>PatientSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\BinCard.aspx.cs">
+      <DependentUpon>BinCard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\BinCard.aspx.designer.cs">
+      <DependentUpon>BinCard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacyDispense_FindPatient.aspx.cs">
+      <DependentUpon>frmPharmacyDispense_FindPatient.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacyDispense_FindPatient.aspx.designer.cs">
+      <DependentUpon>frmPharmacyDispense_FindPatient.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.cs">
+      <DependentUpon>frmPharmacyDispense_PatientOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx.designer.cs">
+      <DependentUpon>frmPharmacyDispense_PatientOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_Dashboard.aspx.cs">
+      <DependentUpon>frmPharmacy_Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_Dashboard.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_DrugHistory.aspx.cs">
+      <DependentUpon>frmPharmacy_DrugHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_DrugHistory.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_DrugHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_PrintLabels.aspx.cs">
+      <DependentUpon>frmPharmacy_PrintLabels.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_PrintLabels.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_PrintLabels.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_ReferenceMaterials.aspx.cs">
+      <DependentUpon>frmPharmacy_ReferenceMaterials.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_ReferenceMaterials.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_ReferenceMaterials.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_StockManagement.aspx.cs">
+      <DependentUpon>frmPharmacy_StockManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_StockManagement.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_StockManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_StockSummary.aspx.cs">
+      <DependentUpon>frmPharmacy_StockSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_StockSummary.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_StockSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_StockTransactions.aspx.cs">
+      <DependentUpon>frmPharmacy_StockTransactions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PharmacyDispense\frmPharmacy_StockTransactions.aspx.designer.cs">
+      <DependentUpon>frmPharmacy_StockTransactions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PharmacyDispense\rptBinCard.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptBinCard.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Pharmacy\frmAdultPharmacyList.aspx.cs">
       <DependentUpon>frmAdultPharmacyList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1410,34 +1708,6 @@
     <Compile Include="Pharmacy\frmpharmacyselector.aspx.designer.cs">
       <DependentUpon>frmpharmacyselector.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_Adult.aspx.cs">
-      <DependentUpon>frmPharmacy_Adult.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_Adult.aspx.designer.cs">
-      <DependentUpon>frmPharmacy_Adult.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_CTC.aspx.cs">
-      <DependentUpon>frmPharmacy_CTC.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_CTC.aspx.designer.cs">
-      <DependentUpon>frmPharmacy_CTC.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_Custom.aspx.cs">
-      <DependentUpon>frmPharmacy_Custom.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_Custom.aspx.designer.cs">
-      <DependentUpon>frmPharmacy_Custom.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_Paediatric.aspx.cs">
-      <DependentUpon>frmPharmacy_Paediatric.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pharmacy\frmPharmacy_Paediatric.aspx.designer.cs">
-      <DependentUpon>frmPharmacy_Paediatric.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Pharmacy\frmprintdialog.aspx.cs">
       <DependentUpon>frmprintdialog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1453,6 +1723,114 @@
       <DependentUpon>usrctrlprintpharmacy.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\Billing\BillingSalesSummary.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\BillingSalesSummary1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BillingSalesSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\CDCReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CDCReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DailyCashierSummary.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DailyCashierSummary2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyCashierSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DailyCollectionSummary.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DailyCollectionSummary1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyCollectionSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DailyDepartmentalCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DailyDepartmentalCollection1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyDepartmentalCollection.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DepartmentalCashCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\DepartmentalCashCollection2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DepartmentalCashCollection.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\FacilityMonthlyCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\FacilityMonthlyCollection2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FacilityMonthlyCollection.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\OtherFacilityMonthlyIncome.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\OtherFacilityMonthlyIncome1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OtherFacilityMonthlyIncome.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptBillingReciept.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptBillingReciept1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptBillingReciept.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptBillingRecieptThermal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptBillingRecieptThermal1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptBillingRecieptThermal.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptInvoice.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptInvoice1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptInvoice2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptInvoice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptRevenueSummary.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Billing\rptRevenueSummary3.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptRevenueSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\CDCReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2183,6 +2561,7 @@
     <Content Include="AdminForms\frmAdminLaboratoryGroupItems.aspx" />
     <Content Include="AdminForms\frmAdmin_AddUpdateSatellite.aspx" />
     <Content Include="AdminForms\frmadmin_adduser.aspx" />
+    <Content Include="AdminForms\frmAdmin_AdmissionWards.aspx" />
     <Content Include="AdminForms\frmAdmin_AuditTrail.aspx" />
     <Content Include="AdminForms\frmAdmin_ChangePassword.aspx" />
     <Content Include="AdminForms\frmAdmin_ControlListSelector.aspx" />
@@ -2209,6 +2588,7 @@
     <Content Include="AdminForms\frmAdmin_IQCCustomPage.aspx" />
     <Content Include="AdminForms\frmAdmin_IQCStageCustomList.aspx" />
     <Content Include="AdminForms\frmAdmin_IQCStageCustomPage.aspx" />
+    <Content Include="AdminForms\frmAdmin_ItemMasterList.aspx" />
     <Content Include="AdminForms\frmAdmin_LaboratoryGroups.aspx" />
     <Content Include="AdminForms\frmAdmin_LaboratoryList.aspx" />
     <Content Include="AdminForms\frmAdmin_LaboratorySelectList.aspx" />
@@ -2237,6 +2617,28 @@
     <Content Include="AdminForms\frmAdmin_UserList.aspx" />
     <Content Include="AdminForms\frmAdmin_VillageChairperson.aspx" />
     <Content Include="AdminForms\frmConfig_Customfields.aspx" />
+    <Content Include="Admission\frmAdmissionHome.aspx" />
+    <Content Include="Admission\frmNewAdmission.aspx" />
+    <Content Include="Admission\PatientWardAdmission.ascx" />
+    <Content Include="Billing\frmBillingAdmin_PaymentType.aspx" />
+    <Content Include="Billing\frmBillingFindAddBill.aspx" />
+    <Content Include="Billing\frmBillingReportPage.aspx" />
+    <Content Include="Billing\frmBilling_ClientBill.aspx" />
+    <Content Include="Billing\frmBilling_PayBill.aspx" />
+    <Content Include="Billing\frmBilling_PayBillByItems.aspx" />
+    <Content Include="Billing\frmBilling_PriceList.aspx" />
+    <Content Include="Billing\frmBilling_Reciept.aspx" />
+    <Content Include="Billing\frmBilling_Reports.aspx" />
+    <Content Include="Billing\frmBilling_ReversalApproval.aspx" />
+    <Content Include="Billing\frmCustomReportPrint.aspx" />
+    <Content Include="Billing\frmFindPatient.aspx" />
+    <Content Include="Billing\PatientDeposits.ascx" />
+    <Content Include="Billing\PayBillCashAndDeposit.ascx" />
+    <Content Include="Billing\PayBillCorporate.ascx" />
+    <Content Include="Billing\PriceList_1_0.xsl" />
+    <Content Include="Billing\PrintPriceList.aspx" />
+    <Content Include="Billing\TestPage.aspx" />
+    <Content Include="Billing\TransactionReversal.ascx" />
     <Content Include="ClinicalForms\ClinicalHeaderFooter.master" />
     <Content Include="ClinicalForms\ClinicalHomeHeaderFooter.master" />
     <Content Include="ClinicalForms\frmClinical_KNH_AdultIE.aspx" />
@@ -2245,147 +2647,75 @@
     <Content Include="ClinicalForms\frmClinical_KNH_PediatricFollowup.aspx" />
     <Content Include="ClinicalForms\frmClinical_KNH_PEP.aspx" />
     <Content Include="ClinicalForms\frmClinical_RevisedAdultfollowup.aspx" />
+    <Content Include="ClinicalForms\frmPatientConsumables.aspx" />
+    <Content Include="ClinicalForms\frmPatientWaitingList.aspx" />
     <Content Include="ClinicalForms\UserControl\mbExtruder.css" />
+    <Content Include="ClinicalForms\UserControl\UserControl_Alerts.ascx" />
+    <Content Include="ClinicalForms\UserControl\UserControl_Loading.ascx" />
+    <Content Include="Error.aspx" />
+    <Content Include="frmWaitingList.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\bincard.jpg" />
+    <Content Include="Images\closeButton1.png" />
+    <Content Include="Images\evening1.jpg" />
+    <Content Include="Images\mb_hand.gif" />
+    <Content Include="Images\mb_information.gif" />
+    <Content Include="Images\mb_question.gif" />
+    <Content Include="Images\midday1.jpg" />
+    <Content Include="Images\morning1.jpg" />
+    <Content Include="Images\night2.jpg" />
     <Content Include="Images\partial.png" />
     <Content Include="Incl\jquery-1.10.1.js" />
     <Content Include="Incl\jquery.hoverIntent.min.js" />
     <Content Include="Incl\jquery.mb.flipText.js" />
     <Content Include="Incl\jquery.tablesorter.min.js" />
     <Content Include="Incl\mbExtruder.js" />
-    <Content Include="IQCareHelp\access_rights.htm" />
-    <Content Include="IQCareHelp\access_to_a_dispensing_store.htm" />
-    <Content Include="IQCareHelp\addacustomfield.htm" />
-    <Content Include="IQCareHelp\adding_a_laboratory_unit.htm" />
-    <Content Include="IQCareHelp\adding_business_rules.htm" />
-    <Content Include="IQCareHelp\adding_dynamic_forms_to_the_hi.htm" />
-    <Content Include="IQCareHelp\adding_linked_list_entries_who.htm" />
-    <Content Include="IQCareHelp\additional_forms.htm" />
-    <Content Include="IQCareHelp\add_an_entry_in_a_custom_list.htm" />
-    <Content Include="IQCareHelp\add_a_location.htm" />
-    <Content Include="IQCareHelp\add_a_new_drug.htm" />
-    <Content Include="IQCareHelp\add_conditional_fields.htm" />
-    <Content Include="IQCareHelp\add_custom_field_lists.htm" />
-    <Content Include="IQCareHelp\add_or_edit_a_user_group.htm" />
-    <Content Include="IQCareHelp\add_or_update_a_user.htm" />
-    <Content Include="IQCareHelp\add_sections.htm" />
-    <Content Include="IQCareHelp\adjusting_report_display_size_in_excel_forma.htm" />
-    <Content Include="IQCareHelp\adjust_stock.htm" />
-    <Content Include="IQCareHelp\adult_and_peds_pharmacy_pmtct.htm" />
-    <Content Include="IQCareHelp\adult_pharmacy.htm" />
-    <Content Include="IQCareHelp\adult_pharmacy_2.htm" />
-    <Content Include="IQCareHelp\adult_pharmacy_ar_br.htm" />
-    <Content Include="IQCareHelp\aidrelief_forms_br.htm" />
-    <Content Include="IQCareHelp\arformflow.png" />
-    <Content Include="IQCareHelp\arformset.htm" />
-    <Content Include="IQCareHelp\arrange_custom_fields_in_forms.htm" />
-    <Content Include="IQCareHelp\arrow-down.gif" />
-    <Content Include="IQCareHelp\arrow-empty.gif" />
-    <Content Include="IQCareHelp\art_history.htm" />
-    <Content Include="IQCareHelp\art_therapy.htm" />
-    <Content Include="IQCareHelp\businessrules_form.png" />
-    <Content Include="IQCareHelp\configure_lab_groups.htm" />
-    <Content Include="IQCareHelp\dispense_drugs.htm" />
-    <Content Include="IQCareHelp\dispense_drugs2.htm" />
-    <Content Include="IQCareHelp\dispose_items.htm" />
-    <Content Include="IQCareHelp\donorrptjumppage.png" />
-    <Content Include="IQCareHelp\donortrack1pmtct.png" />
-    <Content Include="IQCareHelp\donortzquarterreport.png" />
-    <Content Include="IQCareHelp\donortztimeselect.png" />
-    <Content Include="IQCareHelp\donor_reports.htm" />
-    <Content Include="IQCareHelp\donor_reports_-pmtct.htm" />
-    <Content Include="IQCareHelp\embim6.png" />
-    <Content Include="IQCareHelp\facilitynavigationstatistics.png" />
-    <Content Include="IQCareHelp\facilitysetupdateconstraint.png" />
-    <Content Include="IQCareHelp\facilitystatisticspagebusrules.htm" />
-    <Content Include="IQCareHelp\facility_home.htm" />
-    <Content Include="IQCareHelp\fbicd10save_zoom88.png" />
-    <Content Include="IQCareHelp\fbicd10selectfield.png" />
-    <Content Include="IQCareHelp\fbicd10selectothertreedisplay.png" />
-    <Content Include="IQCareHelp\fbicd10selectothertreeresult_zoom90.png" />
-    <Content Include="IQCareHelp\fbicd10selecttree.png" />
-    <Content Include="IQCareHelp\fbicd10treeresult.png" />
-    <Content Include="IQCareHelp\form_and_tab_level_security.htm" />
-    <Content Include="IQCareHelp\form_business_rules.htm" />
-    <Content Include="IQCareHelp\form_level_business_rules.htm" />
-    <Content Include="IQCareHelp\hmfile_hash_1672e4f1.png" />
-    <Content Include="IQCareHelp\hmfile_hash_3bd65cde.png" />
-    <Content Include="IQCareHelp\hmfile_hash_4024da14.png" />
-    <Content Include="IQCareHelp\hmfile_hash_728cd2a6.png" />
-    <Content Include="IQCareHelp\hmfile_hash_754e20aa.png" />
-    <Content Include="IQCareHelp\hmfile_hash_a220fb7f.png" />
-    <Content Include="IQCareHelp\hmfile_hash_af45b594.png" />
-    <Content Include="IQCareHelp\hmfile_hash_f2b8051c.png" />
-    <Content Include="IQCareHelp\hmfile_hash_fe34dc4c.png" />
-    <Content Include="IQCareHelp\icd10.png" />
-    <Content Include="IQCareHelp\icd10_field_type.htm" />
-    <Content Include="IQCareHelp\icd2.png" />
-    <Content Include="IQCareHelp\initial_and_follow_up_visits.htm" />
-    <Content Include="IQCareHelp\iqcareuserguide05-01-2015_content.htm" />
-    <Content Include="IQCareHelp\iqcareuserguide05-01-2015_contextids.js" />
-    <Content Include="IQCareHelp\iqcareuserguide05-01-2015_ftsearch.htm" />
-    <Content Include="IQCareHelp\iqcareuserguide05-01-2015_kwindex.htm" />
-    <Content Include="IQCareHelp\iqcareuserguide05-01-2015_popup_html.js" />
-    <Content Include="IQCareHelp\iqcare_installation_and_code_b.htm" />
-    <Content Include="IQCareHelp\iqtoolsreport5.png" />
-    <Content Include="IQCareHelp\iqtoolsreports1.png" />
-    <Content Include="IQCareHelp\iqtoolsreports2.png" />
-    <Content Include="IQCareHelp\iqtoolsreports3.png" />
-    <Content Include="IQCareHelp\iqtoolsreports4.png" />
-    <Content Include="IQCareHelp\iqtoolsreports5.png" />
-    <Content Include="IQCareHelp\iqtools_reports.htm" />
-    <Content Include="IQCareHelp\kemoh257-codepagemapping.png" />
-    <Content Include="IQCareHelp\kemoh257-createnew.png" />
-    <Content Include="IQCareHelp\kemoh257-facepage1mapping.png" />
-    <Content Include="IQCareHelp\kemoh257-facepage2mapping.png" />
-    <Content Include="IQCareHelp\kemoh257-fuedpagemapping.png" />
-    <Content Include="IQCareHelp\kemoh257-visitpagemapping.png" />
-    <Content Include="IQCareHelp\kenya_hiv_patient_card_moh_257.htm" />
-    <Content Include="IQCareHelp\ke_moh_257_service_area.htm" />
-    <Content Include="IQCareHelp\knhformsetbusrules1.png" />
-    <Content Include="IQCareHelp\knhformsetbusrules2.png" />
-    <Content Include="IQCareHelp\knhformsetbusrules3.png" />
-    <Content Include="IQCareHelp\knhformsetuifeatures1_zoom90.png" />
-    <Content Include="IQCareHelp\knhformsetuifeatures2.png" />
-    <Content Include="IQCareHelp\knhformsetuifeatures3.png" />
-    <Content Include="IQCareHelp\knhformsetuifeatures4.png" />
-    <Content Include="IQCareHelp\knhformsetuifeatures5.png" />
-    <Content Include="IQCareHelp\knhtabsecurity.png" />
-    <Content Include="IQCareHelp\knhtabsecurity2.png" />
-    <Content Include="IQCareHelp\knh_smart_art_forms.htm" />
-    <Content Include="IQCareHelp\labgroupsaddllabs1.png" />
-    <Content Include="IQCareHelp\labgroupsaddllabs2.png" />
-    <Content Include="IQCareHelp\labgroupsaddllabs3.png" />
-    <Content Include="IQCareHelp\labgroupsconfigure1.png" />
-    <Content Include="IQCareHelp\labgroupsconfigure2.png" />
-    <Content Include="IQCareHelp\labgroupsconfigure3.png" />
-    <Content Include="IQCareHelp\labgroupsconfigure4.png" />
-    <Content Include="IQCareHelp\labgroupsconfigure5.png" />
-    <Content Include="IQCareHelp\labgroupsconfigure6.png" />
-    <Content Include="IQCareHelp\loginfirsttime_zoom58.png" />
-    <Content Include="IQCareHelp\mapping_moh_257_card_to_electr.htm" />
-    <Content Include="IQCareHelp\patient_level_fly-out.htm" />
-    <Content Include="IQCareHelp\reportnavigation.png" />
-    <Content Include="IQCareHelp\reportnavigationpatientreports.png" />
-    <Content Include="IQCareHelp\specialformslinkingmngforms.png" />
-    <Content Include="IQCareHelp\specialformslinkingselectotherforms1.png" />
-    <Content Include="IQCareHelp\specialformslinkingviewavailforms.png" />
-    <Content Include="IQCareHelp\technical_area_business_rules.htm" />
-    <Content Include="IQCareHelp\the_facility_statistics_page.htm" />
-    <Content Include="IQCareHelp\user_interface_features.htm" />
-    <Content Include="IQCareHelp\_img100.gif" />
-    <Content Include="IQCareHelp\_img101_zoom73.png" />
-    <Content Include="IQCareHelp\_img102_zoom73.png" />
-    <Content Include="IQCareHelp\_img103_zoom73.png" />
-    <Content Include="IQCareHelp\_img104_zoom73.png" />
-    <Content Include="IQCareHelp\_img105_zoom73.png" />
-    <Content Include="IQCareHelp\_img106_zoom73.png" />
-    <Content Include="IQCareHelp\_img107_zoom73.png" />
-    <Content Include="IQCareHelp\_img108_zoom54.png" />
-    <Content Include="IQCareHelp\_img109_zoom60.png" />
-    <Content Include="IQCareHelp\_img114_zoom54.png" />
-    <Content Include="IQCareHelp\_img115_zoom64.png" />
-    <Content Include="IQCareHelp\_img6_zoom73.png" />
-    <Content Include="IQCareHelp\_img86_zoom40.png" />
+    <Content Include="Incl\notification_center_plugin\css\style.css" />
+    <Content Include="Incl\notification_center_plugin\css\style_dark.css" />
+    <Content Include="Incl\notification_center_plugin\css\style_light.css" />
+    <Content Include="Incl\notification_center_plugin\css\uniform.css" />
+    <Content Include="Incl\notification_center_plugin\images\bg.png" />
+    <Content Include="Incl\notification_center_plugin\images\button-overlay.png" />
+    <Content Include="Incl\notification_center_plugin\images\close.png" />
+    <Content Include="Incl\notification_center_plugin\images\dark\bg-overlay.png" />
+    <Content Include="Incl\notification_center_plugin\images\dark\bg.jpg" />
+    <Content Include="Incl\notification_center_plugin\images\dark\notification-menu-bg.png" />
+    <Content Include="Incl\notification_center_plugin\images\error.png" />
+    <Content Include="Incl\notification_center_plugin\images\error_color.png" />
+    <Content Include="Incl\notification_center_plugin\images\growl-close.png" />
+    <Content Include="Incl\notification_center_plugin\images\icon.png" />
+    <Content Include="Incl\notification_center_plugin\images\item-bg.png" />
+    <Content Include="Incl\notification_center_plugin\images\list-pointer.png" />
+    <Content Include="Incl\notification_center_plugin\images\notice.png" />
+    <Content Include="Incl\notification_center_plugin\images\notice_color.png" />
+    <Content Include="Incl\notification_center_plugin\images\notification-bg-clear.png" />
+    <Content Include="Incl\notification_center_plugin\images\notification-bg.png" />
+    <Content Include="Incl\notification_center_plugin\images\notification-menu-bg.png" />
+    <Content Include="Incl\notification_center_plugin\images\success.png" />
+    <Content Include="Incl\notification_center_plugin\images\success_color.png" />
+    <Content Include="Incl\notification_center_plugin\images\warning.png" />
+    <Content Include="Incl\notification_center_plugin\images\warning_color.png" />
+    <Content Include="Incl\notification_center_plugin\js\demo.js" />
+    <Content Include="Incl\notification_center_plugin\js\jquery-ui-1.8.14.custom.min.js" />
+    <Content Include="Incl\notification_center_plugin\js\jquery.min.js" />
+    <Content Include="Incl\notification_center_plugin\js\jquery.tools.js" />
+    <Content Include="Incl\notification_center_plugin\js\jquery.uniform.min.js" />
+    <Content Include="Incl\notification_center_plugin\js\main.js" />
+    <Content Include="Incl\notification_center_plugin\js\ttw-notification-center-min.js" />
+    <Content Include="Incl\notification_center_plugin\js\ttw-notification-center.js" />
+    <Content Include="PatientSummary.aspx" />
+    <Content Include="PharmacyDispense\BinCard.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacyDispense_FindPatient.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacyDispense_PatientOrder.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_Dashboard.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_DrugHistory.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_PrintLabels.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_ReferenceMaterials.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_StockManagement.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_StockSummary.aspx" />
+    <Content Include="PharmacyDispense\frmPharmacy_StockTransactions.aspx" />
+    <Content Include="Pharmacy\frmAdultPharmacyList.aspx" />
+    <Content Include="Pharmacy\frmPharmacy_Paediatric.aspx" />
     <Content Include="Scheduler\frmHome_Visit.aspx" />
     <Content Include="Style\mbExtruder.css" />
     <Content Include="ClinicalForms\UserControl\UserControlKNHPresentingComplaints.ascx" />
@@ -3057,6 +3387,8 @@
     <Content Include="frmPMTCTFacilityStatistics.aspx" />
     <Content Include="frmRefreshReportFiles.aspx" />
     <Content Include="frmSystemCache.aspx" />
+    <None Include="Billing.Payment.config" />
+    <Content Include="Billing.Report.config" />
     <None Include="crystalreportviewers13\crsmarttag.jsp" />
     <None Include="crystalreportviewers13\preview.jsp" />
     <None Include="ExcelFiles\ActiveNonARTPatients.xls" />
@@ -3194,714 +3526,6 @@
     <Content Include="Incl\Silverlight.js" />
     <Content Include="Incl\tab_right.gif" />
     <Content Include="Incl\weeklycalendar.js" />
-    <Content Include="IQCareHelp\arrow-none.gif" />
-    <Content Include="IQCareHelp\arrow-up.gif" />
-    <Content Include="IQCareHelp\art_care2.htm" />
-    <Content Include="IQCareHelp\art_care_br.htm" />
-    <Content Include="IQCareHelp\art_follow_up.htm" />
-    <Content Include="IQCareHelp\art_follow_up_ar_br.htm" />
-    <Content Include="IQCareHelp\arv_pick_up_facility.htm" />
-    <Content Include="IQCareHelp\arv_pick_up_report.htm" />
-    <Content Include="IQCareHelp\atoc.gif" />
-    <Content Include="IQCareHelp\atoc_d.gif" />
-    <Content Include="IQCareHelp\atoc_h.gif" />
-    <Content Include="IQCareHelp\autotoc.js" />
-    <Content Include="IQCareHelp\back_uprestore.htm" />
-    <Content Include="IQCareHelp\basicinventoryflow.png" />
-    <Content Include="IQCareHelp\bg_nav.gif" />
-    <Content Include="IQCareHelp\bg_topichd.gif" />
-    <Content Include="IQCareHelp\budget_view.htm" />
-    <Content Include="IQCareHelp\business_rule_definitions.htm" />
-    <Content Include="IQCareHelp\button_next.gif" />
-    <Content Include="IQCareHelp\button_next_d.gif" />
-    <Content Include="IQCareHelp\button_next_h.gif" />
-    <Content Include="IQCareHelp\button_prev.gif" />
-    <Content Include="IQCareHelp\button_prev_d.gif" />
-    <Content Include="IQCareHelp\button_prev_h.gif" />
-    <Content Include="IQCareHelp\careendedminimumfields.png" />
-    <Content Include="IQCareHelp\careendedpredefinedfields.png" />
-    <Content Include="IQCareHelp\carenewform.htm" />
-    <Content Include="IQCareHelp\caretrackingpmtct.png" />
-    <Content Include="IQCareHelp\care_ended_form.htm" />
-    <Content Include="IQCareHelp\care_tracking.htm" />
-    <Content Include="IQCareHelp\care_tracking_ar_br.htm" />
-    <Content Include="IQCareHelp\care_tracking_pmtct.htm" />
-    <Content Include="IQCareHelp\change_a_custom_field.htm" />
-    <Content Include="IQCareHelp\change_a_custom_field_lists.htm" />
-    <Content Include="IQCareHelp\change_list_entry_priority.htm" />
-    <Content Include="IQCareHelp\change_password.htm" />
-    <Content Include="IQCareHelp\ciconidx.gif" />
-    <Content Include="IQCareHelp\cicon_loadindex_ani.gif" />
-    <Content Include="IQCareHelp\clinical_forms.htm" />
-    <Content Include="IQCareHelp\clip0001.png" />
-    <Content Include="IQCareHelp\comments.js" />
-    <Content Include="IQCareHelp\common_dynamic_forms_data_dict.htm" />
-    <Content Include="IQCareHelp\common_static_forms.htm" />
-    <Content Include="IQCareHelp\conditionalentryadd.png" />
-    <Content Include="IQCareHelp\conditionalentryadded.png" />
-    <Content Include="IQCareHelp\conditionalentryhighlighted.png" />
-    <Content Include="IQCareHelp\conditionalentrylabel.png" />
-    <Content Include="IQCareHelp\conditionalentryselect.png" />
-    <Content Include="IQCareHelp\conditionalentryselected.png" />
-    <Content Include="IQCareHelp\conditionaliqcareactive.png" />
-    <Content Include="IQCareHelp\conditionaliqcareinactive.png" />
-    <Content Include="IQCareHelp\conditionalmultiexample1.png" />
-    <Content Include="IQCareHelp\conditionalmultiexample2.png" />
-    <Content Include="IQCareHelp\conditionalmultiexample3.png" />
-    <Content Include="IQCareHelp\conditionalselectlist.png" />
-    <Content Include="IQCareHelp\conditionalviewselectlist.png" />
-    <Content Include="IQCareHelp\configurecareendedformdefaultview.png" />
-    <Content Include="IQCareHelp\configurecedeathreason.png" />
-    <Content Include="IQCareHelp\configurecedeathreasonselectlist.png" />
-    <Content Include="IQCareHelp\configurecedeathreasonsuspect.png" />
-    <Content Include="IQCareHelp\configurecepatientexitconddialog.png" />
-    <Content Include="IQCareHelp\configurecepatientexitreasonltfu.png" />
-    <Content Include="IQCareHelp\configurecepatientexitreasonselect.png" />
-    <Content Include="IQCareHelp\configurecepublish.png" />
-    <Content Include="IQCareHelp\configure_additional_labs.htm" />
-    <Content Include="IQCareHelp\configure_backup.htm" />
-    <Content Include="IQCareHelp\configure_budget.htm" />
-    <Content Include="IQCareHelp\configure_care_ended_forms.htm" />
-    <Content Include="IQCareHelp\configure_custom_fields.htm" />
-    <Content Include="IQCareHelp\configure_iqcare_lists.htm" />
-    <Content Include="IQCareHelp\configure_patient_visit.htm" />
-    <Content Include="IQCareHelp\configure_registration_form.htm" />
-    <Content Include="IQCareHelp\configure_the_scm_module.htm" />
-    <Content Include="IQCareHelp\configuring_lab_units_and_boundary_values.htm" />
-    <Content Include="IQCareHelp\configuring_master_lists.htm" />
-    <Content Include="IQCareHelp\cost_allocations.htm" />
-    <Content Include="IQCareHelp\create_an_interstore_transfer.htm" />
-    <Content Include="IQCareHelp\create_a_custom_report.htm" />
-    <Content Include="IQCareHelp\create_a_goods_received_note.htm" />
-    <Content Include="IQCareHelp\create_a_purchase_order.htm" />
-    <Content Include="IQCareHelp\create_custom_fields.htm" />
-    <Content Include="IQCareHelp\create_new_formadditional_forms___ar.htm" />
-    <Content Include="IQCareHelp\create_technical_area.htm" />
-    <Content Include="IQCareHelp\creativecommonsimage.png" />
-    <Content Include="IQCareHelp\custom.css" />
-    <Content Include="IQCareHelp\customfieldadd.png" />
-    <Content Include="IQCareHelp\customfieldchangefield.png" />
-    <Content Include="IQCareHelp\customfieldchangelist1.png" />
-    <Content Include="IQCareHelp\customfieldcustomlist.png" />
-    <Content Include="IQCareHelp\customfieldsrearrangedialog.png" />
-    <Content Include="IQCareHelp\customfieldsrearrangedialogselected.png" />
-    <Content Include="IQCareHelp\customize_lists.htm" />
-    <Content Include="IQCareHelp\customlistall.png" />
-    <Content Include="IQCareHelp\customlistbyaidsreliefform.htm" />
-    <Content Include="IQCareHelp\customlistemployeelist.png" />
-    <Content Include="IQCareHelp\customlistlinked.png" />
-    <Content Include="IQCareHelp\customlistsavedfield.png" />
-    <Content Include="IQCareHelp\customlistslocked.png" />
-    <Content Include="IQCareHelp\customlistspmtctview.png" />
-    <Content Include="IQCareHelp\customreportdynamicquery.png" />
-    <Content Include="IQCareHelp\customreportfieldgroups_ar.htm" />
-    <Content Include="IQCareHelp\customreporttypesql.png" />
-    <Content Include="IQCareHelp\custom_field_custom_lists.htm" />
-    <Content Include="IQCareHelp\custom_field_custom_lists2.htm" />
-    <Content Include="IQCareHelp\custom_nohead.css" />
-    <Content Include="IQCareHelp\custom_reports.htm" />
-    <Content Include="IQCareHelp\custom_reports_pmtct_fields.htm" />
-    <Content Include="IQCareHelp\custom_report_functions.htm" />
-    <Content Include="IQCareHelp\data_quality_assurance.htm" />
-    <Content Include="IQCareHelp\data_quality_check.htm" />
-    <Content Include="IQCareHelp\default.css" />
-    <Content Include="IQCareHelp\delete_a_form.htm" />
-    <Content Include="IQCareHelp\delete_patient.htm" />
-    <Content Include="IQCareHelp\deleting_linked_list_entries_who.htm" />
-    <Content Include="IQCareHelp\design_and_preview_queries.htm" />
-    <Content Include="IQCareHelp\display_types_and_business_rul.htm" />
-    <Content Include="IQCareHelp\druglistadddruglistview.png" />
-    <Content Include="IQCareHelp\druglistaddtrade.png" />
-    <Content Include="IQCareHelp\druglistdisplay.png" />
-    <Content Include="IQCareHelp\druglistdisplaysorted.png" />
-    <Content Include="IQCareHelp\druglistgenericaddnewadd.png" />
-    <Content Include="IQCareHelp\druglistgenericlist.png" />
-    <Content Include="IQCareHelp\druglistgenericlistaddnew.png" />
-    <Content Include="IQCareHelp\druglistgenerilistfixeddose.png" />
-    <Content Include="IQCareHelp\druglistinactivate.png" />
-    <Content Include="IQCareHelp\druglistsavegeneric.png" />
-    <Content Include="IQCareHelp\drugliststrength.png" />
-    <Content Include="IQCareHelp\drugliststrengthadded.png" />
-    <Content Include="IQCareHelp\drugs_custom_list.htm" />
-    <Content Include="IQCareHelp\drug_relationships.htm" />
-    <Content Include="IQCareHelp\duplicate_patient_check.htm" />
-    <Content Include="IQCareHelp\dynamic_and_manual_entry_queries.htm" />
-    <Content Include="IQCareHelp\edit_an_appointment_via_the_patient_home_pag.htm" />
-    <Content Include="IQCareHelp\edit_an_appointment_via_the_scheduler.htm" />
-    <Content Include="IQCareHelp\edit_patient_transfer_information.htm" />
-    <Content Include="IQCareHelp\embim1.png" />
-    <Content Include="IQCareHelp\embim2.png" />
-    <Content Include="IQCareHelp\embim3.png" />
-    <Content Include="IQCareHelp\embim4.png" />
-    <Content Include="IQCareHelp\embim5.png" />
-    <Content Include="IQCareHelp\employee_list.htm" />
-    <Content Include="IQCareHelp\enrollment_ar_br.htm" />
-    <Content Include="IQCareHelp\enrollment_form.htm" />
-    <Content Include="IQCareHelp\export.htm" />
-    <Content Include="IQCareHelp\exportdeidselected.png" />
-    <Content Include="IQCareHelp\exportempty.png" />
-    <Content Include="IQCareHelp\exportgroupselect.png" />
-    <Content Include="IQCareHelp\exportimportforms.png" />
-    <Content Include="IQCareHelp\exporting_data.htm" />
-    <Content Include="IQCareHelp\export_a_report.htm" />
-    <Content Include="IQCareHelp\exposed_infant2.htm" />
-    <Content Include="IQCareHelp\exposed_infant_br.htm" />
-    <Content Include="IQCareHelp\facilityhomepage.png" />
-    <Content Include="IQCareHelp\facilityhomepagebusrules.htm" />
-    <Content Include="IQCareHelp\facilityhomepageexpinfantstab.png" />
-    <Content Include="IQCareHelp\facilityhomepagepmtcttab.png" />
-    <Content Include="IQCareHelp\facilitylevelfeatures.htm" />
-    <Content Include="IQCareHelp\facilitynavigation.png" />
-    <Content Include="IQCareHelp\facilitypatientnavigation.htm" />
-    <Content Include="IQCareHelp\facilitysatellite_page_field_details.htm" />
-    <Content Include="IQCareHelp\facilitysetupaddfacility.png" />
-    <Content Include="IQCareHelp\facilitysetupfacilitylist.png" />
-    <Content Include="IQCareHelp\facilitysetupinactivate.png" />
-    <Content Include="IQCareHelp\facility_reports.htm" />
-    <Content Include="IQCareHelp\facility_reports_-_pmtct.htm" />
-    <Content Include="IQCareHelp\facility_setup_and_patient_number.htm" />
-    <Content Include="IQCareHelp\facsetuppatientno1.png" />
-    <Content Include="IQCareHelp\family_information_form.htm" />
-    <Content Include="IQCareHelp\family_informaton_ar_br.htm" />
-    <Content Include="IQCareHelp\fbmanagefields.png" />
-    <Content Include="IQCareHelp\fbnavigation.png" />
-    <Content Include="IQCareHelp\field_level_validation.htm" />
-    <Content Include="IQCareHelp\field_search.htm" />
-    <Content Include="IQCareHelp\filtering_patient_location_and_treatment_loc.htm" />
-    <Content Include="IQCareHelp\findaddlocationexample.png" />
-    <Content Include="IQCareHelp\findaddlocationselectlist.png" />
-    <Content Include="IQCareHelp\findaddpatient.png" />
-    <Content Include="IQCareHelp\findadd_patient.htm" />
-    <Content Include="IQCareHelp\findadd_patients_and_location.htm" />
-    <Content Include="IQCareHelp\follow_up_education.htm" />
-    <Content Include="IQCareHelp\follow_up_education2.htm" />
-    <Content Include="IQCareHelp\formbuilderdb.png" />
-    <Content Include="IQCareHelp\formbuilderprocessflow.png" />
-    <Content Include="IQCareHelp\forms_use_across_different_cou.htm" />
-    <Content Include="IQCareHelp\form_builder_process.htm" />
-    <Content Include="IQCareHelp\form_flow_ar.htm" />
-    <Content Include="IQCareHelp\glossary_and_definition_of_terms.htm" />
-    <Content Include="IQCareHelp\graphic_arrow-down.gif" />
-    <Content Include="IQCareHelp\graphic_arrow-empty.gif" />
-    <Content Include="IQCareHelp\graphic_arrow-none.gif" />
-    <Content Include="IQCareHelp\graphic_arrow-up.gif" />
-    <Content Include="IQCareHelp\helpman_navigation.js" />
-    <Content Include="IQCareHelp\helpman_settings.js" />
-    <Content Include="IQCareHelp\helpman_topicinit.js" />
-    <Content Include="IQCareHelp\highlight.js" />
-    <Content Include="IQCareHelp\hivstaticadddynamic.png" />
-    <Content Include="IQCareHelp\hivstaticartfollowup.png" />
-    <Content Include="IQCareHelp\hivstaticcareended.png" />
-    <Content Include="IQCareHelp\hivstaticfollowupeducation.png" />
-    <Content Include="IQCareHelp\hivstatichomevisit.png" />
-    <Content Include="IQCareHelp\hivstaticieform.png" />
-    <Content Include="IQCareHelp\hivstaticlaboratory.png" />
-    <Content Include="IQCareHelp\hiv_art_care_card_kenya.htm" />
-    <Content Include="IQCareHelp\hiv_care_art_encounter.htm" />
-    <Content Include="IQCareHelp\hiv_care_encounter_br.htm" />
-    <Content Include="IQCareHelp\hiv_care_fields.htm" />
-    <Content Include="IQCareHelp\hiv_exposed_infant_fu_card.htm" />
-    <Content Include="IQCareHelp\hl7iqcarexmlsnippet.png" />
-    <Content Include="IQCareHelp\hl7mirthmessagesnippet.png" />
-    <Content Include="IQCareHelp\hmpopups.js" />
-    <Content Include="IQCareHelp\hmtoggle_arrow0.gif" />
-    <Content Include="IQCareHelp\hmtoggle_arrow1.gif" />
-    <Content Include="IQCareHelp\home.gif" />
-    <Content Include="IQCareHelp\home_h.gif" />
-    <Content Include="IQCareHelp\home_visit.htm" />
-    <Content Include="IQCareHelp\home_visit_ar_br.htm" />
-    <Content Include="IQCareHelp\how_lab_unit_configuration_changes_impact_th.htm" />
-    <Content Include="IQCareHelp\idxinit.js" />
-    <Content Include="IQCareHelp\import_and_run_a_report.htm" />
-    <Content Include="IQCareHelp\import_export_forms.htm" />
-    <Content Include="IQCareHelp\inactivate_a_custom_field.htm" />
-    <Content Include="IQCareHelp\inactivate_a_drug.htm" />
-    <Content Include="IQCareHelp\inactivate_a_field.htm" />
-    <Content Include="IQCareHelp\inactivate_a_location.htm" />
-    <Content Include="IQCareHelp\inactivate_a_user.htm" />
-    <Content Include="IQCareHelp\index.html" />
-    <Content Include="IQCareHelp\initial_evaluation_ar_br.htm" />
-    <Content Include="IQCareHelp\initial_evaluation_form.htm" />
-    <Content Include="IQCareHelp\initial_product_configuration.htm" />
-    <Content Include="IQCareHelp\international_standards.htm" />
-    <Content Include="IQCareHelp\intstandardicd10reportexample.png" />
-    <Content Include="IQCareHelp\intstandardicd10reportsetupexample.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyadddrug2-3.2.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyadddrugs3.2.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyapprovals.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyarvsection.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyarvselected3.2.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyheader.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacynotessection.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyoisection.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacytbsection.png" />
-    <Content Include="IQCareHelp\iqcareadultpharmacyvitaminsection.png" />
-    <Content Include="IQCareHelp\iqcaremanlogin.png" />
-    <Content Include="IQCareHelp\iqcaremaster_content.htm" />
-    <Content Include="IQCareHelp\iqcaremaster_ftsearch.htm" />
-    <Content Include="IQCareHelp\iqcaremaster_kwindex.htm" />
-    <Content Include="IQCareHelp\iqcaremaster_popup_html.js" />
-    <Content Include="IQCareHelp\iqcarepedpharmacyheader3.2.png" />
-    <Content Include="IQCareHelp\iqcareserviceconnectionstring.png" />
-    <Content Include="IQCareHelp\iqcareserviceconnectionstringdialog.png" />
-    <Content Include="IQCareHelp\iqcareservicecontrolpanel.png" />
-    <Content Include="IQCareHelp\iqcareservicedialog.png" />
-    <Content Include="IQCareHelp\iqcare_capabilities.htm" />
-    <Content Include="IQCareHelp\iqcare_configuration.htm" />
-    <Content Include="IQCareHelp\iqcare_management.htm" />
-    <Content Include="IQCareHelp\iqcare_management_login.htm" />
-    <Content Include="IQCareHelp\iqcare_module.htm" />
-    <Content Include="IQCareHelp\iqcare_service.htm" />
-    <Content Include="IQCareHelp\iq_logo.gif" />
-    <Content Include="IQCareHelp\jquery.js" />
-    <Content Include="IQCareHelp\jquery.scrollTo-min.js" />
-    <Content Include="IQCareHelp\kebluecardartvisit.png" />
-    <Content Include="IQCareHelp\kebluecardpart1.png" />
-    <Content Include="IQCareHelp\kebluecardpart2.png" />
-    <Content Include="IQCareHelp\keheifollowupcard.png" />
-    <Content Include="IQCareHelp\keheifollowupcardpartii.png" />
-    <Content Include="IQCareHelp\kehivtestingcounselingmoh362.png" />
-    <Content Include="IQCareHelp\kematernitymoh333.png" />
-    <Content Include="IQCareHelp\kemeiregi.png" />
-    <Content Include="IQCareHelp\kemeiregii.png" />
-    <Content Include="IQCareHelp\kemeiregiii.png" />
-    <Content Include="IQCareHelp\kemohanc405.png" />
-    <Content Include="IQCareHelp\kemohcervicalcancer.png" />
-    <Content Include="IQCareHelp\kemohhivcarecardenrollment.png" />
-    <Content Include="IQCareHelp\kenutritionhivaidsregister.png" />
-    <Content Include="IQCareHelp\kenyan_moh_blue_card.htm" />
-    <Content Include="IQCareHelp\kenya_moh_clinical_forms.htm" />
-    <Content Include="IQCareHelp\kepepregisterform.png" />
-    <Content Include="IQCareHelp\kepostnatalmoh406.png" />
-    <Content Include="IQCareHelp\ketbdrugcollectionadherence.png" />
-    <Content Include="IQCareHelp\ketbenrollment.png" />
-    <Content Include="IQCareHelp\ketbintensivecasefinding.png" />
-    <Content Include="IQCareHelp\ke_anc_register_moh_405.htm" />
-    <Content Include="IQCareHelp\ke_cervical_cancer.htm" />
-    <Content Include="IQCareHelp\ke_hiv_exposed_infant_follow_up_c.htm" />
-    <Content Include="IQCareHelp\ke_hiv_testing_counseling_lab_mo.htm" />
-    <Content Include="IQCareHelp\ke_maternal__exposed_infant_regis.htm" />
-    <Content Include="IQCareHelp\ke_maternity_register_moh_333.htm" />
-    <Content Include="IQCareHelp\ke_nutritiion_and_hiv_aids_register.htm" />
-    <Content Include="IQCareHelp\ke_pep_register.htm" />
-    <Content Include="IQCareHelp\ke_post_natal_register_moh_406.htm" />
-    <Content Include="IQCareHelp\ke_tb_intensive_case_finding.htm" />
-    <Content Include="IQCareHelp\laboratory_ar_br.htm" />
-    <Content Include="IQCareHelp\laboratory_orderlaboratory_results.htm" />
-    <Content Include="IQCareHelp\labunitcustomlist.png" />
-    <Content Include="IQCareHelp\labunitexample1.png" />
-    <Content Include="IQCareHelp\labunitexample2.png" />
-    <Content Include="IQCareHelp\lab_order_form_configuration.htm" />
-    <Content Include="IQCareHelp\login.jpg" />
-    <Content Include="IQCareHelp\loginscreen.png" />
-    <Content Include="IQCareHelp\login_page.htm" />
-    <Content Include="IQCareHelp\mail.gif" />
-    <Content Include="IQCareHelp\mail_h.gif" />
-    <Content Include="IQCareHelp\make_a_back_up.htm" />
-    <Content Include="IQCareHelp\managecareendedfields.png" />
-    <Content Include="IQCareHelp\managecareendedfieldsdeathreasonlist.png" />
-    <Content Include="IQCareHelp\managecareendedfieldspatientexitlist.png" />
-    <Content Include="IQCareHelp\managefields.png" />
-    <Content Include="IQCareHelp\managefieldscreatecustom1.png" />
-    <Content Include="IQCareHelp\managefieldsdrugselectiontype.png" />
-    <Content Include="IQCareHelp\managefieldsfilter.png" />
-    <Content Include="IQCareHelp\managefieldslabselectiontype.png" />
-    <Content Include="IQCareHelp\managefieldsphaddedfb.png" />
-    <Content Include="IQCareHelp\managefieldsphaddediq.png" />
-    <Content Include="IQCareHelp\managefieldsphnonefb.png" />
-    <Content Include="IQCareHelp\managefieldsphnoneiq.png" />
-    <Content Include="IQCareHelp\managefieldsregimentype.png" />
-    <Content Include="IQCareHelp\managefieldssavedcustom.png" />
-    <Content Include="IQCareHelp\managefieldssavedialog.png" />
-    <Content Include="IQCareHelp\managefieldssearch.png" />
-    <Content Include="IQCareHelp\managefieldssearchfilter.png" />
-    <Content Include="IQCareHelp\managefieldstypes.png" />
-    <Content Include="IQCareHelp\manageformsaddsections.png" />
-    <Content Include="IQCareHelp\manageformscreatenew.png" />
-    <Content Include="IQCareHelp\manageformsformwindow.png" />
-    <Content Include="IQCareHelp\manageformsorderforms.png" />
-    <Content Include="IQCareHelp\managehomepageempty.png" />
-    <Content Include="IQCareHelp\managehomepageemptyqbexample.png" />
-    <Content Include="IQCareHelp\managehomepageenterquery.png" />
-    <Content Include="IQCareHelp\managehomepageexampleresult.png" />
-    <Content Include="IQCareHelp\managehpsetup1.png" />
-    <Content Include="IQCareHelp\managehpsetup2.png" />
-    <Content Include="IQCareHelp\managerformsorderformschangeorder.png" />
-    <Content Include="IQCareHelp\managerformsorderformsdialog.png" />
-    <Content Include="IQCareHelp\managetechareasgrid.png" />
-    <Content Include="IQCareHelp\managetechcreatenew.png" />
-    <Content Include="IQCareHelp\managetechpatientidentfiers.png" />
-    <Content Include="IQCareHelp\manage_care_ended_fields.htm" />
-    <Content Include="IQCareHelp\manage_care_ended_forms.htm" />
-    <Content Include="IQCareHelp\manage_fields.htm" />
-    <Content Include="IQCareHelp\manage_forms.htm" />
-    <Content Include="IQCareHelp\manage_forms_window.htm" />
-    <Content Include="IQCareHelp\manage_home_pages.htm" />
-    <Content Include="IQCareHelp\manage_inventory.htm" />
-    <Content Include="IQCareHelp\manage_registration_fields.htm" />
-    <Content Include="IQCareHelp\manage_registration_form.htm" />
-    <Content Include="IQCareHelp\manage_technical_areas.htm" />
-    <Content Include="IQCareHelp\missed_arv_pick_up.htm" />
-    <Content Include="IQCareHelp\ml-_adjustment_reason.htm" />
-    <Content Include="IQCareHelp\ml-_batch_number.htm" />
-    <Content Include="IQCareHelp\ml-_cost_allocation_category.htm" />
-    <Content Include="IQCareHelp\ml-_donor_name.htm" />
-    <Content Include="IQCareHelp\ml-_donor_program_linking.htm" />
-    <Content Include="IQCareHelp\ml-_drug_type.htm" />
-    <Content Include="IQCareHelp\ml-_item_configuration.htm" />
-    <Content Include="IQCareHelp\ml-_item_type.htm" />
-    <Content Include="IQCareHelp\ml-_item_type_sub-type_linking.htm" />
-    <Content Include="IQCareHelp\ml-_lab_test.htm" />
-    <Content Include="IQCareHelp\ml-_lab_test_location.htm" />
-    <Content Include="IQCareHelp\ml-_manufacturer_detail.htm" />
-    <Content Include="IQCareHelp\ml-_program.htm" />
-    <Content Include="IQCareHelp\ml-_program_item_linking.htm" />
-    <Content Include="IQCareHelp\ml-_purchasing_dispensing_unit.htm" />
-    <Content Include="IQCareHelp\ml-_return_reason.htm" />
-    <Content Include="IQCareHelp\ml-_store_detail.htm" />
-    <Content Include="IQCareHelp\ml-_store_item_linking.htm" />
-    <Content Include="IQCareHelp\ml-_store_source_destination_l.htm" />
-    <Content Include="IQCareHelp\ml-_store_user_linking.htm" />
-    <Content Include="IQCareHelp\ml-_supplier.htm" />
-    <Content Include="IQCareHelp\ml-_supplier_item_linking.htm" />
-    <Content Include="IQCareHelp\mobileInit.js" />
-    <Content Include="IQCareHelp\mono_arrow-down.gif" />
-    <Content Include="IQCareHelp\mono_arrow-empty.gif" />
-    <Content Include="IQCareHelp\mono_arrow-none.gif" />
-    <Content Include="IQCareHelp\mono_arrow-up.gif" />
-    <Content Include="IQCareHelp\navinitv.js" />
-    <Content Include="IQCareHelp\new_appointment_via_a_form.htm" />
-    <Content Include="IQCareHelp\new_appointment_via_the_patient_home.htm" />
-    <Content Include="IQCareHelp\new_appointment_via_the_scheduler.htm" />
-    <Content Include="IQCareHelp\nigeria_monthly_naca_report.htm" />
-    <Content Include="IQCareHelp\non-art_follow_up_ar_br.htm" />
-    <Content Include="IQCareHelp\non_art_follow_up.htm" />
-    <Content Include="IQCareHelp\nsh.js" />
-    <Content Include="IQCareHelp\nsh_nohead.js" />
-    <Content Include="IQCareHelp\opening_stock.htm" />
-    <Content Include="IQCareHelp\other_user_guides.htm" />
-    <Content Include="IQCareHelp\overview.htm" />
-    <Content Include="IQCareHelp\paediatric_pharmacy.htm" />
-    <Content Include="IQCareHelp\paediatric_pharmacy_2.htm" />
-    <Content Include="IQCareHelp\paperless_facility.htm" />
-    <Content Include="IQCareHelp\patientbluecardnavigationto.png" />
-    <Content Include="IQCareHelp\patienthomepage.png" />
-    <Content Include="IQCareHelp\patienthomepagebusrules.htm" />
-    <Content Include="IQCareHelp\patienthomepagegeneraltab.png" />
-    <Content Include="IQCareHelp\patienthomepagehivcaretab.png" />
-    <Content Include="IQCareHelp\patienthomepagepmtvcttab.png" />
-    <Content Include="IQCareHelp\patientlevelfeatures.htm" />
-    <Content Include="IQCareHelp\patientnavigation.png" />
-    <Content Include="IQCareHelp\patientprofilereport.png" />
-    <Content Include="IQCareHelp\patient_enrolled_by_month.htm" />
-    <Content Include="IQCareHelp\patient_profile_report.htm" />
-    <Content Include="IQCareHelp\patient_reports.htm" />
-    <Content Include="IQCareHelp\patient_status_rules.htm" />
-    <Content Include="IQCareHelp\patient_transfer.htm" />
-    <Content Include="IQCareHelp\pediatric_pharmacy_ar_br.htm" />
-    <Content Include="IQCareHelp\pharmacyformcolumns.png" />
-    <Content Include="IQCareHelp\placeholder_field.htm" />
-    <Content Include="IQCareHelp\pmcostflow.png" />
-    <Content Include="IQCareHelp\pmtctadultpharmacy.png" />
-    <Content Include="IQCareHelp\pmtct_fields.htm" />
-    <Content Include="IQCareHelp\pmtct_form_naming_convention.htm" />
-    <Content Include="IQCareHelp\pmtct_form_set.htm" />
-    <Content Include="IQCareHelp\pre-defined_fields.htm" />
-    <Content Include="IQCareHelp\predefinedcustomlists.htm" />
-    <Content Include="IQCareHelp\predefinedreports.htm" />
-    <Content Include="IQCareHelp\prepsteps.htm" />
-    <Content Include="IQCareHelp\prepsteps.png" />
-    <Content Include="IQCareHelp\print.gif" />
-    <Content Include="IQCareHelp\print_d.gif" />
-    <Content Include="IQCareHelp\print_h.gif" />
-    <Content Include="IQCareHelp\prior_art_hiv_care2.htm" />
-    <Content Include="IQCareHelp\prior_art_hiv_care_br.htm" />
-    <Content Include="IQCareHelp\product_configurationfacility_set_up.htm" />
-    <Content Include="IQCareHelp\program_management_overview.htm" />
-    <Content Include="IQCareHelp\publish_forms.htm" />
-    <Content Include="IQCareHelp\qbcreate-iqcareexample.png" />
-    <Content Include="IQCareHelp\qbcreate-iqcareexample1.png" />
-    <Content Include="IQCareHelp\qbdesignsections.png" />
-    <Content Include="IQCareHelp\qbnavigation.png" />
-    <Content Include="IQCareHelp\qbqueryexample.png" />
-    <Content Include="IQCareHelp\qbqueryresults.png" />
-    <Content Include="IQCareHelp\qbremovelink.png" />
-    <Content Include="IQCareHelp\qbresults.png" />
-    <Content Include="IQCareHelp\qbruniniqcare.png" />
-    <Content Include="IQCareHelp\qbsaveaddcategory.png" />
-    <Content Include="IQCareHelp\qbsaveaddreportname.png" />
-    <Content Include="IQCareHelp\qbsaveselectcategory.png" />
-    <Content Include="IQCareHelp\quality_assurance.htm" />
-    <Content Include="IQCareHelp\query_builder_navigation.htm" />
-    <Content Include="IQCareHelp\query_builder_reports.htm" />
-    <Content Include="IQCareHelp\reactivatepatient.png" />
-    <Content Include="IQCareHelp\reactivating_a_patient.htm" />
-    <Content Include="IQCareHelp\refresh_caches.htm" />
-    <Content Include="IQCareHelp\refresh_reporting_tables.htm" />
-    <Content Include="IQCareHelp\refresh_system_cache.htm" />
-    <Content Include="IQCareHelp\registrationaddsectionfields.png" />
-    <Content Include="IQCareHelp\registrationform.png" />
-    <Content Include="IQCareHelp\registrationmanageform.png" />
-    <Content Include="IQCareHelp\registrationpredefinedfields.png" />
-    <Content Include="IQCareHelp\registration_link.htm" />
-    <Content Include="IQCareHelp\report_on_custom_fields.htm" />
-    <Content Include="IQCareHelp\report_on_laboratory_results.htm" />
-    <Content Include="IQCareHelp\requiredfields.png" />
-    <Content Include="IQCareHelp\required_fields.htm" />
-    <Content Include="IQCareHelp\restore_a_database.htm" />
-    <Content Include="IQCareHelp\restricted_and_unrestricted_lists.htm" />
-    <Content Include="IQCareHelp\return_drugs.htm" />
-    <Content Include="IQCareHelp\save_and_retrieve_queries.htm" />
-    <Content Include="IQCareHelp\scheduler.htm" />
-    <Content Include="IQCareHelp\schedulerupdateprocess.htm" />
-    <Content Include="IQCareHelp\scheduler_appointment_views.htm" />
-    <Content Include="IQCareHelp\scm-astockaddstock.png" />
-    <Content Include="IQCareHelp\scm-astockaddstockresult.png" />
-    <Content Include="IQCareHelp\scm-astockchecked.png" />
-    <Content Include="IQCareHelp\scm-astocknotchecked.png" />
-    <Content Include="IQCareHelp\scm-astocksubtract.png" />
-    <Content Include="IQCareHelp\scm-astocksubtractresult.png" />
-    <Content Include="IQCareHelp\scm-budget-donorfunding.png" />
-    <Content Include="IQCareHelp\scm-budget-fiscalyear.png" />
-    <Content Include="IQCareHelp\scm-budget-navigation.png" />
-    <Content Include="IQCareHelp\scm-budgetgrid.png" />
-    <Content Include="IQCareHelp\scm-budgetgridfilled.png" />
-    <Content Include="IQCareHelp\scm-budgetview.png" />
-    <Content Include="IQCareHelp\scm-dd-arttreatmentsubwindow.png" />
-    <Content Include="IQCareHelp\scm-dd-dispensedrugsnav.png" />
-    <Content Include="IQCareHelp\scm-dd-enterqtydispensed.png" />
-    <Content Include="IQCareHelp\scm-dd-findpatientempty.png" />
-    <Content Include="IQCareHelp\scm-dd-findpatientfilled.png" />
-    <Content Include="IQCareHelp\scm-dd-patientprofilereport.png" />
-    <Content Include="IQCareHelp\scm-dd-patientselected.png" />
-    <Content Include="IQCareHelp\scm-dd-pharmacynotesreport.png" />
-    <Content Include="IQCareHelp\scm-dd-qtydispensedgtrprescribed.png" />
-    <Content Include="IQCareHelp\scm-dd-qtynotavailable.png" />
-    <Content Include="IQCareHelp\scm-dd-returndrugs.png" />
-    <Content Include="IQCareHelp\scm-dd-returndrugsqtyleft.png" />
-    <Content Include="IQCareHelp\scm-dd-selectbatch.png" />
-    <Content Include="IQCareHelp\scm-dd-selectdrugtodispense.png" />
-    <Content Include="IQCareHelp\scm-dd-selectreturn.png" />
-    <Content Include="IQCareHelp\scm-dd-selectstore.png" />
-    <Content Include="IQCareHelp\scm-dd-submitsave.png" />
-    <Content Include="IQCareHelp\scm-dd-unfilledorder.png" />
-    <Content Include="IQCareHelp\scm-dd-viewexistingorder.png" />
-    <Content Include="IQCareHelp\scm-debitnote.png" />
-    <Content Include="IQCareHelp\scm-debitnotehistory.png" />
-    <Content Include="IQCareHelp\scm-debitnotelisting.png" />
-    <Content Include="IQCareHelp\scm-debitnotephp.png" />
-    <Content Include="IQCareHelp\scm-disposelisting.png" />
-    <Content Include="IQCareHelp\scm-grn-2batches.png" />
-    <Content Include="IQCareHelp\scm-grn-grnlist.png" />
-    <Content Include="IQCareHelp\scm-grn-grnlistpartial.png" />
-    <Content Include="IQCareHelp\scm-grn-open.png" />
-    <Content Include="IQCareHelp\scm-grn-partialorder.png" />
-    <Content Include="IQCareHelp\scm-grn-polist.png" />
-    <Content Include="IQCareHelp\scm-grn-polistpartial.png" />
-    <Content Include="IQCareHelp\scm-it-enteritems.png" />
-    <Content Include="IQCareHelp\scm-mladjustmentreason.png" />
-    <Content Include="IQCareHelp\scm-mlbatchnumber.png" />
-    <Content Include="IQCareHelp\scm-mlcostallocation.png" />
-    <Content Include="IQCareHelp\scm-mldonor.png" />
-    <Content Include="IQCareHelp\scm-mldonorprglnk.png" />
-    <Content Include="IQCareHelp\scm-mldrugtype.png" />
-    <Content Include="IQCareHelp\scm-mlitemconfiguration.png" />
-    <Content Include="IQCareHelp\scm-mlitemsubtypelnk.png" />
-    <Content Include="IQCareHelp\scm-mlitemtype.png" />
-    <Content Include="IQCareHelp\scm-mllabtest.png" />
-    <Content Include="IQCareHelp\scm-mllabtestlocation.png" />
-    <Content Include="IQCareHelp\scm-mlmandetail.png" />
-    <Content Include="IQCareHelp\scm-mlprogitemlnk.png" />
-    <Content Include="IQCareHelp\scm-mlprogram.png" />
-    <Content Include="IQCareHelp\scm-mlpurdisunits.png" />
-    <Content Include="IQCareHelp\scm-mlreturnreason.png" />
-    <Content Include="IQCareHelp\scm-mlstoredestlnk.png" />
-    <Content Include="IQCareHelp\scm-mlstoredetail.png" />
-    <Content Include="IQCareHelp\scm-mlstoreitemlnk.png" />
-    <Content Include="IQCareHelp\scm-mlsupplier.png" />
-    <Content Include="IQCareHelp\scm-mlsupplieritemlnk.png" />
-    <Content Include="IQCareHelp\scm-mluserlnk.png" />
-    <Content Include="IQCareHelp\scm-ostockentered.png" />
-    <Content Include="IQCareHelp\scm-ostockfilledin.png" />
-    <Content Include="IQCareHelp\scm-ostockstart.png" />
-    <Content Include="IQCareHelp\scm-po-approved.png" />
-    <Content Include="IQCareHelp\scm-po-enteritems.png" />
-    <Content Include="IQCareHelp\scm-po-masterlistexplained.png" />
-    <Content Include="IQCareHelp\scm-po-purchaseorderlist.png" />
-    <Content Include="IQCareHelp\scm-po-purchaseorderlist2.png" />
-    <Content Include="IQCareHelp\scm-po-purchaseorderlistrejected.png" />
-    <Content Include="IQCareHelp\scm-po-qtyorderedexplained.png" />
-    <Content Include="IQCareHelp\scm-po-readyforapproval.png" />
-    <Content Include="IQCareHelp\scm-po-rejectchecked.png" />
-    <Content Include="IQCareHelp\scm-po-savepo.png" />
-    <Content Include="IQCareHelp\scm-po-selectstore.png" />
-    <Content Include="IQCareHelp\scm-po-setrejectcheckmark.png" />
-    <Content Include="IQCareHelp\scm-pvisit-empty.png" />
-    <Content Include="IQCareHelp\scm-pvisit-filled.png" />
-    <Content Include="IQCareHelp\scmconfigurescmtawid.png" />
-    <Content Include="IQCareHelp\scmconfiguretaandfacilitysetup.png" />
-    <Content Include="IQCareHelp\scmconfiguretaiqmgt.png" />
-    <Content Include="IQCareHelp\scmmasterlistwindow.png" />
-    <Content Include="IQCareHelp\scmnavigation.png" />
-    <Content Include="IQCareHelp\scm_and_paperless_mo.htm" />
-    <Content Include="IQCareHelp\scm_overview.htm" />
-    <Content Include="IQCareHelp\scm_pm_module.htm" />
-    <Content Include="IQCareHelp\selecttechnicalareafields.png" />
-    <Content Include="IQCareHelp\selecttechnicalareaselectlist.png" />
-    <Content Include="IQCareHelp\select_technical_area.htm" />
-    <Content Include="IQCareHelp\settings.js" />
-    <Content Include="IQCareHelp\setting_the_e-signature.htm" />
-    <Content Include="IQCareHelp\set_form_display_order.htm" />
-    <Content Include="IQCareHelp\sortable.js" />
-    <Content Include="IQCareHelp\spacer.gif" />
-    <Content Include="IQCareHelp\specialformslinking.png" />
-    <Content Include="IQCareHelp\specialformslinkingmenu.png" />
-    <Content Include="IQCareHelp\special_forms_linking.htm" />
-    <Content Include="IQCareHelp\special_privileges_feature.htm" />
-    <Content Include="IQCareHelp\static_forms_data_dicationarie.htm" />
-    <Content Include="IQCareHelp\tab_bottom.gif" />
-    <Content Include="IQCareHelp\tab_top.gif" />
-    <Content Include="IQCareHelp\tanzania_nacp.htm" />
-    <Content Include="IQCareHelp\tb_data.htm" />
-    <Content Include="IQCareHelp\technical_support.htm" />
-    <Content Include="IQCareHelp\the_facility_home_page.htm" />
-    <Content Include="IQCareHelp\the_patient_home_page.htm" />
-    <Content Include="IQCareHelp\the_system_admin_user.htm" />
-    <Content Include="IQCareHelp\toc.gif" />
-    <Content Include="IQCareHelp\toc_closedbook.gif" />
-    <Content Include="IQCareHelp\toc_openbook.gif" />
-    <Content Include="IQCareHelp\toc_topic.gif" />
-    <Content Include="IQCareHelp\toggle.gif" />
-    <Content Include="IQCareHelp\toggle_d.gif" />
-    <Content Include="IQCareHelp\toggle_h.gif" />
-    <Content Include="IQCareHelp\togtoc_hide.gif" />
-    <Content Include="IQCareHelp\togtoc_show.gif" />
-    <Content Include="IQCareHelp\track1pmtctreport.png" />
-    <Content Include="IQCareHelp\track1pmtcttimeselect.png" />
-    <Content Include="IQCareHelp\track1report.png" />
-    <Content Include="IQCareHelp\track1timeselect.png" />
-    <Content Include="IQCareHelp\track_1_0.htm" />
-    <Content Include="IQCareHelp\track_1_0_exposed_infants.htm" />
-    <Content Include="IQCareHelp\track_1_0_pmtct.htm" />
-    <Content Include="IQCareHelp\transferringpatientswithnationalpatientnumbers.htm" />
-    <Content Include="IQCareHelp\transfer_a_patient.htm" />
-    <Content Include="IQCareHelp\turning_on_scm_pm.htm" />
-    <Content Include="IQCareHelp\uganda_blue_card_data_dictrion.htm" />
-    <Content Include="IQCareHelp\uganda_blue_card_form_set.htm" />
-    <Content Include="IQCareHelp\ugbcartcare.png" />
-    <Content Include="IQCareHelp\ugbcexposedinfant.png" />
-    <Content Include="IQCareHelp\ugbchivcareencounter.png" />
-    <Content Include="IQCareHelp\ugbcpriorart.png" />
-    <Content Include="IQCareHelp\universal_registration_form.htm" />
-    <Content Include="IQCareHelp\universal_registration_form2.htm" />
-    <Content Include="IQCareHelp\updateunrestrictedlist.htm" />
-    <Content Include="IQCareHelp\update_an_entry_in_a_restricted_custom_list.htm" />
-    <Content Include="IQCareHelp\update_business_rules.htm" />
-    <Content Include="IQCareHelp\update_conditional_fields.htm" />
-    <Content Include="IQCareHelp\update_custom_fields.htm" />
-    <Content Include="IQCareHelp\useesigexample2.png" />
-    <Content Include="IQCareHelp\useradmininactivateuser.png" />
-    <Content Include="IQCareHelp\useresiglogin.png" />
-    <Content Include="IQCareHelp\usergroupadminfb.png" />
-    <Content Include="IQCareHelp\user_administration.htm" />
-    <Content Include="IQCareHelp\user_group_administration.htm" />
-    <Content Include="IQCareHelp\user_passwords.htm" />
-    <Content Include="IQCareHelp\using_the_iqcare_picker_tool.htm" />
-    <Content Include="IQCareHelp\viewexistingformscheckmark.png" />
-    <Content Include="IQCareHelp\viewexistingformsdisplay.png" />
-    <Content Include="IQCareHelp\viewexistingformswarning.png" />
-    <Content Include="IQCareHelp\viewexistingformsxmark.png" />
-    <Content Include="IQCareHelp\view_existing_forms.htm" />
-    <Content Include="IQCareHelp\view_patient_level_expenditure.htm" />
-    <Content Include="IQCareHelp\ZeroClipboard.js" />
-    <Content Include="IQCareHelp\ZeroClipboard.swf" />
-    <Content Include="IQCareHelp\zoom_index.js" />
-    <Content Include="IQCareHelp\zoom_pageinfo.js" />
-    <Content Include="IQCareHelp\zoom_search.js" />
-    <Content Include="IQCareHelp\_img116_zoom45.png" />
-    <Content Include="IQCareHelp\_img121_zoom73.png" />
-    <Content Include="IQCareHelp\_img122_zoom55.png" />
-    <Content Include="IQCareHelp\_img123_zoom53.png" />
-    <Content Include="IQCareHelp\_img124_zoom53.png" />
-    <Content Include="IQCareHelp\_img125_zoom53.png" />
-    <Content Include="IQCareHelp\_img126_zoom54.png" />
-    <Content Include="IQCareHelp\_img127_zoom46.png" />
-    <Content Include="IQCareHelp\_img128_zoom62.png" />
-    <Content Include="IQCareHelp\_img129_zoom62.png" />
-    <Content Include="IQCareHelp\_img130_zoom62.png" />
-    <Content Include="IQCareHelp\_img131_zoom54.png" />
-    <Content Include="IQCareHelp\_img132_zoom54.png" />
-    <Content Include="IQCareHelp\_img133_zoom60.png" />
-    <Content Include="IQCareHelp\_img134_zoom73.png" />
-    <Content Include="IQCareHelp\_img135_zoom56.png" />
-    <Content Include="IQCareHelp\_img136_zoom54.png" />
-    <Content Include="IQCareHelp\_img137_zoom54.png" />
-    <Content Include="IQCareHelp\_img138_zoom54.png" />
-    <Content Include="IQCareHelp\_img139_zoom54.png" />
-    <Content Include="IQCareHelp\_img140_zoom54.png" />
-    <Content Include="IQCareHelp\_img141_zoom54.png" />
-    <Content Include="IQCareHelp\_img142_zoom54.png" />
-    <Content Include="IQCareHelp\_img143_zoom54.png" />
-    <Content Include="IQCareHelp\_img144_zoom54.png" />
-    <Content Include="IQCareHelp\_img145_zoom54.png" />
-    <Content Include="IQCareHelp\_img146_zoom54.png" />
-    <Content Include="IQCareHelp\_img148_zoom54.png" />
-    <Content Include="IQCareHelp\_img149_zoom54.png" />
-    <Content Include="IQCareHelp\_img154_zoom70.png" />
-    <Content Include="IQCareHelp\_img155_zoom54.png" />
-    <Content Include="IQCareHelp\_img156_zoom90.png" />
-    <Content Include="IQCareHelp\_img157_zoom69.png" />
-    <Content Include="IQCareHelp\_img158_zoom52.png" />
-    <Content Include="IQCareHelp\_img160_zoom73.png" />
-    <Content Include="IQCareHelp\_img161_zoom73.png" />
-    <Content Include="IQCareHelp\_img16_zoom55.png" />
-    <Content Include="IQCareHelp\_img17_zoom55.png" />
-    <Content Include="IQCareHelp\_img18_zoom56.png" />
-    <Content Include="IQCareHelp\_img19_zoom55.png" />
-    <Content Include="IQCareHelp\_img20_zoom55.png" />
-    <Content Include="IQCareHelp\_img21_zoom55.png" />
-    <Content Include="IQCareHelp\_img22_zoom55.png" />
-    <Content Include="IQCareHelp\_img23_zoom55.png" />
-    <Content Include="IQCareHelp\_img24_zoom56.png" />
-    <Content Include="IQCareHelp\_img25_zoom69.png" />
-    <Content Include="IQCareHelp\_img2_zoom69.png" />
-    <Content Include="IQCareHelp\_img334_zoom60.png" />
-    <Content Include="IQCareHelp\_img335_zoom60.png" />
-    <Content Include="IQCareHelp\_img336_zoom60.png" />
-    <Content Include="IQCareHelp\_img337.gif" />
-    <Content Include="IQCareHelp\_img349_zoom70.png" />
-    <Content Include="IQCareHelp\_img351.gif" />
-    <Content Include="IQCareHelp\_img46_zoom73.png" />
-    <Content Include="IQCareHelp\_img47_zoom73.png" />
-    <Content Include="IQCareHelp\_img48_zoom73.png" />
-    <Content Include="IQCareHelp\_img49_zoom73.png" />
-    <Content Include="IQCareHelp\_img50_zoom73.png" />
-    <Content Include="IQCareHelp\_img55_zoom73.png" />
-    <Content Include="IQCareHelp\_img56_zoom73.png" />
-    <Content Include="IQCareHelp\_img57_zoom73.png" />
-    <Content Include="IQCareHelp\_img58_zoom54.png" />
-    <Content Include="IQCareHelp\_img59_zoom56.png" />
-    <Content Include="IQCareHelp\_img60_zoom54.png" />
-    <Content Include="IQCareHelp\_img61_zoom56.png" />
-    <Content Include="IQCareHelp\_img63_zoom56.png" />
-    <Content Include="IQCareHelp\_img64_zoom80.png" />
-    <Content Include="IQCareHelp\_img65_zoom56.png" />
-    <Content Include="IQCareHelp\_img66_zoom55.png" />
-    <Content Include="IQCareHelp\_img67_zoom55.png" />
-    <Content Include="IQCareHelp\_img69_zoom55.png" />
-    <Content Include="IQCareHelp\_img70_zoom62.png" />
-    <Content Include="IQCareHelp\_img70_zoom72.png" />
-    <Content Include="IQCareHelp\_img71_zoom54.png" />
-    <Content Include="IQCareHelp\_img72_zoom55.png" />
-    <Content Include="IQCareHelp\_img79_zoom56.png" />
-    <Content Include="IQCareHelp\_img7_zoom73.png" />
-    <Content Include="IQCareHelp\_img80_zoom55.png" />
-    <Content Include="IQCareHelp\_img81_zoom52.png" />
-    <Content Include="IQCareHelp\_img82_zoom73.png" />
-    <Content Include="IQCareHelp\_img87_zoom70.png" />
-    <Content Include="IQCareHelp\_img88_zoom73.png" />
-    <Content Include="IQCareHelp\_img89_zoom64.png" />
-    <Content Include="IQCareHelp\_img90_zoom73.png" />
     <Content Include="IQCareMessage.xml" />
     <Content Include="IQTools\frmIQToolsQuery.aspx" />
     <Content Include="IQTools\frmIQToolsReports.aspx" />
@@ -3922,14 +3546,9 @@
     <Content Include="PatientIdentifiers.ascx" />
     <Content Include="PatientImages\nouser.jpg" />
     <Content Include="Pharmacy\cal_icon.gif" />
-    <Content Include="Pharmacy\frmAdultPharmacyList.aspx" />
     <Content Include="Pharmacy\frmDrugSelector.aspx" />
     <Content Include="Pharmacy\frmPharmacyForm.aspx" />
     <Content Include="Pharmacy\frmpharmacyselector.aspx" />
-    <Content Include="Pharmacy\frmPharmacy_Adult.aspx" />
-    <Content Include="Pharmacy\frmPharmacy_CTC.aspx" />
-    <Content Include="Pharmacy\frmPharmacy_Custom.aspx" />
-    <Content Include="Pharmacy\frmPharmacy_Paediatric.aspx" />
     <Content Include="Pharmacy\frmprintdialog.aspx" />
     <Content Include="Pharmacy\usrctrlprintpharmacy.ascx" />
     <Content Include="Reports\frmClinical_PatientSummary.aspx" />
@@ -4044,7 +3663,10 @@
     <Content Include="Touch\Custom Forms\keyb\demo\calculator.css" />
     <Content Include="Touch\Custom Forms\keyb\demo\calculator.js" />
     <Content Include="Touch\Custom Forms\keyb\demo\demo.css" />
-    <None Include="IQCareHelp\Updating machine permissions for report display.docx" />
+    <None Include="ReferenceDocuments\Guidelines for Antiretroviral Drug Therapy in Kenya.pdf" />
+    <None Include="ReferenceDocuments\Kenya clinical National Manual for ART providers.pdf" />
+    <None Include="ReferenceDocuments\MOH731.pdf" />
+    <None Include="ReferenceDocuments\Rapid Advice Booklet.pdf" />
     <None Include="Touch\Custom Forms\keyb\demo\demo.js.old" />
     <Content Include="Touch\Custom Forms\keyb\demo\jquery.chili-2.2.js" />
     <Content Include="Touch\Custom Forms\keyb\demo\keyboard.png" />
@@ -4530,14 +4152,11 @@
     <Content Include="XMLFiles\TBStatusbyAgeandSex.xml" />
     <Content Include="XMLFiles\TestPage.html" />
     <Content Include="XMLFiles\Village.xml" />
+    <None Include="XMLFiles\QueryBuilderReports.con" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminForms\AdminHeaderFooter.master" />
     <None Include="App_Browsers\safari.browser.exclude" />
-    <None Include="Downloads\InstallationGuideFeb2009.pdf" />
-    <None Include="Downloads\IQCareManagement&amp;TroubleShooting_25102007.pdf" />
-    <None Include="Downloads\SQLExpressAdministration_25102007.pdf" />
-    <None Include="Downloads\UserPrivilegesandaccessingIQCare_25102007.pdf" />
     <Content Include="FacilityHeaderFooter.master" />
     <None Include="Incl\formtemplate_bottom.incl" />
     <None Include="Incl\formtemplate_top.incl" />
@@ -4601,6 +4220,58 @@
     <None Include="XMLFiles\LabMasters.con" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PharmacyDispense\rptBinCard.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptBinCard.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\BillingSalesSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BillingSalesSummary1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\CDCReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CDCReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\DailyCashierSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DailyCashierSummary2.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\DailyCollectionSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DailyCollectionSummary1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\DailyDepartmentalCollection.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DailyDepartmentalCollection1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\DepartmentalCashCollection.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DepartmentalCashCollection2.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\FacilityMonthlyCollection.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>FacilityMonthlyCollection2.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\OtherFacilityMonthlyIncome.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OtherFacilityMonthlyIncome1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\rptBillingReciept.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptBillingReciept1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\rptBillingRecieptThermal.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptBillingRecieptThermal1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\rptInvoice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptInvoice2.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Billing\rptRevenueSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptRevenueSummary3.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\CDCReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CDCReport.cs</LastGenOutput>
@@ -4822,8 +4493,19 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="Downloads\" />
     <Folder Include="test\" />
     <Folder Include="Touch\Report\ReportXML\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Application.Presentation\Application.Presentation.csproj">
+      <Project>{2E7534C9-101D-4B6D-8E57-056101E4D54D}</Project>
+      <Name>Application.Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQCareReport\IQCareCustomReportConfig.csproj">
+      <Project>{9F4331B2-E623-48EC-AD04-7F7CFD8195E1}</Project>
+      <Name>IQCareCustomReportConfig</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -4833,7 +4515,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>58789</DevelopmentServerPort>
+          <DevelopmentServerPort>49424</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

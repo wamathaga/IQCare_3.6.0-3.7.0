@@ -11,7 +11,8 @@ using System.Web.UI.HtmlControls;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using Excel = Microsoft.Office.Interop.Owc11;
+//using Excel = Microsoft.Office.Interop.Owc11;
+using Excel = Microsoft.Office.Interop.Excel;
 using Interface.Security;
 using System.Configuration;
 using Interface.Laboratory;
@@ -424,10 +425,8 @@ namespace Application.Presentation
 
         public void ExportToExcel(DataTable theDT, string theFilePath, string theTemplatePath)
         {
-
             //IQCareUtils theUtils = new IQCareUtils();
             //Excel.SpreadsheetClass theApp = new Microsoft.Office.Interop.Owc11.SpreadsheetClass();
-
             //for (int i = 0; i < theDT.Columns.Count; i++)
             //{
             //    theApp.ActiveSheet.Cells["1", i + 1] = theDT.Columns[i].ColumnName.ToString();
@@ -455,14 +454,39 @@ namespace Application.Presentation
 
         public void ExportToExcel_Windows(DataTable theDT, string theFilePath, string theTemplatePath)
         {
+            Microsoft.Office.Interop.Excel.Application ExcelApp =
+            new Microsoft.Office.Interop.Excel.Application();
+            ExcelApp.Application.Workbooks.Add(Type.Missing);
+
+            // Change properties of the Workbook   
+            ExcelApp.Columns.ColumnWidth = 20;
+            ExcelApp.Cells.ClearContents();
+            // Storing header part in Excel  
+            for (int i = 1; i < theDT.Columns.Count + 1; i++)
+            {
+                ExcelApp.Cells[1, i] = theDT.Columns[i - 1].ColumnName;
+            }
+            // Storing Each row and column value to excel sheet  
+            for (int i = 0; i < theDT.Rows.Count; i++)
+            {
+                for (int j = 0; j < theDT.Columns.Count; j++)
+                {
+                    ExcelApp.Cells[i + 2, j + 1] = theDT.Rows[i][j].ToString();
+                }
+            }
+            ExcelApp.Visible = true;
+            ExcelApp.ActiveWorkbook.SaveCopyAs(@"" + theFilePath + "");
+            ExcelApp.ActiveWorkbook.Saved = true;
+            Marshal.FinalReleaseComObject(ExcelApp);  
+
             //if (theDT.Rows.Count >= 1)
             //{
             //    IQCareUtils theUtils = new IQCareUtils();
-            //    Excel.SpreadsheetClass theApp = new Excel.SpreadsheetClass();
+            //    Excel.Spreadsheet theApp = new Excel.Spreadsheet();
             //    for (int i = 0; i < theDT.Columns.Count; i++)
             //    {
             //        theApp.ActiveSheet.Cells["1", i + 1] = theDT.Columns[i].ColumnName.ToString();
-            //        Excel.Range theRange = (Excel.Range) theApp.ActiveSheet.Cells["1", i + 1];
+            //        Excel.Range theRange = (Excel.Range)theApp.ActiveSheet.Cells["1", i + 1];
             //        theRange.EntireRow.Font.set_Bold(true);
             //        theRange.EntireRow.set_ColumnWidth(20);
             //        theRange.BorderAround("1", Microsoft.Office.Interop.Owc11.XlBorderWeight.xlThin,
@@ -473,16 +497,14 @@ namespace Application.Presentation
             //        for (int j = 0; j < theDT.Columns.Count; j++)
             //        {
             //            theApp.ActiveSheet.Cells[(i + 2), (j + 1)] = theDT.Rows[i][j].ToString();
-            //            Excel.Range theRange = (Excel.Range) theApp.ActiveSheet.Cells[(i + 2), (j + 1)];
-            //            // theRange.ClearFormats();
+            //            Excel.Range theRange = (Excel.Range)theApp.ActiveSheet.Cells[(i + 2), (j + 1)];
+            //             theRange.ClearFormats();
             //            theRange.BorderAround("1", Microsoft.Office.Interop.Owc11.XlBorderWeight.xlThin,
             //                                  Microsoft.Office.Interop.Owc11.XlColorIndex.xlColorIndexNone, "Black");
             //            theRange.set_VerticalAlignment(Microsoft.Office.Interop.Owc11.XlVAlign.xlVAlignBottom);
             //            theRange.set_HorizontalAlignment(Microsoft.Office.Interop.Owc11.XlHAlign.xlHAlignLeft);
-
             //        }
             //    }
-
             //    theApp.Export(theFilePath,
             //                  Microsoft.Office.Interop.Owc11.SheetExportActionEnum.ssExportActionOpenInExcel,
             //                  Microsoft.Office.Interop.Owc11.SheetExportFormat.ssExportXMLSpreadsheet);
@@ -608,11 +630,13 @@ namespace Application.Presentation
                     string drugMaster = xmlFilesPath + "DrugMasters.con";
                     string labMaster = xmlFilesPath + "LabMasters.con";
                     string frequency = xmlFilesPath + "Frequency.xml";
+                    string Querybuilder = xmlFilesPath + "QueryBuilderReports.con";
 
                     System.IO.FileInfo theFileInfo1 = new System.IO.FileInfo(allMaster);
                     System.IO.FileInfo theFileInfo2 = new System.IO.FileInfo(drugMaster);
                     System.IO.FileInfo theFileInfo3 = new System.IO.FileInfo(labMaster);
                     System.IO.FileInfo theFileInfo4 = new System.IO.FileInfo(frequency);
+                    System.IO.FileInfo theFileInfo5 = new System.IO.FileInfo(Querybuilder);
 
                     if (isGenerate)
                     {
@@ -638,11 +662,13 @@ namespace Application.Presentation
             string drugMaster = path + "DrugMasters.con";
             string labMaster = path + "LabMasters.con";
             string frequency = path + "Frequency.xml";
+            string Querybuilder = path + "QueryBuilderReports.con";
 
             System.IO.FileInfo theFileInfo1 = new System.IO.FileInfo(allMaster);
             System.IO.FileInfo theFileInfo2 = new System.IO.FileInfo(drugMaster);
             System.IO.FileInfo theFileInfo3 = new System.IO.FileInfo(labMaster);
             System.IO.FileInfo theFileInfo4 = new System.IO.FileInfo(frequency);
+            System.IO.FileInfo theFileInfo5 = new System.IO.FileInfo(Querybuilder);
 
             if (theFileInfo1.Exists)
                 theFileInfo1.Delete();
@@ -652,6 +678,8 @@ namespace Application.Presentation
                 theFileInfo3.Delete();
             if (theFileInfo4.Exists)
                 theFileInfo4.Delete();
+            if (theFileInfo5.Exists)
+                theFileInfo5.Delete();
 
             IIQCareSystem theCacheManager = (IIQCareSystem)ObjectFactory.CreateInstance("BusinessProcess.Security.BIQCareSystem,BusinessProcess.Security");
             DataSet theMainDS = theCacheManager.GetSystemCache();
@@ -731,6 +759,11 @@ namespace Application.Presentation
             WriteXMLDS.Tables.Clear();
             WriteXMLDS.Tables.Add(theMainDS.Tables["Mst_Frequency"].Copy());
             WriteXMLDS.WriteXml(frequency, XmlWriteMode.WriteSchema);
+
+            WriteXMLDS.Tables.Clear();
+            WriteXMLDS = new DataSet("QBReportList");
+            WriteXMLDS.Tables.Add(theMainDS.Tables["QueryBuilderReports"].Copy());
+            WriteXMLDS.WriteXml(Querybuilder, XmlWriteMode.WriteSchema);
         }
 
         #endregion

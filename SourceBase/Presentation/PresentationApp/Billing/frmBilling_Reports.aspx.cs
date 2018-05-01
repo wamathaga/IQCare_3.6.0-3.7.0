@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace IQCare.Web.Billing
 {
-    public partial class frmBilling_Reports : LogPage
+    public partial class frmBilling_Reports : System.Web.UI.Page
     {
         ReportDocument rptDocument;
         /// <summary>

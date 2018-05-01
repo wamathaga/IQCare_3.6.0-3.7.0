@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-public partial class Error : LogPage
+public partial class Error : System.Web.UI.Page
 {
     /// <summary>
     /// Handles the Load event of the Page control.

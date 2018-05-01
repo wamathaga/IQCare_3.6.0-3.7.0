@@ -67,7 +67,7 @@ namespace BusinessProcess.FormBuilder
             }
         }
 
-        public int ImportForms(DataSet dsImportForms, int iUserId, int iCountryId, DataSet DSFormVer, int FacilityId)
+        public int ImportForms(DataSet dsImportForms, int iUserId, int iCountryId, DataSet DSFormVer,int FacilityId)
         {
             try
             {

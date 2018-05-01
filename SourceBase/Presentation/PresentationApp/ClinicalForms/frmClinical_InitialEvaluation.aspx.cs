@@ -15,6 +15,7 @@ using Application.Common;
 using Application.Presentation;
 using Interface.Security;
 using Interface.Administration;
+using System.Collections.Generic;
 #endregion
 
 public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHandler
@@ -132,7 +133,8 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
                     if (theDV.Count > 0)
                         theDT = theUtils.CreateTableFromDataView(theDV);
                 }
-                BindManager.BindCombo(ddinterviewer, theDT, "EmployeeName", "EmployeeId");
+                //BindManager.BindCombo(ddinterviewer, theDT, "EmployeeName", "EmployeeId"); Bugid 2707
+                BindUserDropdown(ddinterviewer, string.Empty);
             }
         }
     }
@@ -1205,7 +1207,7 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
         {
             IInitialEval IEAppManager;
             IEAppManager = (IInitialEval)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BInitialEval, BusinessProcess.Clinical");
-            DataSet theDSApp = IEAppManager.GetAppointment(PatientId, locationid, txtappDate.Value, Convert.ToInt32(ddappReason.SelectedValue));
+            DataSet theDSApp = IEAppManager.GetAppointment(PatientId, locationid, Convert.ToDateTime(txtappDate.Value), Convert.ToInt32(ddappReason.SelectedValue));
             if (Convert.ToInt32(theDSApp.Tables[0].Rows[0]["ExistFlag"]) == 1)
             {
                 if (theDSApp.Tables[1].Rows.Count > 0)
@@ -1622,7 +1624,8 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
                         if (theDV.Count > 0)
                             theDTEmp = theUtils.CreateTableFromDataView(theDV);
                     }
-                    BindManager.BindCombo(ddinterviewer, theDTEmp, "EmployeeName", "EmployeeId");
+                    //BindManager.BindCombo(ddinterviewer, theDTEmp, "EmployeeName", "EmployeeId"); //Bug id 2707
+                    BindUserDropdown(ddinterviewer, string.Empty);
                     theDVEmp.Dispose();
                 }
             }
@@ -1864,7 +1867,8 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
                         if (theDV.Count > 0)
                             theDTEmp = theUtils.CreateTableFromDataView(theDV);
                     }
-                    BindManager.BindCombo(ddinterviewer, theDTEmp, "EmployeeName", "EmployeeId");
+                    //BindManager.BindCombo(ddinterviewer, theDTEmp, "EmployeeName", "EmployeeId"); BugID 2707
+                    BindUserDropdown(ddinterviewer, string.Empty);
                     theDVEmp.Dispose();
                 }
             }
@@ -1915,6 +1919,19 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
     }
     #endregion
 
+    private void BindUserDropdown(DropDownList DropDownID, String userId)
+    {
+        Dictionary<int, string> userList = new Dictionary<int, string>();
+        CustomFieldClinical.BindUserDropDown(DropDownID, out userList);
+        if (!string.IsNullOrEmpty(userId))
+        {
+            if (userList.ContainsKey(Convert.ToInt32(userId)))
+            {
+                DropDownID.SelectedValue = userId;
+                //SecurityPerTabSignature = userId;
+            }
+        }
+    }
     public DataSet DataSet_IE()
     {
 
@@ -3175,11 +3192,14 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
                     }
                     if (((theDS1.Tables[4].Rows[0]["Weight"].ToString() != "") && (theDS1.Tables[4].Rows[0]["Weight"] != System.DBNull.Value)) || ((theDS1.Tables[4].Rows[0]["Height"].ToString() != "") && (theDS1.Tables[4].Rows[0]["Height"] != System.DBNull.Value)))
                     {
-                        decimal anotherWeight = Convert.ToDecimal(theDS1.Tables[4].Rows[0]["Weight"].ToString());
-                        decimal anotherHeight = Convert.ToDecimal(theDS1.Tables[4].Rows[0]["Height"].ToString());
-                        decimal anotherBMI = anotherWeight / ((anotherHeight / 100) * (anotherHeight / 100));
-                        anotherBMI = Math.Round(anotherBMI, 2);
-                        txtanotherbmi.Value = Convert.ToString(anotherBMI);
+                        decimal anotherWeight = string.IsNullOrEmpty(theDS1.Tables[4].Rows[0]["Weight"].ToString()) == false ? Convert.ToDecimal(theDS1.Tables[4].Rows[0]["Weight"].ToString()) : 0;
+                        decimal anotherHeight = string.IsNullOrEmpty(theDS1.Tables[4].Rows[0]["Height"].ToString()) == false ? Convert.ToDecimal(theDS1.Tables[4].Rows[0]["Height"].ToString()) : 0;
+                        if (anotherHeight > 0)
+                        {
+                            decimal anotherBMI = anotherWeight / ((anotherHeight / 100) * (anotherHeight / 100));
+                            anotherBMI = Math.Round(anotherBMI, 2);
+                            txtanotherbmi.Value = Convert.ToString(anotherBMI);
+                        }
                     }
 
 
@@ -3293,7 +3313,8 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
                 }
                 else
                 {
-                    BindDropdown("");
+                    //BindDropdown(""); Bug ID 2707....
+                    this.ddinterviewer.SelectedValue = theDS1.Tables[1].Rows[0]["EmployeeID"].ToString();
                 }
 
 
@@ -4329,9 +4350,18 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
         {
             if (Authentiaction.HasFunctionRight(ApplicationAccess.InitialEvaluation, FunctionAccess.View, (DataTable)Session["UserRight"]) == false)
             {
-                string theUrl = "";
-                theUrl = string.Format("{0}?sts={1}", "frmPatient_History.aspx", Session["HIVPatientStatus"].ToString());
-                Response.Redirect(theUrl);
+                //Privilages for Care End
+                if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
+                {
+                    btnsave.Enabled = true;
+                    btncomplete.Enabled = true;
+                }
+                else
+                {
+                    string theUrl = "";
+                    theUrl = string.Format("{0}?sts={1}", "frmPatient_History.aspx", Session["HIVPatientStatus"].ToString());
+                    Response.Redirect(theUrl);
+                }
             }
             else if (Authentiaction.HasFunctionRight(ApplicationAccess.InitialEvaluation, FunctionAccess.Update, (DataTable)Session["UserRight"]) == false)
             {
@@ -4346,7 +4376,7 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
             }
 
             //Privilages for Care End
-            if (Convert.ToString(Session["CareEndFlag"]) == "1")
+            if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
             {
                 btnsave.Enabled = true;
                 btncomplete.Enabled = true;
@@ -4482,7 +4512,7 @@ public partial class frmClinical_InitialEvaluation : BasePage, ICallbackEventHan
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
 
         //RTyagi.

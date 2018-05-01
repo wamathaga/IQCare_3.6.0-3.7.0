@@ -112,7 +112,7 @@ namespace BusinessProcess.Clinical
 
         #endregion
 
-        public DataSet SaveNonARTFollowUp(int PatientID, int PharmacyID, int LocationID, int VisitID, DataSet theDS, DataTable theDT, Hashtable theHT, string OrderedByDate, string DispensedByDate, Boolean Signature, int EmployeeID, int UserID, Boolean flag, Boolean theHIVAssocDisease, int DataQualityFlag, DataTable theCustomFieldData)
+        public DataSet SaveNonARTFollowUp(int PatientID, int PharmacyID, int LocationID, int VisitID, DataSet theDS, DataTable theDT, Hashtable theHT, DateTime OrderedByDate, DateTime DispensedByDate, Boolean Signature, int EmployeeID, int UserID, Boolean flag, Boolean theHIVAssocDisease, int DataQualityFlag, DataTable theCustomFieldData)
         {
             ClsObject NonARTManager = new ClsObject();
             int theAffectedRows = 0;
@@ -135,13 +135,13 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@Visit_pk", SqlDbType.Int, VisitID.ToString());
                 //
                 ClsUtility.AddParameters("@OrderedBy", SqlDbType.Int, theHT["OrderBy"].ToString());
-                ClsUtility.AddParameters("@OrderedByDate", SqlDbType.VarChar, OrderedByDate.ToString());
+                ClsUtility.AddParameters("@OrderedByDate", SqlDbType.VarChar, OrderedByDate.ToString("dd-MMM-yyyy"));
                 ClsUtility.AddParameters("@DispensedBy", SqlDbType.Int, theHT["DispensedBy"].ToString());
-                ClsUtility.AddParameters("@DispensedByDate", SqlDbType.VarChar, DispensedByDate.ToString());
+                ClsUtility.AddParameters("@DispensedByDate", SqlDbType.VarChar, DispensedByDate.ToString("dd-MMM-yyyy"));
                 ClsUtility.AddParameters("@Signature", SqlDbType.Bit, Signature.ToString());
                 ClsUtility.AddParameters("@EmployeeID", SqlDbType.Int, EmployeeID.ToString());
                 ClsUtility.AddParameters("@VisitType", SqlDbType.Int, theHT["VisitType"].ToString());
-                ClsUtility.AddParameters("@VisitDate", SqlDbType.VarChar, theHT["VisitDate"].ToString());
+                ClsUtility.AddParameters("@VisitDate", SqlDbType.VarChar, Convert.ToDateTime(theHT["VisitDate"]).ToString("dd-MMM-yyyy"));
                 ClsUtility.AddParameters("@Temp", SqlDbType.Decimal, theHT["physTemp"].ToString());
                 ClsUtility.AddParameters("@RR", SqlDbType.Decimal, theHT["physRR"].ToString());
                 ClsUtility.AddParameters("@HR", SqlDbType.Decimal, theHT["physHR"].ToString());
@@ -154,11 +154,11 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@WABStage", SqlDbType.Int, theHT["physWABStage"].ToString());
                 ClsUtility.AddParameters("@ClinicNotes", SqlDbType.VarChar, theHT["ClinicalNotes"].ToString());
                 ClsUtility.AddParameters("@Pregnant", SqlDbType.Int, theHT["Pregnant"].ToString());
-                ClsUtility.AddParameters("@EDDDate", SqlDbType.Int, theHT["EDDDate"].ToString());
+                ClsUtility.AddParameters("@EDDDate", SqlDbType.VarChar, theHT["EDDDate"].ToString());
                 ClsUtility.AddParameters("@Delivered", SqlDbType.Int, theHT["Delivered"].ToString());
-                ClsUtility.AddParameters("@DelDate", SqlDbType.Int, theHT["DelDate"].ToString());
+                ClsUtility.AddParameters("@DelDate", SqlDbType.VarChar, theHT["DelDate"].ToString());
              
-                ClsUtility.AddParameters("@LMP", SqlDbType.VarChar, theHT["LMP"].ToString());
+                ClsUtility.AddParameters("@LMP", SqlDbType.DateTime, theHT["LMP"].ToString());
                 ClsUtility.AddParameters("@userId", SqlDbType.Int, UserID.ToString());
                 ClsUtility.AddParameters("@OrderType", SqlDbType.Int, theHT["OrderType"].ToString());
                 ClsUtility.AddParameters("@DataQuality", SqlDbType.Int, DataQualityFlag.ToString());

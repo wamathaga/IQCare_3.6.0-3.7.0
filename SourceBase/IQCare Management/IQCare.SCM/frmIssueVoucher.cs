@@ -1106,7 +1106,7 @@ namespace IQCare.SCM
 
                             theDRowItem["MasterPurchaseprice"] = Convert.ToDecimal(dgwGRNItems.Rows[i].Cells["MasterPurchaseprice"].Value);
 
-                            theDRowItem["ExpiryDate"] = String.Format("{0:M/d/yyyy}", Convert.ToDateTime(dgwGRNItems.Rows[i].Cells["ExpiryDate"].Value));
+                            theDRowItem["ExpiryDate"] = String.Format("{0:dd-MMM-yyyy}", Convert.ToDateTime(dgwGRNItems.Rows[i].Cells["ExpiryDate"].Value));
                             theDRowItem["UserID"] = GblIQCare.AppUserId;
                             theDRowItem["POId"] = GblIQCare.PurchaseOrderID;
 

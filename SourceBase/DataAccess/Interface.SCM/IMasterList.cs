@@ -62,5 +62,9 @@ namespace Interface.SCM
         //DataSet GetStockLedgerData(int StoreId, DateTime FromDate, DateTime ToDate);
         DataSet GetItemListStore_Filtered(int itemTypeId, int Subtypeid, int StoreId);
         int SaveStoreItemList_Filtered(DataTable dtItemList, int UserID, int StoreID, int itemtypeID);
+        DataTable GetBillables();
+        DataTable GetBillingGroups();
+        DataTable GetBillingGroupItems(int billableID);
+        DataTable GetBillablesItems(int DecodeID);
     }
 }

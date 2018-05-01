@@ -231,8 +231,8 @@ namespace BusinessProcess.Clinical
                 ClsObject PatientVisitMgr = new ClsObject();
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@PatientId", SqlDbType.Int, patientID.ToString());
-                ClsUtility.AddParameters("@Start", SqlDbType.DateTime, start.ToString());
-                ClsUtility.AddParameters("@End", SqlDbType.DateTime, end.ToString());
+                ClsUtility.AddParameters("@Start", SqlDbType.DateTime, start.ToString("dd-MMM-yyyy"));
+                ClsUtility.AddParameters("@End", SqlDbType.DateTime, end.ToString("dd-MMM-yyyy"));
 
                 return (DataTable)PatientVisitMgr.ReturnObject(ClsUtility.theParams, "Pr_Clinical_GetPatientDebitNoteOpenItems_Futures", ClsDBUtility.ObjectEnum.DataTable);
             }
@@ -262,8 +262,8 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@PatientId", SqlDbType.Int, patientID.ToString());
                 ClsUtility.AddParameters("@locationID", SqlDbType.Int, locationID.ToString());
                 ClsUtility.AddParameters("@userID", SqlDbType.Int, userID.ToString());
-                ClsUtility.AddParameters("@Start", SqlDbType.DateTime, start.ToShortDateString());
-                ClsUtility.AddParameters("@End", SqlDbType.DateTime, end.ToShortDateString());
+                ClsUtility.AddParameters("@Start", SqlDbType.DateTime, start.ToString("dd-MMM-yyyy"));
+                ClsUtility.AddParameters("@End", SqlDbType.DateTime, end.ToString("dd-MMM-yyyy"));
 
                 DataRow row = (DataRow)PatientVisitMgr.ReturnObject(ClsUtility.theParams, "Pr_Clinical_CreateDebitNote_Futures", ClsDBUtility.ObjectEnum.DataRow);
                 int billid = Convert.ToInt32(row["BillId"]);
@@ -289,7 +289,52 @@ namespace BusinessProcess.Clinical
             }
         }
         //John End
+        #region "Billing Module"
+        public DataTable GetPatientWaitList(int PatientId)
+        {
+            lock (this)
+            {
+                ClsObject PatientManager = new ClsObject();
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@PatientId", SqlDbType.Int, PatientId.ToString());
 
+
+                return (DataTable)PatientManager.ReturnObject(ClsUtility.theParams, "pr_WaitingList_GetPatientsWaitingList", ClsDBUtility.ObjectEnum.DataTable);
+            }
+        }
+
+        public void SavePatientWaitList(DataTable WaitingList, int ModuleID, int UserID, int PatientID)
+        {
+
+            System.Text.StringBuilder sbItems = new System.Text.StringBuilder("<root>");
+            foreach (DataRow row in WaitingList.Rows)
+            {
+
+                sbItems.Append("<row>");
+                sbItems.Append(String.Format("<WaitingListID>{0}</WaitingListID>", row["WaitingListID"]));
+                sbItems.Append(String.Format("<ListID>{0}</ListID>", row["ListID"]));
+                sbItems.Append(String.Format("<Priority>{0}</Priority>", row["Priority"]));
+                sbItems.Append(String.Format("<RowStatus>{0}</RowStatus>", row["RowStatus"]));
+                sbItems.Append(String.Format("<WaitingFor>{0}</WaitingFor>", row["WaitingFor"]));
+
+
+                sbItems.Append("</row>");
+            }
+            sbItems.Append("</root>");
+            lock (this)
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddExtendedParameters("@ItemsList", SqlDbType.Xml, sbItems.ToString());
+                ClsUtility.AddParameters("@PatientID", SqlDbType.Int, PatientID.ToString());
+                ClsUtility.AddParameters("@ModuleID", SqlDbType.Int, ModuleID.ToString());
+                ClsUtility.AddParameters("@UserID", SqlDbType.Int, UserID.ToString());
+                ClsObject BillManager = new ClsObject();
+                BillManager.ReturnObject(ClsUtility.theParams, "pr_WaitingList_SavePatientsWaitingList", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+
+
+            }
+        }
+        #endregion
 
     }
     

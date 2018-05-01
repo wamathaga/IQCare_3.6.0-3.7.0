@@ -105,6 +105,7 @@ namespace BusinessProcess.FormBuilder
                         ClsUtility.AddParameters("@FieldName", SqlDbType.VarChar, dt.Rows[i]["IdentifierName"].ToString());
                         ClsUtility.AddParameters("@FieldType", SqlDbType.Int, dt.Rows[i]["FieldType"].ToString());
                         ClsUtility.AddParameters("@Identifierchecked", SqlDbType.VarChar, dt.Rows[i]["Selected"].ToString());
+                        ClsUtility.AddParameters("@Reqiuredchecked", SqlDbType.VarChar, dt.Rows[i]["Required"].ToString());
                         ClsUtility.AddParameters("@UserID", SqlDbType.Int, ht["UserID"].ToString());
                         ClsUtility.AddParameters("@Label", SqlDbType.VarChar, dt.Rows[i]["Label"].ToString());
                         ClsUtility.AddParameters("@autopopulatenumber", SqlDbType.Int, dt.Rows[i]["autopopulatenumber"].ToString());

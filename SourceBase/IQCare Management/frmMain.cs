@@ -37,10 +37,17 @@ namespace IQCare_Management
 
             #region "Module Validation"
             DataTable theModTable = GblIQCare.dtModules;
-            DataView theDV = new DataView(theModTable);
-            theDV.RowFilter = "ModuleId = 201";
-            if (theDV.Count < 1)
+            //DataView theDV = new DataView(theModTable);
+            //theDV.RowFilter = "ModuleId = 201";
+            //if (theDV.Count < 1)
+            if (GblIQCare.dtFacility.Rows[0]["PMSCM"].ToString() != "1")
+            {
                 mnuPMSCM.Visible = false;
+            }
+            if (GblIQCare.dtFacility.Rows[0]["Billing"].ToString() != "1")
+            {
+                mnuBilling.Visible = false;
+            }
 
             #endregion
 
@@ -98,7 +105,7 @@ namespace IQCare_Management
             }
             if (GblIQCare.HasFunctionRight(ApplicationAccess.DrugDispense, FunctionAccess.View, GblIQCare.dtUserRight) == false)
             {
-                mnuPatientDrugDispense.Visible = false;
+                //mnuPatientDrugDispense.Visible = false;
             }
             if (GblIQCare.HasFunctionRight(ApplicationAccess.PurchaseOrder, FunctionAccess.View, GblIQCare.dtUserRight) == false)
             {
@@ -762,6 +769,47 @@ namespace IQCare_Management
             theForm.MdiParent = this;
             theForm.Left = 0;
             theForm.Top = 0;
+            theForm.Show();
+        }
+
+        private void iQCareHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            theForm = (Form)Activator.CreateInstance(Type.GetType("IQCare.FormBuilder.frmIQCarehelp, IQCare.FormBuilder"));
+            //theForm.MdiParent = this;
+            theForm.Left = 0;
+            theForm.Top = 0;
+            theForm.WindowState = FormWindowState.Maximized;
+            theForm.Show();
+        }
+
+        private void mnuPriceList_Click(object sender, EventArgs e)
+        {
+            theForm = (Form)Activator.CreateInstance(Type.GetType("IQCare.SCM.frmItemCostConfiguration, IQCare.SCM"));
+            theForm.MdiParent = this;
+            theForm.Left = 0;
+            theForm.Top = 2;
+            theForm.Show();
+        }
+
+        private void billingDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            theForm = (Form)Activator.CreateInstance(Type.GetType("IQCare.SCM.frmBillingDetails, IQCare.SCM"));
+            theForm.MdiParent = this;
+            theForm.Left = 0;
+            theForm.Top = 2;
+            theForm.Show();
+        }
+
+        private void billablesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GblIQCare.ItemLabel = "Billables";
+            GblIQCare.ItemCategoryId = "213";
+            GblIQCare.ItemTableName = "Decode";
+            GblIQCare.ItemFeatureId = 173;
+            theForm = (Form)Activator.CreateInstance(Type.GetType("IQCare.SCM.frmCommonItemMaster,IQCare.SCM"));
+            theForm.MdiParent = this;
+            theForm.Left = 0;
+            theForm.Top = 2;
             theForm.Show();
         }
     }

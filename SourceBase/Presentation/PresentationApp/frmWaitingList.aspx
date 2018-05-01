@@ -2,11 +2,6 @@
     Inherits="IQCare.Web.frmWaitingList" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<link href="Style/bootstrap-3.3.6-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="Style/bootstrap-3.3.6-dist/css/bootstrap-theme.css" rel="stylesheet"
-    type="text/css" />
 <link rel="stylesheet" type="text/css" href="./style/styles.css" />
 <link href="../Style/styles.css" id="main" rel="stylesheet" type="text/css" />
 <link href="../Style/Menu.css" id="menuStyle" rel="stylesheet" type="text/css" />
@@ -14,7 +9,7 @@
 <link href="../Style/_assets/css/grid.css" rel="stylesheet" type="text/css" />
 <link href="../Style/_assets/css/round.css" rel="stylesheet" type="text/css" />
 <link href="../Style/StyleSheet.css" rel="stylesheet" type="text/css" />
-<script src="Style/bootstrap-3.3.6-dist/html5Shiv/html5shiv.js" type="text/javascript"></script>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Waiting List</title>
     <style type="text/css">
@@ -24,16 +19,16 @@
         }
     </style>
 </head>
-<body class="container-fluid">
+<body>
     <form id="form1" runat="server">
     <h3 class="left">
         Waiting List</h3>
-    <div class="border formbg center">
-        <table width="100%" class="table-condensed">
+    <div class="border formbg">
+        <table width="100%">
             <tbody>
                 <tr>
-                    <td class="border pad5 whitebg" valign="top" style="width: 1195px;">
-                        <label for="lblSelectList">
+                    <td class="border pad5 whitebg" valign="top" style="width: 1195px">
+                        <label class="right" for="lblSelectList">
                             Select List:</label>
                         <asp:DropDownList ID="ddwaitingList" runat="server" OnSelectedIndexChanged="ddwaitingList_SelectedIndexChanged"
                             AutoPostBack="True">
@@ -43,7 +38,7 @@
                             <asp:ListItem Text="Pharmacy" Value="4"></asp:ListItem>
                             <asp:ListItem Text="Triage" Value="5"></asp:ListItem>
                         </asp:DropDownList>
-                        <label id="lblWaitingfor" runat="server">
+                        <label class="right" id="lblWaitingfor" runat="server">
                             Waiting For:</label>
                         <asp:DropDownList ID="ddWaitingFor" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddWaitingFor_SelectedIndexChanged">
                         </asp:DropDownList>
@@ -94,11 +89,7 @@
                 </tr>
                 <tr class="border pad5 whitebg">
                     <td class="style1">
-                        <input type="button" onclick="window.close();" value="Close" style="text-align: left;
-                            height: 30px; width: 8%;" class="btn btn-primary" />
-                        <label class="glyphicon glyphicon-remove" style="margin-left: -2.5%; margin-right: 0%;
-                            vertical-align: sub; color: #fff;">
-                        </label>
+                        <input type="button" onclick="window.close();" value="Close" />
                     </td>
                 </tr>
             </tbody>

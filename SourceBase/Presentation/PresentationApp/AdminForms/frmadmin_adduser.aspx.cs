@@ -25,7 +25,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
     // Description       : User Master
     //
     /// /////////////////////////////////////////////////////////////////
-    
+
     public Hashtable htGroups;
     public Hashtable htStore;
     int theUserId;  /// Variable for Passing UserId///
@@ -44,7 +44,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
         lstUsergroup.ClearSelection();
         txtEmail.Text = "";
         txtPhone.Text = "";
-        if (theUserId != 0 )
+        if (theUserId != 0)
         {
             btnSave.Text = "Update";
             //GetUserRecords();
@@ -89,10 +89,10 @@ public partial class frmadmin_adduser : System.Web.UI.Page
                             lstUsergroup.Items[i].Enabled = false;
                             txtfirstname.ReadOnly = true;
                             txtlastname.ReadOnly = true;
-                            txtusername.ReadOnly = true; 
+                            txtusername.ReadOnly = true;
                             btnDelete.Enabled = false;
                         }
-                        
+
                     }
                 }
             }
@@ -111,7 +111,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             }
 
         }
-        catch(Exception err) 
+        catch (Exception err)
         {
             MsgBuilder theBuilder = new MsgBuilder();
             theBuilder.DataElements["MessageText"] = err.Message.ToString();
@@ -132,7 +132,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             //// User Groups List
             BindFunctions GblCls = new BindFunctions();
             GblCls.BindCheckedList(lstUsergroup, theDS.Tables[0], "groupname", "groupid");
- 
+
             //Stores list
             IQCareUtils theUtils = new IQCareUtils();
             DataTable dt = new DataTable();
@@ -140,9 +140,9 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             theXMLDS.ReadXml(Server.MapPath("..\\XMLFiles\\AllMasters.con"));
             DataView theDV = new DataView(theXMLDS.Tables["mst_Store"]);
             theDV.RowFilter = "DeleteFlag=0";
-            if(theDV.Table != null)
+            if (theDV.Table != null)
             {
-            dt = theUtils.CreateTableFromDataView(theDV);
+                dt = theUtils.CreateTableFromDataView(theDV);
             }
             GblCls.BindCheckedList(chklistStores, dt, "Name", "Id");
             //Designation
@@ -151,12 +151,12 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             theDV.RowFilter = "DeleteFlag=0";
             if (theDV.Table != null)
             {
-                  dt = theUtils.CreateTableFromDataView(theDV);
+                dt = theUtils.CreateTableFromDataView(theDV);
             }
             GblCls.BindCombo(dddesignation, dt, "Name", "Id");
             //GblCls.BindCombo(ddEmployee,dt,"EmployeeName","EmployeeId");
         }
-        catch(Exception err)
+        catch (Exception err)
         {
             MsgBuilder theBuilder = new MsgBuilder();
             theBuilder.DataElements["MessageText"] = err.Message.ToString();
@@ -206,7 +206,15 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             txtPassword.Focus();
             return false;
         }
-        
+
+        if (dddesignation.SelectedIndex == 0)
+        {
+            MsgBuilder theMsg = new MsgBuilder();
+            theMsg.DataElements["Control"] = "Designation";
+            IQCareMsgBox.Show("BlankDropDown", theMsg, this);
+            return false;
+        }
+
         if (htGroups.Count < 1)
         {
             MsgBuilder theBuilder = new MsgBuilder();
@@ -241,13 +249,13 @@ public partial class frmadmin_adduser : System.Web.UI.Page
         int j = 1;
         for (i = 0; i < lstUsergroup.Items.Count; i++)
         {
-            if(Convert.ToInt32(lstUsergroup.Items[i].Selected) == 1)
+            if (Convert.ToInt32(lstUsergroup.Items[i].Selected) == 1)
             {
                 htGroups.Add(j, lstUsergroup.Items[i].Value);
                 j = j + 1;
             }
         }
-       
+
         htStore = new Hashtable();
         htStore.Clear();
         int k = 0;
@@ -270,10 +278,10 @@ public partial class frmadmin_adduser : System.Web.UI.Page
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         //(Master.FindControl("lblheader") as Label).Text = "User Administration"; 
-        (Master.FindControl("levelOneNavigationUserControl1").FindControl("lblRoot") as Label).Visible=false;
+        (Master.FindControl("levelOneNavigationUserControl1").FindControl("lblRoot") as Label).Visible = false;
         (Master.FindControl("levelOneNavigationUserControl1").FindControl("lblheader") as Label).Text = "User Administration";
         theUserId = Convert.ToInt32(Request.QueryString["SelectedUserId"]);
         fill_dropdowns();
@@ -313,18 +321,18 @@ public partial class frmadmin_adduser : System.Web.UI.Page
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         DataSet theXMLDS = new DataSet();
         theXMLDS.ReadXml(Server.MapPath("..\\XMLFiles\\AllMasters.con"));
         DataView theDV = new DataView(theXMLDS.Tables["Mst_Facility"]);
         theDV.RowFilter = "FacilityId=" + Convert.ToInt32(Session["AppLocationId"]);
-        txtPhone.Attributes.Add("onblur", "phonenumber("+txtPhone.ClientID+")");
+        txtPhone.Attributes.Add("onblur", "phonenumber(" + txtPhone.ClientID + ")");
         txtEmail.Attributes.Add("onblur", "ValidateEmail(" + txtEmail.ClientID + ")");
         //txtusername.Attributes.Add("readonly", "true");
         //txtfirstname.Attributes.Add("onkeypress", "GetUserFirstName('" + txtfirstname.ClientID + "','" + txtlastname.ClientID + "','" + txtusername.ClientID + "')");
         //txtlastname.Attributes.Add("onkeyup", "GetUserLastName('" + txtlastname.ClientID + "','" + txtfirstname.ClientID + "','" + txtusername.ClientID + "')");
-        
+
         //txtConfirmpassword.Attributes.Add("onblur", "return validateStrongPassword('" + txtConfirmpassword.ClientID + "', {length:[6, Infinity],lower:1,	upper:1,numeric:1,alpha:1,badWords:['password'],badSequenceLength: 4})");
         if (theDV[0]["StrongPassFlag"] != DBNull.Value)
         {
@@ -363,17 +371,17 @@ public partial class frmadmin_adduser : System.Web.UI.Page
                 }
             }
 
-            
+
 
         }
-       
+
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         Page_Init(sender, e);
     }
-    
+
     protected void btnSave_Click(object sender, EventArgs e)
     {
 
@@ -390,7 +398,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             UserManager = (Iuser)ObjectFactory.CreateInstance("BusinessProcess.Administration.BUser,BusinessProcess.Administration");
             if (btnSave.Text == "Save")
             {
-                int UserId = UserManager.SaveNewUser(txtfirstname.Text, txtlastname.Text, txtusername.Text, txtPassword.Text, txtEmail.Text, txtPhone.Text, Convert.ToInt32(Session["AppUserId"]), Convert.ToInt32(dddesignation.SelectedValue),htGroups, htStore);
+                int UserId = UserManager.SaveNewUser(txtfirstname.Text, txtlastname.Text, txtusername.Text, txtPassword.Text, txtEmail.Text, txtPhone.Text, Convert.ToInt32(Session["AppUserId"]), Convert.ToInt32(dddesignation.SelectedValue), htGroups, htStore);
                 if (UserId == 0)
                 {
                     IQCareMsgBox.Show("UserExists", this);
@@ -409,13 +417,13 @@ public partial class frmadmin_adduser : System.Web.UI.Page
                 IQCareMsgBox.Show("UserUpdate", this);
                 //Page_Init(sender, e); 
             }
-            btnExit_Click(sender, e); 
+            btnExit_Click(sender, e);
         }
-        catch(Exception err)
+        catch (Exception err)
         {
             MsgBuilder theBuilder = new MsgBuilder();
             theBuilder.DataElements["MessageText"] = err.Message.ToString();
-            IQCareMsgBox.Show("#C1",theBuilder, this);
+            IQCareMsgBox.Show("#C1", theBuilder, this);
             return;
         }
         finally
@@ -423,7 +431,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             UserManager = null;
         }
     }
-    public static bool IsStrongPassword(string password,string fname,string lname,string uname)
+    public static bool IsStrongPassword(string password, string fname, string lname, string uname)
     {
         // Minimum and Maximum Length of field - 6 to 12 Characters
         if (password.Length < 6)
@@ -441,7 +449,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
         // At least one Capital Letter
         if (!password.Any(c => char.IsUpper(c)))
             return false;
-        
+
 
         // Repetitive Characters - Allowed only two repetitive characters
         //var repeatCount = 0;
@@ -476,7 +484,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
         //}
 
 
-        string[] Badwords = { "password", Convert.ToString(fname), Convert.ToString(lname), Convert.ToString(uname)};
+        string[] Badwords = { "password", Convert.ToString(fname), Convert.ToString(lname), Convert.ToString(uname) };
 
         if (Badwords.Any(b => password.ToLower().Contains(b.ToLower())))
         {
@@ -501,7 +509,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             if (theUserId != 0)
             {
                 UserManager = (Iuser)ObjectFactory.CreateInstance("BusinessProcess.Administration.BUser, BusinessProcess.Administration");
-                theAffectedRow = (int) UserManager.DeleteUserRecord(theUserId);
+                theAffectedRow = (int)UserManager.DeleteUserRecord(theUserId);
                 //if (theAffectedRow != 0)
                 //{
                 //    theUrl = "frmAdmin_UserList.aspx";
@@ -522,7 +530,7 @@ public partial class frmadmin_adduser : System.Web.UI.Page
             MsgBuilder theBuilder = new MsgBuilder();
             theBuilder.DataElements["MessageText"] = err.Message.ToString();
             IQCareMsgBox.Show("#C1", theBuilder, this);
-            return; 
+            return;
         }
         finally
         {

@@ -50,7 +50,11 @@ public partial class ClinicalForms_frmClinical_InitialFollowupVisit : System.Web
             IQCareMsgBox.Show("SessionExpired", this);
             Response.Redirect("~/frmlogin.aspx",true);
         }
-
+        if (Request.QueryString["status"] == "0")
+        {
+            Session["PatientVisitId"] = 0;
+        }
+        
         //Get Sessions
         patientID = Convert.ToInt32(Session["PatientId"].ToString());
         locationID = Convert.ToInt32(Session["AppLocationId"].ToString());
@@ -563,6 +567,12 @@ public partial class ClinicalForms_frmClinical_InitialFollowupVisit : System.Web
                 }
             }
         }
+        if (Convert.ToString(Session["CareEndFlag"]) == "1" && Convert.ToString(Session["CareendedStatus"]) == "1")
+        {
+            btnSave.Enabled = true;
+            btnDataQualityCheck.Enabled = true;
+        }
+
         if (age <= 14)
         {
             divAdultPharmacy.Visible = true;
@@ -1637,7 +1647,7 @@ public partial class ClinicalForms_frmClinical_InitialFollowupVisit : System.Web
         else
         {
             string theUrl;
-            theUrl = string.Format("{0}", "frmPatient_Home.aspx");
+            theUrl = string.Format("{0}", "frmPatient_Home.aspx?Func=Delete");
             Response.Redirect(theUrl);
         }
 

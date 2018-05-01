@@ -91,6 +91,11 @@ namespace BusinessProcess.Security
                 theDS.Tables[63].TableName = "mst_BlueDecode";
                 theDS.Tables[65].TableName = "Mst_FormBuilderTab";
                 theDS.Tables[66].TableName = "VW_UserDesignationTransaction";
+                try
+                {
+                    theDS.Tables[67].TableName = "QueryBuilderReports";
+                }
+                catch { }
                 return theDS;
             }
         }

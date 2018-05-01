@@ -470,7 +470,7 @@ namespace BusinessProcess.Clinical
                 return (DataSet)UserManager.ReturnObject(ClsUtility.theParams, "pr_Admin_SelectModulesByFacilityID_Constella", ClsDBUtility.ObjectEnum.DataSet);
             }
         }
-        public DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollment, string gender, DateTime dob, string status,int ModuleId,string FolderNo)
+        public DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollment, string gender, string dob, string status,int ModuleId,string FolderNo)
         {
             lock (this)
             {
@@ -484,7 +484,7 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@gender", SqlDbType.VarChar, gender.ToString());
                 //ClsUtility.AddParameters("@dobexact", SqlDbType.Int, dobexact.ToString());
                 //ClsUtility.AddParameters("@dobestimate", SqlDbType.Int, dobestimate.ToString());
-                ClsUtility.AddParameters("@dob", SqlDbType.DateTime, dob.ToString());
+                ClsUtility.AddParameters("@dob", SqlDbType.VarChar, dob.ToString());
                 ClsUtility.AddParameters("@status", SqlDbType.VarChar, status.ToString());
                 ClsUtility.AddParameters("@ModuleId", SqlDbType.VarChar, ModuleId.ToString());
                 ClsUtility.AddParameters("@FolderNo", SqlDbType.VarChar, FolderNo.ToString());

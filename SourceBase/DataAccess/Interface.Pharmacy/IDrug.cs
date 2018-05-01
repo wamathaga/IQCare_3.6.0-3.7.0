@@ -38,6 +38,7 @@ namespace Interface.Pharmacy
         //John Macharia - End
         DataSet GetDrugInstructions(Int32 DrugId);
         DataSet GetDrugInstructionsExistingOrder(Int32 DrugId, int PharmacyId);
+        DataSet GetPharmacyPrescriptions(int LocationID);
 
     }
 }

@@ -188,15 +188,20 @@
                                            <Columns>
                                                 <telerik:GridTemplateColumn HeaderText="Lab Test Name" HeaderStyle-Font-Bold="true" UniqueName="SubTestId">
                                                  <ItemTemplate>
+                                                 <telerik:RadComboBox ID="ddlList" runat="server" AutoPostBack="true"
+                                                                        Skin="Windows7" EnableLoadOnDemand="true" OnSelectedIndexChanged="ddllist_SelectedIndexChanged" >
+                                                                    </telerik:RadComboBox>
                                                  <telerik:RadNumericTextBox ID="txtRadValue" runat="server"  Text='<%# Eval("TestResults") %>' Skin="Metro" >
                                                  </telerik:RadNumericTextBox>
                                                  <telerik:RadTextBox ID="txtAlphaRadValue" runat="server" Text='<%# Eval("TestResults1") %>' Skin="Metro">
                                                  </telerik:RadTextBox>
                                                     <asp:RadioButtonList id="btnRadRadiolist" runat ="server" RepeatDirection="Horizontal"></asp:RadioButtonList>
                                                     <asp:CheckBoxList ID="chkBoxList" runat="server" RepeatDirection="Vertical"></asp:CheckBoxList>
-                                                    <asp:DropDownList ID="ddlList" runat="server"></asp:DropDownList>                                                 
+                                                   <%-- <asp:DropDownList ID="ddlList" runat="server"></asp:DropDownList>--%> 
+                                                                                                    
                                                  <asp:Label ID="lblUnitName" runat="server" Text='<%# Eval("UnitName") %>'></asp:Label>
                                                  <asp:Label ID="lblControlType" runat="server" Text='<%# Eval("Control_type") %>' Visible="false"></asp:Label>
+                                                 <asp:Label ID="lblundetectable" runat="server" Text='<%# Eval("undetectable") %>' Visible="false"></asp:Label>
                                                    <asp:Label ID="lblLabSubTestId" runat="server"  Visible="false" Text='<%# Eval("SubTestID") %>'></asp:Label>
                                                    <asp:Label ID="lblLabTestName" runat="server"  Visible="false" Text='<%# Eval("SubTestName") %>'></asp:Label>
                                                    <asp:Label ID="lblMinBoundaryVal" runat="server"  Visible="false" Text='<%# Eval("MinBoundaryValue") %>'></asp:Label>
@@ -389,5 +394,23 @@
             </Triggers>
         </asp:UpdatePanel>
         <asp:HiddenField ID="txthdnfield" runat="server" />
+        <asp:UpdateProgress ID="sProgress" runat="server" DisplayAfter="5">
+        <ProgressTemplate>
+            <div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; vertical-align: middle;">
+                <table style="position: relative; top: 45%; left: 45%; border: solid 1px #808080;
+                    background-color: #FFFFC0; width: 150px; height: 24px;" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="right" valign="middle" style="width: 30px; height: 22px;">
+                            <img src="../Images/loading.gif" height="16px" width="16px" alt="" />
+                        </td>
+                        <td align="left" valign="middle" style="font-weight: bold; color: #808080; width: 100px;
+                            height: 22px; padding-left: 5px">
+                            Processing....
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
     </div>
 </asp:Content>

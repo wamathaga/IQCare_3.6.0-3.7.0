@@ -16,7 +16,7 @@ namespace Interface.Reports
     {
         DataSet GetPatientDetails(int PatientID, DateTime StartDate, DateTime EndDate);
         //DataSet GetDrugARVPickup(int PatientID, DateTime StartDate, DateTime EndDate, int LocationID);
-        DataSet GetDrugARVPickup(Int32 PatientID, DateTime StartDate, DateTime EndDate, string SatelliteID, string CountryID, string PosID, int LocationID);
+        DataSet GetDrugARVPickup(Int32 PatientID, string StartDate, string EndDate, string SatelliteID, string CountryID, string PosID, int LocationID);
         DataSet GetAllPatientDrugARVPickup(int LocationID);
         DataSet GetMissARVPickup(DateTime StartDate, string LocationID);
         DataSet GetOGACData(DateTime StartDate, DateTime EndDate, int LocationId);
@@ -40,7 +40,7 @@ namespace Interface.Reports
         DataSet GetNACPQuarterlyReportData(int QuarterId, int QuarterYear, int LocationID);
         DataSet GetNACPCohortMonthlyReport(int MonthId, int Year, string LocationID);
         DataSet GetNACPSixCohortMonthlyReport(int MonthId, int Year, string LocationID);
-        DataSet GetLosttoFollowupPatientReport(int @LocationID);
+        DataSet GetLosttoFollowupPatientReport(int @LocationID, string SystemId);
         DataSet GetTBStatusbyAgeandSex(DateTime StartDate, DateTime EndDate, int LocationID);
         DataSet GetTotalNoTBPatientwithARVwithoutARV(String StartDate, String EndDate, String LocationID);
         DataSet GetARVRegimenforAdultandChild(DateTime StartDate, DateTime EndDate, int LocationID);
@@ -107,6 +107,11 @@ namespace Interface.Reports
         DataSet GetPatientDebitNoteTotalCostByMonth(Int32 PatientId);
         DataSet IQTouchGetPatientVisitSummary(Int32 PatientId);
         DataSet IQTouchGetPatientSummary(Int32 PatientId);
+
+        //Added By Njung'e - 05/09/2013
+        DataTable GetQueryBuilderReportQuery(string Report_ID);
+        DataTable GetQueryBuilderReportParameters(string Report_ID);
+        DataSet ReturnQueryResult(string theQuery, string paramTable);
 
 
     }

@@ -27,8 +27,8 @@ public class AuthenticationManager
     #region "Application Parameters"
     //public static string AppVersion = "3.6.0";
     //public static string ReleaseDate = "14-May-2014";
-    public static string AppVersion = "3.6.0 Patch1";
-    public static string ReleaseDate = "20-Mar-2015";
+    public static string AppVersion = "3.7.1";
+    public static string ReleaseDate = "12-Jun-2015";
     #endregion
 
     public Boolean HasFeatureRight(int FeatureId, DataTable theDT)
@@ -72,32 +72,6 @@ public class AuthenticationManager
             return false;
         }
     }
-    public Boolean HasFunctionRightwithModule(int FeatureId, int FunctionId,int ModuleId, DataTable theDT)
-    {
-        DataView theDV = new DataView(theDT);
-        theDV.RowFilter = "FeatureId = " + FeatureId.ToString() + " and FunctionId = " + FunctionId.ToString() + " and ModuleId = " + ModuleId.ToString();
-        if (theDV.Count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public Boolean HasFunctionRightwithModuleTabs(int FeatureId, int FunctionId, int ModuleId,int TabId, DataTable theDT)
-    {
-        DataView theDV = new DataView(theDT);
-        theDV.RowFilter = "FeatureId = " + FeatureId.ToString() + " and FunctionId = " + FunctionId.ToString() + " and ModuleId = " + ModuleId.ToString() + " and TabId = " + ModuleId.ToString();
-        if (theDV.Count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
     public Boolean HasFunctionRight(string FeatureName, int FunctionId, DataTable theDT)
     {
         DataView theDV = new DataView(theDT);
@@ -129,19 +103,6 @@ public class AuthenticationManager
     {
         DataView theDV = new DataView(theDT);
         theDV.RowFilter = "TabId = " + TabId.ToString() + " and FunctionId = " + FunctionId.ToString();
-        if (theDV.Count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public Boolean HasTabModuleFunctionRight(int TabId, int FunctionId,int ModuleId, DataTable theDT)
-    {
-        DataView theDV = new DataView(theDT);
-        theDV.RowFilter = "TabId = " + TabId.ToString() + " and FunctionId = " + FunctionId.ToString() + " and ModuleId = " + ModuleId.ToString();
         if (theDV.Count > 0)
         {
             return true;

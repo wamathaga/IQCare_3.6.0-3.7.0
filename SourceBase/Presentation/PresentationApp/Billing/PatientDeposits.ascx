@@ -3,8 +3,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:UpdatePanel ID="notificationPanel" runat="server" UpdateMode="Conditional">
     <ContentTemplate>
-        <asp:Button ID="btnRaisePopup" runat="server" Text="New Deposit" Width="92px" Style="display: block;
-            margin-bottom: 5px" class="greenbutton" />
+        <asp:Button ID="btnRaisePopup" runat="server" Text="New Deposit" Width="80px" Style="display: block;margin-bottom:5px"
+            class="greenbutton" />
         <asp:Panel ID="divParameters" runat="server" Style="display: none; width: 380px;
             border: solid 1px #808080; background-color: #479ADA" DefaultButton="btnNewDeposit">
             <asp:Panel ID="divTitle" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
@@ -14,7 +14,7 @@
                         <td style="width: 5px; height: 19px;">
                         </td>
                         <td style="width: 100%; height: 19px;">
-                            <span style="font-weight: bold; color: White;">
+                            <span style="font-weight: bold; color:White;">
                                 <asp:Label ID="labelParamTitle" runat="server">New Cash Deposit</asp:Label></span>
                         </td>
                         <td style="width: 5px; height: 19px;">
@@ -22,19 +22,19 @@
                     </tr>
                 </table>
             </asp:Panel>
-            <table width="100%" cellpadding="15" cellspacing="0" style="width: 100%; height: 18px;
-                background-color: #EBEBEB">
+            <table width="100%" cellpadding="15" cellspacing="0" style="width: 100%; height: 18px; background-color:#EBEBEB">
                 <tbody>
                     <tr>
                         <td style="width: 48px" valign="middle" align="center" rowspan="2">
                             <img src="../images/mb_question.gif" alt="" width="32" height="32" />
                         </td>
                         <td valign="middle" align="left" style="white-space: nowrap">
-                            <asp:Label ID="lblDepositAmount" runat="server" Style="font-weight: bold;" Text="">Deposit Amount</asp:Label>
+                            <asp:Label ID="lblDepositAmount" runat="server" Style="font-weight: bold; "
+                                Text="">Deposit Amount</asp:Label>
                         </td>
                         <td>
-                            <asp:TextBox ID="textAmount" runat="server" AutoCompleteType="None" AutoComplete="off"
-                                MaxLength="7"></asp:TextBox>
+                            <asp:TextBox ID="textAmount" runat="server" AutoCompleteType="None" 
+                                AutoComplete="off" MaxLength="7"></asp:TextBox>
                             <ajaxToolkit:FilteredTextBoxExtender ID="fteAmountToPay" runat="server" TargetControlID="textAmount"
                                 FilterType="Numbers" />
                         </td>
@@ -43,9 +43,9 @@
             </table>
             <asp:Panel ID="divApproval" runat="server" Visible="true" Style="text-align: center;
                 padding: 10px; width: 360px">
-                <asp:Button ID="btnNewDeposit" runat="server" Text="Save" Height="21px" Width="52px"
-                    Style="margin-right: 5px" Font-Bold="True" OnClick="btnNewDeposit_Click" />
-                <asp:Button ID="btnActionCancel" runat="server" Text="Cancel" Height="21px" Style="margin-left: 5px"
+                <asp:Button ID="btnNewDeposit" runat="server" Text="Save" Height="21px" Width="52px" Style="margin-right: 5px"
+                    Font-Bold="True" OnClick="btnNewDeposit_Click" />
+                <asp:Button ID="btnActionCancel" runat="server" Text="Cancel" Height="21px"  Style="margin-left: 5px"
                     Font-Bold="True" /></asp:Panel>
         </asp:Panel>
         <ajaxToolkit:ModalPopupExtender ID="parameterPopup" runat="server" BehaviorID="PDmpeBID01"
@@ -62,7 +62,7 @@
                     <tr>
                         <td style="width: 5px; height: 19px;">
                         </td>
-                        <td style="width: 100%; height: 19px; background-color: #479ADA">
+                        <td style="width: 100%; height: 19px; background-color:#479ADA">
                             <span style="font-weight: bold; color: White">
                                 <asp:Label ID="lblNotice" runat="server">Add Editing Item</asp:Label></span>
                         </td>
@@ -88,15 +88,14 @@
             </div>
         </asp:Panel>
         <ajaxToolkit:ModalPopupExtender ID="notifyPopupExtender" runat="server" TargetControlID="btn"
-            PopupControlID="pnNotify" BackgroundCssClass="modalBackground" DropShadow="True"
-            BehaviorID="PDmpeBID02" PopupDragHandleControlID="pnPopup_Title" Enabled="True"
-            DynamicServicePath="">
+            PopupControlID="pnNotify" BackgroundCssClass="modalBackground" DropShadow="True" BehaviorID="PDmpeBID02"
+            PopupDragHandleControlID="pnPopup_Title" Enabled="True" DynamicServicePath="">
         </ajaxToolkit:ModalPopupExtender>
     </ContentTemplate>
     <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="btnNewDeposit" EventName="Click" />
-        <asp:AsyncPostBackTrigger ControlID="btnRefundYes" EventName="Click" />
-        <asp:AsyncPostBackTrigger ControlID="buttonRefund" EventName="Click" />
+     <asp:AsyncPostBackTrigger ControlID="btnNewDeposit" EventName="Click" />
+     <asp:AsyncPostBackTrigger ControlID="btnRefundYes" EventName="Click" />
+      <asp:AsyncPostBackTrigger ControlID="buttonRefund" EventName="Click" />
     </Triggers>
 </asp:UpdatePanel>
 <asp:UpdatePanel ID="divComponent" runat="server" UpdateMode="Conditional">
@@ -120,17 +119,13 @@
                                     <asp:Label ID="labelDepositDate" runat="server" Height="30px"></asp:Label>
                                 </td>
                                 <td rowspan="4" align="center" width="25%">
-                                    <asp:Button ID="buttonViewTransactions" runat="server" Text="View Transactions"
-                                        Font-Bold="True" ForeColor="InfoText" Enabled="True" OnClick="buttonViewTransactions_Click"
-                                        CssClass="btn btn-success" Height="30px" Width="66%" Style="text-align: left;" />
-                                    <label class="glyphicon glyphicon-eye-open" style="margin-left: -8%; margin-right: 2%;
-                                        vertical-align: sub; color: #fff;">
-                                    </label>
+                                    <asp:Button ID="buttonViewTransactions" runat="server" Text="View Transactions" Height="30px"
+                                        Font-Bold="True" ForeColor="InfoText" Width="50%" Enabled="True" OnClick="buttonViewTransactions_Click" />
                                 </td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold; height: 30px;">
-                                    Last Amount Deposited:
+                                   Last Amount Deposited:
                                 </td>
                                 <td>
                                     <asp:Label ID="labelDepositedAmount" runat="server" Height="30px"></asp:Label>
@@ -149,14 +144,15 @@
                                     Total Amount Available:
                                 </td>
                                 <td align="left" valign="middle">
-                                    <div style="white-space: nowrap; vertical-align: middle; text-align: left">
+                                    <div style="white-space: nowrap;vertical-align:middle; text-align:left">
                                         <asp:Label ID="labelTotalAvailable" runat="server" Height="30px" Text="0.0"></asp:Label>&nbsp;&nbsp;
                                         <span style='display: <%# ShowHideRefund() %>; white-space: nowrap'>
-                                            <asp:Button ID="buttonRefund" runat="server" CausesValidation="false" Height="30px"
-                                                OnClick="btnRefundYes_Click" Font-Bold="True" CommandName="Refund" Text="Return"
-                                                ForeColor="Black" ToolTip="Return the available deposit to the client"></asp:Button></span>
+                                            <asp:Button ID="buttonRefund" runat="server" CausesValidation="false" Height="30px" OnClick="btnRefundYes_Click" 
+                                                Font-Bold="True" CommandName="Refund" Text="Return" ForeColor="Black" ToolTip="Return the available deposit to the client">
+                                            </asp:Button></span>
                                         <ajaxToolkit:ConfirmButtonExtender ID="cbeRefundPay" runat="server" DisplayModalPopupID="mpeRefundPay"
-                                            TargetControlID="buttonRefund"></ajaxToolkit:ConfirmButtonExtender>
+                                            TargetControlID="buttonRefund">
+                                        </ajaxToolkit:ConfirmButtonExtender>
                                         <ajaxToolkit:ModalPopupExtender ID="mpeRefundPay" runat="server" PopupControlID="pnlRefundPopup"
                                             TargetControlID="buttonRefund" OkControlID="btnRefundYes" CancelControlID="btnRefundNo"
                                             BackgroundCssClass="modalBackground">
@@ -218,7 +214,7 @@
                 </table>
             </asp:Panel>
             <table cellspacing="6" cellpadding="0" width="680px" border="0">
-                <tbody>
+                <tbody>                    
                     <tr>
                         <td class="pad5 formbg border">
                             <div id="divDeposits" class="grid" style="width: 100%; margin-top: 8px;">
@@ -269,7 +265,7 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr>                   
                 </tbody>
             </table>
             <div style="background-color: #FFFFFF; border-top: solid 1px #808080; width: 100%;

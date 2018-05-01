@@ -11,7 +11,7 @@ using Interface.SCM;
 
 namespace PresentationApp.PharmacyDispense
 {
-    public partial class frmPharmacy_DrugHistory : LogPage
+    public partial class frmPharmacy_DrugHistory : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -12,11 +12,10 @@ using Interface.Clinical;
 using System.Configuration;
 using System.Web.UI.HtmlControls;
 using Interface.Administration;
-using Application.Common;
 
 namespace IQCare.Web.ClinicalForms
 {
-    public partial class PatientConsumables : LogPage
+    public partial class PatientConsumables : System.Web.UI.Page
     {
 
         #region "variable declaration"
@@ -120,7 +119,7 @@ namespace IQCare.Web.ClinicalForms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_PreRender(object sender, EventArgs e)
         {
-            //divError.Visible = isError;
+            divError.Visible = isError;
             // this.BindGrid();
 
             Session[this.Session_Key] = this.dtData;
@@ -387,26 +386,9 @@ namespace IQCare.Web.ClinicalForms
         {
             try
             {
-                IQCareMsgBox.HideMessage(this);
                 this.SelectedDate = this.calendarConsumables.VisibleDate = this.calendarConsumables.SelectedDate;
-
-                TimeSpan difference = SelectedDate - Convert.ToDateTime(Application["AppCurrentDate"]);
-                double days = difference.TotalDays;
-
-                if (days > 0 )
-                {                    
-                    MsgBuilder theBuilder = new MsgBuilder();
-                    theBuilder.DataElements["MessageText"] = "Cannot make bills for future dates.";
-                    IQCareMsgBox.Show("#C1", theBuilder, this);
-                    BindGrid();
-                    return;
-                }
-                else
-                {
-                    IQCareMsgBox.HideMessage(this);
-                    //load the consumables for the day
-                    this.PopulateItems(this.SelectedDate, true);
-                }
+                //load the consumables for the day
+                this.PopulateItems(this.SelectedDate, true);
                 // divComponent.Update();
             }
             catch (Exception ex)
@@ -497,14 +479,10 @@ namespace IQCare.Web.ClinicalForms
             int.TryParse(System.Web.HttpContext.Current.Session["ConsumableTypeID"].ToString(), out consumableItemTypeID);
             DateTime issueDate = DateTime.Now;
             DateTime.TryParse(System.Web.HttpContext.Current.Session["SelectedDate"].ToString(), out issueDate);
-            int? SCMFlag = null;
-            if (System.Web.HttpContext.Current.Session["SCMModule"] != null)
-            {
-                SCMFlag = 1;
-            }
+
             IItemMaster _iMGR = (IItemMaster)ObjectFactory.CreateInstance("BusinessProcess.Administration.BItemMaster, BusinessProcess.Administration");
             //DataTable dataTable = _iMGR.FindItems(prefixText, consumableItemTypeID, null, DateTime.Parse(issueDate.ToString("yyyy-MM-dd")), false);
-            DataTable dataTable = _iMGR.FindItems(prefixText, consumableItemTypeID, null, DateTime.Parse(issueDate.ToString("dd-MMM-yyyy")), false, SCMFlag); //Bug ID 158...
+            DataTable dataTable = _iMGR.FindItems(prefixText, consumableItemTypeID, null, DateTime.Parse(issueDate.ToString("dd-MMM-yyyy")), false); //Bug ID 158...
             string custItem = string.Empty;
 
             foreach (DataRow theRow in dataTable.Rows)
@@ -525,25 +503,18 @@ namespace IQCare.Web.ClinicalForms
         {
             try
             {
-                TimeSpan difference = issueDate - Convert.ToDateTime(Application["AppCurrentDate"]);
-                double days = difference.TotalDays;
-
-                if (days <= 0)
+                if (parForce || base.Session[this.Session_Key] == null)
                 {
-                    if (parForce || base.Session[this.Session_Key] == null)
-                    {
-                        IConsumable _consumablemManager = (IConsumable)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BConsumable, BusinessProcess.Clinical");
-                        this.dtData = _consumablemManager.GetPatientConsumableByDate(this.PatientID, issueDate);
-                        dtData.TableName = "Consumables";
-                    }
-                    else
-                    {
-                        this.dtData = (DataTable)Session[this.Session_Key];
-                    }
-
-
-                    
+                    IConsumable _consumablemManager = (IConsumable)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BConsumable, BusinessProcess.Clinical");
+                    this.dtData = _consumablemManager.GetPatientConsumableByDate(this.PatientID, issueDate);
+                    dtData.TableName = "Consumables";
                 }
+                else
+                {
+                    this.dtData = (DataTable)Session[this.Session_Key];
+                }
+
+
                 this.BindGrid();
             }
             catch (Exception ex)
@@ -708,41 +679,22 @@ namespace IQCare.Web.ClinicalForms
         /// </summary>
         void BindGrid()
         {
-            if (dtData != null)
+            if (this.dtData.Rows.Count > 0)
             {
-                if (this.dtData.Rows.Count > 0)
-                {
-                    this.dtData.DefaultView.Sort = "IssueDate ASC";
-                    gridConsumables.DataSource = this.dtData;
-                    gridConsumables.DataBind();
-                    gridConsumables.Rows[0].Visible = true;
-                }
-                else
-                {
-                    DataTable dtTemp = this.dtData.Clone();
-                    dtTemp.Rows.Add(dtTemp.NewRow());
-                    gridConsumables.DataSource = dtTemp;
-                    gridConsumables.DataBind();
-                    gridConsumables.Rows[0].Visible = false;
-                }
+                this.dtData.DefaultView.Sort = "IssueDate ASC";
+                gridConsumables.DataSource = this.dtData;
+                gridConsumables.DataBind();
+                gridConsumables.Rows[0].Visible = true;
             }
             else
             {
-                gridConsumables.DataSource = null;
-                gridConsumables.DataBind();
-            }
-            //  gridConsumables.Visible = (this.dtData.Rows.Count > 0);
-        }
-        void UnBindGrid()
-        {
-            
                 DataTable dtTemp = this.dtData.Clone();
                 dtTemp.Rows.Add(dtTemp.NewRow());
                 gridConsumables.DataSource = dtTemp;
                 gridConsumables.DataBind();
                 gridConsumables.Rows[0].Visible = false;
-           
-            
+            }
+            //  gridConsumables.Visible = (this.dtData.Rows.Count > 0);
         }
         /// <summary>
         /// Shows the error message.
@@ -751,18 +703,14 @@ namespace IQCare.Web.ClinicalForms
         void showErrorMessage(ref Exception ex)
         {
             this.isError = true;
-            MsgBuilder theBuilder1 = new MsgBuilder();            
             if (this.Debug)
             {
-                theBuilder1.DataElements["MessageText"] = ex.Message + ex.StackTrace + ex.Source;
-                //lblError.Text = ex.Message + ex.StackTrace + ex.Source;
+                lblError.Text = ex.Message + ex.StackTrace + ex.Source;
             }
             else
             {
-
-                //lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
-                //this.isError = this.divError.Visible = true;
-                theBuilder1.DataElements["MessageText"] = "An error has occured within IQCARE during processing. Please contact the support team";
+                lblError.Text = "An error has occured within IQCARE during processing. Please contact the support team";
+                this.isError = this.divError.Visible = true;
                 Exception lastError = ex;
 
 
@@ -772,8 +720,7 @@ namespace IQCare.Web.ClinicalForms
 
 
             }
-            //IQCareMsgBox.ShowforUpdatePanel("FillLabResults", this);
-            IQCareMsgBox.Show("#C1", theBuilder1, this);
+
 
         }
         /// <summary>
@@ -865,14 +812,14 @@ namespace IQCare.Web.ClinicalForms
                     {
                         ItemId = Convert.ToInt32(itemCodes[0]);
                         itemType = Convert.ToInt32(itemCodes[1]);
-                        //////IBilling bMgr = (IBilling)ObjectFactory.CreateInstance("BusinessProcess.SCM.BBilling,BusinessProcess.SCM");//Marked by Jayant for SCM Price changes
-                        //////itemPrice = bMgr.GetItemPrice(ItemId, itemType, DateTime.Parse(this.SelectedDate.ToString("dd-MMM-yyyy"))); // Bug ID 158.....
+                        IBilling bMgr = (IBilling)ObjectFactory.CreateInstance("BusinessProcess.SCM.BBilling,BusinessProcess.SCM");
+                        itemPrice = bMgr.GetItemPrice(ItemId, itemType, DateTime.Parse(this.SelectedDate.ToString("dd-MMM-yyyy"))); // Bug ID 158.....
                         //if (itemPrice == 0.00M)
                         //{
                         //    ((TextBox)sender).Text = "";
                         //    HItemName.Value = "";
                         //}
-                        itemPrice = Convert.ToDecimal(itemCodes[2]);
+
                         GridViewRow row = (GridViewRow)((TextBox)sender).NamingContainer;
                         Label lblNewUnitPrice = (Label)row.FindControl("lblNewUnitPrice");
                         Label lblNewAmountPrice = (Label)row.FindControl("lblNewAmountPrice");

@@ -67,14 +67,17 @@
             }
 
             function OpenPharmacyDialog(DrgId) {
-                window.open('../Pharmacy/frmDrugSelector.aspx?DrugType=' + DrgId + '&BtnDrg=customfrmDrug', 'DrugSelection', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');
+                //window.open('../Pharmacy/frmDrugSelector.aspx?DrugType=' + DrgId + '&BtnDrg=customfrmDrug', 'DrugSelection', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');
+                window.open('../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx?opento=ArtForm');
             }
 
             function OpenRegimenDialog(DrgId, ControlId) {
                 window.open('../Pharmacy/frmDrugSelector.aspx?RegType=' + DrgId + '&BtnRegimen=customfrmReg&Cntrl=' + ControlId + '', 'DrugSelection', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');
+                
             }
             function AdditionalLab() {
-                window.open('../Laboratory/frmLabSelector.aspx?Mode=All', 'LabSelection', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');
+                //window.open('../Laboratory/frmLabSelector.aspx?Mode=All', 'LabSelection', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');
+                window.open('../Laboratory/frm_Laboratory.aspx?opento=ArtForm');
             }
             function ICD10PopUp(FieldId, VisitId) {
                 window.open('frmClinicalICD10Selector.aspx?Param=' + FieldId + ' &Param1=' + VisitId + '', 'ICD10Selection', 'toolbars=no,location=no,directories=no,dependent=yes,top=30,left=70,maximize=no,resize=no,width=950,height=470,scrollbars=yes');
@@ -128,7 +131,6 @@
             }
             function EnableValueYes(theID) {
                 if (theID != "") {
-
                     document.getElementById(theID).disabled = false;
                     frmClinical_CustomForm.removecontrolstatus(theID);
                     var span = document.getElementById(theID).getElementsByTagName('span');

@@ -46,6 +46,10 @@ public partial class frmPatient_Home : BasePage
             IQCareMsgBox.Show("Please select the Service / Technical Area to proceed.", "!", "", this);
             Response.Redirect("~/frmAddTechnicalArea.aspx", true);
         }
+        if (Request.QueryString["Func"] == "Delete")
+        {
+            FormDelete();
+        }
 
         DateTime theTmpDate;
         string strPatientEnrollmentId = string.Empty;
@@ -78,6 +82,7 @@ public partial class frmPatient_Home : BasePage
             if (Convert.ToInt32(Session["SystemId"]) == 1)
             {
                 lblpatientname.Text = theDS.Tables[0].Rows[0]["LastName"].ToString() + ", " + theDS.Tables[0].Rows[0]["FirstName"].ToString();
+                lbldob.Text = Convert.ToDateTime(theDS.Tables[0].Rows[0]["DOB"]).ToString("dd-MMM-yyyy");
                 if (theDS.Tables[0].Rows[0]["Address"].ToString() != "")//|| theDS.Tables[0].Rows[0]["VillageNM"].ToString() != "" || theDS.Tables[0].Rows[0]["ProvinceNM"].ToString() != "")
                 {
                     theAddress = theDS.Tables[0].Rows[0]["Address"].ToString() + "/";
@@ -116,6 +121,7 @@ public partial class frmPatient_Home : BasePage
             else
             {
                 lblpatientname.Text = theDS.Tables[0].Rows[0]["LastName"].ToString() + ", " + theDS.Tables[0].Rows[0]["MiddleName"].ToString() + " , " + theDS.Tables[0].Rows[0]["FirstName"].ToString();
+                lbldob.Text = Convert.ToDateTime(theDS.Tables[0].Rows[0]["DOB"]).ToString("dd-MMM-yyyy");
                 if (theDS.Tables[0].Rows[0]["Address"].ToString() != "")//|| theDS.Tables[0].Rows[0]["VillageNM"].ToString() != "" || theDS.Tables[0].Rows[0]["ProvinceNM"].ToString() != "")
                 {
                     theAddress = theDS.Tables[0].Rows[0]["Address"].ToString() + "/";
@@ -166,8 +172,8 @@ public partial class frmPatient_Home : BasePage
             lblpmtctno.Text = theDS.Tables[0].Rows[0]["PMTCTNumber"].ToString();
             lbladmissionno.Text = theDS.Tables[0].Rows[0]["AdmissionNumber"].ToString();
             lbloutpatientno.Text = theDS.Tables[0].Rows[0]["OutpatientNumber"].ToString();
-            //lblage.Text = theDS.Tables[0].Rows[0]["AGE"].ToString() + "." + theDS.Tables[0].Rows[0]["AgeInMonths"].ToString();
-            lblage.Text = theDS.Tables[0].Rows[0]["AGEINYEARMONTH"].ToString();
+            lblage.Text = theDS.Tables[0].Rows[0]["AGE"].ToString(); //+ "." + theDS.Tables[0].Rows[0]["AgeInMonths"].ToString();
+            //lblage.Text = theDS.Tables[0].Rows[0]["AGEINYEARMONTH"].ToString();
             lblgender.Text = theDS.Tables[0].Rows[0]["SexNM"].ToString();
 
             if ((theDS.Tables[0].Rows[0]["HIVStatus_Child"] != System.DBNull.Value) && (theDS.Tables[0].Rows[0]["HIVStatus_Child"].ToString() == "1"))
@@ -521,7 +527,8 @@ public partial class frmPatient_Home : BasePage
         DateTime[] YearWeightBMI = new DateTime[theDS.Tables[5].Rows.Count];
         for (Int32 a = 0, l = YearWeightBMI.Length; a < l; a++)
         {
-            YearWeightBMI.SetValue(theDS.Tables[5].Rows[a]["Visit_OrderbyDate"], a);
+            if (theDS.Tables[5].Rows[a]["Visit_OrderbyDate"] != System.DBNull.Value)
+            { YearWeightBMI.SetValue(theDS.Tables[5].Rows[a]["Visit_OrderbyDate"], a);}
         }
         // 18thAug2009 createChartWeight( Weight, BMI, YearWeightBMI);
         createChartWeight(WebChartViewerWeight, Weight, BMI, YearWeightBMI);
@@ -1435,6 +1442,7 @@ public partial class frmPatient_Home : BasePage
     {
 
         Session["PatientName"] = lblpatientname.Text;
+        Session["DOB"] = lbldob.Text;
         //Session["AdmissionNo"] = lbladmissionno.Text;
         Session["AdmissionNo"] = hpIQNumber.Value;
         Session["PatientId"] = Convert.ToInt32(Session["PatientId"]);
@@ -1598,6 +1606,24 @@ public partial class frmPatient_Home : BasePage
     protected void lnkPharmacyNotes_Click(object sender, EventArgs e)
     {
         ScriptManager.RegisterClientScriptBlock(this.UpdateMasterLink, this.UpdateMasterLink.GetType(), "Popup", "window.open('frmPatient_PharmacyNotes.aspx','popupwindow','toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=yes,resizable=no,width=950,height=650,scrollbars=yes');", true);
+    }
+
+    protected void FormDelete()
+    {
+        Telerik.Web.UI.RadNotification RNot = new Telerik.Web.UI.RadNotification();
+        RNot.ID = "RadNotification";
+        RNot.VisibleOnPageLoad = true;
+        RNot.Position = Telerik.Web.UI.NotificationPosition.Center;
+        RNot.Width = 350;
+        RNot.Height = 100;
+        RNot.Animation = Telerik.Web.UI.NotificationAnimation.Fade;
+        RNot.EnableRoundedCorners = true;
+        RNot.EnableShadow = true;
+        RNot.ForeColor = Color.Red;
+        RNot.VisibleTitlebar = false;
+        RNot.Text = "Form Deleted Successfully";
+        pnlnotification.Controls.Add(RNot);
+
     }
 }
 

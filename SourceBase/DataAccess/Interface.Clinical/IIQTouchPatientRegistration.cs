@@ -116,7 +116,7 @@ namespace Interface.Clinical
         
         DataSet GetAllDropDowns();
         DataSet GetDuplicatePatientSearchResults(string lastname, string middlename, string firstname, string address, string phone);
-        DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollment, string gender, DateTime dob, string status, int ModuleId, string FolderNo);
+        DataSet GetPatientSearchResults(int FId, string lastname, string middlename, string firstname, string enrollment, string gender, string dob, string status, int ModuleId, string FolderNo);
         DataSet GetEnrolment(string CountryID, string PossitionID, string SatelliteID, string PatientClinicID, string enrolmentid, int deleteflag);
         DataSet GetAge(DateTime dob, DateTime regdate);
         DataSet GetVisitDate_IELAB(int patientid, int LocationID);

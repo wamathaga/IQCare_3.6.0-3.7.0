@@ -79,12 +79,6 @@
                 document.getElementById('<%=txtAgeYear.ClientID%>').focus();
                 return false;
             }
-                   }
-            else if (document.getElementById('<%=ddlrelationtype.ClientID%>').value != "0") {
-                if (document.getElementById('<%=ddlrelationtype.ClientID%>').value == "3" || document.getElementById('<%=ddlrelationtype.ClientID%>').value == "11") {
-                   
-                }
-            }
             else if (document.getElementById('<%=ddlhivstatus.ClientID%>').value == "0") {
                 alert("Hiv Status not selected");
                 document.getElementById('<%=ddlhivstatus.ClientID%>').focus();
@@ -258,7 +252,7 @@
                         </tr>
                         <tr>
                             <td class="border center whitebg" colspan="2" style="height: 36px">
-                                <asp:Button ID="btnadd" runat="server" OnClientClick="return fnValidate();" Style="width: 100px;
+                                <asp:Button ID="btnadd" runat="server" OnClientClick="return fnValidate();" ClientIDMode="Static" Style="width: 100px;
                                     font-size: 12px" Text="Add Member" OnClick="btnAdd" />
                             </td>
                         </tr>

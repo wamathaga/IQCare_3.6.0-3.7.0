@@ -1,12 +1,11 @@
 <%@ Page Language="C#" MasterPageFile="~/MasterPage/IQCare.master" AutoEventWireup="true"
-    Inherits="frmFindAddPatient" Title="Untitled Page"
-    EnableViewState="true" Codebehind="frmFindAddPatient.aspx.cs" %>
+    Inherits="frmFindAddPatient" Title="Untitled Page" EnableViewState="true" CodeBehind="frmFindAddPatient.aspx.cs" %>
 
 <%@ Register Assembly="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
     <script language="javascript" type="text/javascript">
-        function fnSetSession(url) { 
+        function fnSetSession(url) {
             var result = frmFindAddPatient.SetPatientId_Session(url).value;
             window.location.href = result;
         }
@@ -76,7 +75,7 @@
             Find/Add Patient</h1>
         <div class="center" style="padding: 10px;">
             <div id="divshow" class="border formbg">
-              <%--  <asp:ScriptManager ID="scm_patient" runat="server">
+                <%--  <asp:ScriptManager ID="scm_patient" runat="server">
                 </asp:ScriptManager> --%>
                 <asp:UpdatePanel ID="up_patient" runat="server">
                     <ContentTemplate>
@@ -86,7 +85,17 @@
                                 <td class="border pad5 whitebg" valign="top" width="280" colspan="2" align="left">
                                     <table width="350" border="0">
                                         <tr>
-                                            <td align="left" >
+                                            <td>
+                                                <label>
+                                                    Identifier:</label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlIdentifier" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlIdentifier_SelectedIndexChanged">
+                                                </asp:DropDownList>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
                                                 <label id="lblidentificationno" class="center" runat="server">
                                                     Patient Identification Number:</label>
                                             </td>
@@ -106,8 +115,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label>
-                                                    Service:</label>
+                                                <label class="required">
+                                                    *Service:</label>
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="ddlServices" runat="server">
@@ -160,7 +169,7 @@
                                             <td>
                                                 <asp:TextBox ID="txtDOB" runat="server" MaxLength="11" Width="75px"></asp:TextBox>
                                                 <img onclick="w_displayDatePicker('<%= txtDOB.ClientID %>');" height="22" alt="Date Helper"
-                                                    hspace="3" src="./images/cal_icon.gif" width="22" border="0" style="vertical-align:text-bottom;" />
+                                                    hspace="3" src="./images/cal_icon.gif" width="22" border="0" style="vertical-align: text-bottom;" />
                                                 <span class="smallerlabel">(DD-MMM-YYYY)</span>
                                             </td>
                                         </tr>
@@ -230,16 +239,16 @@
                                                 </div>
                                                 <div class="mid-outer">
                                                     <div class="mid-inner">
-                                                        <div class="mid" style="cursor: pointer; height: 280px; overflow: auto;border: 1px solid #666699;">
+                                                        <div class="mid" style="cursor: pointer; height: 280px; overflow: auto; border: 1px solid #666699;">
                                                             <%--<div style="overflow: hidden;" id="DivHeaderRow"> comment by deepak(New code for fixed header)
                                                         </div>--%>
-                                                            <div id="div-gridview" class="whitebg" >
+                                                            <div id="div-gridview" class="whitebg">
                                                                 <!-- Content Goes Here! -->
                                                                 <asp:GridView ID="grdSearchResult" runat="server" EnableViewState="False" Width="884"
                                                                     OnRowDataBound="grdSearchResult_RowDataBound" OnSorting="grdSearchResult_Sorting"
                                                                     PageSize="1" CssClass="datatable" AutoGenerateColumns="False" CellPadding="0"
                                                                     CellSpacing="0" BorderWidth="0" GridLines="None" AllowSorting="True">
-                                                                      <HeaderStyle CssClass="searchresultfixedheader" Height="20px"></HeaderStyle>
+                                                                    <HeaderStyle CssClass="searchresultfixedheader" Height="20px"></HeaderStyle>
                                                                     <%-- <AlternatingRowStyle BackColor="White" BorderColor="Silver" />--%>
                                                                     <RowStyle CssClass="row" />
                                                                     <%--  <HeaderStyle CssClass="SearchResultFixedHeader" />--%>
@@ -258,10 +267,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <input id="rdoExact" class="textstylehidden" onmouseup="up(this);" onfocus="up(this);" onclick="down(this);"
-                                            type="radio" value="0" name="dobPrecision" runat="Server" />
-                                        <input id="rdoEstimated" class="textstylehidden" onmouseup="up(this);" onfocus="up(this);" onclick="down(this);"
-                                            type="radio" value="1" name="dobPrecision" runat="Server" />
+                                        <input id="rdoExact" class="textstylehidden" onmouseup="up(this);" onfocus="up(this);"
+                                            onclick="down(this);" type="radio" value="0" name="dobPrecision" runat="Server" />
+                                        <input id="rdoEstimated" class="textstylehidden" onmouseup="up(this);" onfocus="up(this);"
+                                            onclick="down(this);" type="radio" value="1" name="dobPrecision" runat="Server" />
                                     </td>
                                 </tr>
                             </tbody>

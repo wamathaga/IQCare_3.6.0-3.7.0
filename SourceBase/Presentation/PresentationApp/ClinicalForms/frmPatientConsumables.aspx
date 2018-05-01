@@ -58,7 +58,7 @@
         {
             cursor: pointer;
             color: black;
-            z-index: 2147483647 !important;
+              z-index: 2147483647 !important;
         }
         .AutoExtenderHighlight
         {
@@ -74,7 +74,7 @@
         {
             width: 800px !important;
         }
-        #divwidthFooter
+         #divwidthFooter
         {
             width: 800px !important;
         }
@@ -83,34 +83,34 @@
             width: 800px !important;
         }
     </style>
-    <div class="container-fluid">
-        <h5 class="forms" align="left">
-            Consumables</h5>
+    <div style="padding-left: 8px; padding-right: 8px;">
+        <h2 class="forms" align="left">
+            Consumables</h2>
         <div class="border center formbg">
             <asp:UpdatePanel ID="divComponent" runat="server">
                 <ContentTemplate>
-                    <%--<asp:Panel ID="divError" runat="server" Style="padding: 5px" CssClass="background-color: #FFFFC0; border: solid 1px #C00000"
+                    <asp:Panel ID="divError" runat="server" Style="padding: 5px" CssClass="background-color: #FFFFC0; border: solid 1px #C00000"
                         HorizontalAlign="Left" Visible="false">
                         <asp:Label ID="lblError" runat="server" Style="font-weight: bold; color: #800000"
                             Text=""></asp:Label>
-                        
+                        <asp:HiddenField ID="HSelectedDate" runat="server" />
                         <br />
-                    </asp:Panel>--%>
-                    <asp:HiddenField ID="HSelectedDate" runat="server" />
-                    <asp:Panel ID="panelBilling" runat="server" Visible="true" Style="width: 100%;">
-                        <table width="100%" class="table-condensed">
+                    </asp:Panel>
+                    <asp:Panel ID="panelBilling" runat="server" Visible="true" Style="width: 100%; border-top: solid 1px #C0C0C0;
+                        margin-top: 5px">
+                        <table width="100%">
                             <tr>
                                 <td class="form">
-                                    <table width="100%" class="table-condensed">
+                                    <table cellspacing="6" cellpadding="0" width="100%" border="0">
                                         <tbody>
                                             <tr>
-                                                <td align="left" valign="middle" width="20%">
+                                                <td align="left" valign="middle">
                                                     <asp:Button ID="btnFind" MaxLength="20" runat="server" Text="Find Patient" Height="30px"
-                                                        Enabled="true" OnClick="btnFind_Click" CssClass="btn btn-primary" Width="62%" />
-                                                    <span class="glyphicon glyphicon-search" style="margin-left: -11%; vertical-align: sub;
-                                                        color: #fff; text-align:left;"></span>
+                                                        Enabled="true" OnClick="btnFind_Click" Style="color: #000066; font-size: 16px;
+                                                        margin-left: 6px; font-family: Arial, helvetica,
+                                    Verdana, Sans-Serif" Font-Bold="True" />
                                                 </td>
-                                                <td class="form" width="90%">
+                                                <td class="form" width="100%" style="font-weight: bold">
                                                     <table width="100%">
                                                         <tr>
                                                             <td align="left">
@@ -144,39 +144,37 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="left">
-                                                    <h5 class='forms' align='left'>
+                                                <td align="left" style="white-space: nowrap">
+                                                    <h2 class='forms' align='left'>
                                                         Select Service Area:
-                                                    </h5>
+                                                    </h2>
                                                 </td>
                                                 <td align="left">
-                                                    <asp:DropDownList ID="ddlCostCenter" runat="server" Style="z-index: 2">
+                                                    <asp:DropDownList ID="ddlCostCenter" runat="server" Style="z-index: 2" AutoPostBack="True"
+                                                        OnSelectedIndexChanged="ddlCostCenter_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
                                     </table>
                     </asp:Panel>
-                    <asp:Panel ID="panelCalender" runat="server" Visible="true" Style="width: 100%;" class="panel panel-body">
-                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                            <ContentTemplate>
-                                <asp:Calendar ID="calendarConsumables" Width="100%" PrevMonthText="<< Previous Month"
-                                    NextMonthText="Next Month >>" DayHeaderStyle-Font-Name="Verdana" Height="16px"
-                                    TodayDayStyle-ForeColor="Black" DayStyle-BorderWidth="1" DayStyle-BorderStyle="Solid"
-                                    OtherMonthDayStyle-ForeColor="#C0C0C0" SelectedDayStyle-ForeColor="#000000" SelectedDayStyle-BackColor="#faebd7"
-                                    runat="server" CellSpacing="2" CellPadding="2" BorderColor="SteelBlue" BackColor="white"
-                                    TitleStyle-Font-Size="12" TitleStyle-Font-Name="Verdana" TitleStyle-Font-Bold="False"
-                                    SelectionMode="Day" DayStyle-Font-Size="12" DayStyle-Font-Name="Arial" DayStyle-VerticalAlign="Top"
-                                    DayStyle-HorizontalAlign="Left" DayStyle-Width="15" DayStyle-Height="16" Font-Bold="True">
-                                    <TodayDayStyle ForeColor="Black"></TodayDayStyle>
-                                    <DayStyle Font-Size="12pt" Font-Names="verdana" HorizontalAlign="Center" Height="20px"
-                                        BorderWidth="1px" BorderStyle="Solid" Width="75px" VerticalAlign="Middle"></DayStyle>
-                                    <DayHeaderStyle Font-Names="Verdana" ForeColor="Desktop"></DayHeaderStyle>
-                                    <SelectedDayStyle ForeColor="#800000" BackColor="#FFFFC0" Font-Bold="True"></SelectedDayStyle>
-                                    <TitleStyle Font-Size="12pt" Font-Names="Verdana"></TitleStyle>
-                                    <OtherMonthDayStyle ForeColor="Silver"></OtherMonthDayStyle>
-                                </asp:Calendar>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+                    <asp:Panel ID="panelCalender" runat="server" Visible="true" Style="width: 100%; border-top: solid 1px #C0C0C0;
+                        margin-top: 5px">
+                        <asp:Calendar ID="calendarConsumables" Width="95%" PrevMonthText="<< Previous Month"
+                            NextMonthText="Next Month >>" DayHeaderStyle-Font-Name="Verdana" Height="16px"
+                            TodayDayStyle-ForeColor="Black" DayStyle-BorderWidth="1" DayStyle-BorderStyle="Solid"
+                            OtherMonthDayStyle-ForeColor="#C0C0C0" SelectedDayStyle-ForeColor="#000000" SelectedDayStyle-BackColor="#faebd7"
+                            runat="server" CellSpacing="2" CellPadding="2" BorderColor="SteelBlue" BackColor="white"
+                            TitleStyle-Font-Size="12" TitleStyle-Font-Name="Verdana" TitleStyle-Font-Bold="False"
+                            SelectionMode="Day" DayStyle-Font-Size="12" DayStyle-Font-Name="Arial" DayStyle-VerticalAlign="Top"
+                            DayStyle-HorizontalAlign="Left" DayStyle-Width="15" DayStyle-Height="16" Font-Bold="True">
+                            <TodayDayStyle ForeColor="Black"></TodayDayStyle>
+                            <DayStyle Font-Size="12pt" Font-Names="verdana" HorizontalAlign="Center" Height="20px"
+                                BorderWidth="1px" BorderStyle="Solid" Width="75px" VerticalAlign="Middle"></DayStyle>
+                            <DayHeaderStyle Font-Names="Verdana" ForeColor="Desktop"></DayHeaderStyle>
+                            <SelectedDayStyle ForeColor="#800000" BackColor="#FFFFC0" Font-Bold="True"></SelectedDayStyle>
+                            <TitleStyle Font-Size="12pt" Font-Names="Verdana"></TitleStyle>
+                            <OtherMonthDayStyle ForeColor="Silver"></OtherMonthDayStyle>
+                        </asp:Calendar>
                     </asp:Panel>
                     <br />
                     <br />
@@ -191,8 +189,8 @@
                                             <asp:HiddenField ID="HItemTypeID" runat="server" />
                                             <asp:GridView ID="gridConsumables" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                                                 BorderColor="White" BorderWidth="1px" CellPadding="0" CssClass="datatable" PageIndex="1"
-                                                ShowFooter="True" ShowHeaderWhenEmpty="True" Width="100%" GridLines="None" DataKeyNames="PatientItemID,item_pk,issuedate,ItemType"
-                                                EmptyDataText="No Consumables for the selected date">
+                                                ShowFooter="True" ShowHeaderWhenEmpty="True" Width="100%"  GridLines="None"
+                                                DataKeyNames="PatientItemID,item_pk,issuedate,ItemType" EmptyDataText="No Consumables for the selected date">
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Description">
                                                         <EditItemTemplate>
@@ -201,7 +199,7 @@
                                                         <FooterTemplate>
                                                             <asp:TextBox ID="txtNewDescription" runat="server" AutoPostBack="true" OnTextChanged="txtNewDescription_textChanged"
                                                                 Width="99%" Font-Names="Courier New"></asp:TextBox>
-                                                            <div id="divwidth" runat="server" style="text-align: left">
+                                                            <div id="divwidth" runat="server" style="text-align:left">
                                                             </div>
                                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" CompletionInterval="30"
                                                                 CompletionListCssClass="AutoExtender" CompletionListHighlightedItemCssClass="AutoExtenderHighlight"
@@ -243,11 +241,11 @@
                                                     <asp:TemplateField HeaderText="Quantity">
                                                         <EditItemTemplate>
                                                             <asp:TextBox ID="txtEditQuantity" runat="server" onkeypress="return isNumber(event)"
-                                                                Text='<%# Bind("quantity") %>' Width="90%" Wrap="False" MaxLength="6"></asp:TextBox>
+                                                                Text='<%# Bind("quantity") %>' Width="90%" Wrap="False"  MaxLength="6"></asp:TextBox>
                                                         </EditItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:TextBox ID="txtNewQuantity" runat="server" onkeypress="return isNumber(event)"
-                                                                Width="90%" OnTextChanged="txtNewQuantity_TextChanged" MaxLength="6">1</asp:TextBox>
+                                                                Width="90%" OnTextChanged="txtNewQuantity_TextChanged"  MaxLength="6">1</asp:TextBox>
                                                         </FooterTemplate>
                                                         <ItemTemplate>
                                                             <asp:Label ID="labelQuantity" runat="server" Text='<%# Bind("quantity") %>'></asp:Label>
@@ -278,7 +276,7 @@
                                                         </ItemTemplate>
                                                         <ItemStyle Width="5%" />
                                                     </asp:TemplateField>
-                                                    <%-- <asp:CommandField ShowDeleteButton="True" />--%>
+                                                   <%-- <asp:CommandField ShowDeleteButton="True" />--%>
                                                 </Columns>
                                                 <FooterStyle BorderColor="Black" BorderStyle="Solid" BorderWidth="1px" />
                                                 <HeaderStyle HorizontalAlign="Left" />
@@ -306,12 +304,12 @@
                 <ProgressTemplate>
                     <div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; vertical-align: middle;">
                         <table style="position: relative; top: 45%; left: 45%; border: solid 1px #808080;
-                            background-color: #FFFFC0; width: 150px; height: 24px;" cellpadding="0" cellspacing="0">
+                            background-color: #FFFFC0; width: 110px; height: 24px;" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td align="right" valign="middle" style="width: 30px; height: 22px;">
                                     <img src="../Images/loading.gif" height="16px" width="16px" alt="" />
                                 </td>
-                                <td align="left" valign="middle" style="font-weight: bold; color: #808080; width: 100px;
+                                <td align="left" valign="middle" style="font-weight: bold; color: #808080; width: 80px;
                                     height: 22px; padding-left: 5px">
                                     Processing....
                                 </td>

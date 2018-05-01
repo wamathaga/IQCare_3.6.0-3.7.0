@@ -531,7 +531,7 @@ namespace IQCare.Web.Admission
         {
             IWardsMaster wardMaster = (IWardsMaster)ObjectFactory.CreateInstance("BusinessProcess.Administration.BWardMaster, BusinessProcess.Administration");
             var wards = wardMaster.GetWards(this.FacilityID)
-                .Where(wd => wd.Active == true && wd.PatientCategory.ToLower() == this.PatientWardCategory.ToLower() || wd.PatientCategory.ToLower() == "all" || this.OpenMode == "EDIT")
+                .Where(wd => wd.PatientCategory.ToLower() == this.PatientWardCategory.ToLower() || wd.PatientCategory.ToLower() =="all" || this.OpenMode == "EDIT")
                 .OrderBy(wd => wd.WardName);
 
             ddlPatientWard.Items.Clear();

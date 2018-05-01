@@ -7,14 +7,15 @@
 <%@ Register Src="~/PatientFinder.ascx" TagName="PatientFinder" TagPrefix="pf" %>
 <%@ Register Src="PatientWardAdmission.ascx" TagName="PatientWardAdmission" TagPrefix="paf" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="server">
-    <div class="container-fluid rounded">
+    
+    <div class="rounded">
         <asp:UpdatePanel runat="server" ID="divErrorUp" UpdateMode="Always">
             <ContentTemplate>
                 <asp:Panel ID="divError" runat="server" Style="padding: 5px" CssClass="background-color: #FFFFC0; border: solid 1px #C00000"
                     HorizontalAlign="Left" Visible="true">
                     <asp:Label ID="lblError" runat="server" Style="font-weight: bold; color: #800000"
                         Text=""></asp:Label>
-                    <asp:HiddenField ID="HFormName" runat="server" />
+                    <asp:HiddenField ID="HFormName" runat="server" />                   
                     <asp:HiddenField ID="HModuleID" runat="server" />
                 </asp:Panel>
             </ContentTemplate>
@@ -22,7 +23,7 @@
         <asp:UpdatePanel ID="divPatientComponent" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                 <pf:PatientFinder ID="FindPatient" runat="server" FilterByServiceLines="False" IncludeEnrollement="False"
-                    AutoLoadRecords="False" NumberOfRecords="50" CanAddPatient="False" />
+                    AutoLoadRecords="False" NumberofRecords="50" CanAddPatient="False" />
                 <asp:Button ID="Button1" runat="server" Text="Button" Style="display: none" OnClick="Button1_Click" />
             </ContentTemplate>
         </asp:UpdatePanel>
@@ -42,7 +43,8 @@
                     background-color: white; z-index: 15000">
                     <asp:Panel ID="pnPopup_Title" runat="server" Style="border: solid 1px #808080; margin: 0px 0px 0px 0px;
                         cursor: move; height: 18px">
-                        <table class="table-condensed" style="width: 100%; height: 18px; background-color: #479ADA">
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; height: 18px;
+                            background-color: #479ADA">
                             <tr>
                                 <td style="width: 5px; height: 19px;">
                                 </td>
@@ -55,7 +57,7 @@
                             </tr>
                         </table>
                     </asp:Panel>
-                    <table class="table-condensed" style="width: 100%;">
+                    <table border="0" cellpadding="15" cellspacing="0" style="width: 100%;">
                         <tr>
                             <td style="width: 48px" valign="middle" align="center">
                                 <asp:Image ID="imgNotice" runat="server" ImageUrl="~/images/mb_information.gif" Height="32px"
@@ -79,7 +81,7 @@
                 </ajaxToolkit:ModalPopupExtender>
             </ContentTemplate>
         </asp:UpdatePanel>
-        <div style="text-align: center; padding: 10px; white-space: nowrap; border: solid 1px #808080;"
+         <div style="text-align: center; padding: 10px; white-space: nowrap; border: solid 1px #808080;"
             class="form pad5 center">
             <asp:Button ID="btnBack" runat="server" Text="Close" />
         </div>

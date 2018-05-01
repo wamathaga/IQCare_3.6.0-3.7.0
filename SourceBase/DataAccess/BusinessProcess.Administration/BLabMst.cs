@@ -159,7 +159,7 @@ namespace BusinessProcess.Administration
             }
         }
 
-        public DataTable SaveLabUnitLinks(int ID, int SubTestID, decimal MinBoundaryValue, decimal MaxBoundaryValue, int UnitID, int DefaultUnit)
+        public DataTable SaveLabUnitLinks(int ID, int SubTestID, decimal MinBoundaryValue, decimal MaxBoundaryValue, int UnitID, int DefaultUnit, int Undetectable)
         {
             try
             {
@@ -178,6 +178,7 @@ namespace BusinessProcess.Administration
                 ClsUtility.AddParameters("@MaxBoundaryValue", SqlDbType.Decimal, MaxBoundaryValue.ToString());
                 ClsUtility.AddParameters("@UnitID", SqlDbType.Int, UnitID.ToString());
                 ClsUtility.AddParameters("@DefaultUnit", SqlDbType.Int, DefaultUnit.ToString());
+                ClsUtility.AddParameters("@Undetectable", SqlDbType.Int, Undetectable.ToString());
                 DataRow theDR;
                 theAffectedDT = (DataTable)LabManager.ReturnObject(ClsUtility.theParams, "pr_Admin_SaveLabUnitLinks_Constella", ClsDBUtility.ObjectEnum.DataTable);
                 if (theAffectedDT.Rows[0][0].ToString() == "-1")

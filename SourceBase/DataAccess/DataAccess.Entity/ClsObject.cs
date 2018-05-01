@@ -219,30 +219,30 @@ namespace DataAccess.Entity
                             cmdvalue = Params[i + 2].ToString();
                             SqlDbType sType = (SqlDbType)Enum.Parse(typeof(SqlDbType), cmddbtype);
 
-                            if (sType == SqlDbType.DateTime)
-                            {
-                                //if (string.IsNullOrEmpty(cmdvalue.Trim()) == true)
-                                //{
-                                //    theCmd.Parameters.AddWithValue(cmdpara, DBNull.Value);
-                                //}
-                                //else if (String.IsNullOrWhiteSpace(cmdvalue) == true)
-                                //{
-                                //    theCmd.Parameters.AddWithValue(cmdpara, DBNull.Value);
-                                //}
-                                //else
-                                //{
-                                DateTime tmpDate;
-                                if (DateTime.TryParse(cmdvalue, out tmpDate))
-                                {
-                                    theCmd.Parameters.Add(cmdpara, sType).Value = tmpDate.ToString("yyyy-MM-dd hh:mm:ss");
-                                }
-                                else
-                                {
-                                    theCmd.Parameters.AddWithValue(cmdpara, DBNull.Value);
-                                }
-                                //}
-                            }
-                            else
+                            /*  if (sType == SqlDbType.DateTime)
+                              {
+                                  //if (string.IsNullOrEmpty(cmdvalue.Trim()) == true)
+                                  //{
+                                  //    theCmd.Parameters.AddWithValue(cmdpara, DBNull.Value);
+                                  //}
+                                  //else if (String.IsNullOrWhiteSpace(cmdvalue) == true)
+                                  //{
+                                  //    theCmd.Parameters.AddWithValue(cmdpara, DBNull.Value);
+                                  //}
+                                  //else
+                                  //{
+                                  DateTime tmpDate;
+                                  if (DateTime.TryParse(cmdvalue, out tmpDate))
+                                  {
+                                      theCmd.Parameters.Add(cmdpara, sType).Value = tmpDate.ToString("yyyy-MM-dd hh:mm:ss");
+                                  }
+                                  else
+                                  {
+                                      theCmd.Parameters.AddWithValue(cmdpara, DBNull.Value);
+                                  }
+                                  //}
+                              }
+                              else*/
                             {
                                 theCmd.Parameters.Add(cmdpara, cmddbtype).Value = cmdvalue;
                             }
